@@ -190,7 +190,7 @@ Gamma 模式 是历史上的一种妥协模式。
 # ----------------------------------------------#
 #           shaders
 # ----------------------------------------------#
-本子上 Lit 是最全的shader，剩余的都是lit 的简化版
+本质上 Lit 是最全的shader，剩余的都是lit 的简化版
 也可以自定义 shader
 
 -- Lit
@@ -222,7 +222,8 @@ Gamma 模式 是历史上的一种妥协模式。
 	最后在 skybox - Cubemap 中，使用这张贴图
 	这算是定制性最强的方法了
 
--- 然后在 Lighting 面板，将其绑定到 skybox 链接上
+-- 然后在 Lighting 面板 - Environment 
+    将其绑定到 skybox 链接上
 
 
 
@@ -336,8 +337,9 @@ Skinned Mesh Renderer 专门用于 骨骼动画
 将 Cast Shadows 设置为 Shadows Only。
 
 
+
 # ----------------------------------------------#
-#     全部光照 / Global illumination (GI)
+#     全局光照 / Global illumination (GI)
 # ----------------------------------------------#
 unity 含有两种 GI：
 	-- Baked GI
