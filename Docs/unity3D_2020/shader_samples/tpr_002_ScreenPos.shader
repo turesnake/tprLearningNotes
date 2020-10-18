@@ -1,6 +1,6 @@
 // 依据每个像素点，在 screen 中的位置，呈现不同的颜色
 //
-Shader "Unlit/tpr_002_ScreenPos"
+Shader "tpr/tpr_002_ScreenPos"
 {
     
     SubShader
