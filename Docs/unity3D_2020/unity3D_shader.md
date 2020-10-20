@@ -346,10 +346,10 @@ vs 函数的核心输出就是一个被标记为 SV_POSITION 的 pos 值：
     分量取值范围 [-1.0, 1.0]
     目前为止，w值 是检测出来的，可能存在其它情况
 
-# (bitangent)
+# (binormal)
     float3 -- (单位向量)
-    通过 NORMAL, TANGENT, 可以计算出 bitangent：
-        float3 bitangent = cross( v.normal, v.tangent.xyz ) * v.tangent.w;
+    通过 NORMAL, TANGENT, 可以计算出 binormal：
+        float3 binormal = cross( v.normal, v.tangent.xyz ) * v.tangent.w;
     我们看到它使用了 tangent 的 w 分量，来将最终的值 做翻转（或不翻）
     从之前的检测可知，w分量 有时为1，有时为-1
 
@@ -387,7 +387,7 @@ _MainTex_ST.zw: 平移值 ，对应 material 界面中的 offset
 
 #    Z轴 Normal:    是 曲面法线方向
 #    X轴 Tangent:   是 此点在 UV坐标系中的 U轴方向
-#    Y轴 Bitangent: = cross( z,x ); (注意参数顺序) 此点在 UV坐标系中的 V轴方向
+#    Y轴 Binormal: = cross( z,x ); (注意参数顺序) 此点在 UV坐标系中的 V轴方向
     ----
     xyz 三轴 关系符合 右手定则
 

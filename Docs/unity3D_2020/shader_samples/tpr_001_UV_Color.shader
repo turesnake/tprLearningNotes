@@ -102,7 +102,8 @@ Shader "tpr/tpr_001_uv_color"
 
 
         //------------------------// 
-        //      切线  Tangent
+        //      切线   Tangent
+        //      副法线 Binormal
         //------------------------// 
         Pass
         {
@@ -129,11 +130,14 @@ Shader "tpr/tpr_001_uv_color"
                 v2f o;
                 o.pos = UnityObjectToClipPos( v.vertex );
 
-                //-- bitangent --//
-                float3 bitangent = cross( v.normal, v.tangent.xyz ) * v.tangent.w;
+                //-- tangent --//
+                //o.color = v.tangent * 0.5 + fixed4( 0.5, 0.5, 0.5, 0.5 );
+
+                //-- binormal --//
+                float3 binormal = cross( v.normal, v.tangent.xyz ) * v.tangent.w;
                     // 切线空间 TBN空间
-                    // tangent.w 要么是 -1, 要么是 1，用来调整 bitangent 的方向
-                o.color.xyz = bitangent * 0.5 + 0.5;
+                    // tangent.w 要么是 -1, 要么是 1，用来调整 binormal 的方向
+                o.color.xyz = binormal * 0.5 + 0.5;
                     // 将分量从 [-1.0,1.0] 映射为 [0.0,1.0]
                 o.color.w = 1.0;
                 
