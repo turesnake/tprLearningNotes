@@ -58,9 +58,11 @@ Usepass “Specular/FORWARD”
 
 # mul(UNITY_MATRIX_MVP,*) -> UnityObjectToClipPos(*)
 
-# _Object2World -> unity_ObjectToWorld
+# _Object2World -> unity_ObjectToWorld  [uniform mat4]
 
-# 
+# _LightMatrix0 -> unity_WorldToLight  [float4x4]
+
+
 
 # ---------------------------------------------- #
 #      URP 自带的 shaders 文件在哪里 ？
@@ -165,6 +167,11 @@ pass 数量越多，开销越大。
         不光可以选择这几项，还可以写为：Geometry+1, 来获得 2001.
         实现更精细化的 queue 次序管理
 #   "RenderType" = "Opaque"
+        可选项：
+        Opaque
+        TransparentCutout
+        Transparent
+        ...
 
 #   "DisableBatching"
         可选项：True, False(default), LODFading
@@ -208,7 +215,7 @@ pass 数量越多，开销越大。
         ForwardBase
         ForwardAdd
         Deferred
-        ShadowCaster
+        ShadowCaster  - 此pass 用来生成 shaderMap
         MotionVectors
         PrepassBase
         PrepassFinal
@@ -404,8 +411,17 @@ _MainTex_ST.zw: 平移值 ，对应 material 界面中的 offset
 
 
 # ---------------------------------------------- #
-#             
+#     通过 (手工制作的) 灰度图，生成 法线贴图
 # ---------------------------------------------- #
+- 随便做一张 正方形的灰色的图，放入unity
+- 在 Inspector 中，
+    TextureType: Normal map
+    Create from GrayScale: Yes
+    - apple
+----------
+如何将这张图导出？
+    暂时没学会...
+
 
 
 # ---------------------------------------------- #
