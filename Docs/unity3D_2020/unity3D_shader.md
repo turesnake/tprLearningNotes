@@ -222,6 +222,7 @@ pass 数量越多，开销越大。
         Vertex
         VertexLMRGBM
         VertexLM
+        Meta  - 让此pass，专用于 baked-rendering, 而不是 runtime-rendering
 #   "PassFlags" = "..."
         可选项：
         OnlyDirectional
