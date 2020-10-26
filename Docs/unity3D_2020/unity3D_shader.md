@@ -223,6 +223,7 @@ pass 数量越多，开销越大。
         VertexLMRGBM
         VertexLM
         Meta  - 让此pass，专用于 baked-rendering, 而不是 runtime-rendering
+        CustomLit - 这是教程中自定义的... 难道可以自定义 ？？？
 #   "PassFlags" = "..."
         可选项：
         OnlyDirectional
@@ -426,8 +427,19 @@ _MainTex_ST.zw: 平移值 ，对应 material 界面中的 offset
 
 
 # ---------------------------------------------- #
-#             
+#        #pragma shader_feature _XXX     
 # ---------------------------------------------- #
+Material Keywords:
+检查 参数变量 _XXX，是否被定义在 material's active keywords list 中
+根据检测结果，编译出不同的 shader 版本，携带/不携带 关键字：_XXX
+以便在后续代码中 通过:
+    #if defined(_XXX)
+    #endif
+来实现分支语句
+------
+注意，被检测的这个参数变量 _XXX 并不是在本语句中被 定义的，而是在之前的流程中，
+比如外部的 inspector 面板中 
+
 
 
 
