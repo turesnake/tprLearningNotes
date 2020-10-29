@@ -803,6 +803,7 @@ inline float4 ComputeNonStereoScreenPos(float4 pos) {
 inline float4 ComputeScreenPos(float4 pos) {
     float4 o = ComputeNonStereoScreenPos(pos);
 #if defined(UNITY_SINGLE_PASS_STEREO)
+    // 单通道立体渲染，主用于 vr
     o.xy = TransformStereoScreenSpaceTex(o.xy, pos.w);
 #endif
     return o;

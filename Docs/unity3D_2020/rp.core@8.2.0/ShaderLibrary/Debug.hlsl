@@ -4,6 +4,10 @@
 #define TRANSPARENCY_OVERDRAW_COST 1.0
 #define TRANSPARENCY_OVERDRAW_A 1.0
 
+
+// 提供一个 int值 [0,15], 返回一个固定的 color，
+// 用来快速 debug
+// ---
 // Given an enum (represented by an int here), return a color.
 // Use for DebugView of enum
 real3 GetIndexColor(int index)
@@ -46,6 +50,8 @@ real3 GetIndexColor(int index)
     return outColor;
 }
 
+
+// 将参数 digit, 转变成一张 5x9 的 像素图（画的是对应的数字）
 bool SampleDebugFont(int2 pixCoord, uint digit)
 {
     if (pixCoord.x < 0 || pixCoord.y < 0 || pixCoord.x >= 5 || pixCoord.y >= 9 || digit > 9)
@@ -71,6 +77,10 @@ bool SampleDebugFont(int2 pixCoord, uint digit)
     return (fontData[8 - pixCoord.y][digit >= 5] >> ((digit % 5) * 5 + pixCoord.x)) & 1;
 }
 
+
+
+// 把整个 uint 值，打印出来
+// 并不完善，只能打印 一位，二位 数。超出二位数时，只能打印 个位一个数字
 bool SampleDebugFontNumber(int2 pixCoord, uint number)
 {
     pixCoord.y -= 4;
@@ -83,6 +93,8 @@ bool SampleDebugFontNumber(int2 pixCoord, uint number)
         return (SampleDebugFont(pixCoord, number / 10) | SampleDebugFont(pixCoord - int2(6, 0), number % 10));
     }
 }
+
+
 
 float4 GetStreamingMipColor(uint mipCount, float4 mipInfo)
 {
@@ -124,6 +136,9 @@ float4 GetStreamingMipColor(uint mipCount, float4 mipInfo)
         return float4(0.0, 1.0, 0.0, 1.0 - ratioToOriginal);
     }
 }
+
+
+
 
 float4 GetSimpleMipCountColor(uint mipCount)
 {

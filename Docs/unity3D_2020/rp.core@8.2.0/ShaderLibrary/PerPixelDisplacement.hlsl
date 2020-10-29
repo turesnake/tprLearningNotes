@@ -1,3 +1,6 @@
+// 视差遮蔽贴图
+// 可以看作 法线贴图 的升级版。
+// -----------------
 // This is implementation of parallax occlusion mapping (POM)
 // This function require that the caller define a callback for the height sampling name ComputePerPixelHeightDisplacement
 // A PerPixelHeightDisplacementParam is used to provide all data necessary to calculate the heights to ComputePerPixelHeightDisplacement it doesn't need to be

@@ -9,15 +9,15 @@
 // These define are use to abstract the way we sample into a cubemap array.
 // Some platform don't support cubemap array so we fallback on 2D latlong
 #ifdef  UNITY_NO_CUBEMAP_ARRAY
-#define TEXTURECUBE_ARRAY_ABSTRACT TEXTURE2D_ARRAY
-#define TEXTURECUBE_ARRAY_PARAM_ABSTRACT TEXTURE2D_ARRAY_PARAM
-#define TEXTURECUBE_ARRAY_ARGS_ABSTRACT TEXTURE2D_ARRAY_ARGS
-#define SAMPLE_TEXTURECUBE_ARRAY_LOD_ABSTRACT(textureName, samplerName, coord3, index, lod) SAMPLE_TEXTURE2D_ARRAY_LOD(textureName, samplerName, DirectionToLatLongCoordinate(coord3), index, lod)
+    #define TEXTURECUBE_ARRAY_ABSTRACT          TEXTURE2D_ARRAY
+    #define TEXTURECUBE_ARRAY_PARAM_ABSTRACT    TEXTURE2D_ARRAY_PARAM
+    #define TEXTURECUBE_ARRAY_ARGS_ABSTRACT     TEXTURE2D_ARRAY_ARGS
+    #define SAMPLE_TEXTURECUBE_ARRAY_LOD_ABSTRACT(textureName, samplerName, coord3, index, lod) SAMPLE_TEXTURE2D_ARRAY_LOD(textureName, samplerName, DirectionToLatLongCoordinate(coord3), index, lod)
 #else
-#define TEXTURECUBE_ARRAY_ABSTRACT TEXTURECUBE_ARRAY
-#define TEXTURECUBE_ARRAY_PARAM_ABSTRACT TEXTURECUBE_ARRAY_PARAM
-#define TEXTURECUBE_ARRAY_ARGS_ABSTRACT TEXTURECUBE_ARRAY_ARGS
-#define SAMPLE_TEXTURECUBE_ARRAY_LOD_ABSTRACT(textureName, samplerName, coord3, index, lod) SAMPLE_TEXTURECUBE_ARRAY_LOD(textureName, samplerName, coord3, index, lod)
+    #define TEXTURECUBE_ARRAY_ABSTRACT          TEXTURECUBE_ARRAY
+    #define TEXTURECUBE_ARRAY_PARAM_ABSTRACT    TEXTURECUBE_ARRAY_PARAM
+    #define TEXTURECUBE_ARRAY_ARGS_ABSTRACT     TEXTURECUBE_ARRAY_ARGS
+    #define SAMPLE_TEXTURECUBE_ARRAY_LOD_ABSTRACT(textureName, samplerName, coord3, index, lod) SAMPLE_TEXTURECUBE_ARRAY_LOD(textureName, samplerName, coord3, index, lod)
 #endif
 
 #define PI          3.14159265358979323846
@@ -35,6 +35,9 @@
 #define CENTIMETERS_PER_METER 100
 #define METERS_PER_CENTIMETER rcp(CENTIMETERS_PER_METER)
 
+
+// machine epsilon: 机械精度，计算机所支持的 量最小的 float 值
+// 满足 1.0 + EPS = 1.0
 #define FLT_INF  asfloat(0x7F800000)
 #define FLT_EPS  5.960464478e-8  // 2^-24, machine epsilon: 1 + EPS = 1 (half of the ULP for 1.0f)
 #define FLT_MIN  1.175494351e-38 // Minimum normalized positive floating-point number

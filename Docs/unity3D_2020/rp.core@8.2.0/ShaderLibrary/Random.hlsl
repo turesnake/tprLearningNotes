@@ -91,6 +91,8 @@ float2 InitRandom(float2 input)
 }
 #endif // SHADER_API_GLES
 
+
+// 交错梯度-Noise
 //From  Next Generation Post Processing in Call of Duty: Advanced Warfare [Jimenez 2014]
 // http://advances.realtimerendering.com/s2014/index.html
 float InterleavedGradientNoise(float2 pixCoord, int frameCount)

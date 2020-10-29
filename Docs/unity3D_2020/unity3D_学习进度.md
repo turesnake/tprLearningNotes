@@ -4,18 +4,9 @@
 
 
 
-# --- 005 --- #
-# srp 中，是否还存在 forward rendering path, 或 Deferred Shading rendering path
-
-进展：
-    观察 Lit.shader 中的 "LightMode" Tag，
-    发现变量 UniversalForward
-    几乎所有 urp 内置 shader 中，都用到了 这组 变量名
-
-
 # --- 008 --- #
 部分 shader 在 imac 中无法正常允许，需要到 pc 中调试
-
+比如 geometric shader
 
 
 # --- 009 --- #
@@ -28,4 +19,15 @@
 
 
 # --- 011 --- #
+写个 shader，体验下 : SampleDebugFont() 这个函数 到底怎么用
+在 Debug.hlsl 中 
+
+
+# --- 012 --- #
+在 win 平台 安装 RenderDoc
+
+
+# --- 013 --- #
+
+
 

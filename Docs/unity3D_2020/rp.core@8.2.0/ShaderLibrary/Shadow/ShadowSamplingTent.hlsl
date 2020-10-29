@@ -1,10 +1,17 @@
 #ifndef SHADOW_SAMPLING_TENT_INCLUDED
 #define SHADOW_SAMPLING_TENT_INCLUDED
+
 // ------------------------------------------------------------------
 //  PCF Filtering Tent Functions
 // ------------------------------------------------------------------
 
-// Assuming a isoceles right angled triangle of height "triangleHeight" (as drawn below).
+// PCF: percentage-closer filtering 百分比渐进过滤
+// 一种简单的 阴影边缘 反走样技术
+// 通过在 片段 周围进行采样，然后计算样本 比 片段 更接近光源额比例
+// 使用这个比例，对散射光 和 镜面光 成分进行缩放，然后对 片段 进行着色
+// 最后让 阴影边缘 看上去进行了 模糊
+
+// Assuming a "isoceles right angled triangle"(等腰直角三角形) of height "triangleHeight" (as drawn below).
 // This function return the area of the triangle above the first texel.
 //
 // |\      <-- 45 degree slop isosceles right angled triangle
@@ -16,7 +23,7 @@ real SampleShadow_GetTriangleTexelArea(real triangleHeight)
     return triangleHeight - 0.5;
 }
 
-// Assuming a isoceles triangle of 1.5 texels height and 3 texels wide lying on 4 texels.
+// Assuming a "isoceles triangle"(等腰三角形) of 1.5 texels height and 3 texels wide lying on 4 texels.
 // This function return the area of the triangle above each of those texels.
 //    |    <-- offset from -0.5 to 0.5, 0 meaning triangle is exactly in the center
 //   / \   <-- 45 degree slop isosceles triangle (ie tent projected in 2D)
@@ -47,6 +54,7 @@ void SampleShadow_GetTexelAreas_Tent_3x3(real offset, out real4 computedArea, ou
     computedArea.z = computedAreaUncut.z - areaOfSmallRightTriangle;
 }
 
+
 // Assuming a isoceles triangle of 1.5 texels height and 3 texels wide lying on 4 texels.
 // This function return the weight of each texels area relative to the full triangle area.
 void SampleShadow_GetTexelWeights_Tent_3x3(real offset, out real4 computedWeight)
@@ -55,6 +63,7 @@ void SampleShadow_GetTexelWeights_Tent_3x3(real offset, out real4 computedWeight
     SampleShadow_GetTexelAreas_Tent_3x3(offset, computedWeight, dummy);
     computedWeight *= 0.44444;//0.44 == 1/(the triangle area)
 }
+
 
 // Assuming a isoceles triangle of 2.5 texel height and 5 texels wide lying on 6 texels.
 // This function return the weight of each texels area relative to the full triangle area.
@@ -103,6 +112,7 @@ void SampleShadow_GetTexelWeights_Tent_7x7(real offset, out real4 texelsWeightsA
     texelsWeightsB.z = 0.081632 * (computedAreaUncut_From3texelTriangle.z);
     texelsWeightsB.w = 0.081632 * (computedArea_From3texelTriangle.w);
 }
+
 
 // 3x3 Tent filter (45 degree sloped triangles in U and V)
 void SampleShadow_ComputeSamples_Tent_3x3(real4 shadowMapTexture_TexelSize, real2 coord, out real fetchesWeights[4], out real2 fetchesUV[4])

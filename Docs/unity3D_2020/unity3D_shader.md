@@ -1,6 +1,7 @@
 # ================================================================ #
 #            unity3d shader 使用技巧
 # ================================================================ #
+大部分内容 适用于 built-in shader。
 
 
 # ---------------------------------------------- #
@@ -224,6 +225,11 @@ pass 数量越多，开销越大。
         VertexLM
         Meta  - 让此pass，专用于 baked-rendering, 而不是 runtime-rendering
         CustomLit - 这是教程中自定义的... 难道可以自定义 ？？？
+        ----
+        在 urp 中，请在 manual 中搜索: URP ShaderLab Pass tags
+
+
+
 #   "PassFlags" = "..."
         可选项：
         OnlyDirectional
@@ -415,8 +421,8 @@ _MainTex_ST.zw: 平移值 ，对应 material 界面中的 offset
 # ---------------------------------------------- #
 #     通过 (手工制作的) 灰度图，生成 法线贴图
 # ---------------------------------------------- #
-- 随便做一张 正方形的灰色的图，放入unity
-- 在 Inspector 中，
+-- 随便做一张 正方形的灰色的图，放入unity
+-- 在 Inspector 中，
     TextureType: Normal map
     Create from GrayScale: Yes
     - apple
@@ -444,13 +450,83 @@ Material Keywords:
 
 
 # ---------------------------------------------- #
-#             
+#       纹理 和 采样
+#       sample2D _Tex;
+#       tex2D( _Tex, uv );
+#       ----------------
+#       Texture2D     _Tex; 
+#       SamplerState  sampler_Tex;    
 # ---------------------------------------------- #
+# sample2D _XXX;
+# float4 color = tex2D( _XXX, uv );
+在简单模式下，可以使用这套语句来实现 纹理采样。
+此时，textures 和 samplers 是成对出现的
+
+# ------- hlsl --------
+# Texture2D     _Tex; 
+# SamplerState  sampler_Tex; 
+# float4 color = _Tex.Sample( sampler_Tex, uv );
+但在很多显卡API中，支持的 texture 数量，和 sampler 数量是不同的
+- sampler 数量往往更少
+此时，为了写出更灵活的 shader，就会把 两者 分开来写。
+
+- manual 搜索： Using sampler states
+
+- 注意，SamplerState 语句中声明的变量名，有格式要求
+
+- 这种语法，不支持部分 陈旧平台
+  使用 #pragma target 3.5 来屏蔽旧版本
+
+# -----
+通过这种语法，我们可以用一个 sampler，访问数个 texture:
+    Texture2D   _TexA; 
+    Texture2D   _TexB; 
+    Texture2D   _TexC;
+    SamplerState  sampler_TexA;
+
+    float4 colorA = _TexA.Sample( sampler_TexA, uv );
+    float4 colorB = _TexB.Sample( sampler_TexA, uv );
+    float4 colorC = _TexC.Sample( sampler_TexA, uv );
+
+# ------- catlike --------
+# TEXTURE2D ( _Tex ); 
+# SAMPLER ( sampler_Tex );
+# float4 color = SAMPLE_TEXTURE2D( _Tex, sampler_Tex, uv );
+在 catlike 教程中，使用了这组宏。
+它们被定义在:
+    D3D11.hlsl 
+    GLCore.hlsl
+    GLES2.hlsl
+    GLES3.hlsl
+    Metal.hlsl
+    Switch.hlsl
+    Vulkan.hlsl
+文件内，
+实质上和 上一种 hlsl 用法，是一样的...
+
+# ------- SamplerState 变量的 命名规则 -----
+texture filtering mode:
+    “Point”, “Linear”，“Trilinear”
+texture wrap mode:
+    “Clamp”, “Repeat”, “Mirror”, “MirrorOnce”
+depth comparison:
+    “Compare”
+
+通过上述 构词选项，可以组合出:
+    sampler_point_repeat
+这样的名字。
+
+- 具体细节参考 manual: Using sampler states
 
 
+
+
+
 # ---------------------------------------------- #
-#             
+#   为什么 传入 frag() 的 方向向量，要做 normaliz     
 # ---------------------------------------------- #
+即便这些 方向向量，在 vert 中已经是 normalized， 
+当它们经过 中间的 插值运算，被分配到每个 像素后，它们已经不是 normal-vector 了
 
 
 

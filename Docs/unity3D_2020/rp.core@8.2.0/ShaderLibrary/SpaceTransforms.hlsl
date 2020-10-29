@@ -68,6 +68,7 @@ float3 TransformWorldToView(float3 positionWS)
 }
 
 // Transforms position from object space to homogenous space
+// 常用在 vert(); 中，转换成成 HCPos : SV_POSITION
 float4 TransformObjectToHClip(float3 positionOS)
 {
     // More efficient than computing M*VP matrix product
@@ -126,9 +127,13 @@ real3 TransformWorldToHClipDir(real3 directionWS, bool doNormalize = false)
     return dirHCS;
 }
 
+
 // Transforms normal from object to world space
+// 常用
+// param: doNormalize -- 是否要在计算完后，将向量 normalize
 float3 TransformObjectToWorldNormal(float3 normalOS, bool doNormalize = true)
 {
+// 指明 模型的缩放比 是统一的，此变量可由用户 define
 #ifdef UNITY_ASSUME_UNIFORM_SCALING
     return TransformObjectToWorldDir(normalOS, doNormalize);
 #else
@@ -140,6 +145,7 @@ float3 TransformObjectToWorldNormal(float3 normalOS, bool doNormalize = true)
     return normalWS;
 #endif
 }
+
 
 // Transforms normal from world to object space
 float3 TransformWorldToObjectNormal(float3 normalWS, bool doNormalize = true)

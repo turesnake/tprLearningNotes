@@ -948,6 +948,8 @@ struct PositionInputs
     float  linearDepth; // View space Z coordinate                              : [Near, Far]
 };
 
+
+
 // This function is use to provide an easy way to sample into a screen texture, either from a pixel or a compute shaders.
 // This allow to easily share code.
 // If a compute shader call this function positionSS is an integer usually calculate like: uint2 positionSS = groupId.xy * BLOCK_SIZE + groupThreadId.xy
@@ -968,6 +970,8 @@ PositionInputs GetPositionInput(float2 positionSS, float2 invScreenSize, uint2 t
 
     return posInput;
 }
+
+
 
 PositionInputs GetPositionInput(float2 positionSS, float2 invScreenSize)
 {
@@ -1031,11 +1035,13 @@ void ApplyDepthOffsetPositionInput(float3 V, float depthOffsetVS, float3 viewFor
 
 #if defined(SHADER_API_VULKAN) || defined(SHADER_API_GLES) || defined(SHADER_API_GLES3)
 
+
 real4 PackHeightmap(real height)
 {
     uint a = (uint)(65535.0 * height);
     return real4((a >> 0) & 0xFF, (a >> 8) & 0xFF, 0, 0) / 255.0;
 }
+
 
 real UnpackHeightmap(real4 height)
 {
@@ -1044,10 +1050,12 @@ real UnpackHeightmap(real4 height)
 
 #else
 
+
 real4 PackHeightmap(real height)
 {
     return real4(height, 0, 0, 0);
 }
+
 
 real UnpackHeightmap(real4 height)
 {
@@ -1066,12 +1074,20 @@ bool HasFlag(uint bitfield, uint flag)
     return (bitfield & flag) != 0;
 }
 
+
+// -------------- //
 // Normalize that account for vectors with zero length
+// 本质上就是个 求 normalize 的操作。
+// 但是由于 向量长度可能为0，进而在除法中出错，所以用此实现来让过程 Safety
 real3 SafeNormalize(float3 inVec)
 {
+    // FLT_MIN = 1.175494351e-38, 最小的 normalized_positive_float 值
+    // 可以理解为一个 非0的 最小正浮点数
     float dp3 = max(FLT_MIN, dot(inVec, inVec));
     return inVec * rsqrt(dp3);
 }
+
+
 
 // Division which returns 1 for (inf/inf) and (0/0).
 // If any of the input parameters are NaNs, the result is a NaN.
@@ -1092,6 +1108,7 @@ real SphericalDot(real cosTheta1, real phi1, real cosTheta2, real phi2)
     return SinFromCos(cosTheta1) * SinFromCos(cosTheta2) * cos(phi1 - phi2) + cosTheta1 * cosTheta2;
 }
 
+
 // Generates a triangle in homogeneous clip space, s.t.
 // v0 = (-1, -1, 1), v1 = (3, -1, 1), v2 = (-1, 3, 1).
 float2 GetFullScreenTriangleTexCoord(uint vertexID)
@@ -1102,6 +1119,7 @@ float2 GetFullScreenTriangleTexCoord(uint vertexID)
     return float2((vertexID << 1) & 2, vertexID & 2);
 #endif
 }
+
 
 float4 GetFullScreenTriangleVertexPosition(uint vertexID, float z = UNITY_NEAR_CLIP_VALUE)
 {

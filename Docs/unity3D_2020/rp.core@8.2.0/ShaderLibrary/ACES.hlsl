@@ -1,6 +1,8 @@
 #ifndef __ACES__
 #define __ACES__
 
+// 学院色彩编码系统
+
 /**
  * https://github.com/ampas/aces-dev
  *

@@ -1,6 +1,7 @@
 #ifndef UNITY_FILTERING_INCLUDED
 #define UNITY_FILTERING_INCLUDED
 
+// B-样条曲线
 // Basic B-Spline of the 2nd degree (3rd order, support = 4).
 // The fractional coordinate of each part is assumed to be in the [0, 1] range.
 // https://www.desmos.com/calculator/479pgatwlt
@@ -56,7 +57,7 @@ real2 BSpline3Rightmost(real2 x)
     return 0.16666667 + x * (-0.5 + x * (0.5 - x * 0.16666667));
 }
 
-// Compute weights & offsets for 4x bilinear taps for the bicubic B-Spline filter.
+// Compute weights & offsets for 4x bilinear taps for the bicubic B-Spline filter. B-样条滤波器
 // The fractional coordinate should be in the [0, 1] range (centered on 0.5).
 // Inspired by: http://vec3.ca/bicubic-filtering-in-fewer-taps/
 void BicubicFilter(float2 fracCoord, out float2 weights[2], out float2 offsets[2])
