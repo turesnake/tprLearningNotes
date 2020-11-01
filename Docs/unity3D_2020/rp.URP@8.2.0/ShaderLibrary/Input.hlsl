@@ -20,6 +20,7 @@
 
 
 
+// 被各个 urp.shaders 广泛应用
 struct InputData
 {
     float3  positionWS;
@@ -30,6 +31,8 @@ struct InputData
     half3   vertexLighting;
     half3   bakedGI;
 };
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                      Constant Buffers                                     //

@@ -1,3 +1,6 @@
+// 
+// 光照渲染部分 最核心的 文件 !!!
+// 
 #ifndef UNIVERSAL_LIGHTING_INCLUDED
 #define UNIVERSAL_LIGHTING_INCLUDED
 
@@ -6,6 +9,7 @@
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ImageBasedLighting.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
+
 
 // If lightmap is not defined than we evaluate GI (ambient + probes) from SH
 // We might do it fully or partially in vertex to save shader ALU
@@ -44,6 +48,7 @@ struct Light
     half    distanceAttenuation;
     half    shadowAttenuation;
 };
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                        Attenuation Functions                               /
@@ -241,8 +246,16 @@ int GetAdditionalLightsCount()
 //                         BRDF Functions                                    //
 ///////////////////////////////////////////////////////////////////////////////
 
-#define kDieletricSpec half4(0.04, 0.04, 0.04, 1.0 - 0.04) // standard dielectric reflectivity coef at incident angle (= 4%)
 
+// 入射角的 标准 电介质反射率 系数 = 0.04
+// 即：材质的 电介质反射率 的最小值，为 0.04 
+// 反过来，metallic_refl 最大值不能超过 0.96
+// -------
+// standard dielectric reflectivity coef at incident angle (= 4%)
+#define kDieletricSpec half4(0.04, 0.04, 0.04, 1.0 - 0.04) 
+
+
+// 被部分 urp.shaders 应用
 struct BRDFData
 {
     half3 diffuse;
@@ -258,6 +271,8 @@ struct BRDFData
     half roughness2MinusOne;    // roughness^2 - 1.0
 };
 
+
+
 half ReflectivitySpecular(half3 specular)
 {
 #if defined(SHADER_API_GLES)
@@ -267,6 +282,9 @@ half ReflectivitySpecular(half3 specular)
 #endif
 }
 
+
+// 获得 1.0-metallic 这个值
+// 同时调整了 range: [0,1] -> [0,0.96]
 half OneMinusReflectivityMetallic(half metallic)
 {
     // We'll need oneMinusReflectivity, so
@@ -277,6 +295,8 @@ half OneMinusReflectivityMetallic(half metallic)
     half oneMinusDielectricSpec = kDieletricSpec.a;
     return oneMinusDielectricSpec - metallic * oneMinusDielectricSpec;
 }
+
+
 
 inline void InitializeBRDFData(half3 albedo, half metallic, half3 specular, half smoothness, half alpha, out BRDFData outBRDFData)
 {
@@ -317,6 +337,15 @@ half3 EnvironmentBRDF(BRDFData brdfData, half3 indirectDiffuse, half3 indirectSp
     return c;
 }
 
+// ==================================//
+// 
+// PBR 核心着色函数
+// 
+// CookTorrance -- 库克-托伦斯，一种实现 brdf specular 的方法
+// NDF -- normal distribution function -- 法线分布函数
+// GGX -- 一种 NDF
+// 
+// -----
 // Based on Minimalist CookTorrance BRDF
 // Implementation is slightly different from original derivation: http://www.thetenthplanet.de/archives/255
 //
@@ -360,6 +389,8 @@ half3 DirectBDRF(BRDFData brdfData, half3 normalWS, half3 lightDirectionWS, half
     return brdfData.diffuse;
 #endif
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                      Global Illumination                                  //
@@ -531,12 +562,15 @@ void MixRealtimeAndBakedGI(inout Light light, half3 normalWS, inout half3 bakedG
 ///////////////////////////////////////////////////////////////////////////////
 //                      Lighting Functions                                   //
 ///////////////////////////////////////////////////////////////////////////////
+
+// used in Blinn-Phong
 half3 LightingLambert(half3 lightColor, half3 lightDir, half3 normal)
 {
     half NdotL = saturate(dot(normal, lightDir));
     return lightColor * NdotL;
 }
 
+// used in Blinn-Phong
 half3 LightingSpecular(half3 lightColor, half3 lightDir, half3 normal, half3 viewDir, half4 specular, half smoothness)
 {
     float3 halfVec = SafeNormalize(float3(lightDir) + float3(viewDir));
@@ -546,18 +580,30 @@ half3 LightingSpecular(half3 lightColor, half3 lightDir, half3 normal, half3 vie
     return lightColor * specularReflection;
 }
 
-half3 LightingPhysicallyBased(BRDFData brdfData, half3 lightColor, half3 lightDirectionWS, half lightAttenuation, half3 normalWS, half3 viewDirectionWS)
+
+// used in PBR
+half3 LightingPhysicallyBased(  BRDFData brdfData, 
+                                half3 lightColor, 
+                                half3 lightDirectionWS, 
+                                half lightAttenuation, 
+                                half3 normalWS, half3 
+                                viewDirectionWS)
 {
     half NdotL = saturate(dot(normalWS, lightDirectionWS));
     half3 radiance = lightColor * (lightAttenuation * NdotL);
     return DirectBDRF(brdfData, normalWS, lightDirectionWS, viewDirectionWS) * radiance;
 }
 
-half3 LightingPhysicallyBased(BRDFData brdfData, Light light, half3 normalWS, half3 viewDirectionWS)
+// used in PBR
+half3 LightingPhysicallyBased(  BRDFData brdfData, 
+                                Light light, 
+                                half3 normalWS, 
+                                half3 viewDirectionWS)
 {
     return LightingPhysicallyBased(brdfData, light.color, light.direction, light.distanceAttenuation * light.shadowAttenuation, normalWS, viewDirectionWS);
 }
 
+// 顶点着色，被一些性能敏感的 urp.shaders 使用
 half3 VertexLighting(float3 positionWS, half3 normalWS)
 {
     half3 vertexLightColor = half3(0.0, 0.0, 0.0);
@@ -571,17 +617,27 @@ half3 VertexLighting(float3 positionWS, half3 normalWS)
         vertexLightColor += LightingLambert(lightColor, light.direction, normalWS);
     }
 #endif
-
     return vertexLightColor;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                      Fragment Functions                                   //
 //       Used by ShaderGraph and others builtin renderers                    //
 ///////////////////////////////////////////////////////////////////////////////
-half4 UniversalFragmentPBR(InputData inputData, half3 albedo, half metallic, half3 specular,
-    half smoothness, half occlusion, half3 emission, half alpha)
-{
+
+// frag 阶段，最核心的两个函数 !!!
+
+// InputData: [defined in ShaderLib: Input.hlsl]
+half4 UniversalFragmentPBR( InputData inputData, 
+                            half3 albedo, 
+                            half metallic, 
+                            half3 specular,
+                            half smoothness, 
+                            half occlusion, 
+                            half3 emission, 
+                            half alpha
+){
     BRDFData brdfData;
     InitializeBRDFData(albedo, metallic, specular, smoothness, alpha, brdfData);
     
@@ -608,6 +664,9 @@ half4 UniversalFragmentPBR(InputData inputData, half3 albedo, half metallic, hal
     return half4(color, alpha);
 }
 
+
+
+// InputData: [defined in ShaderLib: Input.hlsl]
 half4 UniversalFragmentBlinnPhong(InputData inputData, half3 diffuse, half4 specularGloss, half smoothness, half3 emission, half alpha)
 {
     Light mainLight = GetMainLight(inputData.shadowCoord);
@@ -641,13 +700,21 @@ half4 UniversalFragmentBlinnPhong(InputData inputData, half3 diffuse, half4 spec
     return half4(finalColor, alpha);
 }
 
+
+
+//
+//      未被使用，看来是 遗弃版（仅做了简单的功能转发）
+// 
 //LWRP -> Universal Backwards Compatibility
+// InputData: [defined in ShaderLib: Input.hlsl]
 half4 LightweightFragmentPBR(InputData inputData, half3 albedo, half metallic, half3 specular,
     half smoothness, half occlusion, half3 emission, half alpha)
 {
     return UniversalFragmentPBR(inputData, albedo, metallic, specular, smoothness, occlusion, emission, alpha);
 }
 
+// 未被使用，看来是 遗弃版（仅做了简单的功能转发）
+// InputData: [defined in ShaderLib: Input.hlsl]
 half4 LightweightFragmentBlinnPhong(InputData inputData, half3 diffuse, half4 specularGloss, half smoothness, half3 emission, half alpha)
 {
     return UniversalFragmentBlinnPhong(inputData, diffuse, specularGloss, smoothness, emission, alpha);

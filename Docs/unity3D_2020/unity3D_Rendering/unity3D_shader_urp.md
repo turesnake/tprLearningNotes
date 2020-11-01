@@ -11,20 +11,20 @@ urp 使用了一套新的 API
 
 # ------------------ #
 #   Core.hlsl      [urp]
-[file](rp.universal@8.2.0/ShaderLibrary/Core.hlsl)
+[file](rp.URP@8.2.0/ShaderLibrary/Core.hlsl)
 
 通常在 主 shader 中直接 include，包含常用变量和宏，以及更多 .hlsl 文件
 
 
 # ------------------ #
 #   Input.hlsl      [urp]
-[file](rp.universal@8.2.0/ShaderLibrary/Input.hlsl)
+[file](rp.URP@8.2.0/ShaderLibrary/Input.hlsl)
 
 
 
 # ------------------ #
 #   UnityInput.hlsl      [urp]
-[file](rp.universal@8.2.0/ShaderLibrary/UnityInput.hlsl)
+[file](rp.URP@8.2.0/ShaderLibrary/UnityInput.hlsl)
 
 
 float4 _ScreenParams;
@@ -33,8 +33,22 @@ float4 _ScreenParams;
 
 
 # ------------------ #
+#   Lighting.hlsl      [urp]
+[file](rp.URP@8.2.0/ShaderLibrary/Lighting.hlsl)
+包含：
+    BRDF
+    UniversalFragmentPBR()
+    UniversalFragmentBlinnPhong()
+
+
+
+# ------------------ #
 #   Common.hlsl   [core]
 [file](rp.core@8.2.0/ShaderLibrary/Common.hlsl)
+
+# ------------------ #
+#   CommonMaterial.hlsl   [core]
+[file](rp.core@8.2.0/ShaderLibrary/CommonMaterial.hlsl)
 
 
 # ------------------ #
@@ -103,24 +117,43 @@ float4 _ScreenParams;
 GetIndexColor
 
 
+# ------------------ #
+#   Color.hlsl   [core]
+[file](rp.core@8.2.0/ShaderLibrary/Color.hlsl)
+
+
+# ------------------ #
+#   BRDF.hlsl   [core]
+[file](rp.core@8.2.0/ShaderLibrary/BRDF.hlsl)
+
+
 
 
 # ======================================================= #
-#                   常用 函数
+#              unity.hlsl 常用 函数
 # ------------------------------------------------------- #
 
 
 # ------------------ #
 # real3 SafeNormalize (float3 inVec);
 - Common.hlsl [core]
-就是普通的 normalize 功能，safe 版
+就是普通的 normalize 的 safe 版
+搞定 分母为 0 的问题
+
+
+# ------------------ #
+# real PerceptualSmoothnessToPerceptualRoughness( real Smoothness_ );
+- CommonMaterial.hlsl
+简单返回 (1.0 - Smoothness_);
+用来计算 Roughness
+其中 Smoothness 和 Roughness 都是 Perceptual的（感性的）
+
 
 # ret normalize (x);
 - hlsl
 在这种最原版的实现中，当 向量长度==0，返回的结果是 indefinite
 
 - 这两函数，在 .hlsl 文件中都有使用
-
 
 
 # ------------------ #
@@ -130,19 +163,15 @@ GetIndexColor
 Interprets the bit pattern of x as an integer / floating-point
 不是简单的 cast 操作
 
-
-
 # ------------------ #
 # ret rsqrt (x);
 - hlsl
 Returns 1 / sqrt(x)
 
-
 # ------------------ #
 # ret rcp (x);
 - hlsl
 为参数的每个分量，计算一个（近似值）的 倒数。（1/x）
-
 
 # ------------------ #
 # T trunc (T x);
@@ -152,10 +181,17 @@ Returns 1 / sqrt(x)
 - hlsl
 返回 参数分量的 小数部分 （原参数是否被改变 ？？？ ）
 
+# ------------------ #
+# ret lerp ( x, y, s );
+- hlsl
+线性插值: x*(1-s) + y*s
+
+
+
 
 
 # ======================================================= #
-#                   常用 数据结构， 变量，宏
+#             unity.hlsl 常用 数据结构， 变量，宏
 # ------------------------------------------------------- #
 
 # ------------------ #
@@ -164,7 +200,6 @@ Returns 1 / sqrt(x)
 - hlsl
 一个容器，指定统一的 元素类型T，用起来类似 std::vector<T>
 似乎是 read-only 的
-
 
 
 # ------------------ #
@@ -179,6 +214,92 @@ Returns 1 / sqrt(x)
 # pragma instancing_options assumeuniformscaling
 (看起来这个指令，是只针对 gpu instancing 模式的 ？？？ )
 
+
+# ------------------ #
+- ShaderLib: Input.hlsl
+struct InputData
+{
+    float3  positionWS;
+    half3   normalWS;
+    half3   viewDirectionWS;
+    float4  shadowCoord;
+    half    fogCoord;
+    half3   vertexLighting;
+    half3   bakedGI;
+};
+
+- ShaderLib: SurfaceInput.hlsl
+struct SurfaceData
+{
+    half3 albedo;
+    half3 specular;
+    half  metallic;
+    half  smoothness;
+    half3 normalTS; // Tangent-Space
+    half3 emission;
+    half  occlusion;
+    half  alpha;
+};
+
+- ShaderLib: Lighting.hlsl
+struct BRDFData
+{
+    half3 diffuse;
+    half3 specular;
+    half perceptualRoughness;
+    half roughness;
+    half roughness2;
+    half grazingTerm;
+
+    half normalizationTerm;     // roughness * 4.0 + 2.0
+    half roughness2MinusOne;    // roughness^2 - 1.0
+};
+
+
+
+
+# ======================================================= #
+#             unity SRP 提到的 class
+# ------------------------------------------------------- #
+
+# ScriptableRenderContext
+    简称 context
+    定义当前 rp 使用的 状况 和 指令。
+
+# CommandBuffer
+    存储一组 render commands
+
+# RenderSettings
+    当前场景中相关的 render settings，
+    比如 sun, fog, ambient light
+    这些参数 在 Lighting inspector 中可见
+
+# CullingResults
+
+
+# NativeArray<T0>
+    字面理解就是 "本地数组"，可以在 jobs 中安全使用，
+    provides a connection to a native memory buffer。
+    efficiently share data between managed C# code and 
+    the native Unity engine code.
+    ---
+    有待继续学习...
+
+# VisibleLight
+    包含一个 可见光 的数据
+    在执行完  ScriptableRenderContext.Cull() 之后，
+    CullingResults.visibleLights 将会自动包含 一组 VisibleLight 数据。
+
+
+# Profiler
+# CameraRenderer
+# RenderPipelineAsset
+# RenderPipeline
+# GraphicsSettings
+
+# MaterialPropertyBlock
+
+# ScriptableCullingParameters
 
 
 
@@ -197,10 +318,16 @@ Returns 1 / sqrt(x)
 
 
 # ---------------------------------------------- #
-#         
+#         urp 的 核心 cs 文件在哪 ？？？
 # ---------------------------------------------- #
 
+# UniversalRenderPipelineAsset : RenderPipelineAsset
+    Runtime/Data/UniversalRenderPipelineAsset.cs:
 
+# UniversalRenderPipeline : RenderPipeline
+    Runtime/UniversalRenderPipeline.cs
+    Runtime/UniversalRenderPipelineCore.cs
+    
 
 
 # ---------------------------------------------- #

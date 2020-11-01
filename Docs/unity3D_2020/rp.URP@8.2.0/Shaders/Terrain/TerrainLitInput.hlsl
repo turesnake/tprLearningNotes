@@ -70,6 +70,7 @@ half4 SampleMetallicSpecGloss(float2 uv, half albedoAlpha)
     return specGloss;
 }
 
+// SurfaceData: [defined in ShaderLib: SurfaceInput.hlsl]
 inline void InitializeStandardLitSurfaceData(float2 uv, out SurfaceData outSurfaceData)
 {
     half4 albedoSmoothness = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);

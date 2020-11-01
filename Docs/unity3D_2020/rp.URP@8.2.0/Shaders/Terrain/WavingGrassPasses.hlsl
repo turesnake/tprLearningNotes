@@ -36,6 +36,7 @@ struct GrassVertexOutput
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(GrassVertexOutput input, out InputData inputData)
 {
     inputData.positionWS = input.posWSShininess.xyz;
@@ -157,6 +158,7 @@ half4 LitPassFragmentGrass(GrassVertexOutput input) : SV_Target
     half4 specularGloss = 0.1;// SampleSpecularSmoothness(uv, diffuseAlpha.a, _SpecColor, TEXTURE2D_ARGS(_SpecGlossMap, sampler_SpecGlossMap));
     half shininess = input.posWSShininess.w;
 
+    // InputData: [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     InitializeInputData(input, inputData);
 

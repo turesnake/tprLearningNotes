@@ -59,6 +59,7 @@ half4 SampleAlbedo(float2 uv, float3 blendUv, half4 color, float4 particleColor,
     return albedo;
 }
 
+// SurfaceData: [defined in ShaderLib: SurfaceInput.hlsl]
 inline void InitializeParticleLitSurfaceData(float2 uv, float3 blendUv, float4 particleColor, float4 projectedPosition, out SurfaceData outSurfaceData)
 {
 

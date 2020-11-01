@@ -1602,6 +1602,8 @@ float3  ComputeBlinnPhong(float3 H, float LdotH, float NdotL, float NdotV, PreLi
     return bsdfData.specularColor * N;
 }
 
+// 高光着色器：库克-托伦斯
+
 float3  ComputeCookTorrance(float3 H, float LdotH, float NdotL, float NdotV, PreLightData preLightData, BSDFData bsdfData)
 {
     float   NdotH = dot(H, bsdfData.normalWS);

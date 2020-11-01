@@ -3,6 +3,7 @@
 
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
+
 struct Attributes
 {
     float4 positionOS   : POSITION;
@@ -12,6 +13,7 @@ struct Attributes
     float2 lightmapUV   : TEXCOORD1;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
+
 
 struct Varyings
 {
@@ -39,11 +41,14 @@ struct Varyings
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+
+// InputData: [defined in ShaderLib: Input.hlsl]
+// normalTS: tangent-space
 void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData)
 {
     inputData = (InputData)0;
 
-#if defined(REQUIRES_WORLD_SPACE_POS_INTERPOLATOR)
+#if defined( REQUIRES_WORLD_SPACE_POS_INTERPOLATOR )
     inputData.positionWS = input.positionWS;
 #endif
 
@@ -59,9 +64,9 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
     inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
     inputData.viewDirectionWS = viewDirWS;
 
-#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+#if defined( REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR )
     inputData.shadowCoord = input.shadowCoord;
-#elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
+#elif defined( MAIN_LIGHT_CALCULATE_SHADOWS )
     inputData.shadowCoord = TransformWorldToShadowCoord(inputData.positionWS);
 #else
     inputData.shadowCoord = float4(0, 0, 0, 0);
@@ -71,6 +76,7 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
     inputData.vertexLighting = input.fogFactorAndVertexLight.yzw;
     inputData.bakedGI = SAMPLE_GI(input.lightmapUV, input.vertexSH, inputData.normalWS);
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                  Vertex and Fragment functions                            //
@@ -129,12 +135,15 @@ half4 LitPassFragment(Varyings input) : SV_Target
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
+    // [defined in ShaderLib: SurfaceInput.hlsl]
     SurfaceData surfaceData;
-    InitializeStandardLitSurfaceData(input.uv, surfaceData);
+    InitializeStandardLitSurfaceData(input.uv, surfaceData); // in LitInput.hlsl
 
+    // [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     InitializeInputData(input, surfaceData.normalTS, inputData);
 
+    // in Lighting.hlsl
     half4 color = UniversalFragmentPBR(inputData, surfaceData.albedo, surfaceData.metallic, surfaceData.specular, surfaceData.smoothness, surfaceData.occlusion, surfaceData.emission, surfaceData.alpha);
     
     color.rgb = MixFog(color.rgb, inputData.fogCoord);

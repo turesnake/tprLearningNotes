@@ -1,4 +1,5 @@
-﻿void BuildInputData(Varyings input, float3 normal, out InputData inputData)
+﻿// InputData: [defined in ShaderLib: Input.hlsl]
+void BuildInputData(Varyings input, float3 normal, out InputData inputData)
 {
     inputData.positionWS = input.positionWS;
 #ifdef _NORMALMAP
@@ -55,6 +56,7 @@ half4 frag(PackedVaryings packedInput) : SV_TARGET
         clip(surfaceDescription.Alpha - surfaceDescription.AlphaClipThreshold);
     #endif
 
+    // [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     BuildInputData(unpacked, surfaceDescription.Normal, inputData);
 

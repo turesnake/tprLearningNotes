@@ -101,6 +101,9 @@ namespace UnityEngine.Rendering.Universal
         HighDynamicRange
     }
 
+    //
+    // urp 核心文件，Assert class
+    //
     public class UniversalRenderPipelineAsset : RenderPipelineAsset, ISerializationCallbackReceiver
     {
         Shader m_DefaultShader;
@@ -302,6 +305,8 @@ namespace UnityEngine.Rendering.Universal
             CreateRenderers();
             return new UniversalRenderPipeline(this);
         }
+
+        
 
         void DestroyRenderers()
         {

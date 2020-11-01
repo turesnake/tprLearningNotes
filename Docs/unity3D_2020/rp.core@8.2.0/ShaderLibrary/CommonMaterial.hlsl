@@ -7,6 +7,10 @@
 
 #define DEFAULT_SPECULAR_VALUE 0.04
 
+// clear coat: 透明涂层
+// IOR: Index of Refraction: 折射率值
+// IETA: inverse eta: the ratio of IOR of two interface: 两个表面的 IOR 之比 的倒数 ？？？
+// -----
 // Following constant are used when we use clear coat properties that can't be store in the Gbuffer (with the Lit shader)
 #define CLEAR_COAT_IOR 1.5
 #define CLEAR_COAT_IETA (1.0 / CLEAR_COAT_IOR) // IETA is the inverse eta which is the ratio of IOR of two interface
@@ -19,6 +23,7 @@
 // Helper functions for roughness
 //-----------------------------------------------------------------------------
 
+// 从 感性值，到 客观值，做一次平方
 real PerceptualRoughnessToRoughness(real perceptualRoughness)
 {
     return perceptualRoughness * perceptualRoughness;
@@ -34,15 +39,22 @@ real RoughnessToPerceptualSmoothness(real roughness)
     return 1.0 - sqrt(roughness);
 }
 
+// 返回 actual roughness value
+// 计算方式是 OneMinus 后，做一次平方，
+// 这和 disney 光照模型 是匹配的
 real PerceptualSmoothnessToRoughness(real perceptualSmoothness)
 {
     return (1.0 - perceptualSmoothness) * (1.0 - perceptualSmoothness);
 }
 
+// catlike 中提及
+// 其中 Smoothness 和 Roughness 都是 Perceptual的（感性的）
 real PerceptualSmoothnessToPerceptualRoughness(real perceptualSmoothness)
 {
     return (1.0 - perceptualSmoothness);
 }
+
+
 
 // Beckmann to GGX roughness "conversions":
 //
@@ -76,16 +88,19 @@ real BeckmannRoughnessToGGXRoughness(real roughnessBeckmann)
     return 0.5 * roughnessBeckmann;
 }
 
+
 real PerceptualRoughnessBeckmannToGGX(real perceptualRoughnessBeckmann)
 {
     //sqrt(a_ggx) = sqrt(0.5) sqrt(a_beckmann)
     return sqrt(0.5) * perceptualRoughnessBeckmann;
 }
 
+
 real GGXRoughnessToBeckmannRoughness(real roughnessGGX)
 {
     return 2.0 * roughnessGGX;
 }
+
 
 real PerceptualRoughnessToPerceptualSmoothness(real perceptualRoughness)
 {

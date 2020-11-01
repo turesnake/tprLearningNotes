@@ -9,18 +9,21 @@ TEXTURE2D(_BaseMap);            SAMPLER(sampler_BaseMap);
 TEXTURE2D(_BumpMap);            SAMPLER(sampler_BumpMap);
 TEXTURE2D(_EmissionMap);        SAMPLER(sampler_EmissionMap);
 
+
 // Must match Universal ShaderGraph master node
+// 被各个 urp.shaders 广泛应用
 struct SurfaceData
 {
     half3 albedo;
     half3 specular;
     half  metallic;
     half  smoothness;
-    half3 normalTS;
+    half3 normalTS; // Tangent-Space
     half3 emission;
     half  occlusion;
     half  alpha;
 };
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                      Material Property Helpers                            //

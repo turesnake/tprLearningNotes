@@ -6,6 +6,7 @@
 
 // Helper functions, maybe move into UnityCG.cginc
 
+
 half SpecularStrength(half3 specular)
 {
     #if (SHADER_TARGET < 30)
@@ -16,6 +17,7 @@ half SpecularStrength(half3 specular)
         return max (max (specular.r, specular.g), specular.b);
     #endif
 }
+
 
 // Diffuse/Spec Energy conservation
 inline half3 EnergyConservationBetweenDiffuseAndSpecular (half3 albedo, half3 specColor, out half oneMinusReflectivity)

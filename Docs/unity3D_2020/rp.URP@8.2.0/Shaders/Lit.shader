@@ -115,13 +115,14 @@ Shader "Universal Render Pipeline/Lit"
             // GPU Instancing
             #pragma multi_compile_instancing
 
-            #pragma vertex LitPassVertex
-            #pragma fragment LitPassFragment
+            #pragma vertex      LitPassVertex
+            #pragma fragment    LitPassFragment
 
             #include "LitInput.hlsl"
             #include "LitForwardPass.hlsl"
             ENDHLSL
         }
+
 
         Pass
         {

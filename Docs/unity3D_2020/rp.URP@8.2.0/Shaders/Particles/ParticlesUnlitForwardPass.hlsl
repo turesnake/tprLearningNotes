@@ -47,6 +47,7 @@ struct VaryingsParticle
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(VaryingsParticle input, half3 normalTS, out InputData output)
 {
     output = (InputData)0;

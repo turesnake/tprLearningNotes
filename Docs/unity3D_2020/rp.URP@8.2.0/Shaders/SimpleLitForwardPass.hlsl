@@ -40,6 +40,7 @@ struct Varyings
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData)
 {
     inputData.positionWS = input.posWS;
@@ -136,6 +137,7 @@ half4 LitPassFragmentSimple(Varyings input) : SV_Target
     half4 specular = SampleSpecularSmoothness(uv, alpha, _SpecColor, TEXTURE2D_ARGS(_SpecGlossMap, sampler_SpecGlossMap));
     half smoothness = specular.a;
 
+    // InputData: [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     InitializeInputData(input, normalTS, inputData);
 

@@ -267,6 +267,7 @@ SpeedTreeVertexDepthOutput SpeedTree8VertDepth(SpeedTreeVertexInput input)
     return output;
 }
 
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(SpeedTreeFragmentInput input, half3 normalTS, out InputData inputData)
 {
     inputData.positionWS = input.interpolated.positionWS.xyz;
@@ -296,6 +297,7 @@ void InitializeInputData(SpeedTreeFragmentInput input, half3 normalTS, out Input
     inputData.vertexLighting = input.interpolated.fogFactorAndVertexLight.yzw;
     inputData.bakedGI = half3(0, 0, 0); // No GI currently.
 }
+
 
 half4 SpeedTree8Frag(SpeedTreeFragmentInput input) : SV_Target
 {
@@ -374,6 +376,7 @@ half4 SpeedTree8Frag(SpeedTreeFragmentInput input) : SV_Target
         emission = tex2D(_SubsurfaceTex, uv).rgb * _SubsurfaceColor.rgb;
     #endif
 
+    // InputData: [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     InitializeInputData(input, normalTs, inputData);
 

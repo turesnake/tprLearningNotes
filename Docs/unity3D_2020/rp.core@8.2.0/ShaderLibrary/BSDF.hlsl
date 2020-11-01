@@ -83,6 +83,7 @@ real3 F_Transm_Schlick(real3 f0, real u)
 
 // Ref: https://seblagarde.wordpress.com/2013/04/29/memo-on-fresnel-equations/
 // Fresnel dielectric / dielectric
+// dielectric 电介质
 real F_FresnelDielectric(real ior, real u)
 {
     real g = sqrt(Sq(ior) + Sq(u) - 1.0);
@@ -94,6 +95,7 @@ real F_FresnelDielectric(real ior, real u)
 // Fresnel dieletric / conductor
 // Note: etak2 = etak * etak (optimization for Artist Friendly Metallic Fresnel below)
 // eta = eta_t / eta_i and etak = k_t / n_i
+// conductor 导体
 real3 F_FresnelConductor(real3 eta, real3 etak2, real cosTheta)
 {
     real cosTheta2 = cosTheta * cosTheta;
@@ -603,6 +605,7 @@ real FabricLambert(real roughness)
     return INV_PI * FabricLambertNoPI(roughness);
 }
 
+// 高光着色器：库克-托伦斯
 real G_CookTorrance(real NdotH, real NdotV, real NdotL, real HdotV)
 {
     return min(1.0, 2.0 * NdotH * min(NdotV, NdotL) / HdotV);

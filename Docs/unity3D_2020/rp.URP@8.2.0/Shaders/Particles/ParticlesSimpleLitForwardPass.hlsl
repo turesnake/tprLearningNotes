@@ -52,6 +52,8 @@ struct VaryingsParticle
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(VaryingsParticle input, half3 normalTS, out InputData output)
 {
     output = (InputData)0;
@@ -172,6 +174,7 @@ half4 ParticlesLitFragment(VaryingsParticle input) : SV_Target
     diffuse = Distortion(half4(diffuse, alpha), normalTS, _DistortionStrengthScaled, _DistortionBlend, projectedPosition);
 #endif
 
+    // InputData: [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     InitializeInputData(input, normalTS, inputData);
 

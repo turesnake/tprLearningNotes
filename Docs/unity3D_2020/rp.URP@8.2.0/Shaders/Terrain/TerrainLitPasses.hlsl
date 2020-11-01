@@ -63,6 +63,8 @@ struct Varyings
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(Varyings IN, half3 normalTS, out InputData input)
 {
     input = (InputData)0;
@@ -368,6 +370,7 @@ half4 SplatmapFragment(Varyings IN) : SV_TARGET
     half alpha = weight;
 #endif
 
+    // InputData: [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     InitializeInputData(IN, normalTS, inputData);
     half4 color = UniversalFragmentPBR(inputData, albedo, metallic, /* specular */ half3(0.0h, 0.0h, 0.0h), smoothness, occlusion, /* emission */ half3(0, 0, 0), alpha);

@@ -32,9 +32,11 @@ Varyings UniversalVertexMeta(Attributes input)
 
 half4 UniversalFragmentMeta(Varyings input) : SV_Target
 {
+    // [defined in ShaderLib: SurfaceInput.hlsl]
     SurfaceData surfaceData;
     InitializeStandardLitSurfaceData(input.uv, surfaceData);
 
+    // [defined in ShaderLib: Lighting.hlsl]
     BRDFData brdfData;
     InitializeBRDFData(surfaceData.albedo, surfaceData.metallic, surfaceData.specular, surfaceData.smoothness, surfaceData.alpha, brdfData);
 

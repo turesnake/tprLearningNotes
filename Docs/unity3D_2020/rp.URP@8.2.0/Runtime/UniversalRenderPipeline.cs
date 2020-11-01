@@ -21,6 +21,9 @@ namespace UnityEngine.Rendering.LWRP
 
 namespace UnityEngine.Rendering.Universal
 {
+    // 
+    // urp 核心 class 
+    //
     public sealed partial class UniversalRenderPipeline : RenderPipeline
     {
         internal static class PerFrameBuffer
@@ -82,6 +85,7 @@ namespace UnityEngine.Rendering.Universal
             get => 8;
         }
 
+        // constructor
         public UniversalRenderPipeline(UniversalRenderPipelineAsset asset)
         {
             SetSupportedRenderingFeatures();
@@ -117,6 +121,7 @@ namespace UnityEngine.Rendering.Universal
             RenderingUtils.ClearSystemInfoCache();
         }
 
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -132,6 +137,8 @@ namespace UnityEngine.Rendering.Universal
             CameraCaptureBridge.enabled = false;
         }
 
+
+        // tpr: each frame, unity invoke this methos to render
         protected override void Render(ScriptableRenderContext renderContext, Camera[] cameras)
         {
             BeginFrameRendering(renderContext, cameras);
@@ -152,7 +159,8 @@ namespace UnityEngine.Rendering.Universal
                 {
                     BeginCameraRendering(renderContext, camera);
 #if VISUAL_EFFECT_GRAPH_0_0_1_OR_NEWER
-                    //It should be called before culling to prepare material. When there isn't any VisualEffect component, this method has no effect.
+                    // It should be called before culling to prepare material. 
+                    // When there isn't any VisualEffect component, this method has no effect.
                     VFX.VFXManager.PrepareCamera(camera);
 #endif
                     UpdateVolumeFramework(camera, null);
@@ -164,6 +172,8 @@ namespace UnityEngine.Rendering.Universal
 
             EndFrameRendering(renderContext, cameras);
         }
+
+
 
         /// <summary>
         /// Standalone camera rendering. Use this to render procedural cameras.
@@ -191,6 +201,7 @@ namespace UnityEngine.Rendering.Universal
 #endif
             RenderSingleCamera(context, cameraData, cameraData.postProcessEnabled);
         }
+
 
         /// <summary>
         /// Renders a single camera. This method will do culling, setup and execution of the renderer.
@@ -251,6 +262,8 @@ namespace UnityEngine.Rendering.Universal
             ScriptableRenderer.current = null;
         }
 
+
+
         /// <summary>
         // Renders a camera stack. This method calls RenderSingleCamera for each valid camera in the stack.
         // The last camera resolves the final target to screen.
@@ -273,7 +286,7 @@ namespace UnityEngine.Rendering.Universal
             bool anyPostProcessingEnabled = baseCameraAdditionalData != null && baseCameraAdditionalData.renderPostProcessing;
             anyPostProcessingEnabled &= SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2;
 
-            // We need to know the last active camera in the stack to be able to resolve
+            // We need to know the last "ACTIVE" camera in the stack to be able to resolve
             // rendering to screen when rendering it. The last camera in the stack is not
             // necessarily the last active one as it users might disable it.
             int lastActiveOverlayCameraIndex = -1;
@@ -367,6 +380,7 @@ namespace UnityEngine.Rendering.Universal
                 }
             }
         }
+
 
         static void UpdateVolumeFramework(Camera camera, UniversalAdditionalCameraData additionalCameraData)
         {

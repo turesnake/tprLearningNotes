@@ -58,6 +58,7 @@ struct SpeedTreeVertexDepthOutput
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(SpeedTreeVertexOutput input, half3 normalTS, out InputData inputData)
 {
     inputData.positionWS = input.positionWS.xyz;
@@ -134,6 +135,7 @@ half4 SpeedTree7Frag(SpeedTreeVertexOutput input) : SV_Target
         half3 normalTs = half3(0, 0, 1);
     #endif
 
+    // InputData: [defined in ShaderLib: Input.hlsl]
     InputData inputData;
     InitializeInputData(input, normalTs, inputData);
 

@@ -51,6 +51,7 @@ struct VaryingsParticle
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+// InputData: [defined in ShaderLib: Input.hlsl]
 void InitializeInputData(VaryingsParticle input, half3 normalTS, out InputData output)
 {
     output = (InputData)0;
@@ -158,9 +159,11 @@ half4 ParticlesLitFragment(VaryingsParticle input) : SV_Target
     projectedPosition = input.projectedPosition;
 #endif
 
+    // [defined in ShaderLib: SurfaceInput.hlsl]
     SurfaceData surfaceData;
     InitializeParticleLitSurfaceData(input.texcoord, blendUv, input.color, projectedPosition, surfaceData);
 
+    // InputData: [defined in ShaderLib: Input.hlsl]
     InputData inputData = (InputData)0;
     InitializeInputData(input, surfaceData.normalTS, inputData);
 

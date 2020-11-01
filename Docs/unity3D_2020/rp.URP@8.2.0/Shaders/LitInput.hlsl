@@ -5,27 +5,31 @@
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
 
+
 CBUFFER_START(UnityPerMaterial)
-float4 _BaseMap_ST;
-half4 _BaseColor;
-half4 _SpecColor;
-half4 _EmissionColor;
-half _Cutoff;
-half _Smoothness;
-half _Metallic;
-half _BumpScale;
-half _OcclusionStrength;
+    float4 _BaseMap_ST;
+    half4 _BaseColor;
+    half4 _SpecColor;
+    half4 _EmissionColor;
+    half _Cutoff;
+    half _Smoothness;
+    half _Metallic;
+    half _BumpScale;
+    half _OcclusionStrength;
 CBUFFER_END
+
 
 TEXTURE2D(_OcclusionMap);       SAMPLER(sampler_OcclusionMap);
 TEXTURE2D(_MetallicGlossMap);   SAMPLER(sampler_MetallicGlossMap);
 TEXTURE2D(_SpecGlossMap);       SAMPLER(sampler_SpecGlossMap);
+
 
 #ifdef _SPECULAR_SETUP
     #define SAMPLE_METALLICSPECULAR(uv) SAMPLE_TEXTURE2D(_SpecGlossMap, sampler_SpecGlossMap, uv)
 #else
     #define SAMPLE_METALLICSPECULAR(uv) SAMPLE_TEXTURE2D(_MetallicGlossMap, sampler_MetallicGlossMap, uv)
 #endif
+
 
 half4 SampleMetallicSpecGloss(float2 uv, half albedoAlpha)
 {
@@ -55,6 +59,7 @@ half4 SampleMetallicSpecGloss(float2 uv, half albedoAlpha)
     return specGloss;
 }
 
+
 half SampleOcclusion(float2 uv)
 {
 #ifdef _OCCLUSIONMAP
@@ -70,6 +75,8 @@ half SampleOcclusion(float2 uv)
 #endif
 }
 
+
+// SurfaceData: [defined in ShaderLib: SurfaceInput.hlsl]
 inline void InitializeStandardLitSurfaceData(float2 uv, out SurfaceData outSurfaceData)
 {
     half4 albedoAlpha = SampleAlbedoAlpha(uv, TEXTURE2D_ARGS(_BaseMap, sampler_BaseMap));
