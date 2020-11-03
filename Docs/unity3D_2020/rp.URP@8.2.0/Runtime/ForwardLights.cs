@@ -8,6 +8,11 @@ namespace UnityEngine.Rendering.Universal.Internal
     /// </summary>
     public class ForwardLights
     {
+        
+        // all Shader Property ID
+        // 这些 id 对应的 Property 真实数据，最终是通过 Setup() 函数的参数 renderingData
+        // 传递进来的，本质上还是 unity 自动提供的
+        // 当前层只提供一个 配置的工作
         static class LightConstantBuffer
         {
             public static int _MainLightPosition;
@@ -28,6 +33,7 @@ namespace UnityEngine.Rendering.Universal.Internal
         const string k_SetupLightConstants = "Setup Light Constants";
         MixedLightingSetup m_MixedLightingSetup;
 
+        // 即可存为 lightPos, 又可存为 lightDir
         // Holds light direction for directional lights or position for punctual lights.
         // When w is set to 1.0, it means it's a punctual light.
         Vector4 k_DefaultLightPosition = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
@@ -38,6 +44,7 @@ namespace UnityEngine.Rendering.Universal.Internal
         Vector4 k_DefaultLightAttenuation = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
         Vector4 k_DefaultLightSpotDirection = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
         Vector4 k_DefaultLightsProbeChannel = new Vector4(-1.0f, 1.0f, -1.0f, -1.0f);
+        
 
         Vector4[] m_AdditionalLightPositions;
         Vector4[] m_AdditionalLightColors;

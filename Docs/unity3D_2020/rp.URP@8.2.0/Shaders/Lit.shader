@@ -244,5 +244,6 @@ Shader "Universal Render Pipeline/Lit"
 
     }
     FallBack "Hidden/Universal Render Pipeline/FallbackError"
+    // 指定 GUI 使用的 class 名（前缀部分是 namespace）
     CustomEditor "UnityEditor.Rendering.Universal.ShaderGUI.LitShader"
 }

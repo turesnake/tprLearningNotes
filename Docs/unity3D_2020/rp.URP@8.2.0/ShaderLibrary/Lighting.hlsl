@@ -116,6 +116,7 @@ Light GetMainLight()
     return light;
 }
 
+
 Light GetMainLight(float4 shadowCoord)
 {
     Light light = GetMainLight();
@@ -174,6 +175,7 @@ Light GetAdditionalPerObjectLight(int perObjectLightIndex, float3 positionWS)
     return light;
 }
 
+
 uint GetPerObjectLightIndexOffset()
 {
 #if USE_STRUCTURED_BUFFER_FOR_LIGHT_DATA
@@ -182,6 +184,7 @@ uint GetPerObjectLightIndexOffset()
     return 0;
 #endif
 }
+
 
 // Returns a per-object index given a loop index.
 // This abstract the underlying data implementation for storing lights/light indices
@@ -226,6 +229,7 @@ int GetPerObjectLightIndex(uint index)
 #endif
 }
 
+
 // Fills a light struct given a loop i index. This will convert the i
 // index to a perObjectLightIndex
 Light GetAdditionalLight(uint i, float3 positionWS)
@@ -234,6 +238,7 @@ Light GetAdditionalLight(uint i, float3 positionWS)
     return GetAdditionalPerObjectLight(perObjectLightIndex, positionWS);
 }
 
+
 int GetAdditionalLightsCount()
 {
     // TODO: we need to expose in SRP api an ability for the pipeline cap the amount of lights
@@ -241,6 +246,7 @@ int GetAdditionalLightsCount()
     // This would be helpful to support baking exceeding lights in SH as well
     return min(_AdditionalLightsCount.x, unity_LightData.y);
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                         BRDF Functions                                    //
@@ -341,9 +347,8 @@ half3 EnvironmentBRDF(BRDFData brdfData, half3 indirectDiffuse, half3 indirectSp
 // 
 // PBR 核心着色函数
 // 
-// CookTorrance -- 库克-托伦斯，一种实现 brdf specular 的方法
-// NDF -- normal distribution function -- 法线分布函数
-// GGX -- 一种 NDF
+// 基于一种简化的 CookTorrance 库克-托伦斯，brdf-specular 实现方法
+// 
 // 
 // -----
 // Based on Minimalist CookTorrance BRDF
@@ -375,6 +380,7 @@ half3 DirectBDRF(BRDFData brdfData, half3 normalWS, half3 lightDirectionWS, half
     half LoH2 = LoH * LoH;
     half specularTerm = brdfData.roughness2 / ((d * d) * max(0.1h, LoH2) * brdfData.normalizationTerm);
 
+    // 当在 低端平台，类型 half 不等于 float 时，需要做的处理
     // On platforms where half actually means something, the denominator has a risk of overflow
     // clamp below was added specifically to "fix" that, but dx compiler (we convert bytecode to metal/gles)
     // sees that specularTerm have only non-negative terms, so it skips max(0,..) in clamp (leaving only min(100,...))

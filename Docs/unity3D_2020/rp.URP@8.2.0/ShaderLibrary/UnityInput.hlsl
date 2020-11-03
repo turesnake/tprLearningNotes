@@ -3,19 +3,26 @@
 #ifndef UNIVERSAL_SHADER_VARIABLES_INCLUDED
 #define UNIVERSAL_SHADER_VARIABLES_INCLUDED
 
+
+// 和 "STEREO" 相关的 变量，都是和 VR 相关的
+// SINGLE_PASS_STEREO： 大义为，单次 pass，渲染 左右两眼
 #if defined(STEREO_INSTANCING_ON) && (defined(SHADER_API_D3D11) || defined(SHADER_API_GLES3) || defined(SHADER_API_GLCORE) || defined(SHADER_API_PSSL) || defined(SHADER_API_VULKAN))
     #define UNITY_STEREO_INSTANCING_ENABLED
 #endif
+
 
 #if defined(STEREO_MULTIVIEW_ON) && (defined(SHADER_API_GLES3) || defined(SHADER_API_GLCORE) || defined(SHADER_API_VULKAN)) && !(defined(SHADER_API_SWITCH))
     #define UNITY_STEREO_MULTIVIEW_ENABLED
 #endif
 
 #if defined(UNITY_SINGLE_PASS_STEREO) || defined(UNITY_STEREO_INSTANCING_ENABLED) || defined(UNITY_STEREO_MULTIVIEW_ENABLED)
-    #define USING_STEREO_MATRICES
+    #define USING_STEREO_MATRICES // 此变量，仅在本文件内 被使用
 #endif
 
+
+
 #if defined(USING_STEREO_MATRICES)
+    // VR 相关
     #define glstate_matrix_projection   unity_StereoMatrixP[unity_StereoEyeIndex]
     #define unity_MatrixV               unity_StereoMatrixV[unity_StereoEyeIndex]
     #define unity_MatrixInvV            unity_StereoMatrixInvV[unity_StereoEyeIndex]
@@ -29,10 +36,12 @@
     #define _WorldSpaceCameraPos        unity_StereoWorldSpaceCameraPos[unity_StereoEyeIndex]
 #endif
 
+
 #define UNITY_LIGHTMODEL_AMBIENT (glstate_lightmodel_ambient * 2)
 
 // ----------------------------------------------------------------------------
 
+// 源自: UniversalRenderPipeline.cs
 // Time (t = time since current level load) values from Unity
 // 注意，这些都是 4分量
 float4 _Time; // (t/20, t, t*2, t*3)
@@ -42,9 +51,14 @@ float4 unity_DeltaTime; // dt, 1/dt, smoothdt, 1/smoothdt
 float4 _TimeParameters; // t, sin(t), cos(t)
 
 
+// 源自: UniversalRenderPipelineCore.cs: 
+//      class ShaderPropertyId
 #if !defined(USING_STEREO_MATRICES)
-float3 _WorldSpaceCameraPos;
+    // 非 VR，常规
+    float3 _WorldSpaceCameraPos;
 #endif
+
+
 
 // x = 1 or -1 (-1 if projection is flipped)
 // y = near plane
@@ -84,13 +98,14 @@ float4 unity_CameraWorldClipPlanes[6];
 
 
 #if !defined(USING_STEREO_MATRICES)
-// Projection matrices of the camera. Note that this might be different from projection matrix
-// that is set right now, e.g. while rendering shadows the matrices below are still the projection
-// of original camera.
-float4x4 unity_CameraProjection;
-float4x4 unity_CameraInvProjection;
-float4x4 unity_WorldToCamera;
-float4x4 unity_CameraToWorld;
+    // 非 VR，常规
+    // Projection matrices of the camera. Note that this might be different from projection matrix
+    // that is set right now, e.g. while rendering shadows the matrices below are still the projection
+    // of original camera.
+    float4x4 unity_CameraProjection;
+    float4x4 unity_CameraInvProjection;
+    float4x4 unity_WorldToCamera;
+    float4x4 unity_CameraToWorld;
 #endif
 
 // ----------------------------------------------------------------------------
@@ -130,32 +145,41 @@ CBUFFER_END
 
 
 
-#if defined(UNITY_STEREO_MULTIVIEW_ENABLED) || ((defined(UNITY_SINGLE_PASS_STEREO) || defined(UNITY_STEREO_INSTANCING_ENABLED)) && (defined(SHADER_API_GLCORE) || defined(SHADER_API_GLES3) || defined(SHADER_API_METAL) || defined(SHADER_API_VULKAN)))
+#if defined(UNITY_STEREO_MULTIVIEW_ENABLED) || 
+    (   (defined(UNITY_SINGLE_PASS_STEREO) || defined(UNITY_STEREO_INSTANCING_ENABLED)) && 
+        (defined(SHADER_API_GLCORE) || defined(SHADER_API_GLES3) || defined(SHADER_API_METAL) || defined(SHADER_API_VULKAN))
+    )
+    // VR 相关
     #define GLOBAL_CBUFFER_START(name)    cbuffer name {
     #define GLOBAL_CBUFFER_END            }
 #else
+    // 非 VR，常规
     #define GLOBAL_CBUFFER_START(name)    CBUFFER_START(name)
     #define GLOBAL_CBUFFER_END            CBUFFER_END
 #endif
 
+
 #if defined(USING_STEREO_MATRICES)
-GLOBAL_CBUFFER_START(UnityStereoGlobals)
-float4x4 unity_StereoMatrixP[2];
-float4x4 unity_StereoMatrixV[2];
-float4x4 unity_StereoMatrixInvV[2];
-float4x4 unity_StereoMatrixVP[2];
+    // VR 相关
+    GLOBAL_CBUFFER_START(UnityStereoGlobals)
+        float4x4 unity_StereoMatrixP[2];
+        float4x4 unity_StereoMatrixV[2];
+        float4x4 unity_StereoMatrixInvV[2];
+        float4x4 unity_StereoMatrixVP[2];
 
-float4x4 unity_StereoCameraProjection[2];
-float4x4 unity_StereoCameraInvProjection[2];
-float4x4 unity_StereoWorldToCamera[2];
-float4x4 unity_StereoCameraToWorld[2];
+        float4x4 unity_StereoCameraProjection[2];
+        float4x4 unity_StereoCameraInvProjection[2];
+        float4x4 unity_StereoWorldToCamera[2];
+        float4x4 unity_StereoCameraToWorld[2];
 
-float3 unity_StereoWorldSpaceCameraPos[2];
-float4 unity_StereoScaleOffset[2];
-GLOBAL_CBUFFER_END
+        float3 unity_StereoWorldSpaceCameraPos[2];
+        float4 unity_StereoScaleOffset[2];
+    GLOBAL_CBUFFER_END
 #endif
 
+
 #if defined(USING_STEREO_MATRICES) && defined(UNITY_STEREO_MULTIVIEW_ENABLED)
+    // VR 相关
     GLOBAL_CBUFFER_START(UnityStereoEyeIndices)
         float4 unity_StereoEyeIndices[2];
     GLOBAL_CBUFFER_END
@@ -163,6 +187,7 @@ GLOBAL_CBUFFER_END
 
 
 #if defined(UNITY_STEREO_MULTIVIEW_ENABLED) && defined(SHADER_STAGE_VERTEX)
+    // VR 相关
     // OVR_multiview
     // In order to convey this info over the DX compiler, we wrap it into a cbuffer.
     #if !defined(UNITY_DECLARE_MULTIVIEW)
@@ -172,7 +197,7 @@ GLOBAL_CBUFFER_END
 #endif
 
 
-
+// VR 相关
 #if defined(UNITY_STEREO_MULTIVIEW_ENABLED) && defined(SHADER_STAGE_VERTEX)
     #define unity_StereoEyeIndex UNITY_VIEWID
     UNITY_DECLARE_MULTIVIEW(2);
@@ -183,6 +208,7 @@ GLOBAL_CBUFFER_END
     int unity_StereoEyeIndex;
     GLOBAL_CBUFFER_END
 #endif
+
 
 float4x4 glstate_matrix_transpose_modelview0;
 
@@ -198,6 +224,7 @@ real4  unity_FogColor;
 
 
 #if !defined(USING_STEREO_MATRICES)
+    // 非 VR，常规
     float4x4 glstate_matrix_projection;
     float4x4 unity_MatrixV;
     float4x4 unity_MatrixInvV;
@@ -241,6 +268,8 @@ float4x4 _InvProjMatrix;
 float4   _InvProjParam;
 float4   _ScreenSize;       // {w, h, 1/w, 1/h}
 float4   _FrustumPlanes[6]; // {(a, b, c) = N, d = -dot(N, P)} [L, R, T, B, N, F]
+
+
 
 float4x4 OptimizeProjectionMatrix(float4x4 M)
 {

@@ -26,6 +26,7 @@ namespace UnityEngine.Rendering.Universal
     //
     public sealed partial class UniversalRenderPipeline : RenderPipeline
     {
+        // shader property Ids
         internal static class PerFrameBuffer
         {
             public static int _GlossyEnvironmentColor;

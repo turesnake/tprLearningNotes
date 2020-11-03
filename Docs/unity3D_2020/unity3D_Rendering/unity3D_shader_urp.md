@@ -302,6 +302,14 @@ struct BRDFData
 # ScriptableCullingParameters
 
 
+# ShaderGUI
+# BaseShaderGUI [urp]
+# MaterialEditor
+# MaterialProperty
+
+
+
+
 
 # ---------------------------------------------- #
 #             if define  

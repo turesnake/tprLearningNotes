@@ -43,10 +43,13 @@ half Alpha(half albedoAlpha, half4 color, half cutoff)
     return alpha;
 }
 
+
+
 half4 SampleAlbedoAlpha(float2 uv, TEXTURE2D_PARAM(albedoAlphaMap, sampler_albedoAlphaMap))
 {
     return SAMPLE_TEXTURE2D(albedoAlphaMap, sampler_albedoAlphaMap, uv);
 }
+
 
 half3 SampleNormal(float2 uv, TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), half scale = 1.0h)
 {
@@ -62,6 +65,7 @@ half3 SampleNormal(float2 uv, TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), half sc
 #endif
 }
 
+
 half3 SampleEmission(float2 uv, half3 emissionColor, TEXTURE2D_PARAM(emissionMap, sampler_emissionMap))
 {
 #ifndef _EMISSION
@@ -70,5 +74,6 @@ half3 SampleEmission(float2 uv, half3 emissionColor, TEXTURE2D_PARAM(emissionMap
     return SAMPLE_TEXTURE2D(emissionMap, sampler_emissionMap, uv).rgb * emissionColor;
 #endif
 }
+
 
 #endif
