@@ -51,9 +51,9 @@ struct VertexPositionInputs
 
 struct VertexNormalInputs
 {
-    real3 tangentWS;
-    real3 bitangentWS;
-    float3 normalWS;
+    real3   tangentWS;
+    real3   bitangentWS;
+    float3  normalWS;
 };
 
 
@@ -72,6 +72,9 @@ VertexPositionInputs GetVertexPositionInputs(float3 positionOS)
 }
 
 
+
+// return an initialized VertexNormalInputs
+// 暂未见到 此函数 被使用
 VertexNormalInputs GetVertexNormalInputs(float3 normalOS)
 {
     VertexNormalInputs tbn;
@@ -82,17 +85,22 @@ VertexNormalInputs GetVertexNormalInputs(float3 normalOS)
 }
 
 
+// return an initialized VertexNormalInputs
 VertexNormalInputs GetVertexNormalInputs(float3 normalOS, float4 tangentOS)
 {
     VertexNormalInputs tbn;
 
     // mikkts space compliant. only normalize when extracting normal at frag.
+    // tangen.w: -1 or 1，用来调整 binormal 的方向
+    // 第二个函数返回的 unity_WorldTransformParams.w，也是一个值 -1 or 1, 表示另一个概念的 翻转
+    // 两层翻转 都需要计算进来
     real sign = tangentOS.w * GetOddNegativeScale();
     tbn.normalWS = TransformObjectToWorldNormal(normalOS);
     tbn.tangentWS = TransformObjectToWorldDir(tangentOS.xyz);
     tbn.bitangentWS = cross(tbn.normalWS, tbn.tangentWS) * sign;
     return tbn;
 }
+
 
 // 关于 坐标系 z轴 反转不反转 的问题
 #if UNITY_REVERSED_Z

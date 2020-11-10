@@ -18,22 +18,16 @@
 学习 ScriptableWizard 的使用
 
 
-# --- 011 --- #
-写个 shader，体验下 : SampleDebugFont() 这个函数 到底怎么用
-在 Debug.hlsl 中 
-
-
 # --- 012 --- #
 在 win 平台 安装 RenderDoc
 
 
 # --- 013 --- #
-几种实现 brdf 的方法：
+brdf 学习：
 Cook-Torrance 库克-托伦斯
     貌似是表现最好的
 
 Torrance-Sparrow 微面元模型
-
 
 Ward Isotropic 
     据说 Ward 在表现 各向异性 材质时最好
@@ -74,4 +68,57 @@ ScriptableObject
 
 
 # --- 019 --- #
+阅读 manual: Occlusion culling
+
+阅读 manual: Shadow
+    RTR chapter 7: shadows
+
+# --- 019 --- #
+shadowCaster pass 几大疑问：
+- shadow map 是哪里被新建的，哪里被写入的，哪里被传输进 gpu 的
+
+- sample shadow map，采样出来的是一个 float 值
+    它到底代表什么意思 ？
+
+
+
+# --- 019 --- #
+各种实际应用中的矩阵，是怎么推导出来的
+
+
+
+# --- 020 --- #
+《RTR》p-226:
+    平面表达式：π:n·x+d=0
+    这是啥意思
+
+
+
+# --- 022 --- #
+阅读 API: Plane
+
+
+
+# --- 023 --- #
+有关矩阵的 奇怪用法：
+    fenglele: transform normalDir from tangent-space to WS
+
+
+# --- 024 --- #
+urp 中，是如何实现 normaldir tangent-space to WS 转换的 ？
+
+urp 中 是否有用到 tengent 
+    是如何使用的
+
+
+# --- 025 --- #
+彻底证实 positionSTS.xyz 的取值范围 是否是 [0,1]
+目前这只是一个 猜测
+
+
+
+
+# --- 027 --- #
+
+
 

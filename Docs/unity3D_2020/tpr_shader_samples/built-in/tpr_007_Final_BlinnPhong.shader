@@ -109,6 +109,8 @@ Shader "tpr/tpr_16_Final_BlinnPhong"
                 fixed3 worldBinormal = cross( worldNormal, worldTangent ) * v.tangent.w;
 
                 // 组装矩阵
+                // w分量 是 为了节省空间凑进去的，和 方向变换矩阵无关
+                // 方向变换矩阵，只需要 3x3 即可
                 o.TtoW0 = float4( worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x );
                 o.TtoW1 = float4( worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y );
                 o.TtoW2 = float4( worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z );
@@ -126,11 +128,12 @@ Shader "tpr/tpr_16_Final_BlinnPhong"
                 fixed3 viewDir = normalize( UnityWorldSpaceViewDir(worldPos) );// MUST normalize !!!
 
                 // 采样 法线纹素
+                // UnpackNormal: 将从 normal texture 直接采样得到的 float4 值，解包，得到具体的 normalDir 向量
                 fixed3 bump = UnpackNormal( tex2D( _BumpMap, i.uv.zw ) );
                 bump.xy *= _BumpScale;
-                bump.z = sqrt(
-                    1.0 - saturate(dot( bump.xy, bump.xy ))
-                );
+                // 在 xy分量 被缩放后，为了维持 bump 仍是个 单位向量
+                // 手工计算出 z分量
+                bump.z = sqrt( 1.0 - saturate(dot( bump.xy, bump.xy )) );
                 // 执行矩阵乘法
                 // 将 法线向量，从 tangent-space 转换到 world-space
                 bump = normalize( half3(

@@ -198,6 +198,9 @@ real3 UnpackNormalmapRGorAG(real4 packedNormal, real scale = 1.0)
     return UnpackNormalAG(packedNormal, scale);
 }
 
+
+// builtin 中同名函数
+// 将从 normal texture 直接采样得到的 float4 值，解包，得到具体的 normalDir 向量
 real3 UnpackNormal(real4 packedNormal)
 {
 #if defined(UNITY_NO_DXT5nm)
@@ -207,6 +210,8 @@ real3 UnpackNormal(real4 packedNormal)
     return UnpackNormalmapRGorAG(packedNormal, 1.0);
 #endif
 }
+
+
 
 real3 UnpackNormalScale(real4 packedNormal, real bumpScale)
 {

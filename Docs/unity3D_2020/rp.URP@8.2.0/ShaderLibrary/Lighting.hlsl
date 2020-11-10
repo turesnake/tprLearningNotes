@@ -46,7 +46,7 @@ struct Light
     half3   direction;
     half3   color;
     half    distanceAttenuation;
-    half    shadowAttenuation;
+    half    shadowAttenuation;// [0,1], 0:full shadow  1:full lit
 };
 
 
@@ -100,6 +100,7 @@ half AngleAttenuation(half3 spotDirection, half3 lightDirection, half2 spotAtten
 //                      Light Abstraction                                    //
 ///////////////////////////////////////////////////////////////////////////////
 
+
 Light GetMainLight()
 {
     Light light;
@@ -110,19 +111,23 @@ Light GetMainLight()
     // unity_ProbesOcclusion.x is the mixed light probe occlusion data
     light.distanceAttenuation *= unity_ProbesOcclusion.x;
 #endif
-    light.shadowAttenuation = 1.0;
+    light.shadowAttenuation = 1.0;// full lit
     light.color = _MainLightColor.rgb;
 
     return light;
 }
 
 
-Light GetMainLight(float4 shadowCoord)
+
+Light GetMainLight( float4 shadowCoord )
 {
     Light light = GetMainLight();
+    // 通过 shadowAttenuation 来实现 shadow 功能 [same in catlike]
     light.shadowAttenuation = MainLightRealtimeShadow(shadowCoord);
     return light;
 }
+
+
 
 // Fills a light struct given a perObjectLightIndex
 Light GetAdditionalPerObjectLight(int perObjectLightIndex, float3 positionWS)
@@ -608,6 +613,7 @@ half3 LightingPhysicallyBased(  BRDFData brdfData,
 {
     return LightingPhysicallyBased(brdfData, light.color, light.direction, light.distanceAttenuation * light.shadowAttenuation, normalWS, viewDirectionWS);
 }
+
 
 // 顶点着色，被一些性能敏感的 urp.shaders 使用
 half3 VertexLighting(float3 positionWS, half3 normalWS)

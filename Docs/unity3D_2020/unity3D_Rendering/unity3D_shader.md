@@ -228,6 +228,7 @@ pass 数量越多，开销越大。
         ----
         在 urp 中，请在 manual 中搜索: URP ShaderLab Pass tags
 
+        CustomLit
 
 
 #   "PassFlags" = "..."
@@ -488,7 +489,7 @@ Material Keywords:
     float4 colorB = _TexB.Sample( sampler_TexA, uv );
     float4 colorC = _TexC.Sample( sampler_TexA, uv );
 
-# ------- catlike --------
+# ------- urp --------
 # TEXTURE2D ( _Tex ); 
 # SAMPLER ( sampler_Tex );
 # float4 color = SAMPLE_TEXTURE2D( _Tex, sampler_Tex, uv );
@@ -503,6 +504,20 @@ Material Keywords:
     Vulkan.hlsl
 文件内，
 实质上和 上一种 hlsl 用法，是一样的...
+
+
+
+# ------- urp shadow texture --------
+# TEXTURE2D_SHADOW( _Tex );
+# SAMPLER_CMP( sampler_Tex );
+
+在大部分平台，TEXTURE2D_SHADOW 和通用的 TEXTURE2D 没什么区别（少数平台有区别）
+
+而 SAMPLER_CMP 则和 SAMPLER 确实不一样，
+因为 SAMPLER 并不会针对 depth 数据做 滤波。而 shadow map 存储的正是 depth 数据
+
+
+
 
 # ------- SamplerState 变量的 命名规则 -----
 texture filtering mode:

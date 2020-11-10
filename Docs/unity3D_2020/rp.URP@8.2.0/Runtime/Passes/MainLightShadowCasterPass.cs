@@ -27,15 +27,15 @@ namespace UnityEngine.Rendering.Universal.Internal
         const int k_ShadowmapBufferBits = 16;
         int m_ShadowmapWidth;
         int m_ShadowmapHeight;
-        int m_ShadowCasterCascadesCount;
+        int m_ShadowCasterCascadesCount;// {1,2,4}
         bool m_SupportsBoxFilterForShadows;
 
         RenderTargetHandle m_MainLightShadowmap;
         RenderTexture m_MainLightShadowmapTexture;
 
-        Matrix4x4[] m_MainLightShadowMatrices;
+        Matrix4x4[] m_MainLightShadowMatrices;// 共5个矩阵 {0,1,2,3,4}, 最后一个用于 当 frag 在所有 culling sphere 之外时
         ShadowSliceData[] m_CascadeSlices;
-        Vector4[] m_CascadeSplitDistances;
+        Vector4[] m_CascadeSplitDistances; // xyz: culling sphere center, w:radius
 
         const string m_ProfilerTag = "Render Main Shadowmap";
         ProfilingSampler m_ProfilingSampler = new ProfilingSampler(m_ProfilerTag);
@@ -89,7 +89,7 @@ namespace UnityEngine.Rendering.Universal.Internal
             if (!renderingData.cullResults.GetShadowCasterBounds(shadowLightIndex, out bounds))
                 return false;
 
-            m_ShadowCasterCascadesCount = renderingData.shadowData.mainLightShadowCascadesCount;
+            m_ShadowCasterCascadesCount = renderingData.shadowData.mainLightShadowCascadesCount;// {1,2,4}
 
             int shadowResolution = ShadowUtils.GetMaxTileResolutionInAtlas(renderingData.shadowData.mainLightShadowmapWidth,
                 renderingData.shadowData.mainLightShadowmapHeight, m_ShadowCasterCascadesCount);
@@ -100,9 +100,20 @@ namespace UnityEngine.Rendering.Universal.Internal
 
             for (int cascadeIndex = 0; cascadeIndex < m_ShadowCasterCascadesCount; ++cascadeIndex)
             {
-                bool success = ShadowUtils.ExtractDirectionalLightMatrix(ref renderingData.cullResults, ref renderingData.shadowData,
-                    shadowLightIndex, cascadeIndex, m_ShadowmapWidth, m_ShadowmapHeight, shadowResolution, light.shadowNearPlane,
-                    out m_CascadeSplitDistances[cascadeIndex], out m_CascadeSlices[cascadeIndex], out m_CascadeSlices[cascadeIndex].viewMatrix, out m_CascadeSlices[cascadeIndex].projectionMatrix);
+                bool success = ShadowUtils.ExtractDirectionalLightMatrix(
+                    ref renderingData.cullResults, 
+                    ref renderingData.shadowData,
+                    shadowLightIndex, 
+                    cascadeIndex, 
+                    m_ShadowmapWidth, 
+                    m_ShadowmapHeight, 
+                    shadowResolution, 
+                    light.shadowNearPlane,
+                    out m_CascadeSplitDistances[cascadeIndex], 
+                    out m_CascadeSlices[cascadeIndex], 
+                    out m_CascadeSlices[cascadeIndex].viewMatrix, 
+                    out m_CascadeSlices[cascadeIndex].projectionMatrix
+                );
 
                 if (!success)
                     return false;
@@ -143,7 +154,7 @@ namespace UnityEngine.Rendering.Universal.Internal
             m_MainLightShadowmapTexture = null;
 
             for (int i = 0; i < m_MainLightShadowMatrices.Length; ++i)
-                m_MainLightShadowMatrices[i] = Matrix4x4.identity;
+                m_MainLightShadowMatrices[i] = Matrix4x4.identity;// 单位矩阵
 
             for (int i = 0; i < m_CascadeSplitDistances.Length; ++i)
                 m_CascadeSplitDistances[i] = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -192,15 +203,16 @@ namespace UnityEngine.Rendering.Universal.Internal
         {
             Light light = shadowLight.light;
 
-            int cascadeCount = m_ShadowCasterCascadesCount;
+            int cascadeCount = m_ShadowCasterCascadesCount;// {1,2,4}
             for (int i = 0; i < cascadeCount; ++i)
                 m_MainLightShadowMatrices[i] = m_CascadeSlices[i].shadowTransform;
 
             // We setup and additional a no-op WorldToShadow matrix in the last index
-            // because the ComputeCascadeIndex function in Shadows.hlsl can return an index
+            // because the ComputeCascadeIndex() function in Shadows.hlsl can return an index
             // out of bounds. (position not inside any cascade) and we want to avoid branching
             Matrix4x4 noOpShadowMatrix = Matrix4x4.zero;
             noOpShadowMatrix.m22 = (SystemInfo.usesReversedZBuffer) ? 1.0f : 0.0f;
+            // 后续未设置的 matrix，都会被填入这个 noOp矩阵
             for (int i = cascadeCount; i <= k_MaxCascades; ++i)
                 m_MainLightShadowMatrices[i] = noOpShadowMatrix;
 
@@ -224,7 +236,7 @@ namespace UnityEngine.Rendering.Universal.Internal
                 cmd.SetGlobalVector(MainLightShadowConstantBuffer._CascadeShadowSplitSpheres3,
                     m_CascadeSplitDistances[3]);
                 cmd.SetGlobalVector(MainLightShadowConstantBuffer._CascadeShadowSplitSphereRadii, new Vector4(
-                    m_CascadeSplitDistances[0].w * m_CascadeSplitDistances[0].w,
+                    m_CascadeSplitDistances[0].w * m_CascadeSplitDistances[0].w, // w: culling sphere radius
                     m_CascadeSplitDistances[1].w * m_CascadeSplitDistances[1].w,
                     m_CascadeSplitDistances[2].w * m_CascadeSplitDistances[2].w,
                     m_CascadeSplitDistances[3].w * m_CascadeSplitDistances[3].w));
@@ -246,9 +258,13 @@ namespace UnityEngine.Rendering.Universal.Internal
 
                 // Currently only used when !SHADER_API_MOBILE but risky to not set them as it's generic
                 // enough so custom shaders might use it.
-                cmd.SetGlobalVector(MainLightShadowConstantBuffer._ShadowmapSize, new Vector4(invShadowAtlasWidth,
-                    invShadowAtlasHeight,
-                    m_ShadowmapWidth, m_ShadowmapHeight));
+                cmd.SetGlobalVector(MainLightShadowConstantBuffer._ShadowmapSize, 
+                    new Vector4(invShadowAtlasWidth,
+                                invShadowAtlasHeight,
+                                m_ShadowmapWidth, 
+                                m_ShadowmapHeight
+                    )
+                );
             }
         }
     };

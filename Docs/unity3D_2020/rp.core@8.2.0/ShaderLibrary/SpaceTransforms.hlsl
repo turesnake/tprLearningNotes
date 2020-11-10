@@ -47,10 +47,13 @@ float3 GetCameraRelativePositionWS(float3 positionWS)
     return positionWS;
 }
 
+
 real GetOddNegativeScale()
 {
+    // w is 1.0, or -1.0, for odd-negative scale transforms
     return unity_WorldTransformParams.w;
 }
+
 
 float3 TransformObjectToWorld(float3 positionOS)
 {

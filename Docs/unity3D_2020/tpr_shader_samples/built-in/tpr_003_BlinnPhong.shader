@@ -10,15 +10,11 @@ Shader "tpr/tpr_003_BlinnPhong"
 {
     Properties
     {
-        
         _Diffuse ("Diffuse", Color) = ( 1.0, 1.0, 1.0, 1.0 )
-
         // 控制 高光反射颜色
         _Specular ("Specular", Color) = ( 1.0, 1.0, 1.0, 1.0 )
-
         // 控制 高光区域大小
         _Gloss ("Gloss", Range(8.0, 256.0)) = 20.0
-
     }
     SubShader
     {

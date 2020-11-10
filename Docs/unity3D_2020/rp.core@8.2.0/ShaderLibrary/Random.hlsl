@@ -93,10 +93,11 @@ float2 InitRandom(float2 input)
 
 
 // 交错梯度-Noise
-//From  Next Generation Post Processing in Call of Duty: Advanced Warfare [Jimenez 2014]
+// From  Next Generation Post Processing in Call of Duty: Advanced Warfare [Jimenez 2014]
 // http://advances.realtimerendering.com/s2014/index.html
-float InterleavedGradientNoise(float2 pixCoord, int frameCount)
-{
+float InterleavedGradientNoise( float2 pixCoord,// posScreen-Space.xy
+                                int frameCount  // animate it (default 0)
+){
     const float3 magic = float3(0.06711056f, 0.00583715f, 52.9829189f);
     float2 frameMagicScale = float2(2.083f, 4.867f);
     pixCoord += frameCount * frameMagicScale;

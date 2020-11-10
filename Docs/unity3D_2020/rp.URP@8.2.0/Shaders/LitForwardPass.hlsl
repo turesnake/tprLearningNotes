@@ -8,7 +8,7 @@ struct Attributes
 {
     float4 positionOS   : POSITION;
     float3 normalOS     : NORMAL;
-    float4 tangentOS    : TANGENT;
+    float4 tangentOS    : TANGENT; // w分量: -1 or 1，用来调整 binormal 的方向
     float2 texcoord     : TEXCOORD0;
     float2 lightmapUV   : TEXCOORD1;
     UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -64,6 +64,7 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
     inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
     inputData.viewDirectionWS = viewDirWS;
 
+// shadowCoord
 #if defined( REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR )
     inputData.shadowCoord = input.shadowCoord;
 #elif defined( MAIN_LIGHT_CALCULATE_SHADOWS )
@@ -72,10 +73,12 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
     inputData.shadowCoord = float4(0, 0, 0, 0);
 #endif
 
+
     inputData.fogCoord = input.fogFactorAndVertexLight.x;
     inputData.vertexLighting = input.fogFactorAndVertexLight.yzw;
     inputData.bakedGI = SAMPLE_GI(input.lightmapUV, input.vertexSH, inputData.normalWS);
 }
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,6 +99,8 @@ Varyings LitPassVertex(Attributes input)
     // normalWS and tangentWS already normalize.
     // this is required to avoid skewing the direction during interpolation
     // also required for per-vertex lighting and SH evaluation
+    // -----
+    // normalInput 包含三个值：tangentWS, bitangentWS, normalWS
     VertexNormalInputs normalInput = GetVertexNormalInputs(input.normalOS, input.tangentOS);
     float3 viewDirWS = GetCameraPositionWS() - vertexInput.positionWS;
     half3 vertexLight = VertexLighting(vertexInput.positionWS, normalInput.normalWS);
@@ -128,6 +133,8 @@ Varyings LitPassVertex(Attributes input)
 
     return output;
 }
+
+
 
 // Used in Standard (Physically Based) shader
 half4 LitPassFragment(Varyings input) : SV_Target

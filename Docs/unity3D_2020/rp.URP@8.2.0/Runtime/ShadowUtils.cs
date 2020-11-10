@@ -36,14 +36,34 @@ namespace UnityEngine.Rendering.Universal
                 GraphicsSettings.HasShaderDefine(Graphics.activeTier, BuiltinShaderDefine.UNITY_METAL_SHADOWS_USE_POINT_FILTERING);
         }
 
-        public static bool ExtractDirectionalLightMatrix(ref CullingResults cullResults, ref ShadowData shadowData, int shadowLightIndex, int cascadeIndex, int shadowmapWidth, int shadowmapHeight, int shadowResolution, float shadowNearPlane, out Vector4 cascadeSplitDistance, out ShadowSliceData shadowSliceData, out Matrix4x4 viewMatrix, out Matrix4x4 projMatrix)
-        {
-            ShadowSplitData splitData;
-            bool success = cullResults.ComputeDirectionalShadowMatricesAndCullingPrimitives(shadowLightIndex,
-                cascadeIndex, shadowData.mainLightShadowCascadesCount, shadowData.mainLightShadowCascadesSplit, shadowResolution, shadowNearPlane, out viewMatrix, out projMatrix,
-                out splitData);
 
-            cascadeSplitDistance = splitData.cullingSphere;
+        public static bool ExtractDirectionalLightMatrix(   ref CullingResults cullResults, 
+                                                            ref ShadowData shadowData, 
+                                                            int shadowLightIndex, 
+                                                            int cascadeIndex, 
+                                                            int shadowmapWidth, 
+                                                            int shadowmapHeight, 
+                                                            int shadowResolution, 
+                                                            float shadowNearPlane, 
+                                                            out Vector4 cascadeSplitDistance, 
+                                                            out ShadowSliceData shadowSliceData, 
+                                                            out Matrix4x4 viewMatrix, 
+                                                            out Matrix4x4 projMatrix
+        ){
+            ShadowSplitData splitData;
+            bool success = cullResults.ComputeDirectionalShadowMatricesAndCullingPrimitives(
+                shadowLightIndex,
+                cascadeIndex, 
+                shadowData.mainLightShadowCascadesCount, 
+                shadowData.mainLightShadowCascadesSplit, 
+                shadowResolution, 
+                shadowNearPlane, 
+                out viewMatrix, 
+                out projMatrix,
+                out splitData
+            );
+
+            cascadeSplitDistance = splitData.cullingSphere;// xyz: sphere center, w:radius
             shadowSliceData.offsetX = (cascadeIndex % 2) * shadowResolution;
             shadowSliceData.offsetY = (cascadeIndex / 2) * shadowResolution;
             shadowSliceData.resolution = shadowResolution;
@@ -58,6 +78,8 @@ namespace UnityEngine.Rendering.Universal
 
             return success;
         }
+
+
 
         public static bool ExtractSpotLightMatrix(ref CullingResults cullResults, ref ShadowData shadowData, int shadowLightIndex, out Matrix4x4 shadowMatrix, out Matrix4x4 viewMatrix, out Matrix4x4 projMatrix)
         {
@@ -116,6 +138,7 @@ namespace UnityEngine.Rendering.Universal
             shadowSliceData.shadowTransform = sliceTransform * shadowSliceData.shadowTransform;
         }
 
+
         public static Vector4 GetShadowBias(ref VisibleLight shadowLight, int shadowLightIndex, ref ShadowData shadowData, Matrix4x4 lightProjectionMatrix, float shadowResolution)
         {
             if (shadowLightIndex < 0 || shadowLightIndex >= shadowData.bias.Count)
@@ -165,6 +188,8 @@ namespace UnityEngine.Rendering.Universal
 
             return new Vector4(depthBias, normalBias, 0.0f, 0.0f);
         }
+
+        
 
         public static void SetupShadowCasterConstantBuffer(CommandBuffer cmd, ref VisibleLight shadowLight, Vector4 shadowBias)
         {

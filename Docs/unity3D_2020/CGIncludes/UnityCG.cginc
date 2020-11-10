@@ -656,6 +656,7 @@ inline void DecodeDepthNormal( float4 enc, out float depth, out float3 normal )
     normal = DecodeViewNormalStereo (enc);
 }
 
+
 inline fixed3 UnpackNormalDXT5nm (fixed4 packednormal)
 {
     fixed3 normal;
@@ -676,6 +677,8 @@ fixed3 UnpackNormalmapRGorAG(fixed4 packednormal)
     normal.z = sqrt(1 - saturate(dot(normal.xy, normal.xy)));
     return normal;
 }
+
+
 inline fixed3 UnpackNormal(fixed4 packednormal)
 {
 #if defined(UNITY_NO_DXT5nm)
@@ -684,6 +687,8 @@ inline fixed3 UnpackNormal(fixed4 packednormal)
     return UnpackNormalmapRGorAG(packednormal);
 #endif
 }
+
+
 
 fixed3 UnpackNormalWithScale(fixed4 packednormal, float scale)
 {

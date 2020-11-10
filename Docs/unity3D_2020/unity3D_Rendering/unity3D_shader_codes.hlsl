@@ -65,7 +65,8 @@ void urp_vert(){
 
 
 // ---------------------------------------------- //
-//      sample Texture 2D
+//            Sample 
+//            Texture 2D
 // ---------------------------------------------- //
 // ---------- builtin ------------ //
 sample2D _XXX;
@@ -92,6 +93,59 @@ SAMPLER ( sampler_Tex );
 void urp_frag(){
     float4 color = SAMPLE_TEXTURE2D( _Tex, sampler_Tex, uv );
 }
+
+
+// ---------- urp shadow texture ------------ //
+TEXTURE2D_SHADOW( _Tex );
+SAMPLER_CMP( sampler_Tex );
+float v = SAMPLE_TEXTURE2D_SHADOW( _Tex, sampler_Tex, posSTS );
+
+// 在大部分平台，TEXTURE2D_SHADOW 和通用的 TEXTURE2D 没什么区别（少数平台有区别）
+
+// 而 SAMPLER_CMP 则和 SAMPLER 确实不一样，
+// 因为 SAMPLER 并不会针对 depth 数据做 滤波。而 shadow map 存储的正是 depth 数据
+
+// posSTS: Shadow-Tile-Space
+
+
+#define TEXTURE2D_ARGS(textureName, samplerName)  textureName, samplerName
+// 除了 GLES2 平台， 在其它平台中， 此宏 仅用来包装一组 函数参数，
+// 通常出现在 函数调用端
+
+
+#define TEXTURE2D_SHADOW_PARAM(textureName, samplerName) TEXTURE2D(textureName), SAMPLER_CMP(samplerName)
+// 除了 GLES2 平台， 在其它平台中， 此宏 用来在 函数的形参列表中
+// 就地定义一组 tex参数
+// 通常和 上面的 TEXTURE2D_ARGS 联合使用 
+
+
+
+
+// ---------------------------------------------- //
+//          SAMPLE_TEXTURE2D_SHADOW
+// ---------------------------------------------- //
+// 在大部分平台，
+SAMPLE_TEXTURE2D_SHADOW( _Tex, sampler_Tex, posSTS ) = 
+    Tex.SampleCmpLevelZero( sampler_Tex, (posSTS).xy, (posSTS).z)
+
+// 而 SampleCmpLevelZero，是一个 hlsl 函数：
+// Samples a texture and compares the result to a comparison value. 
+// This function is identical to calling SampleCmp on mipmap level 0 only.
+
+float Object.SampleCmp(
+    SamplerComparisonState S,
+    float Location,
+    float CompareValue,
+    [int Offset]
+);
+
+// 具体解读为：
+// 针对像素坐标 posSTS, 以其.xy值为 uv坐标，去 _Tex 中采样，
+// 将采样获得的值，与 posSTS.z 做比较。
+
+// 一个推断：posSTS.xyz 取值范围是 [0,1]
+// 因为要符合 UV 坐标系 的规则
+
 
 
 // ---------------------------------------------- //
