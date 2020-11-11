@@ -221,6 +221,12 @@ namespace UnityEngine.Rendering.Universal
 
             Matrix4x4 worldToShadow = proj * view;
 
+            // H=0.5:
+            // H, 0, 0, H
+            // 0, H, 0, H
+            // 0, 0, H, H
+            // 0, 0, 0, 0
+            // 先缩小为 0.5倍，再位移 (0.5, 0.5, 0.5)
             var textureScaleAndBias = Matrix4x4.identity;
             textureScaleAndBias.m00 = 0.5f;
             textureScaleAndBias.m11 = 0.5f;

@@ -230,7 +230,7 @@ Shader "tpr/tpr_004_Texture"
 
 
         //-------------------------------//
-        //      法线贴图: 统一为 world空间
+        //   法线贴图: 统一为 world空间
         //-------------------------------//
         Pass
         {
@@ -272,8 +272,9 @@ Shader "tpr/tpr_004_Texture"
                     // uv.xy 存储 材质纹理坐标
                     // uv.zw 存储 法线纹理坐标
 
-                // 矩阵，从 tangent-space 转换到 world-space
-                // 只存储 前3行
+                // 法线转换矩阵: tangent-space -> world-space
+                // 切线空间的 xyz轴对应：TBN向量
+                // 因为是用来转换方向的，所以 只存储 前3行
                 float4 TtoW0 : TEXCOORD1;
                 float4 TtoW1 : TEXCOORD2;
                 float4 TtoW2 : TEXCOORD3;
@@ -293,6 +294,11 @@ Shader "tpr/tpr_004_Texture"
                 fixed3 worldBinormal = cross( worldNormal, worldTangent ) * v.tangent.w;
 
                 // 组装矩阵
+                // w分量 是 为了节省空间凑进去的，和 方向变换矩阵无关
+                // 方向变换矩阵，只需要 3x3 即可
+                // ---
+                // 将 3个竖向量，看作 转换后的空间的 xyz单位向量，
+                // 下面这组操作就能被理解了
                 o.TtoW0 = float4( worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x );
                 o.TtoW1 = float4( worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y );
                 o.TtoW2 = float4( worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z );
@@ -317,6 +323,7 @@ Shader "tpr/tpr_004_Texture"
                 // 执行矩阵乘法
                 // 将 法线向量，从 tangent-space 转换到 world-space
                 bump = normalize( half3(
+                    // 将 矩阵的 横向量 和 目标竖向量 做点积，是一种简便表达
                     dot( i.TtoW0.xyz, bump ),
                     dot( i.TtoW1.xyz, bump ),
                     dot( i.TtoW2.xyz, bump )

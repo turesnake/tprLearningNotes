@@ -51,6 +51,7 @@ half4 SampleAlbedoAlpha(float2 uv, TEXTURE2D_PARAM(albedoAlphaMap, sampler_albed
 }
 
 
+
 half3 SampleNormal(float2 uv, TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), half scale = 1.0h)
 {
 #ifdef _NORMALMAP
@@ -61,9 +62,12 @@ half3 SampleNormal(float2 uv, TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), half sc
         return UnpackNormalScale(n, scale);
     #endif
 #else
+    // 若不存在 normal map，返回一个 朝向正上方的 向量
     return half3(0.0h, 0.0h, 1.0h);
 #endif
 }
+
+
 
 
 half3 SampleEmission(float2 uv, half3 emissionColor, TEXTURE2D_PARAM(emissionMap, sampler_emissionMap))

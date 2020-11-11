@@ -9,7 +9,7 @@ struct Attributes
     float4 positionOS   : POSITION;
     float3 normalOS     : NORMAL;
     float4 tangentOS    : TANGENT; // w分量: -1 or 1，用来调整 binormal 的方向
-    float2 texcoord     : TEXCOORD0;
+    float2 texcoord     : TEXCOORD0; // uv
     float2 lightmapUV   : TEXCOORD1;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
@@ -56,7 +56,16 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
 #ifdef _NORMALMAP 
     float sgn = input.tangentWS.w;      // should be either +1 or -1
     float3 bitangent = sgn * cross(input.normalWS.xyz, input.tangentWS.xyz);
-    inputData.normalWS = TransformTangentToWorld(normalTS, half3x3(input.tangentWS.xyz, bitangent.xyz, input.normalWS.xyz));
+
+    // 注意，half3x3 是以 row major 矩阵，而我们想要的是一个 col major 矩阵（此 construtor 反常之处）
+    // 正因如此，在 TransformTangentToWorld() 体内，执行的是左乘: mul( vec, matrix );
+    // ---
+    // 但就计算本身而言，没什么新鲜的，和 fenglele 教程中的实现 几乎一致
+    inputData.normalWS = TransformTangentToWorld(
+        normalTS, 
+        half3x3(input.tangentWS.xyz, bitangent.xyz, input.normalWS.xyz)// row major
+    );
+
 #else
     inputData.normalWS = input.normalWS;
 #endif
@@ -85,6 +94,7 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
 //                  Vertex and Fragment functions                            //
 ///////////////////////////////////////////////////////////////////////////////
 
+
 // Used in Standard (Physically Based) shader
 Varyings LitPassVertex(Attributes input)
 {
@@ -106,6 +116,8 @@ Varyings LitPassVertex(Attributes input)
     half3 vertexLight = VertexLighting(vertexInput.positionWS, normalInput.normalWS);
     half fogFactor = ComputeFogFactor(vertexInput.positionCS.z);
 
+    // 计算 scale/bias 之后的 uv 值
+    // = ((texcoord.xy) * _BaseMap_ST.xy + _BaseMap_ST.zw)
     output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 
     // already normalized from normal transform to WS.
@@ -158,5 +170,6 @@ half4 LitPassFragment(Varyings input) : SV_Target
 
     return color;
 }
+
 
 #endif

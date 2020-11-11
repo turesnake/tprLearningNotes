@@ -735,6 +735,9 @@ float3 LatlongToDirectionCoordinate(float2 coord)
 // Depth encoding/decoding
 // ----------------------------------------------------------------------------
 
+// oblique view frustums: 
+// 并不以 中心点 来分割 平截头体，而是存在偏斜：比如，上半部更多，或者左半部更多 等
+
 // Z buffer to linear 0..1 depth (0 at near plane, 1 at far plane).
 // Does NOT correctly handle oblique view frustums.
 // Does NOT work with orthographic projection.
@@ -775,6 +778,9 @@ float LinearEyeDepth(float2 positionNDC, float deviceDepth, float4 invProjParam)
     return abs(viewSpaceZ);
 }
 
+// !!!
+// 推荐函数 
+// !!!
 // Z buffer to linear depth.
 // Works in all cases.
 // Typically, this is the cheapest variant, provided you've already computed 'positionWS'.
@@ -786,6 +792,9 @@ float LinearEyeDepth(float3 positionWS, float4x4 viewMatrix)
     // If the matrix is right-handed, we have to flip the Z axis to get a positive value.
     return abs(viewSpaceZ);
 }
+
+
+
 
 // 'z' is the view space Z position (linear depth).
 // saturate(z) the output of the function to clamp them to the [0, 1] range.

@@ -76,6 +76,7 @@ half SampleOcclusion(float2 uv)
 }
 
 
+// called in frag()
 // SurfaceData: [defined in ShaderLib: SurfaceInput.hlsl]
 inline void InitializeStandardLitSurfaceData(float2 uv, out SurfaceData outSurfaceData)
 {
@@ -94,6 +95,7 @@ inline void InitializeStandardLitSurfaceData(float2 uv, out SurfaceData outSurfa
 #endif
 
     outSurfaceData.smoothness = specGloss.a;
+    // 采样获得 本frag 的 normalTS，没啥奇怪的操作
     outSurfaceData.normalTS = SampleNormal(uv, TEXTURE2D_ARGS(_BumpMap, sampler_BumpMap), _BumpScale);
     outSurfaceData.occlusion = SampleOcclusion(uv);
     outSurfaceData.emission = SampleEmission(uv, _EmissionColor.rgb, TEXTURE2D_ARGS(_EmissionMap, sampler_EmissionMap));

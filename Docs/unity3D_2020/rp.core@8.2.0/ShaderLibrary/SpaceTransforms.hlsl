@@ -174,15 +174,23 @@ real3x3 CreateTangentToWorld(real3 normal, real3 tangent, real flipSign)
     return real3x3(tangent, bitangent, normal);
 }
 
+
+
+// 之所以使用 左乘 是因为 参数 tangentToWorld 是目标矩阵的 转置矩阵
 real3 TransformTangentToWorld(real3 dirTS, real3x3 tangentToWorld)
 {
     // Note matrix is in row major convention with left multiplication as it is build on the fly
     return mul(dirTS, tangentToWorld);
 }
 
+
+
 // This function does the exact inverse of TransformTangentToWorld() and is
 // also decribed within comments in mikktspace.h and it follows implicitly
 // from the scalar triple product (google it).
+// ---
+// "The scalar triple product"
+// 已知三个向量 abc，计算 dot((axb),c); ab叉积获得平面法线，之后再求法线与c 的 dot。
 real3 TransformWorldToTangent(real3 dirWS, real3x3 tangentToWorld)
 {
     // Note matrix is in row major convention with left multiplication as it is build on the fly
@@ -205,6 +213,8 @@ real3 TransformWorldToTangent(real3 dirWS, real3x3 tangentToWorld)
     
     return SafeNormalize( sgn * mul(matTBN_I_T, dirWS) );
 }
+
+
 
 real3 TransformTangentToObject(real3 dirTS, real3x3 tangentToWorld)
 {

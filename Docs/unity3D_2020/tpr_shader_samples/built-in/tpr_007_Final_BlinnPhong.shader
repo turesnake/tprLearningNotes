@@ -78,18 +78,21 @@ Shader "tpr/tpr_16_Final_BlinnPhong"
 
             struct v2f{
                 float4 pos : SV_POSITION;
+                // uv.xy 存储 材质纹理坐标
+                // uv.zw 存储 法线纹理坐标
                 float4 uv : TEXCOORD0;
-                    // uv.xy 存储 材质纹理坐标
-                    // uv.zw 存储 法线纹理坐标
+                    
+                // 法线转换矩阵: tangent-space -> world-space
+                // 切线空间的 xyz轴对应：TBN向量
+                // 因为是用来转换方向的，所以 只存储 前3行
                 float4 TtoW0 : TEXCOORD1;
                 float4 TtoW1 : TEXCOORD2;
                 float4 TtoW2 : TEXCOORD3;
-                    // 矩阵，从 tangent-space 转换到 world-space
-                    // 只存储 前3行
-                SHADOW_COORDS(4)
-                    // 声明了一个 用来对 shadowmap 采样的坐标: _ShadowCoord，类型为 unityShadowCoord4
-                    // 参数用来分配一个新的 TEXCOORD_
-                    // 在此处，轮到 2: TEXCOORD2
+                    
+                // 声明了一个 用来对 shadowmap 采样的坐标: _ShadowCoord，类型为 unityShadowCoord4
+                // 参数用来分配一个新的 TEXCOORD_
+                // 在此处，轮到 2: TEXCOORD2
+                SHADOW_COORDS(4)  
             };        
 
 
@@ -111,6 +114,9 @@ Shader "tpr/tpr_16_Final_BlinnPhong"
                 // 组装矩阵
                 // w分量 是 为了节省空间凑进去的，和 方向变换矩阵无关
                 // 方向变换矩阵，只需要 3x3 即可
+                // ---
+                // 将 3个竖向量，看作 转换后的空间的 xyz单位向量，
+                // 下面这组操作就能被理解了
                 o.TtoW0 = float4( worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x );
                 o.TtoW1 = float4( worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y );
                 o.TtoW2 = float4( worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z );
@@ -134,9 +140,11 @@ Shader "tpr/tpr_16_Final_BlinnPhong"
                 // 在 xy分量 被缩放后，为了维持 bump 仍是个 单位向量
                 // 手工计算出 z分量
                 bump.z = sqrt( 1.0 - saturate(dot( bump.xy, bump.xy )) );
+
                 // 执行矩阵乘法
                 // 将 法线向量，从 tangent-space 转换到 world-space
                 bump = normalize( half3(
+                    // 将 矩阵的 横向量 和 目标竖向量 做点积，是一种简便表达
                     dot( i.TtoW0.xyz, bump ),
                     dot( i.TtoW1.xyz, bump ),
                     dot( i.TtoW2.xyz, bump )

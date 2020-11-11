@@ -703,6 +703,7 @@ fixed3 UnpackNormalWithScale(fixed4 packednormal, float scale)
     return normal;
 }
 
+
 // Z buffer to linear 0..1 depth
 inline float Linear01Depth( float z )
 {
