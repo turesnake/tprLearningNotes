@@ -778,9 +778,7 @@ float LinearEyeDepth(float2 positionNDC, float deviceDepth, float4 invProjParam)
     return abs(viewSpaceZ);
 }
 
-// !!!
-// 推荐函数 
-// !!!
+
 // Z buffer to linear depth.
 // Works in all cases.
 // Typically, this is the cheapest variant, provided you've already computed 'positionWS'.
