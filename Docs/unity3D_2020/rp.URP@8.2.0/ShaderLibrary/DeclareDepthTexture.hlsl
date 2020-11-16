@@ -2,6 +2,7 @@
 #define UNITY_DECLARE_DEPTH_TEXTURE_INCLUDED
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
+
 TEXTURE2D_X_FLOAT(_CameraDepthTexture);
 SAMPLER(sampler_CameraDepthTexture);
 
@@ -9,6 +10,7 @@ SAMPLER(sampler_CameraDepthTexture);
 
 float SampleSceneDepth(float2 uv)
 {
+    // 在 非VR 模式，UnityStereoTransformScreenSpaceTex 什么也不做
     return SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, UnityStereoTransformScreenSpaceTex(uv)).r;
 }
 

@@ -9,7 +9,7 @@
 // opaque 物体，完整版 BlinnPhong
 
 
-Shader "tpr/tpr_16_Final_BlinnPhong"
+Shader "tpr/tpr_007_Final_BlinnPhong"
 {
     Properties
     {

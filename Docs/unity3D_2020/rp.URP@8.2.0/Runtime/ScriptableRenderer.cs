@@ -97,9 +97,10 @@ namespace UnityEngine.Rendering.Universal
 
             float near = camera.nearClipPlane;
             float far = camera.farClipPlane;
-            float invNear = Mathf.Approximately(near, 0.0f) ? 0.0f : 1.0f / near;
-            float invFar = Mathf.Approximately(far, 0.0f) ? 0.0f : 1.0f / far;
+            float invNear = Mathf.Approximately(near, 0.0f) ? 0.0f : 1.0f/near; // 避免分母为零
+            float invFar = Mathf.Approximately(far, 0.0f) ? 0.0f : 1.0f/far; // 避免分母为零
             float isOrthographic = camera.orthographic ? 1.0f : 0.0f;
+
 
             // From http://www.humus.name/temp/Linearize%20depth.txt
             // But as depth component textures on OpenGL always return in 0..1 range (as in D3D), we have to use
@@ -111,14 +112,20 @@ namespace UnityEngine.Rendering.Universal
             float zc0 = 1.0f - far * invNear;
             float zc1 = far * invNear;
 
-            Vector4 zBufferParams = new Vector4(zc0, zc1, zc0 * invFar, zc1 * invFar);
+
+            Vector4 zBufferParams = new Vector4(
+                zc0,            // x = 1 - (far/near) 
+                zc1,            // y = far/near 
+                zc0 * invFar,   // z = x/far = (1/far) - (1/near)
+                zc1 * invFar    // w = y/far = 1/near
+            );
 
             if (SystemInfo.usesReversedZBuffer)
             {
-                zBufferParams.y += zBufferParams.x;
-                zBufferParams.x = -zBufferParams.x;
-                zBufferParams.w += zBufferParams.z;
-                zBufferParams.z = -zBufferParams.z;
+                zBufferParams.y += zBufferParams.x; // x = (far/near) - 1
+                zBufferParams.x = -zBufferParams.x; // y = 1
+                zBufferParams.w += zBufferParams.z; // z = (1/near) - (1/far)
+                zBufferParams.z = -zBufferParams.z; // w = 1/far
             }
 
             // Projection flip sign logic is very deep in GfxDevice::SetInvertProjectionMatrix

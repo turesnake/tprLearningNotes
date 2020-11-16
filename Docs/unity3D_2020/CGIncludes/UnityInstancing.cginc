@@ -104,6 +104,7 @@
 #   define UNITY_VERTEX_INPUT_INSTANCE_ID DEFAULT_UNITY_VERTEX_INPUT_INSTANCE_ID
 #endif
 
+
 ////////////////////////////////////////////////////////
 // basic stereo instancing setups
 // - UNITY_VERTEX_OUTPUT_STEREO             Declare stereo target eye field in vertex shader output struct.

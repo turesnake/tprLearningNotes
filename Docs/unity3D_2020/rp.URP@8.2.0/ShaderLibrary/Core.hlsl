@@ -186,6 +186,8 @@ float4 ComputeScreenPos(float4 positionCS)
     // 代码实现 和 UnityCG.cginc 中的 ComputeNonStereoScreenPos() 函数一摸一样
     // 可以放心使用 
     float4 o = positionCS * 0.5f;
+    // _ProjectionParams.x: 1 or -1
+    // -1 if projection is flipped
     o.xy = float2(o.x, o.y * _ProjectionParams.x) + o.w;
     o.zw = positionCS.zw;
     return o;
@@ -252,6 +254,7 @@ half3 MixFog(real3 fragColor, real fogFactor)
 
 // Stereo-related bits
 #if defined(UNITY_STEREO_INSTANCING_ENABLED) || defined(UNITY_STEREO_MULTIVIEW_ENABLED)
+    // VR
 
     #define SLICE_ARRAY_INDEX   unity_StereoEyeIndex
 
@@ -271,6 +274,7 @@ half3 MixFog(real3 fragColor, real fogFactor)
     #define GATHER_BLUE_TEXTURE2D_X(textureName, samplerName, coord2)       GATHER_BLUE_TEXTURE2D(textureName, samplerName, float3(coord2, SLICE_ARRAY_INDEX))
 
 #else
+    // 非 VR
 
     #define SLICE_ARRAY_INDEX       0
     
@@ -292,7 +296,8 @@ half3 MixFog(real3 fragColor, real fogFactor)
 #endif
 
 
-#if defined(UNITY_SINGLE_PASS_STEREO) // 单通道立体渲染，主用于 vr
+#if defined(UNITY_SINGLE_PASS_STEREO) 
+    // vr
     
     float2 TransformStereoScreenSpaceTex(float2 uv, float w)
     {
@@ -307,6 +312,9 @@ half3 MixFog(real3 fragColor, real fogFactor)
     }
 
 #else
+    // 非 vr
+
+    // 什么也没做
     #define UnityStereoTransformScreenSpaceTex(uv) uv
 #endif // defined(UNITY_SINGLE_PASS_STEREO)
 

@@ -735,36 +735,88 @@ float3 LatlongToDirectionCoordinate(float2 coord)
 // Depth encoding/decoding
 // ----------------------------------------------------------------------------
 
+
 // oblique view frustums: 
 // 并不以 中心点 来分割 平截头体，而是存在偏斜：比如，上半部更多，或者左半部更多 等
 
+// !!!
+// 不推荐使用 !!!
+// !!!
+// when usesReversedZBuffer = true or false，此函数的返回值是 不同的
+// 只有在 false 版本时（OpenGL）
+// 此函数才符合它的设定：
+//   将 depth 从非线性的 [0,1]区间，
+//   转换为线性区间 [0,1], 0:near, 1:far
+// -----
+// 目前没看到此函数被使用...
+// =====
+// 测试 when ReversedZBuffer = false:
+//    [near] depth=0f: ret 0;
+//    [far]  depth=1f: ret 1;
+// 测试 when ReversedZBuffer = true:
+//    [near] depth=1f: ret near/far;
+//    [far]  depth=0f: ret 0;
+// ------
 // Z buffer to linear 0..1 depth (0 at near plane, 1 at far plane).
 // Does NOT correctly handle oblique view frustums.
 // Does NOT work with orthographic projection.
-// zBufferParam = { (f-n)/n, 1, (f-n)/n*f, 1/f }
+// zBufferParam = { (f-n)/n, 1, (f-n)/n*f, 1/f }  <-- 这句官方注释 有问题
 float Linear01DepthFromNear(float depth, float4 zBufferParam)
 {
-    return 1.0 / (zBufferParam.x + zBufferParam.y / depth);
+    return 1.0 / (zBufferParam.x + zBufferParam.y/depth);
 }
 
+
+
+// 不管 usesReversedZBuffer 是否为 true，此函数的返回值 始终是稳定的 !!!
+// 本函数将 采样的深度值 depth, 从非线性的区间[0,1]
+// 转换为一个 线性区间 [0,1], 0:cameraPos，1:far 
+// 在这个空间中，near平面，被表示为 near/far 
+// =====
+// 测试 when ReversedZBuffer = false:
+//    [near] depth=0f: ret near/far;
+//    [far]  depth=1f: ret 1;
+// 测试 when ReversedZBuffer = true:
+//     [near] depth=1f: ret near/far;
+//     [far]  depth=0f: ret 1;
+// ------
 // Z buffer to linear 0..1 depth (0 at camera position, 1 at far plane).
 // Does NOT work with orthographic projections.
 // Does NOT correctly handle oblique view frustums.
 // zBufferParam = { (f-n)/n, 1, (f-n)/n*f, 1/f }
+// 上行 zBufferParam 是基于 usesReversedZBuffer = true （非OpenGL平台）
+// 实际上，就算采用 false 版本的参数，本函数也是成立的
 float Linear01Depth(float depth, float4 zBufferParam)
 {
     return 1.0 / (zBufferParam.x * depth + zBufferParam.y);
 }
 
+
+
+// 不管 usesReversedZBuffer 是否为 true，此函数的返回值 始终是稳定的 !!!
+// 本函数将 采样的深度值 depth, 从非线性的区间[0,1]
+// 转换成一个 线性区间值：Eye-Space [near,far]
+// =====
+// 测试 when ReversedZBuffer = false:
+//     [near] depth=0f: ret near;
+//     [far]  depth=1f: ret far;
+// 测试 when ReversedZBuffer = true:
+//     [near] depth=1f: ret near;
+//     [far]  depth=0f: ret far;
+// --------
 // Z buffer to linear depth.
 // Does NOT correctly handle oblique view frustums.
 // Does NOT work with orthographic projection.
 // zBufferParam = { (f-n)/n, 1, (f-n)/n*f, 1/f }
+// 上行 zBufferParam 是基于 usesReversedZBuffer = true （非OpenGL平台）
+// 实际上，就算采用 false 版本的参数，本函数也是成立的
 float LinearEyeDepth(float depth, float4 zBufferParam)
 {
     return 1.0 / (zBufferParam.z * depth + zBufferParam.w);
 }
 
+
+// [暂未被学习和检测过...]
 // Z buffer to linear depth.
 // Correctly handles oblique view frustums.
 // Does NOT work with orthographic projection.
@@ -779,6 +831,7 @@ float LinearEyeDepth(float2 positionNDC, float deviceDepth, float4 invProjParam)
 }
 
 
+// [暂未被学习和检测过...]
 // Z buffer to linear depth.
 // Works in all cases.
 // Typically, this is the cheapest variant, provided you've already computed 'positionWS'.

@@ -346,9 +346,31 @@ struct BRDFData
 
 
 # ---------------------------------------------- #
-#             
+#             LightMode
+#        int shader.pass.Tags
 # ---------------------------------------------- #
+URP Manual: URP ShaderLab Pass tags
 
+
+# - UniversalForward
+
+# - UniversalGBuffer
+
+# - UniversalForwardOnly
+
+# - Universal2D
+
+# - ShadowCaster
+    如果希望本 shader 所绑定的 mesh 成为 shadow caster
+    应当为此 shader，实现 shadow caster pass
+
+# - DepthOnly
+    The Pass renders only depth information from 
+    the perspective of a Camera into a depth texture.
+
+# - Meta
+
+# - SRPDefaultUnlit  [-Default-]
 
 
 # ---------------------------------------------- #

@@ -53,12 +53,14 @@
 #define LIGHTMAP_RGBM_SCALE 5.0
 #define EMISSIVE_RGBM_SCALE 97.0
 
+
 struct appdata_base {
     float4 vertex : POSITION;
     float3 normal : NORMAL;
     float4 texcoord : TEXCOORD0;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
+
 
 struct appdata_tan {
     float4 vertex : POSITION;
@@ -650,6 +652,8 @@ inline float4 EncodeDepthNormal( float depth, float3 normal )
     return enc;
 }
 
+// param: enc -- _CameraDepthNormalsTexture
+// 对此数据进行分解，获得 depth, normal 信息
 inline void DecodeDepthNormal( float4 enc, out float depth, out float3 normal )
 {
     depth = DecodeFloatRG (enc.zw);
@@ -754,11 +758,14 @@ inline float2 UnityStereoClamp(float2 uv, float4 scaleAndOffset)
 #define UnityStereoClamp(uv, scaleAndOffset) uv
 #endif
 
+
 // Depth render texture helpers
 #define DECODE_EYEDEPTH(i) LinearEyeDepth(i)
 #define COMPUTE_EYEDEPTH(o) o = -UnityObjectToViewPos( v.vertex ).z
 #define COMPUTE_DEPTH_01 -(UnityObjectToViewPos( v.vertex ).z * _ProjectionParams.w)
 #define COMPUTE_VIEW_NORMAL normalize(mul((float3x3)UNITY_MATRIX_IT_MV, v.normal))
+
+
 
 // Helpers used in image effects. Most image effects use the same
 // minimal vertex shader (vert_img).
@@ -799,13 +806,20 @@ v2f_img vert_img( appdata_img v )
 // Projected screen position helpers
 #define V2F_SCREEN_TYPE float4
 
+
+// 非vr的 screen pos 
+// param: posCC in vert (尚未做齐次除法)
 inline float4 ComputeNonStereoScreenPos(float4 pos) {
     float4 o = pos * 0.5f;
+    // _ProjectionParams.x: 1 or -1
+    // -1 if projection is flipped
     o.xy = float2(o.x, o.y*_ProjectionParams.x) + o.w;
     o.zw = pos.zw;
     return o;
 }
 
+
+// param: posCC in vert (尚未做齐次除法)
 inline float4 ComputeScreenPos(float4 pos) {
     float4 o = ComputeNonStereoScreenPos(pos);
 #if defined(UNITY_SINGLE_PASS_STEREO)
@@ -814,6 +828,8 @@ inline float4 ComputeScreenPos(float4 pos) {
 #endif
     return o;
 }
+
+
 
 inline float4 ComputeGrabScreenPos (float4 pos) {
     #if UNITY_UV_STARTS_AT_TOP
@@ -1186,6 +1202,8 @@ UNITY_DECLARE_SHADOWMAP(_ShadowMapTexture);
 #endif // #ifdef SHADOW_COLLECTOR_PASS
 
 
+
+// 不再起效...
 // Legacy; used to do something on platforms that had to emulate depth textures manually. Now all platforms have native depth textures.
 #define UNITY_TRANSFER_DEPTH(oo)
 // Legacy; used to do something on platforms that had to emulate depth textures manually. Now all platforms have native depth textures.

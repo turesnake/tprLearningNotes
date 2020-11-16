@@ -84,6 +84,7 @@ namespace UnityEngine.Rendering.Universal.Internal
             }
         }
 
+
         public void Setup(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             int additionalLightsCount = renderingData.lightData.additionalLightsCount;
@@ -102,8 +103,15 @@ namespace UnityEngine.Rendering.Universal.Internal
             CommandBufferPool.Release(cmd);
         }
 
-        void InitializeLightConstants(NativeArray<VisibleLight> lights, int lightIndex, out Vector4 lightPos, out Vector4 lightColor, out Vector4 lightAttenuation, out Vector4 lightSpotDir, out Vector4 lightOcclusionProbeChannel)
-        {
+
+        void InitializeLightConstants(  NativeArray<VisibleLight> lights, 
+                                        int lightIndex, 
+                                        out Vector4 lightPos, 
+                                        out Vector4 lightColor, 
+                                        out Vector4 lightAttenuation, 
+                                        out Vector4 lightSpotDir, 
+                                        out Vector4 lightOcclusionProbeChannel
+        ){
             lightPos = k_DefaultLightPosition;
             lightColor = k_DefaultLightColor;
             lightAttenuation = k_DefaultLightAttenuation;

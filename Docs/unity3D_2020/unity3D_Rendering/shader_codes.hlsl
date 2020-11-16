@@ -31,7 +31,8 @@ void urp_vert(){
 // ---------------------------------------------- //
 // builtin, srp 中，函数名相同
 void both_vert(){
-    float4 posSS = ComputeScreenPos( posOS );// param: float4 
+    // param: float4 posCC in vert (尚未做齐次除法)
+    float4 posSS = ComputeScreenPos( posCS );
 }
 void both_frag(){
     float2 wcoord = posSS.xy / posSS.w; // [0,1]

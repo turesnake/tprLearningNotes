@@ -76,14 +76,14 @@ float4 _ScreenParams;
 
 
 // Values used to linearize the Z buffer (http://www.humus.name/temp/Linearize%20depth.txt)
-// x = 1-far/near
+// x = 1 - (far/near)
 // y = far/near
-// z = x/far
-// w = y/far
+// z = x/far = (1/far) - (1/near)
+// w = y/far = 1/near
 // or in case of a reversed depth buffer (UNITY_REVERSED_Z is 1)
 // x = -1+far/near
 // y = 1
-// z = x/far
+// z = x/far = (1/near) - (1/far)
 // w = 1/far
 float4 _ZBufferParams;
 

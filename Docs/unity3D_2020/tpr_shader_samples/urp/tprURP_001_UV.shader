@@ -6,7 +6,7 @@ Shader "tpr/tprURP_001_UV"
     {
         Tags { 
             "RenderType"="Opaque" 
-            "RenderPipeline"="UniversalPipeline" // urp 才会用到
+            "RenderPipeline"="UniversalPipeline" // Must have in urp
         }
         LOD 100
         
