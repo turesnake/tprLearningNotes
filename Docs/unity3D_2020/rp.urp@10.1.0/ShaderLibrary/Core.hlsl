@@ -10,6 +10,8 @@
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Version.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
 
+// 用户可以手动定义 此值为 1，从而在所有平台 支持此 变量
+// 若用户未定义，则默认在 移动/ns 平台 将此值设为 0
 #if !defined(SHADER_HINT_NICE_QUALITY)
     #if defined(SHADER_API_MOBILE) || defined(SHADER_API_SWITCH)
         #define SHADER_HINT_NICE_QUALITY 0
@@ -33,6 +35,8 @@
     #define SHADER_QUALITY_MEDIUM
 #endif
 
+
+// 只有在 高品质平台，BUMP_SCALE 才被支持
 #ifndef BUMP_SCALE_NOT_SUPPORTED
     #define BUMP_SCALE_NOT_SUPPORTED !SHADER_HINT_NICE_QUALITY
 #endif

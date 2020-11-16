@@ -70,6 +70,7 @@ Shader "Universal Render Pipeline/Lit"
         [HideInInspector][NoScaleOffset]unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
     }
 
+    // ShaderModel 4.5
     SubShader
     {
         // Universal Pipeline tag is required. If Universal render pipeline is not set in the graphics settings
@@ -113,6 +114,7 @@ Shader "Universal Render Pipeline/Lit"
 
             // -------------------------------------
             // Universal Pipeline keywords
+            // 可以简单理解为，生成一些 global keywards
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
@@ -349,6 +351,7 @@ Shader "Universal Render Pipeline/Lit"
         }
     }
 
+    // ShaderModel 2.0
     SubShader
     {
         // Universal Pipeline tag is required. If Universal render pipeline is not set in the graphics settings
@@ -566,5 +569,6 @@ Shader "Universal Render Pipeline/Lit"
     }
 
     FallBack "Hidden/Universal Render Pipeline/FallbackError"
+    // 指定 GUI 使用的 class 名（前缀部分是 namespace）
     CustomEditor "UnityEditor.Rendering.Universal.ShaderGUI.LitShader"
 }

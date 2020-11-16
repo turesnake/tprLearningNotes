@@ -6,13 +6,13 @@
 #include "Core.hlsl"
 
 #define SHADOWS_SCREEN 0
-#define MAX_SHADOW_CASCADES 4
+#define MAX_SHADOW_CASCADES 4 // 最大 阴影级连数
 
 #if !defined(_RECEIVE_SHADOWS_OFF)
     #if defined(_MAIN_LIGHT_SHADOWS)
         #define MAIN_LIGHT_CALCULATE_SHADOWS
 
-        #if !defined(_MAIN_LIGHT_SHADOWS_CASCADE)
+        #if !defined(_MAIN_LIGHT_SHADOWS_CASCADE)// shader 实例定义
             #define REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR
         #endif
     #endif
@@ -59,53 +59,62 @@ SAMPLER_CMP(sampler_AdditionalLightsShadowmapTexture);
 #ifndef SHADER_API_GLES3
 CBUFFER_START(MainLightShadows)
 #endif
-// Last cascade is initialized with a no-op matrix. It always transforms
-// shadow coord to half3(0, 0, NEAR_PLANE). We use this trick to avoid
-// branching since ComputeCascadeIndex can return cascade index = MAX_SHADOW_CASCADES
-float4x4    _MainLightWorldToShadow[MAX_SHADOW_CASCADES + 1];
-float4      _CascadeShadowSplitSpheres0;
-float4      _CascadeShadowSplitSpheres1;
-float4      _CascadeShadowSplitSpheres2;
-float4      _CascadeShadowSplitSpheres3;
-float4      _CascadeShadowSplitSphereRadii;
-half4       _MainLightShadowOffset0;
-half4       _MainLightShadowOffset1;
-half4       _MainLightShadowOffset2;
-half4       _MainLightShadowOffset3;
-half4       _MainLightShadowParams;  // (x: shadowStrength, y: 1.0 if soft shadows, 0.0 otherwise, z: oneOverFadeDist, w: minusStartFade)
-float4      _MainLightShadowmapSize; // (xy: 1/width and 1/height, zw: width and height)
+    // Last cascade is initialized with a no-op matrix. It always transforms
+    // shadow coord to half3(0, 0, NEAR_PLANE). We use this trick to avoid
+    // branching since ComputeCascadeIndex can return cascade index = MAX_SHADOW_CASCADES
+    // ---
+    // noOpMatrix:
+    //      all zero
+    //      m22 = (SystemInfo.usesReversedZBuffer) ? 1.0f : 0.0f;
+    float4x4    _MainLightWorldToShadow[MAX_SHADOW_CASCADES + 1];
+    // sphere0 最小， sphere3 最大
+    float4      _CascadeShadowSplitSpheres0;
+    float4      _CascadeShadowSplitSpheres1;
+    float4      _CascadeShadowSplitSpheres2;
+    float4      _CascadeShadowSplitSpheres3;
+    float4      _CascadeShadowSplitSphereRadii;// xyzw: culling sphere[i] radius^2; i:{0,1,2,3}
+    half4       _MainLightShadowOffset0;
+    half4       _MainLightShadowOffset1;
+    half4       _MainLightShadowOffset2;
+    half4       _MainLightShadowOffset3;
+    half4       _MainLightShadowParams;  // (x: shadowStrength, y: 1.0 if soft shadows, 0.0 otherwise, z: oneOverFadeDist, w: minusStartFade)
+    float4      _MainLightShadowmapSize; // (xy: 1/width and 1/height, zw: width and height)
 #ifndef SHADER_API_GLES3
 CBUFFER_END
 #endif
 
 #if USE_STRUCTURED_BUFFER_FOR_LIGHT_DATA
-StructuredBuffer<ShadowData> _AdditionalShadowsBuffer;
-StructuredBuffer<int> _AdditionalShadowsIndices;
-half4       _AdditionalShadowOffset0;
-half4       _AdditionalShadowOffset1;
-half4       _AdditionalShadowOffset2;
-half4       _AdditionalShadowOffset3;
-float4      _AdditionalShadowmapSize; // (xy: 1/width and 1/height, zw: width and height)
+    StructuredBuffer<ShadowData> _AdditionalShadowsBuffer;
+    StructuredBuffer<int> _AdditionalShadowsIndices;
+    half4       _AdditionalShadowOffset0;
+    half4       _AdditionalShadowOffset1;
+    half4       _AdditionalShadowOffset2;
+    half4       _AdditionalShadowOffset3;
+    float4      _AdditionalShadowmapSize; // (xy: 1/width and 1/height, zw: width and height)
 #else
-// GLES3 causes a performance regression in some devices when using CBUFFER.
-#ifndef SHADER_API_GLES3
-CBUFFER_START(AdditionalLightShadows)
+    // GLES3 causes a performance regression in some devices when using CBUFFER.
+    #ifndef SHADER_API_GLES3
+    CBUFFER_START(AdditionalLightShadows)
+    #endif
+        float4x4    _AdditionalLightsWorldToShadow[MAX_VISIBLE_LIGHTS];
+        half4       _AdditionalShadowParams[MAX_VISIBLE_LIGHTS];
+        half4       _AdditionalShadowOffset0;
+        half4       _AdditionalShadowOffset1;
+        half4       _AdditionalShadowOffset2;
+        half4       _AdditionalShadowOffset3;
+        float4      _AdditionalShadowmapSize; // (xy: 1/width and 1/height, zw: width and height)
+    #ifndef SHADER_API_GLES3
+    CBUFFER_END
+    #endif
 #endif
-float4x4    _AdditionalLightsWorldToShadow[MAX_VISIBLE_LIGHTS];
-half4       _AdditionalShadowParams[MAX_VISIBLE_LIGHTS];
-half4       _AdditionalShadowOffset0;
-half4       _AdditionalShadowOffset1;
-half4       _AdditionalShadowOffset2;
-half4       _AdditionalShadowOffset3;
-float4      _AdditionalShadowmapSize; // (xy: 1/width and 1/height, zw: width and height)
-#ifndef SHADER_API_GLES3
-CBUFFER_END
-#endif
-#endif
+
 
 float4 _ShadowBias; // x: depth bias, y: normal bias
 
+
+// true if .z out of [0f, 1f]
 #define BEYOND_SHADOW_FAR(shadowCoord) shadowCoord.z <= 0.0 || shadowCoord.z >= 1.0
+
 
 struct ShadowSamplingData
 {
@@ -113,7 +122,7 @@ struct ShadowSamplingData
     half4 shadowOffset1;
     half4 shadowOffset2;
     half4 shadowOffset3;
-    float4 shadowmapSize;
+    float4 shadowmapSize;// (xy: 1/width and 1/height, zw: width and height)
 };
 
 ShadowSamplingData GetMainLightShadowSamplingData()
@@ -143,6 +152,8 @@ ShadowSamplingData GetAdditionalLightShadowSamplingData()
 // y: 1.0 if shadow is soft, 0.0 otherwise
 half4 GetMainLightShadowParams()
 {
+    // { light.shadowStrength, softShadowsProp, 0f, 0f }
+    // 其中，softShadowsProp 值为 0f 或 1f, 传递一个 bool 概念
     return _MainLightShadowParams;
 }
 

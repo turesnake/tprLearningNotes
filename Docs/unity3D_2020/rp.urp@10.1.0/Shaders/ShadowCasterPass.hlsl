@@ -25,6 +25,8 @@ float4 GetShadowPositionHClip(Attributes input)
     float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
     float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
 
+    // 叠加 constant depth bias: pos 朝 lightDir 方向外移一段
+    // 叠加 normal bias:         pos 朝 normalDir 方向内移一段
     float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _LightDirection));
 
 #if UNITY_REVERSED_Z

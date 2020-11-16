@@ -37,6 +37,10 @@
 #define CENTIMETERS_PER_METER 100
 #define METERS_PER_CENTIMETER rcp(CENTIMETERS_PER_METER)
 
+
+
+// machine epsilon: 机械精度，计算机所支持的 量最小的 float 值
+// 满足 1.0 + EPS = 1.0
 #define FLT_INF  asfloat(0x7F800000)
 #define FLT_EPS  5.960464478e-8  // 2^-24, machine epsilon: 1 + EPS = 1 (half of the ULP for 1.0f)
 #define FLT_MIN  1.175494351e-38 // Minimum normalized positive floating-point number

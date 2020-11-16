@@ -1,3 +1,6 @@
+// 
+// 光照渲染部分 最核心的 文件 !!!
+// 
 #ifndef UNIVERSAL_LIGHTING_INCLUDED
 #define UNIVERSAL_LIGHTING_INCLUDED
 
@@ -51,7 +54,7 @@ struct Light
     half3   direction;
     half3   color;
     half    distanceAttenuation;
-    half    shadowAttenuation;
+    half    shadowAttenuation;// [0,1], 0:full shadow  1:full lit
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,19 +111,23 @@ Light GetMainLight()
 {
     Light light;
     light.direction = _MainLightPosition.xyz;
-    light.distanceAttenuation = unity_LightData.z; // unity_LightData.z is 1 when not culled by the culling mask, otherwise 0.
+    // unity_LightData.z is 1 when not culled by the culling mask, otherwise 0.
+    light.distanceAttenuation = unity_LightData.z; 
     light.shadowAttenuation = 1.0;
     light.color = _MainLightColor.rgb;
 
     return light;
 }
 
+
 Light GetMainLight(float4 shadowCoord)
 {
     Light light = GetMainLight();
+    // 通过 shadowAttenuation 来实现 shadow 功能 [same in catlike]
     light.shadowAttenuation = MainLightRealtimeShadow(shadowCoord);
     return light;
 }
+
 
 Light GetMainLight(float4 shadowCoord, float3 positionWS, half4 shadowMask)
 {
@@ -128,6 +135,7 @@ Light GetMainLight(float4 shadowCoord, float3 positionWS, half4 shadowMask)
     light.shadowAttenuation = MainLightShadow(shadowCoord, positionWS, shadowMask, _MainLightOcclusionProbes);
     return light;
 }
+
 
 // Fills a light struct given a perObjectLightIndex
 Light GetAdditionalPerObjectLight(int perObjectLightIndex, float3 positionWS)
@@ -249,8 +257,15 @@ int GetAdditionalLightsCount()
 //                         BRDF Functions                                    //
 ///////////////////////////////////////////////////////////////////////////////
 
-#define kDielectricSpec half4(0.04, 0.04, 0.04, 1.0 - 0.04) // standard dielectric reflectivity coef at incident angle (= 4%)
 
+// 入射角的 标准 电介质反射率 系数 = 0.04
+// 即：材质的 电介质反射率 的最小值，为 0.04 
+// 反过来，metallic_refl 最大值不能超过 0.96
+// -------
+// standard dielectric reflectivity coef at incident angle (= 4%)
+#define kDielectricSpec half4(0.04, 0.04, 0.04, 1.0 - 0.04) 
+
+// 被部分 urp.shaders 应用
 struct BRDFData
 {
     half3 diffuse;
@@ -276,6 +291,8 @@ half ReflectivitySpecular(half3 specular)
 #endif
 }
 
+// 获得 1.0-metallic 这个值
+// 同时调整了 range: [0,1] -> [0,0.96]
 half OneMinusReflectivityMetallic(half metallic)
 {
     // We'll need oneMinusReflectivity, so
@@ -422,6 +439,7 @@ half DirectBRDFSpecular(BRDFData brdfData, half3 normalWS, half3 lightDirectionW
 
 return specularTerm;
 }
+
 
 // Based on Minimalist CookTorrance BRDF
 // Implementation is slightly different from original derivation: http://www.thetenthplanet.de/archives/255

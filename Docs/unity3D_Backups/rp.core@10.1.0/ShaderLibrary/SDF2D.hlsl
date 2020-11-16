@@ -3,6 +3,9 @@
 
 // Ref: https://www.iquilezles.org/www/articles/distfunctions2d/distfunctions2d.htm
 
+// 2D 有向距离场
+
+
 float CircleSDF(float2 position, float radius)
 {
     return length(position) - radius;

@@ -71,6 +71,7 @@ float3 TransformWorldToView(float3 positionWS)
 }
 
 // Transforms position from object space to homogenous space
+// 常用于 vert(); 中，OS -> HCS
 float4 TransformObjectToHClip(float3 positionOS)
 {
     // More efficient than computing M*VP matrix product
@@ -130,8 +131,11 @@ real3 TransformWorldToHClipDir(real3 directionWS, bool doNormalize = false)
 }
 
 // Transforms normal from object to world space
+// 常用
+// param: doNormalize -- 是否要在计算完后，将向量 normalize
 float3 TransformObjectToWorldNormal(float3 normalOS, bool doNormalize = true)
 {
+// 指明 模型的缩放比 是统一的，此变量可由用户 define
 #ifdef UNITY_ASSUME_UNIFORM_SCALING
     return TransformObjectToWorldDir(normalOS, doNormalize);
 #else
@@ -168,15 +172,21 @@ real3x3 CreateTangentToWorld(real3 normal, real3 tangent, real flipSign)
     return real3x3(tangent, bitangent, normal);
 }
 
+
+// 之所以使用 左乘 是因为 参数 tangentToWorld 是目标矩阵的 转置矩阵
 real3 TransformTangentToWorld(real3 dirTS, real3x3 tangentToWorld)
 {
     // Note matrix is in row major convention with left multiplication as it is build on the fly
     return mul(dirTS, tangentToWorld);
 }
 
+
 // This function does the exact inverse of TransformTangentToWorld() and is
 // also decribed within comments in mikktspace.h and it follows implicitly
 // from the scalar triple product (google it).
+// ---
+// "The scalar triple product"
+// 已知三个向量 abc，计算 dot((axb),c); ab叉积获得平面法线，之后再求法线与c 的 dot。
 real3 TransformWorldToTangent(real3 dirWS, real3x3 tangentToWorld)
 {
     // Note matrix is in row major convention with left multiplication as it is build on the fly
@@ -199,6 +209,7 @@ real3 TransformWorldToTangent(real3 dirWS, real3x3 tangentToWorld)
 
     return SafeNormalize( sgn * mul(matTBN_I_T, dirWS) );
 }
+
 
 real3 TransformTangentToObject(real3 dirTS, real3x3 tangentToWorld)
 {

@@ -71,7 +71,7 @@ float3 TransformWorldToView(float3 positionWS)
 }
 
 // Transforms position from object space to homogenous space
-// 常用在 vert(); 中，转换成成 HCPos : SV_POSITION
+// 常用于 vert(); 中，OS -> HCS
 float4 TransformObjectToHClip(float3 positionOS)
 {
     // More efficient than computing M*VP matrix product
