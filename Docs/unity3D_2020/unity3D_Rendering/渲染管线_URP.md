@@ -316,9 +316,27 @@ ray marching -- 光线步进
 
 
 
+# ----------------------------------------------#
+#     如何将数据，从 cpu 传入 gpu
+# ----------------------------------------------#
+
+# -- 1 -- 
+    Shader.SetGlobalFloat()
+    ---
+    可以设置 全局态的 properties，
+    每个 shader 都能访问到它
+
+# -- 2 --   
+    Material.SetFloat()
+    Material.GetFloat()
+    ---
+    与 特定的 shader 进行通信，传输 property
 
 
-
+# -- 3 --
+    ScriptableRendererFeature
+    ---
+    更复杂，更高级的 控制方式
 
 
 

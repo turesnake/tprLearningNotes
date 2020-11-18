@@ -15,21 +15,22 @@
 #define USING_STEREO_MATRICES
 #endif
 
-#if defined(USING_STEREO_MATRICES)
-// Current pass transforms.
-#define glstate_matrix_projection     unity_StereoMatrixP[unity_StereoEyeIndex] // goes through GL.GetGPUProjectionMatrix()
-#define unity_MatrixV                 unity_StereoMatrixV[unity_StereoEyeIndex]
-#define unity_MatrixInvV              unity_StereoMatrixInvV[unity_StereoEyeIndex]
-#define unity_MatrixInvP              unity_StereoMatrixInvP[unity_StereoEyeIndex]
-#define unity_MatrixVP                unity_StereoMatrixVP[unity_StereoEyeIndex]
-#define unity_MatrixInvVP             unity_StereoMatrixInvVP[unity_StereoEyeIndex]
 
-// Camera transform (but the same as pass transform for XR).
-#define unity_CameraProjection        unity_StereoCameraProjection[unity_StereoEyeIndex] // Does not go through GL.GetGPUProjectionMatrix()
-#define unity_CameraInvProjection     unity_StereoCameraInvProjection[unity_StereoEyeIndex]
-#define unity_WorldToCamera           unity_StereoMatrixV[unity_StereoEyeIndex] // Should be unity_StereoWorldToCamera but no use-case in XR pass
-#define unity_CameraToWorld           unity_StereoMatrixInvV[unity_StereoEyeIndex] // Should be unity_StereoCameraToWorld but no use-case in XR pass
-#define _WorldSpaceCameraPos          unity_StereoWorldSpaceCameraPos[unity_StereoEyeIndex]
+#if defined(USING_STEREO_MATRICES)
+    // Current pass transforms.
+    #define glstate_matrix_projection     unity_StereoMatrixP[unity_StereoEyeIndex] // goes through GL.GetGPUProjectionMatrix()
+    #define unity_MatrixV                 unity_StereoMatrixV[unity_StereoEyeIndex]
+    #define unity_MatrixInvV              unity_StereoMatrixInvV[unity_StereoEyeIndex]
+    #define unity_MatrixInvP              unity_StereoMatrixInvP[unity_StereoEyeIndex]
+    #define unity_MatrixVP                unity_StereoMatrixVP[unity_StereoEyeIndex]
+    #define unity_MatrixInvVP             unity_StereoMatrixInvVP[unity_StereoEyeIndex]
+
+    // Camera transform (but the same as pass transform for XR).
+    #define unity_CameraProjection        unity_StereoCameraProjection[unity_StereoEyeIndex] // Does not go through GL.GetGPUProjectionMatrix()
+    #define unity_CameraInvProjection     unity_StereoCameraInvProjection[unity_StereoEyeIndex]
+    #define unity_WorldToCamera           unity_StereoMatrixV[unity_StereoEyeIndex] // Should be unity_StereoWorldToCamera but no use-case in XR pass
+    #define unity_CameraToWorld           unity_StereoMatrixInvV[unity_StereoEyeIndex] // Should be unity_StereoCameraToWorld but no use-case in XR pass
+    #define _WorldSpaceCameraPos          unity_StereoWorldSpaceCameraPos[unity_StereoEyeIndex]
 #endif
 
 #define UNITY_LIGHTMODEL_AMBIENT (glstate_lightmodel_ambient * 2)
@@ -44,7 +45,7 @@ float4 unity_DeltaTime; // dt, 1/dt, smoothdt, 1/smoothdt
 float4 _TimeParameters; // t, sin(t), cos(t)
 
 #if !defined(USING_STEREO_MATRICES)
-float3 _WorldSpaceCameraPos;
+    float3 _WorldSpaceCameraPos;
 #endif
 
 // x = 1 or -1 (-1 if projection is flipped)

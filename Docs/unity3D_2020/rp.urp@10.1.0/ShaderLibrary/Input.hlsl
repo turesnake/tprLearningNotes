@@ -22,12 +22,12 @@ struct InputData
 {
     float3  positionWS;
     half3   normalWS;
-    half3   viewDirectionWS;
+    half3   viewDirectionWS; // viewDirWS
     float4  shadowCoord;// =posSTS
     half    fogCoord;
     half3   vertexLighting;
     half3   bakedGI;
-    float2  normalizedScreenSpaceUV;
+    float2  normalizedScreenSpaceUV;// uvSS
     half4   shadowMask;
 };
 

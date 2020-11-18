@@ -68,78 +68,78 @@
 // precision is suitable for its needs.  The shader
 // API (for now) can indicate whether half is possible.
 #if defined(SHADER_API_MOBILE) || defined(SHADER_API_SWITCH)
-#define HAS_HALF 1
+    #define HAS_HALF 1
 #else
-#define HAS_HALF 0
+    #define HAS_HALF 0
 #endif
 
 #ifndef PREFER_HALF
-#define PREFER_HALF 1
+    #define PREFER_HALF 1
 #endif
 
 #if HAS_HALF && PREFER_HALF
-#define REAL_IS_HALF 1
+    #define REAL_IS_HALF 1
 #else
-#define REAL_IS_HALF 0
+    #define REAL_IS_HALF 0
 #endif // Do we have half?
 
 #if REAL_IS_HALF
-#define real half
-#define real2 half2
-#define real3 half3
-#define real4 half4
+    #define real half
+    #define real2 half2
+    #define real3 half3
+    #define real4 half4
 
-#define real2x2 half2x2
-#define real2x3 half2x3
-#define real2x4 half2x4
-#define real3x2 half3x2
-#define real3x3 half3x3
-#define real3x4 half3x4
-#define real4x3 half4x3
-#define real4x4 half4x4
+    #define real2x2 half2x2
+    #define real2x3 half2x3
+    #define real2x4 half2x4
+    #define real3x2 half3x2
+    #define real3x3 half3x3
+    #define real3x4 half3x4
+    #define real4x3 half4x3
+    #define real4x4 half4x4
 
-#define half min16float
-#define half2 min16float2
-#define half3 min16float3
-#define half4 min16float4
+    #define half min16float
+    #define half2 min16float2
+    #define half3 min16float3
+    #define half4 min16float4
 
-#define half2x2 min16float2x2
-#define half2x3 min16float2x3
-#define half3x2 min16float3x2
-#define half3x3 min16float3x3
-#define half3x4 min16float3x4
-#define half4x3 min16float4x3
-#define half4x4 min16float4x4
+    #define half2x2 min16float2x2
+    #define half2x3 min16float2x3
+    #define half3x2 min16float3x2
+    #define half3x3 min16float3x3
+    #define half3x4 min16float3x4
+    #define half4x3 min16float4x3
+    #define half4x4 min16float4x4
 
-#define REAL_MIN HALF_MIN
-#define REAL_MAX HALF_MAX
-#define REAL_EPS HALF_EPS
-#define TEMPLATE_1_REAL TEMPLATE_1_HALF
-#define TEMPLATE_2_REAL TEMPLATE_2_HALF
-#define TEMPLATE_3_REAL TEMPLATE_3_HALF
+    #define REAL_MIN HALF_MIN
+    #define REAL_MAX HALF_MAX
+    #define REAL_EPS HALF_EPS
+    #define TEMPLATE_1_REAL TEMPLATE_1_HALF
+    #define TEMPLATE_2_REAL TEMPLATE_2_HALF
+    #define TEMPLATE_3_REAL TEMPLATE_3_HALF
 
 #else
 
-#define real float
-#define real2 float2
-#define real3 float3
-#define real4 float4
+    #define real float
+    #define real2 float2
+    #define real3 float3
+    #define real4 float4
 
-#define real2x2 float2x2
-#define real2x3 float2x3
-#define real2x4 float2x4
-#define real3x2 float3x2
-#define real3x3 float3x3
-#define real3x4 float3x4
-#define real4x3 float4x3
-#define real4x4 float4x4
+    #define real2x2 float2x2
+    #define real2x3 float2x3
+    #define real2x4 float2x4
+    #define real3x2 float3x2
+    #define real3x3 float3x3
+    #define real3x4 float3x4
+    #define real4x3 float4x3
+    #define real4x4 float4x4
 
-#define REAL_MIN FLT_MIN
-#define REAL_MAX FLT_MAX
-#define REAL_EPS FLT_EPS
-#define TEMPLATE_1_REAL TEMPLATE_1_FLT
-#define TEMPLATE_2_REAL TEMPLATE_2_FLT
-#define TEMPLATE_3_REAL TEMPLATE_3_FLT
+    #define REAL_MIN FLT_MIN
+    #define REAL_MAX FLT_MAX
+    #define REAL_EPS FLT_EPS
+    #define TEMPLATE_1_REAL TEMPLATE_1_FLT
+    #define TEMPLATE_2_REAL TEMPLATE_2_FLT
+    #define TEMPLATE_3_REAL TEMPLATE_3_FLT
 
 #endif // REAL_IS_HALF
 

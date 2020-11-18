@@ -11,20 +11,20 @@ urp 使用了一套新的 API
 
 # ------------------ #
 #   Core.hlsl      [urp]
-[file](../rp.URP@8.2.0/ShaderLibrary/Core.hlsl)
+[file](../rp.URP@10.1.0/ShaderLibrary/Core.hlsl)
 
 通常在 主 shader 中直接 include，包含常用变量和宏，以及更多 .hlsl 文件
 
 
 # ------------------ #
 #   Input.hlsl      [urp]
-[file](../rp.URP@8.2.0/ShaderLibrary/Input.hlsl)
+[file](../rp.URP@10.1.0/ShaderLibrary/Input.hlsl)
 
 
 
 # ------------------ #
 #   UnityInput.hlsl      [urp]
-[file](../rp.URP@8.2.0/ShaderLibrary/UnityInput.hlsl)
+[file](../rp.URP@10.1.0/ShaderLibrary/UnityInput.hlsl)
 
 
 float4 _ScreenParams;
@@ -34,7 +34,7 @@ float4 _ScreenParams;
 
 # ------------------ #
 #   Lighting.hlsl      [urp]
-[file](../rp.URP@8.2.0/ShaderLibrary/Lighting.hlsl)
+[file](../rp.URP@10.1.0/ShaderLibrary/Lighting.hlsl)
 包含：
     BRDF
     UniversalFragmentPBR()
@@ -43,7 +43,7 @@ float4 _ScreenParams;
 
 # ------------------ #
 #   Shadows.hlsl      [urp]
-[file](../rp.URP@8.2.0/ShaderLibrary/Shadows.hlsl)
+[file](../rp.URP@10.1.0/ShaderLibrary/Shadows.hlsl)
 包含：
     float4 TransformWorldToShadowCoord(float3 positionWS);
 
@@ -51,49 +51,49 @@ float4 _ScreenParams;
 
 # ------------------ #
 #   Common.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/Common.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/Common.hlsl)
 
 # ------------------ #
 #   CommonMaterial.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/CommonMaterial.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/CommonMaterial.hlsl)
 
 
 # ------------------ #
 #   Packing.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/Packing.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/Packing.hlsl)
 
 
 # ------------------ #
 #   Version.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/Version.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/Version.hlsl)
 
 
 # ------------------ #
 #   UnityInstancing.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/UnityInstancing.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/UnityInstancing.hlsl)
 
 
 # ------------------ #
 #   SpaceTransforms.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/SpaceTransforms.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/SpaceTransforms.hlsl)
 
 常见的 空间转换函数，和常用 矩阵的 get 函数（更直观）
 
 
 # ------------------ #
 #   Random.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/Random.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/Random.hlsl)
 
 
 
 # ------------------ #
 #   Macros.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/Macros.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/Macros.hlsl)
 
 
 # ------------------ #
 #   GeometricTools.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/GeometricTools.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/GeometricTools.hlsl)
 
 三维旋转函数：
   Rotate
@@ -119,19 +119,19 @@ float4 _ScreenParams;
 
 # ------------------ #
 #   Debug.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/Debug.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/Debug.hlsl)
 
 GetIndexColor
 
 
 # ------------------ #
 #   Color.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/Color.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/Color.hlsl)
 
 
 # ------------------ #
 #   BRDF.hlsl   [core]
-[file](../rp.core@8.2.0/ShaderLibrary/BRDF.hlsl)
+[file](../rp.core@10.1.0/ShaderLibrary/BRDF.hlsl)
 
 
 

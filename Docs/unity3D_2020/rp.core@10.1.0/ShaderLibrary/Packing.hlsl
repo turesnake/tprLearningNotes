@@ -33,6 +33,7 @@ real2 PackNormalOctRectEncode(real3 n)
     return real2(CopySign(r, z), g);
 }
 
+
 real3 UnpackNormalOctRectEncode(real2 f)
 {
     real r = f.r, g = f.g;
@@ -40,12 +41,15 @@ real3 UnpackNormalOctRectEncode(real2 f)
     // Solve for {x, y, z} given {r, g}.
     real x = 0.5 + 0.5 * g - abs(r);
     real y = g - x;
-    real z = max(1.0 - abs(x) - abs(y), REAL_EPS); // EPS is absolutely crucial for anisotropy
+    // machine epsilon: 机械精度，计算机所支持的 量最小的 float 值
+    // EPS is absolutely crucial for anisotropy
+    real z = max(1.0 - abs(x) - abs(y), REAL_EPS); 
 
     real3 p = real3(x, y, CopySign(z, r));
 
     return normalize(p);
 }
+
 
 // Ref: http://jcgt.org/published/0003/02/01/paper.pdf "A Survey of Efficient Representations for Independent Unit Vectors"
 // Encode with Oct, this function work with any size of output

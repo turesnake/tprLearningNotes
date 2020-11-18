@@ -33,14 +33,14 @@ Shader "tpr/tpr_008_Z_Buffer"
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                float4 scrPos : TEXCOORD0;
+                float4 uvSS : TEXCOORD0;
             };
 
             v2f vert ( appdata_base v )
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.scrPos = ComputeScreenPos( o.pos ); 
+                o.uvSS = ComputeScreenPos( o.pos ); 
                 return o;
             }
 
@@ -48,7 +48,7 @@ Shader "tpr/tpr_008_Z_Buffer"
             {
 
                 // --- <1> ---
-                float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.scrPos.xy/i.scrPos.w );
+                float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uvSS.xy/i.uvSS.w );
 
 
                 // --- <2> ---
@@ -57,12 +57,12 @@ Shader "tpr/tpr_008_Z_Buffer"
                 //
                 // tex2Dproj
                 //     和 常规的 tex2D 的区别在于
-                //     在正式采样之前，tex2Dproj 会主动执行 uv.xy/uv.w 这个 齐次除法 的操作
+                //     在正式采样之前，tex2Dproj 会主动执行 uvSS.xy/uvSS.w 这个 齐次除法 的操作
                 //     就像 <1> 中手动实现的那样
                 //
                 // UNITY_PROJ_COORD 几乎没做什么操作
                 //
-                //float depth = SAMPLE_DEPTH_TEXTURE_PROJ( _CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos) );
+                //float depth = SAMPLE_DEPTH_TEXTURE_PROJ( _CameraDepthTexture, UNITY_PROJ_COORD(i.uvSS) );
 
 
                 float ldepth = Linear01Depth(depth);

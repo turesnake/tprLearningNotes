@@ -63,13 +63,13 @@ Shader "Unlit/tprURP_003_Z_Buffer"
 
             float4 frag ( v2f i ) : SV_Target
             {
-                float2 uv = i.positionSS.xy/i.positionSS.w;
+                float2 uvSS = i.positionSS.xy/i.positionSS.w;
                 
                 // 两种写法都有效
                 // <-1->
-                float depth = SampleSceneDepth( uv );
+                float depth = SampleSceneDepth( uvSS );
                 // <-2->
-                //float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
+                //float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, uvSS).r;
 
                 float ldepth = Linear01Depth( depth, _ZBufferParams );
 

@@ -53,7 +53,15 @@ sampler2D _MainTex;
 Texture2D _MainTex;
 #endif
 float4 _MainTex_ST;
+
+// 假设 texture 的长宽为 (w,h) [pix]
+// float4( 1/w, 1/h, w, h )
+// ---
+// 这段存疑
+// y is negative when it belongs to a RenderTexture that has 
+// been flipped vertically by D3D anti-aliasing.
 float4 _MainTex_TexelSize;
+
 
 SamplerState uie_point_clamp_sampler;
 SamplerState uie_linear_clamp_sampler;
