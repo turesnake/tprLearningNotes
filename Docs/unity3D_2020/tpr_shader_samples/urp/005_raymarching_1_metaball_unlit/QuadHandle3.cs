@@ -48,7 +48,7 @@ public class QuadHandle3 : MonoBehaviour
     {
 
         if( Input.GetKeyDown( KeyCode.K ) ){
-            isAnimOn = true;
+            isAnimOn = isAnimOn ? false : true;
         }
 
         if( isAnimOn ){

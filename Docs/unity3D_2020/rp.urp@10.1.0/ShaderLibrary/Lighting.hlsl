@@ -897,6 +897,8 @@ half4 UniversalFragmentPBR(InputData inputData, half3 albedo, half metallic, hal
     return UniversalFragmentPBR(inputData, s);
 }
 
+
+
 half4 UniversalFragmentBlinnPhong(InputData inputData, half3 diffuse, half4 specularGloss, half smoothness, half3 emission, half alpha)
 {
     // To ensure backward compatibility we have to avoid using shadowMask input, as it is not present in older shaders
@@ -948,6 +950,8 @@ half4 UniversalFragmentBlinnPhong(InputData inputData, half3 diffuse, half4 spec
 
     return half4(finalColor, alpha);
 }
+
+
 
 //LWRP -> Universal Backwards Compatibility
 half4 LightweightFragmentPBR(InputData inputData, half3 albedo, half metallic, half3 specular,

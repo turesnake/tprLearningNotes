@@ -112,7 +112,9 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
 ///////////////////////////////////////////////////////////////////////////////
 
 
-
+//
+//    这个版本的实现 并不好 ！！！
+//
 // 计算 步进点 到 模型表面的 距离
 // param: P: 光线上步进的一点
 float distanceToSurface( float3 P ){
