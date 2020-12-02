@@ -490,7 +490,7 @@ Material Keywords:
     float4 colorB = _TexB.Sample( sampler_TexA, uv );
     float4 colorC = _TexC.Sample( sampler_TexA, uv );
 
-# ------- urp --------
+# ------- urp 2D --------
 # TEXTURE2D ( _Tex ); 
 # SAMPLER ( sampler_Tex );
 # float4 color = SAMPLE_TEXTURE2D( _Tex, sampler_Tex, uv );
@@ -505,6 +505,13 @@ Material Keywords:
     Vulkan.hlsl
 文件内，
 实质上和 上一种 hlsl 用法，是一样的...
+
+
+# ------- urp 3D --------
+# TEXTURE3D ( _Tex ); 
+# SAMPLER ( sampler_Tex );
+# float4 color = SAMPLE_TEXTURE3D( _Tex, sampler_Tex, uvw );
+和 2D 差不多
 
 
 
@@ -533,6 +540,8 @@ depth comparison:
 这样的名字。
 
 - 具体细节参考 manual: Using sampler states
+
+
 
 
 # ---------------------------------------------- #
