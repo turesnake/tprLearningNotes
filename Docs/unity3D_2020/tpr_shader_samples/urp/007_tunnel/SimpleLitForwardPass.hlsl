@@ -8,12 +8,12 @@
 
 // PI in Macros.hlsl
 
-float4 _QuadBasePosWS; //xyz posWS
+
+TEXTURE2D ( _TunnelTex ); SAMPLER ( sampler_TunnelTex );
 
 
 #include "noises/snoise.hlsl"
 #include "noises/gradientNoise3D.hlsl"
-#include "fireBall_0_1.hlsl"
 
 
 // ================================================ // 
@@ -36,6 +36,8 @@ struct Varyings
     DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
 
     float3 posWS                    : TEXCOORD2;    // xyz: posWS
+
+    float4 posSS                    : TEXCOORD8; // 存在 8 号吗？
 
 #ifdef _NORMALMAP
     float4 normal                   : TEXCOORD3;    // xyz: normal, w: viewDir.x
@@ -96,6 +98,7 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
 */
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 //                  Vertex and Fragment functions                            //
 ///////////////////////////////////////////////////////////////////////////////
@@ -138,6 +141,8 @@ Varyings LitPassVertexSimple(Attributes input)
     output.shadowCoord = GetShadowCoord(vertexInput);
 #endif
 
+    output.posSS = ComputeScreenPos( output.positionCS );
+
     return output;
 }
 
@@ -170,15 +175,19 @@ float4 LitPassFragmentSimple(Varyings input) : SV_Target
 
     InputData inputData;
     InitializeInputData(input, normalTS, inputData);
-    */
 
     //half4 color = UniversalFragmentBlinnPhong(inputData, diffuse, specular, smoothness, emission, alpha);
     //color.rgb = MixFog(color.rgb, inputData.fogCoord);
     //color.a = OutputAlpha(color.a, _Surface);
     //return color;
+    */
+
+    
 
     // ================================================ //
-    //                  Our Job
+    //                  Tunnel
+    // Learn from Inigo Quilez:
+    //     https://www.shadertoy.com/view/Ms2SWW
     // ================================================ //
     // 已知数据
     // inputData.viewDirectionWS = SafeNormalize(input.viewDir);
@@ -187,19 +196,64 @@ float4 LitPassFragmentSimple(Varyings input) : SV_Target
     // ...
 
 
+    //float3 viewPosWS = GetCurrentViewPosition();
     float3 rayOriginWS = GetCurrentViewPosition();
     //float3 rayDirWS = -normalize( inputData.viewDirectionWS );
     float3 rayDirWS = -SafeNormalize( input.viewDir );
 
+    float2 uvSS = input.posSS.xy / input.posSS.w; // 延迟的 齐次除法
+    float2 coordSS = uvSS * 2.0 - 1.0; // [-1,1]
+
+
     // ------------------------------ //
-    //        fire ball 
+    //           tunnel
     // ------------------------------ //
-    float4 color = firball_main(
-        rayOriginWS, 
-        rayDirWS, 
-        _QuadBasePosWS.xyz
-    );
-    return color;
+
+    // squareish tunnel
+    // 一个三维的 方形截面 的漏斗，(0,0)位置值最小（接近0）外侧逐渐升高
+    // 这个 deep 求得就是这个图形中的 z值
+    // ---
+    float powNum = 8.0;
+    float deep = pow( pow(abs(coordSS.x),powNum) + pow(abs(coordSS.y),powNum), 1.0/powNum );
+    //float deep = abs(coordSS.x) + abs(coordSS.y);
+
+
+    // angle of each pixel to the center of the screen
+    // 求 frag 在 球极坐标系 中的弧度值 [-PI,PI]
+    // PI 到 -PI 的分界线，是 -X轴。这个位置附近的 pix 如果不正确处理，将会出现 明显的分界线
+    // ---
+    // 为了处理这个问题，额外准备了值 b，在此计算中，左半球的所有pix，都将计算出一个 和右半球 相同的值
+    // 在 b 中，四个象限的值都是连续的: 0 -> PI/2 -> 0 -> PI/2 -> 0
+    float a = atan2(coordSS.y,coordSS.x);       // [-PI, PI]
+    float b = atan2(coordSS.y, abs(coordSS.x)); // [-0.5PI, 0.5PI]
+
+
+    float time = 0.2*_Time.y;// anim
+
+
+    // index texture by (animated inverse) radious and angle
+    // x: 1/deep * n
+    //     deep 越接近 (0,0) 值越接近0；1/deep 则能获得一个接近 无限大 的值
+    //     用这个值 去采样，可实现一个 无限神的 洞
+    // y: radian/PI
+    //     在 上下两个半圆中，各自获得一个 [0,1] 区间值 （顺时针方向）
+    // ---
+    // 
+    float2 uv1 = float2( 1/deep + time, a/PI );
+    float2 uvR = float2( 1/deep + time, b/PI );
+
+
+    // 用 ddx,ddy 来重新指定每个 pix 的 偏导数。而这个偏导数 则是从 uvR 中计算得到的
+    // 由于 uvR 是一个 4个象限都连续的 值，所以计算得到的 偏导数 也是连续的
+    // 修复了 -X轴 断裂的 问题
+    // ---    
+    float3 col = SAMPLE_TEXTURE2D_GRAD( _TunnelTex, sampler_TunnelTex, uv1, ddx(uvR), ddy(uvR) ).xyz;
+
+    // darken at the center    
+    col = col*deep * deep;
+
+    return float4( col, 1 );
+    
 
 }
 

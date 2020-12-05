@@ -64,7 +64,7 @@ static const float3 Color3 = Gamma20ToLinear( float3( 1.0, 0.03, 0.0 ) );
 static const float3 Color4 = Gamma20ToLinear( float3( 0.4, 0.02, 0.02 ) );
 
 
-/*
+
 // 上色
 float3 Shade( float noise ){
 
@@ -76,7 +76,7 @@ float3 Shade( float noise ){
 	float3 b = lerp(a,     Color3, c2);
 	return 	   lerp(b,     Color4, c3);
 }
-*/
+/*
 float3 Shade( float noise ){
 
 	float c1 = saturate(noise*5.0 + 0.43);
@@ -87,6 +87,7 @@ float3 Shade( float noise ){
 	float3 b = lerp(a,     Color3, c2);
 	return 	   lerp(b,     Color4, c3);
 }
+*/
 
 
 
@@ -136,17 +137,21 @@ float fbm( float3 x, in float H ){
 
     for( int i=0; i<numOctaves; i++ ){
 
-        float noise = saturate( abs( a * gradientNoise3D( f * x ) ));//[0,1]
+        // snoise 能塑造出更锐利的 火焰边界
+        // 两种 noise 的计算时间 相差无几
+        //float noise = saturate( abs( a * gradientNoise3D( f * x ) ));//[0,1]
+        float noise = saturate( abs( a * snoise( f * x ) ));//[0,1]
 
         // 对 noise 的处理，此段可以随便写
         // 目的是为了调出 更好的视觉效果
-        float scale = (float)i/(float)numOctaves;
-        float scale2 = (i+7.0)/7.0;
-        noise = lerp( noise, sin(0.5*PI*noise), scale ) * 0.7 * scale2;
+        //float scale = (float)i/(float)numOctaves;
+        float scale2 = (i+5.0)/5.0;
+        //noise = lerp( noise, sin(0.5*PI*noise), scale ) * 0.7 * scale2;
+        noise *= scale2 * 0.5;
 
         // --- //
         t += noise;
-        f *= 1.8;
+        f *= 2;
         a *= G;
     }
     return t;
@@ -158,11 +163,11 @@ float fbm( float3 x, in float H ){
 // ret.y: distance
 float2 RenderScene( float3 pos_ ){
 
-    float3 pos = pos_ * 0.65;
+    float3 pos = pos_ * 0.45;
     // 让 火焰动起来
     // 这个实现是存在问题的，当程序运行时间过长，float 的小数部分将丧失精度，
     // 导致火焰图案出错（变成重复的点状斑纹）
-    pos += float3(0, -1.9, 0) * _Time.y ; 
+    pos += float3(0, -1.3, 0) * _Time.y ; 
 
     float noise = saturate(abs(fbm( pos, 1 )));// [0,1]
 
