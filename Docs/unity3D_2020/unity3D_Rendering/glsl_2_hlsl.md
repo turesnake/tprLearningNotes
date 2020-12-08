@@ -19,6 +19,20 @@
 
 
 
+# ---------------------------------------------- #
+#              smoothstep
+# ---------------------------------------------- #
+# glsl hlsl is same:
+    ret smoothstep(min, max, x)
+    ---
+    Returns 0 if x is less than min; 
+    1 if x is greater than max; 
+    otherwise, a value between 0 and 1 if x is in the range [min, max].
+    ---
+    注意，返回值区间是 [0,1]
+    参数 min，max 只是用来和 参数 x 相互作用的 
+
+
 
 
 
