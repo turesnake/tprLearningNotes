@@ -1,5 +1,10 @@
 python-pip
 
+
+pip3 show numpy
+    查看 numpy 的相关信息
+
+
 一些关于python的 库安装问题
 
 pip3 install numpy   成功 (numpy-1.12.0)
