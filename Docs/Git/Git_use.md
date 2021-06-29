@@ -19,7 +19,17 @@
     将本地更新，推送到 远程库
 
 - git pull <远程主机名> <远程分支名>:<本地分支名>
-
+    用于从远程获取代码并合并本地的版本。
+    常用：
+    -1-:
+    将远程主机 origin 的 master 分支拉取过来，
+    与本地的 brantest 分支合并
+        git pull origin master:brantest
+    -2-:
+    如果本地分支也是 master，可简写为：
+        git pull origin master
+        或：
+        git pull origin
 
 
 - git remote -v
