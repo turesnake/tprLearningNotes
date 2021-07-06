@@ -1,6 +1,21 @@
 // CommandBuffer
 // 简略笔记 
 
+// commandbuffer 持有一组 rendering commands，这些 commands 可被设置在数个指定的节点上。
+// 在 camera rendering 期间：如：Camera.AddCommandBuffer()
+//       此函数通过 CameraEvent 来确定插入的 流程时间点
+
+// 在 light rendering 区间：如： Light.AddCommandBuffer()
+//       此函数通过 LightEvent 来确定插入的 流程时间点 
+//      （注意，它提供的插入点，和 CameraEvent 是不一样的）
+
+
+// 也可被直接“调用”，如： Graphics.ExecuteCommandBuffer() （个人猜测类似 submit() ）
+
+// （上面的函数 估计是被用于 built-in 管线）
+
+// 通常，cb 将被用来自定义 渲染管线。 
+
 
 #region 程序集 UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 // UnityEngine.CoreModule.dll
