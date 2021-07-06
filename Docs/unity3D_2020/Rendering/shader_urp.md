@@ -351,26 +351,49 @@ struct BRDFData
 # ---------------------------------------------- #
 URP Manual: URP ShaderLab Pass tags
 
-
-# - UniversalForward
-
-# - UniversalGBuffer
-
-# - UniversalForwardOnly
-
-# - Universal2D
-
-# - ShadowCaster
-    如果希望本 shader 所绑定的 mesh 成为 shadow caster
-    应当为此 shader，实现 shadow caster pass
-
-# - DepthOnly
-    The Pass renders only depth information from 
-    the perspective of a Camera into a depth texture.
-
-# - Meta
+也可自定义一个 LightMode tag
 
 # - SRPDefaultUnlit  [-Default-]
+    当一个 pass 不明确标记自己的 LightMode 时，urp 自动选用此项
+    ---
+    当渲染物体时，使用此 pass 来执行 额外的 pass。例如：离线绘制一个物体
+    此 tag 同时适用于 Forward / Deferred 渲染路径。
+
+# - UniversalForward
+    此 pass 渲染几何体，计算所有光源的贡献。用于 Forward 渲染路径
+
+# - UniversalGBuffer
+    此 pass 渲染物体时 不考虑任何光线。用于 Deferred 渲染路径
+
+# - UniversalForwardOnly
+    此 pass 渲染几何体，计算所有光源的贡献，和 UniversalForward 类似。
+    区别在于，本 tag 可被用于 Deferred 渲染。
+    当在 Deferred 渲染中，必须对某个物体做 Forward悬案时，使用本 pass。
+    比如 清漆材质物体，只能用 Forward渲染路径 来渲染。
+
+    如果一个 shader，必须同时执行 Forward / Deferred 渲染路径，要实现两个 pass
+    一个为 UniversalForward，另一个为 UniversalGBuffer。
+    如果一个 shader 必须执行 Forward 渲染，不管 urp选择了何种 渲染路径，
+    此时只需实现一个 pass：UniversalForwardOnly.
+    （没看懂）
+
+# - Universal2D
+    2d物体，2d光照。用于 2d renderer
+
+# - ShadowCaster
+    针对各个光源，将物体深度值 写进 shadowmap 或 depth texture
+
+# - DepthOnly
+    针对一个相机，将物体深度值（从相机出发的）写入 depth texture
+
+# - Meta
+    仅在 unity editor 中执行 lightmap 烘培时，unity 才执行此 pass。
+    Unity strips this Pass from shaders when building a Player.
+
+## URP 不支持一下 LightMode tag：
+    Always, ForwardAdd, PrepassBase, PrepassFinal, Vertex, VertexLMRGBM, VertexLM 
+
+
 
 
 # ---------------------------------------------- #

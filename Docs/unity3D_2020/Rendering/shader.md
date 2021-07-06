@@ -210,25 +210,50 @@ pass 数量越多，开销越大。
 # ------ #
 # : Tags
     和 SubShaders 中的 Tags 类似
-#   "LightMode" = "ForwardBase"
-        可选项：
-        Always
-        ForwardBase
-        ForwardAdd
-        Deferred
-        ShadowCaster  - 此pass 用来生成 shaderMap
-        MotionVectors
-        PrepassBase
-        PrepassFinal
-        Vertex
-        VertexLMRGBM
-        VertexLM
-        Meta  - 让此pass，专用于 baked-rendering, 而不是 runtime-rendering
-        CustomLit - 这是教程中自定义的... 难道可以自定义 ？？？
-        ----
-        在 urp 中，请在 manual 中搜索: URP ShaderLab Pass tags
 
-        CustomLit
+#   "LightMode" = "ForwardBase"
+
+        built-in管线 可选项：
+            Always [Default] 
+                - 总是执行此渲染，不考虑任何光照
+            ForwardBase 
+                - 用于 Forward 渲染，使用：遮蔽，主直射光，逐顶点光/球谐光，lightmaps
+            ForwardAdd
+                - 用于 Forward 渲染，使用：额外的逐像素光，每个灯一个 pass
+            Deferred
+                - 用于 Deferred 渲染，渲染 G-buffer
+            ShadowCaster  
+                - 将物体深度值写入 shadowmap，或 depth texture
+            MotionVectors
+                - 计算每个物体的 Motion Vectors
+            PrepassBase
+                - 用于 legacy Deferred 光照，渲染 法线 和 镜反指数
+            PrepassFinal
+                - 用于 legacy Deferred 光照，结合 textures，光照信息，荧光信息，计算最终的颜色值
+            Vertex
+                - 当物体没使用 lightmap 时，用于 legacy 顶点光照渲染。应用所有顶点灯光
+            VertexLMRGBM
+                - 当物体使用 lightmap 时，且平台的 lightmap 是 RGBM 格式时（PC/主机），用于 legacy 顶点光照渲染。
+            VertexLM
+                - 当物体使用 lightmap 时，且平台的 lightmap 是 double-LDR 格式时（移动端），用于 legacy 顶点光照渲染。
+            Meta  
+                - 此pass 不用于 传统渲染，仅用于 光照烘焙 或 实时GI。
+        ----
+        也可自定义一个 LightMode tag
+
+        ---- 文档介绍 ----
+        LightMode 是一个 预定义 Pass tag。在一帧中，unity 用它来决定：
+        -1- “是否执行此 Pass”
+        -2- “何时执行”
+        -3- “unity 该如何处理其 output” 
+
+        每条渲染管线都适用此 tag，不过各个名称的 LightMode tag 在不同管线中效果是有区别的。
+
+        在 built-in 管线中，如果你不设置一个 LightMode tag，unity在执行此 pass 时将不考虑任何 光照 和 阴影。
+        这个行为和使用 “Always” LightMode 是一样的。
+
+        在 srp 中，可使用 “SRPDefaultUnlit” 值来引用没有 LightMode 标记过的 pass。 
+
 
 
 #   "PassFlags" = "..."
