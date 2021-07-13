@@ -120,7 +120,7 @@ srp batcher 几乎支持所有平台。（图标显示，2019.2 开始各平台�
 
 SRP Batcher 通过 批处理 “Bind 和 Draw commands序列” 来降低 GPU的设置开销。
 
-![SRP Batch 流程图](官方文档图-01.png)
+![SRP Batch 流程图](官方文档_srp-01.png)
 简述：
     == 对于传统 Batch 来说，每个周期：==
         -- 收集 系统内存 中的所有 内置数据，填入 Object CBUFFER
@@ -154,7 +154,7 @@ SRP Batcher 能让 mat数据 长期存在于 GPU 内存中。如果一个 mat �
 就不需要重新设置并将新版本上传到 GPU。相反，SRP 使用一个 专用代码路径，将 unity引擎中的 roperties 
 快速上传到 GPU 的一个大型 buffer 中，如图：
 
-![SRP Batch 图2](官方文档图-02.png)
+![SRP Batch 图2](官方文档_srp-02.png)
 简述：
     它将所有 obj 的 Unity Engine properties 集中存储在一个 大的 GPU buffer 中
     而 mat数据 则被单独储存在 GPU 的 mat CBUFFER 中，已应付 随时修改。这些 CBUFFER 是长期存在的
