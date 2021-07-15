@@ -97,7 +97,7 @@ forward rendering 中的 “实时光源” 是很昂贵的。你可以控制在
 
 # Implementation Details
 一些最亮的 光源 会 逐像素渲染。然后，每个"顶点"(不是像素)最多计算 4个 点光源。剩余的光源被计算为 球谐。
-基于以下规则来 安排不同光源：
+基于以下规则来 调度不同光源：
 
 -- Render Mode 设置为 Not Important 的光源，总是 逐顶点 或 球谐。
 -- 最亮的 直射光 总是 逐像素
@@ -260,10 +260,10 @@ g-buffer textures 被设置为 全局 shader properties, 以便后续的 shader 
 #     Extending the Built-in Render Pipeline with CommandBuffers
 # ================================================================ #
 
-一个 cb 持有一组 rendering commands(比如 如何设置 render target,如何绘制给定的 mesh). 你可以指示unity "安排" 和 "执行" 这些 commands,在 built-in 渲染管线 的数个时间点上. 以此来 客制/拓展 unity 渲染功能.
+一个 cb 持有一组 rendering commands(比如 如何设置 render target,如何绘制给定的 mesh). 你可以指示unity "调度" 和 "执行" 这些 commands,在 built-in 渲染管线 的数个时间点上. 以此来 客制/拓展 unity 渲染功能.
 
 可以使用  Graphics.ExecuteCommandBuffer API 立即执行 cb. 
-或"安排"它们,最后在想要的时间点 一股脑执行. "安排"可通过 Camera.AddCommandBuffer API, 它依赖  CameraEvent enum. 或通过  Light.AddCommandBuffer API, 它依赖 LightEvent enum.
+或"调度"它们,最后在想要的时间点 一股脑执行. "调度"可通过 Camera.AddCommandBuffer API, 它依赖  CameraEvent enum. 或通过  Light.AddCommandBuffer API, 它依赖 LightEvent enum.
 
 注意, cb API 中的部分功能, 只在特定显卡上运行. 比如,和 光追相关的功能, 依赖于 DX12.
 

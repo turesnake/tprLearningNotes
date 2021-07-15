@@ -20,7 +20,7 @@ srp 是一套 API，允许用户用 C# 配置渲染 commands。unity 将这些 c
 # ScriptableRenderContext
 这是一个类，它在 “srp中的 客户 c#代码” 和 “unity底层图形代码（可能为c++）” 之间做连接。
 
-使用此 context API 来 安排和执行 渲染指令。
+使用此 context API 来 调度和执行 渲染指令。
 
 # Entry points and callbacks
 使用如下指令，使得 unity 可在特定时间调用 你的 c# 代码：
@@ -45,33 +45,33 @@ srp 是一套 API，允许用户用 C# 配置渲染 commands。unity 将这些 c
 #     Scheduling and executing rendering commands 
 #     in the Scriptable Render Pipeline
 # ================================================================ #
-本网页介绍如何在 srp 中 安排和执行 渲染 commands。
+本网页介绍如何在 srp 中 调度和执行 渲染 commands。
 -- 要么使用 commandbuffers，
 -- 要么直接使用 ScriptableRenderContext API调用
 
 本文也适用于 urp，hdrp。
 
-在 srp 中，你先使用 c# 来 配置和安排 渲染 commands。
+在 srp 中，你先使用 c# 来 配置和调度 渲染 commands。
 然后，你再要求 unity图形底层代码去 执行这些 commands，在那里，它们将向 gpu 发送指令。
 
 两种方法都可以实现此目标：
--1- 立刻 “execute” commandbuffers （其实还是安排，仍然是延时执行）
+-1- 立刻 “execute” commandbuffers （其实还是调度，仍然是延时执行）
 -2- 调用 ScriptableRenderContext API
 
 # 方法一：Using the ScriptableRenderContext APIs
 srp 渲染工作采用 延时执行。
 
-想要 “安排” 渲染 commands，你可以：
+想要 “调度” 渲染 commands，你可以：
 
 -- 使用 ScriptableRenderContext.ExecuteCommandBuffer(), 
     将 commandbuffers 传递给 ScriptableRenderContext
 
--- 使用  ScriptableRenderContext.Cull() 来“安排” cull 操作
-    或   ScriptableRenderContext.DrawRenderers() 来“安排”  renderer 的绘制
+-- 使用  ScriptableRenderContext.Cull() 来“调度” cull 操作
+    或   ScriptableRenderContext.DrawRenderers() 来“调度”  renderer 的绘制
 
 最后，调用  ScriptableRenderContext.Submit 来要求 unity 正式执行上文堆积的 commands。
 不管你是用 上文提及的哪一种方法来 “schedule” commands 的，在内部，unity 都用相同方式来
-“安排”这些 commands。
+“调度”这些 commands。
 并且这些 commands 会一直堆积在那，直到你调用 submit().
 
 
@@ -288,11 +288,11 @@ srp 依靠 LightMode pass tag 来确认 如何渲染几何体。
 
 # Clearing the render target
 render target 可以是屏幕，也可以是一张 texture。
-依靠 commandbuffer 来 “安排” clear 任务：
+依靠 commandbuffer 来 “调度” clear 任务：
 
     var cmd = new CommandBuffer();
     cmd.ClearRenderTarget(true, true, Color.black);
-    context.ExecuteCommandBuffer(cmd); // 只“安排”，不是立刻实施
+    context.ExecuteCommandBuffer(cmd); // 只“调度”，不是立刻实施
     cmd.Release();
     ...
     context.Submit(); // 真正的实施
@@ -325,7 +325,7 @@ render target 可以是屏幕，也可以是一张 texture。
 -5- 调用 ScriptableRenderContext.DrawRenderers(), 
     将上述 三种 setting 数据 传进去
     ---
-    这个 draw 指令会被 “安排” 下来，直达未来的 submit() 才会被统一执行。
+    这个 draw 指令会被 “调度” 下来，直达未来的 submit() 才会被统一执行。
 
 
 
