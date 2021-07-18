@@ -511,8 +511,147 @@ Shader "EffectShader" {
 ## =========================================================== #
 #       Compute shaders
 ## =========================================================== #
+主要用于 gpgpu 运算. 
+unity 中的 compute shader 和 DirectX 11 DirectCompute 技术很相似. 
+各平台的支持情况为:
+--
+    Windows and Windows Store, with a DirectX 11 or DirectX 12 graphics API and Shader Model 5.0 GPU
+--
+    macOS and iOS -- using Metal graphics API
+--
+    Android, Linux and Windows platforms with Vulkan API
+--
+    Modern OpenGL platforms (OpenGL 4.3 on Linux or Windows; OpenGL ES 3.1 on Android). Note that Mac OS X does not support OpenGL 4.3
+--
+    Modern consoles (Sony PS4 and Microsoft Xbox One)
 
-下次翻译...
+可在运行时,通过 SystemInfo.supportsComputeShaders 询问当前平台是否支持 compute shader.
+
+# Compute shader Assets
+是个后缀为 .compute 的文件, 它们用 DirectX 11 hlsl 语言编写. 
+
+以下是个例子, 它将 output texture 写满红色:
+# --
+// test.compute
+#pragma kernel FillWithRed
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> res;
+
+[numthreads(1,1,1)]
+void FillWithRed (uint3 dtid : SV_DispatchThreadID)
+{
+    res[dtid.xy] = float4(1,0,0,1);
+}
+
+
+这个例子中只有一个 compute kernel, 它可被理解为一个函数. kernel 可以有多个. 
+
+#pragma kernel 这一行后面不能跟 //注释语句
+
+#pragma kernel 语句后可跟随一组 预处理宏, 它们会在 kernel
+被编译时 被定义. 举例:
+# --
+#pragma kernel KernelOne SOME_DEFINE DEFINE_WITH_VALUE=1337
+#pragma kernel KernelTwo OTHER_DEFINE
+// ...
+
+
+# Invoking compute shaders
+在 c# 脚本中, 定义一个 ComputeShader 类的变量, 将其绑定到 那个 asset 上.
+这允许你使用 ComputeShader.Dispatch 来调用这个 compute shader.
+
+和 compute shader 关系较近的是  ComputeBuffer 类, 它可定义任意数据 buffer
+(“structured buffer” in DX11 lingo).
+也可从 compute shader 向 render texture 写入数据, 如果它们拥有  “random access” flag (“unordered access view” in DX11)
+具体可查看  RenderTexture.enableRandomWrite 函数.
+
+# Texture samplers in compute shaders
+在 unity 中, texture 和 sampler 不是分开的objs. 想要使用它们, 必须遵守以下某一条规则:
+--
+    使用和 texture 相同的名字,在头部添加 "sampler", 
+    如:
+    Texture2D    MyTex
+    SamplerState samplerMyTex
+    这样,两者就被绑定了 (滤波/拓展/各向同性 等属性)
+--
+    使用一个 预定义的 sampler. sample 的名字必须包含:
+    "Linear" or "Point" (for filter mode)
+    以及 "Clamp" or "Repeat" (for wrap mode)
+    如:
+    SamplerState MyLinearClampSampler
+    这个 sampler 拥有 线性滤波, 和 Clamp wrap mode.
+
+更多信息请看:
+https://docs.unity.cn/2021.1/Documentation/Manual/SL-SamplerStates.html
+
+
+# Cross-platform support
+使用 hlsl 编写 compute shader, unity 会将它转换为其它 图形API 语言.
+同时,这里存在一些注意点:
+
+# - Cross-platform best practices
+DirectX 11 (DX11) 支持的很多 actions, 在别的平台上并不被支持 (比如 Metal or OpenGL ES). 因此，你应该始终确保 shader 在提供较少支持的平台上具有定义良好的行为，而不是仅在DX11上。有几件事需要考虑：
+
+--
+    "越界内存访问"是糟糕的. 
+    当这样做时, DX11 在做 读操作时,会返回0. 当支持较少的平台此时可能会让 gpu crash.
+    注意DX11特有的漏洞，缓冲区大小与线程组大小的倍数不匹配，试图从缓冲区的开头或结尾读取相邻的数据元素，以及类似的不兼容性。
+--
+    初始化你的资源.
+    新的 buffer 和 texture 的内容是未定义的. 有的平台将它们清零, 有的则不会,甚至里面有 NaNs
+--
+    绑定你的 compute shader 声明的所有资源.
+    即便你知道,在当前分支中 你的 shader 不会用到某些资源, 你仍然要确保它们的绑定.
+
+
+# - Platform-specific differences
+--
+    Metal (for iOS and tvOS platforms) 在 texture 中不支持 atomic 操作. 
+    它在 buffer 上也不支持 GetDimensions 询问.
+    如果有需要, 应该将 buffer 的尺寸信息 当作一个 常数值, 手动传入 shader 中
+    (而不是在 shader 中询问这个长度值)
+--
+    OpenGL ES 3.1 (for (Android, iOS, tvOS platforms) 单位时间只支持 4 个 compute buffers. 实际使用中往往需要更多的. 所以, 此时就需要把数据 组合进 struct 中, 而且为每种数据 单独搞一个 compute buffer.
+
+
+# HLSL-only or GLSL-only compute shaders
+也可阻止 unity 将 hlsl 源码转换为别的语言代码. 然后,为其它平台,手动编写 glsl代码.
+
+下面的信息仅针对 HLSL-only or GLSL-only compute shader, 而不是针对 跨平台 shader. 
+--
+    由 CGPROGRAM and ENDCG 包裹的代码, 不支持 hlsl 平台
+--
+    由 GLSLPROGRAM and ENDGLSL 包裹的代码, 被当成 glsl源码, 这仅在 OpenGL or GLSL 平台工作. 
+    还应注意，虽然自动转换的 shader 遵循缓冲区上的HLSL数据布局，但手动编写的GLSL着色器遵循GLSL布局规则。
+
+# Variants and keywords
+可使用:  #pragma multi_compile 和 #pragma multi_compile_local 指令 编译数个 variants. 这方面和常规 shader 一样. 这些指令会影响一个文件中的所有 kernel 函数.
+
+注意, 常规shader 和 compute shader 共享 global keywords.
+开启/关闭 一个  global keyword, 将影响所有 常规shader 和 compute shader.
+
+使用函数:
+    Shader.EnableKeyword, 
+    Shader.DisableKeyword, 
+    CommandBuffer.EnableKeyword,
+    CommandBuffer.DisableKeyword
+来 开启/关闭 这些 global keyword.
+
+使用函数:
+    ComputeShader.EnableKeyword
+    ComputeShader.DisableKeyword
+来 开启/关闭 compute shader 中的 局部 keywords.
+
+使用:
+    IPreprocessComputeShaders.OnProcessComputeShader
+来将 compute shader variant 从 build 中剥离.
+
+
+
+
+
 
 
 

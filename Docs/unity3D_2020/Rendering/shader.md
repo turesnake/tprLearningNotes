@@ -167,6 +167,7 @@ pass 数量越多，开销越大。
         Overlay            - 4000
         不光可以选择这几项，还可以写为：Geometry+1, 来获得 2001.
         实现更精细化的 queue 次序管理
+
 #   "RenderType" = "Opaque"
         可选项：
         Opaque
@@ -176,14 +177,17 @@ pass 数量越多，开销越大。
 
 #   "DisableBatching"
         可选项：True, False(default), LODFading
+
 #   "ForceNoShadowCasting"
         可选项：
         True  - obj 不会生成投影
         False
+
 #   "IgnoreProjector"
         可选项：
         True  - obj 不会受到 Projectors 的影响（Projector 在 URP 中无法使用）
         False
+        
 #   "CanUseSpriteAtlas"
         2D sprite 才会用到
 
