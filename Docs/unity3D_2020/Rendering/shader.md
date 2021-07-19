@@ -292,11 +292,13 @@ pass 数量越多，开销越大。
             On(default) - 写入 depth buffer
             Off         - 不写入（如，渲染半透明物体）
         Set depth buffer writing mode.
+
 #   Offset Factor, Units
         需要两个参数，
         Set Z buffer depth offset
         这样，原本两个处于同一深度的 obj，因为 Offset 设置得不同，最后也会出现前后关系
         可以让一些 obj 始终处于前方
+        缓解 shadowmap 中的 自遮挡 问题.
 
 
 #   Blend

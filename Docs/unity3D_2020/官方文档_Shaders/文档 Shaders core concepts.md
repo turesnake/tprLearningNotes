@@ -106,7 +106,8 @@ Pass 包含的 shader programs 被组织为若干个 shader variants. shader var
 当 unity 使用 shader object 渲染几何体时, 或者 shader LOD值, or 激活的渲染管线 发生改变时:
 
 -1- 
-    unity 便利 list 中的所有 SubShaders, 检测它们: 是否与当前硬件兼容, 高于还是低于 当前 shader LOD, 是否与激活的渲染管线兼容
+    unity 遍历 list 中的所有 SubShaders, 检测它们: 是否与当前硬件兼容, 高于还是低于 当前 shader LOD, 是否与激活的渲染管线兼容
+    (LOD 值越小,越优先被执行)
 -2- 
     如果 list 包含一或多个 符合上述条件的 SubShaders, 则选择其中的第一个. 将其选为 active SubShader
 -3- 
