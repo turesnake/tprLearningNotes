@@ -3,6 +3,9 @@
 # ================================================================ #
 大部分内容 适用于 built-in shader。
 
+已在别的文件中更为正式地翻译了 部分官方文档,
+此文件中地部分内容将被删除
+
 
 # ---------------------------------------------- #
 #             杂乱的信息
@@ -33,35 +36,15 @@
     这个过程必须提前在 app 编译阶段完成
 
 
-# -------- #
-# : FallBack "VertexLit"
-    （此语句 放在 SubShader{} 语句块 的后面）
-    表示：
-    万一上面的几个 SubShader 都不能用，
-    使用 "VertexLit" 指向的 shader 程序来替代
-
-
-# -------- #
-# : CustomEditor "name"
-    自由定义 material inspector 的显示结果
-
-
-# -------- #
-Usepass “Specular/FORWARD”
-    复用一个 别处定义的 pass 代码块
-    ---
-    可以通过 Name “MyPassName” 来为一个 pass 起名字
-
-
 # ---------------------------------------------- #
 #           新旧变量/函数 升级名单
 # ---------------------------------------------- #
 
-# mul(UNITY_MATRIX_MVP,*) -> UnityObjectToClipPos(*)
+mul(UNITY_MATRIX_MVP,*) -> UnityObjectToClipPos(*)
 
-# _Object2World -> unity_ObjectToWorld  [uniform mat4]
+_Object2World -> unity_ObjectToWorld  [uniform mat4]
 
-# _LightMatrix0 -> unity_WorldToLight  [float4x4]
+_LightMatrix0 -> unity_WorldToLight  [float4x4]
 
 
 
@@ -102,13 +85,6 @@ Usepass “Specular/FORWARD”
 其实是 Material properties 
 它们 不会显示在 当前 shader 文件的 Inspector 面板
 而是在与其绑定的 Mat 的 Inspector 面板 上。
-
-
-_MainTex:
-    以此命名的 属性变量，默认为 mat 的 main texture
-
-_Color:
-    以此命名的 属性变量，默认为 mat 的 main color
 
 # --
 texture propertie，一般拥有一些捆绑的信息：
@@ -274,49 +250,6 @@ pass 数量越多，开销越大。
     注意，尽管我们定义的 name 可以是任意 大小写字母
     但在 UsePass 调用时，pass name 必须全大写
 
-
-# ------ #
-# : Render states
-    一些 配置设置
-#   Cull Back
-        可选: 
-            Back(default) - 只渲染正面
-            Front         - 只渲染背面
-            Off           - 两面都渲染
-        Set polygon culling mode
-#   ZTest LEqual
-        可选: Less | Greater | LEqual(default) | GEqual | Equal | NotEqual | Always
-        Set depth buffer testing mode.
-#   ZWrite On
-        可选: 
-            On(default) - 写入 depth buffer
-            Off         - 不写入（如，渲染半透明物体）
-        Set depth buffer writing mode.
-
-#   Offset Factor, Units
-        需要两个参数，
-        Set Z buffer depth offset
-        这样，原本两个处于同一深度的 obj，因为 Offset 设置得不同，最后也会出现前后关系
-        可以让一些 obj 始终处于前方
-        缓解 shadowmap 中的 自遮挡 问题.
-
-
-#   Blend
-        ...
-#   ColorMask RGB
-        可选: 
-        RGBA(default) - 写入全部四个通道
-        A             - 只写入 alpha 通道
-        0             - 所有通道都不写入
-        any combination of R, G, B, A -
-        ---
-        Set color channel writing mask
-
-
-# ------ #
-# : CGPROGRAM ... ENDCG
-    pass 中的主体内容，全部编写在这两个 关键词锁定的区间内。
-
 # ------ #
 # : #pragma vertex vert
 # : #pragma fragment frag
@@ -328,21 +261,7 @@ pass 数量越多，开销越大。
 # : #include "UnityCG.cginc"
     导入了一些 常规函数和变量名，可以简化程序编写
 
-# ------ #
-# : struct v2f
-    "vertex to fragment" 
-    一些需要在 vs，fs 之间传输的数据，
-    通常，v2f 是 vert 函数的 返回值，frag 函数的 参数
-    
-
-# ---------------------------------------------- #
-#         CGPROGRAM / HLSLPROGRAM   
-# ---------------------------------------------- #
-2019年起，unity 全面换用 HLSL，原本的 Cg 语言只剩下一点 关键词和扩展
-
-使用 CGPROGRAM 还是 HLSLPROGRAM，区别在于 unity 将自动 include 的文件不同。
-
-
+ 
 
 # ---------------------------------------------- #
 #               SV_POSITION

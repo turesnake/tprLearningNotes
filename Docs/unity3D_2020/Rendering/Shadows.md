@@ -49,7 +49,7 @@ Shadow Mapping 是一种技术，unity 用它来实现 光照投影。
 每一盏灯，生成自己的 Shadow Map，就好比每一个 camera，生成自己的 depty texture。
 
 所以，Shadow Map，是围绕着一盏灯光，而存在的：
-Shadow Map 上的每个像素，记载了：沿着这个放心，本光能照射到的第一个 surface 的 距离值
+Shadow Map 上的每个像素，记载了：沿着这个方向，本光能照射到的第一个 surface 的 距离值
 
 -1- 从 light 出发，生成一张 Shadow Map，记录每个像素的 z-deep 值
 -2- 从 camera 出发，针对将要渲染的每个 像素点，转换计算出 它所对应的 light-space pos

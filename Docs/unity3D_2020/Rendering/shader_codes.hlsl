@@ -38,6 +38,8 @@ void both_frag(){
     float2 wcoord = posSS.xy / posSS.w; // [0,1]
 }
 
+还有一个思路是使用 VPOS semantic, 可以在全局搜索这个词来查找用法.
+
 
 // ---------------------------------------------- //
 //      normal: OS -> WS
