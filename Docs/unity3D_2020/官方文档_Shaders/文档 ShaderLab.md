@@ -1437,24 +1437,404 @@ stencil buffer 为 framebuffer 中得每个像素, 存储一个 8-bit 值.
 # stencil test 公式:
 (ref & readMask) comparisonFunction (stencilBufferValue & readMask)
 
+配置格式:
+# --
+Stencil
+{
+    Ref <ref>
+    ReadMask <readMask>
+    WriteMask <writeMask>
+    Comp <comparisonOperation>
+    Pass <passOperation>
+    Fail <failOperation>
+    ZFail <zFailOperation>
+    CompBack <comparisonOperationBack>
+    PassBack <passOperationBack>
+    FailBack <failOperationBack>
+    ZFailBack <zFailOperationBack>
+    CompFront <comparisonOperationFront>
+    PassFront <passOperationFront>
+    FailFront <failOperationFront>
+    ZFailFront <zFailOperationFront>
+}
+# ==
+注意,以上每一项都是 可选的
+
+
+# -------- #
+# ref 的可写值:
+    0~255 的整型值, 默认为 0.
+
+    参考值.
+    gpu 拿 stencil buffer 中某像素的值, 和 这个参考值做比较.
+    具体比较规则, 记录在 comparisonOperation 参数中.
+
+    此值被 readmask 或 writeMask 遮蔽, 具体哪个取决于是正在执行 读操作 还是 写操作.
+
+    gpu 也能将这个 参考值 写入 stencil buffer 中, 如果 参数: Pass, Fail 或 ZFail 的值为 "Replace"
+
+# -------- #
+# readMask 的可写值:
+    0~255 的整型值, 默认为 255.
+
+    当执行 stencil test 时, gpu 使用这个参数作为 掩码.
+    (作为掩码, 255 意味着 8个bit 上都写 1, 猜测是表示 全通过.)
+
+    观察上方的 stencil test 公式.
+
+# -------- #
+# writeMask 的可写值:
+    0~255 的整型值, 默认为 255.
+
+    当 gpu 想要向 stencil buffer 写入值时, 使用这个参数作为 掩码.
+    (作为掩码, 255 意味着 8个bit 上都写 1, 猜测是表示 全通过.)
+
+    类似其它掩码, 此掩码指定了, 8位中的哪些 bits 能被 写入操作所影响.
+    比如, 值为0 表示所有位 都不能写入,  而不是意味着 stencil buffer 将被写入 0.
+
+# -------- #
+# comparisonOperation
+# comparisonOperationFront
+# comparisonOperationBack
+# 的可写值:
+    比较操作
+    ( 具体可用值在下方: Comparison operation values 中 )
+    默认值为 "Always"
+
+    在 stencil test 中, gpu 作用在所有像素上的 操作.
+
+    comparisonOperation 这个 stencil test 会作用在所有 pix 中, 无论它们 是否朝向相机.
+    如果除了 comparisonOperationBack and comparisonOperationFront, 还定义了comparisonOperation, 那么 comparisonOperation 的值, 将覆盖上面两个定义.
+
+# -------- #
+# passOperation 
+# passOperationFront
+# passOperationBack
+# 的可写值:
+    一个 stencil 操作,
+    ( 具体可用值在下方: Stencil operation values 中 )
+    默认值为 "Keep"
+
+    如果一个像素同时通过了 stencil test 和 depth test. 
+    gpu 将在这个像素上执行的操作.
+
+    passOperation 作用在所有像素上, 无论它们是否朝向相机, 
+    如果除了 passOperationBack and passOperationFront, 还定义了 passOperation, 那么 passOperation 的值, 将覆盖上面两个定义.
+
+# -------- #
+# failOperation 
+# failOperationFront
+# failOperationBack
+# 的可写值:
+    一个 stencil 操作,
+    ( 具体可用值在下方: Stencil operation values 中 )
+    默认值为 "Keep"
+
+    当一个像素 没通过 stencil test, 
+    gpu 将在这个像素上执行的操作.
+
+    failOperation 作用在所有像素上, 无论它们是否朝向相机, 
+    如果除了 failOperationBack and failOperationFront, 还定义了 failOperation, 那么 failOperation 的值, 将覆盖上面两个定义.
+
+# -------- #
+# zFailOperation
+# zFailOperationFront
+# zFailOperationBack
+# 的可写值:
+    一个 stencil 操作,
+    ( 具体可用值在下方: Stencil operation values 中 )
+    默认值为 "Keep"
+
+    若一个像素 通过了 stencil test, 但没通过 depth test,
+    gpu 将在这个像素上执行的操作.
+
+    zFailOperation 作用在所有像素上, 无论它们是否朝向相机, 
+    如果除了 zFailOperation and zFailOperation, 还定义了 zFailOperation, 那么 zFailOperation 的值, 将覆盖上面两个定义.
+
+
+# =============== #
+# Comparison operation values
+在 c# 中, 这些值被 Rendering.CompareFunction enum 表达.
+
+[以下这些操作都是针对单个像素的]
+
+# Never 
+    stencil test 永远不成功
+# Less
+    当 参考值 小于 stencil buffer 中的值, 则 stencil test 成功
+# Equal
+    当 参考值 等于 stencil buffer 中的值, 则 stencil test 成功
+# LEqual
+    当 参考值 小于等于 stencil buffer 中的值, 则 stencil test 成功
+# Greater
+    当 参考值 大于 stencil buffer 中的值, 则 stencil test 成功
+# NotEqual
+    当 参考值 不等于 stencil buffer 中的值, 则 stencil test 成功
+# GEqual
+    当 参考值 大于等于 stencil buffer 中的值, 则 stencil test 成功
+# Always
+    stencil test 永远成功 (永远能通过)
+
+
+# =============== #
+# Stencil operation values
+在 c# 中, 这些值被 Rendering.Rendering.StencilOp enum 表达.
+
+[以下这些操作都是针对单个像素的]
+
+# Keep
+    保留 stencil buffer 中的当前值
+# Zero
+    将 0 写入 stencil buffer
+# Replace
+    将 参考值 写入 stencil buffer
+# IncrSat
+    将 stencil buffer 中当前值 +1, 如果这个值已经是 255了, 则维持在 255
+# DecrSat
+    将 stencil buffer 中当前值 -1, 如果这个值已经是 0了, 则维持在 0
+# Invert
+    将 stencil buffer 中当前值 的8个bit 全部反转
+# IncrWrap
+    将 stencil buffer 中当前值 +1, 如果这个值已经是 255了, 则将其变为 0
+# DecrWrap
+    将 stencil buffer 中当前值 -1, 如果这个值已经是 0了, 则将其变为 255
+
+
+# ===== 应用举例 1 ===== #
+# --
+Stencil
+{
+    Ref 2           // 参考值为 2
+    Comp Always     // stencil test 永远能通过
+    Pass Replace    // 既然 stencil test 已经默认通过了,
+                    // 那么只要 depth test 能通过,
+                    // 就能把 参考值 2 写入 stencil buffer
+}    
+# ==
+只要这个 pass/SubShader 能渲染到的屏幕区域, 都会在 对应的 stencil buffer 中写入 2, 作为标记.
+
+若想防止 后续 shader 绘制到 render target 的 此区域,
+或 限制它们, 让它们仅能绘制到此区域,
+就可用此设置.
+
+
+# ===== 应用举例 2 ===== #
+# --
+Stencil
+{
+    Ref 2       // 参考值为 2
+    Comp Less   // 当 参考值 2 小于 stencil buffer 中的值, 
+                // 则 stencil test 成功
+} 
+# ==
+如果只想绘制 render target 中的 没有被 masked 的区域,
+可用此设置.
+
+
+## =========================================================== #
+#    ShaderLab command: UsePass
+## =========================================================== #
+此 command 可以将 另一个 以命名的 shader object 中的 已命名的 pass 的内容, 插入到 本地. 
+以此来复用源代码.
+
+# Render pipeline compatibility
+全支持
+
+# Usage
+# 格式:
+# -- UsePass "Shader object name/PASS NAME IN UPPERCASE"
+
+    如果 已命名的 shader object 包含多个 SubShaders, uity 遍历这些 SubShaders 直到寻找到第一个 "包含给定名字的 pass" 的 SubShader.
+
+    如果一个 SubShader, 拥有多个 相同名字的 passes. unity 选择最后一个 目标名字的 pass
+
+    如果 unity 未能找到 目标名字的 pass, 它将会把这个 material 标记为 error material.
+
+# 示范:
+# --
+Shader "Examples/ContainsNamedPass"
+{
+    SubShader
+    {
+        Pass
+        {    
+            Name "ExampleNamedPass"
+            ...
+        }
+    }
+}
+# ==
+在上面代码中, 我们准备了一个 命名的 pass
+
+# -- 
+Shader "Examples/UsesNamedPass"
+{
+    SubShader
+    {
+        UsePass "Examples/ContainsNamedPass/EXAMPLENAMEDPASS"
+    }
+}
+# ==
+我们来寻找上方的那个 pass, 注意: pass name 要全大写
+
+路径中可以有多个 "/" 来表达目录层次关系.
+
+
+## =========================================================== #
+#    ShaderLab command: GrabPass
+## =========================================================== #
+此 command 新建一种特殊类型的 pass, 它能 抓取 当前 framebuffer 中的内容,
+放入一个 texture 中. 以便后续的 passes 来使用这个 texture.
+
+这个 command 会显著提高 cpu 和 gpu 的帧时间(性能被降低).
+若不是在 快速原型中, 通常不要使用此 command !!!! 并尝试以其它方式来实现你想要的效果.
+
+若你确实使用了本 command, 尽量减少 抓取屏幕 的次数, 要么通过减少使用此 command, 要么使用 "将屏幕抓取到 已命名的texture 中的 signature (签名)" (如果能用的话)
+
+# Render pipeline compatibility
+只有 built-in 管线支持.
+
+# Usage
+在 SubShader 块中使用本 command
+
+GrabPass 只在 framebuffer 中工作, 不能将其用于其它 render target, 比如 depth buffer.
+
+此 command 有两种格式, 它们的功能不相同, 并有不同的性能影响. 使用 带名字的texture 版本 能显著降低 屏幕抓取的次数, 从而降低对性能的影响.
+
+# 格式:
+# -- GrabPass { }
+    抓取 framebuffer 中的内容, 放入一个 texture, 这样你能在 同 SubShader 的后续 passes 中 访问这个 texture.
+
+    使用 "_GrabTexture" 为名来 指向这个 texture.
+
+    当你选用这个格式时, 每当 unity 渲染一个 "包含此 command 的" batch时, 都会执行 屏幕抓取操作. 这意味着就算在 同一帧内, 也会抓取数次: 每一batch 抓取一次.
+
+# -- GrabPass { "ExampleTextureName" }
+    将抓取的内容放入一个 texture, 这样你能在 本帧之内, 后续的多个 SubShader 的 passes 中,访问这个 texture.
+
+    texture 的名字由用户提供.
+
+    当使用此格式, 在一帧中, 当 unity 第一次遇到一个 batch, 此 bacth 包含了这个 "带名字的" command 时, 才执行 抓取操作.
+    意味着 一帧抓取一次.
+
+# Examples
+# --
+Shader "GrabPassInvert"
+{
+    SubShader
+    {
+
+        GrabPass { "_BackgroundTexture" }
+
+        // 在此 pass 中可以使用这个 texture
+        Pass
+        {
+            // 毕竟是个 texture, 要做纹理设置
+            sampler2D _BackgroundTexture;
+            ...
+        }
+    }
+}
+
+
+## =========================================================== #
+#    ShaderLab command: ZClip
+## =========================================================== #
+设置 gpu depth clip mode. 
+它决定了 gpu 如何处理 超出 近平面/远平面 的 frags
+
+此 command 对 渲染"stencil shadow" 很有用. 这样就不需要对 超出 远平面的 几何体 做特殊处理, 从而减少 render 操作.
+
+然而,此 command 会导致 错误的 "Z顺序"
+
+# Render pipeline compatibility
+全支持
+
+# Usage
+此 command 改写了 render state, 在 pass/SubShader 中都能使用
+
+# -- ZClip True
+默认设置
+将 depth clip mode 设置为 [clip]
+
+    超出的 frags 全部被 "抛弃了" (不执行后续渲染工作)
+
+# -- ZClip False
+将 depth clip mode 设置为 [clamp]
+
+    那些比 近平面 更近的 frags, 将被 clamp 到 近平面 这个深度
+    那些比 远平面 更远的 frags, 将被 clamp 到 远平面 这个深度
+
+    当你正在渲染 "stencil shadow", 可以用此设置
+
+
+# 关于 stencil shadow
+这是一个 正在退出历史舞台的 阴影算法.
+它只能制作由 几何体投射 的阴影, 且阴影边界非常锐利.
+它的质量也 受到 屏幕分辨率的影响.
+
+暂不展开.
+
+
+## =========================================================== #
+#    ShaderLab command: ZTest
+## =========================================================== #
+设置 几何体 通过/未通过 depth test 的检测条件.
+
+depth test 允许 gpu 拥有 "Early-Z" 功能, 以便在 渲染管线的早期阶段将 几何体 筛选掉, 同时确保 几何体 的正确排序. 
+
+可使用本 command 来实现类似 object occlusion 之类的 视觉效果.
+
+# Render pipeline compatibility
+全支持
+
+# Usage
+此 command 改写了 render state, 在 pass/SubShader 中都能使用
+
+# 格式
+ZTest [operation]
+
+# ---------- #
+# 参数 operation 可用值:
+
+# Less
+    只有当 几何体深度值 小于 "depth buffer 现有值", 此几何体才会被绘制 (靠近相机)
+# LEqual
+    只有当 几何体深度值 小于等于 "depth buffer 现有值", 此几何体才会被绘制 
+# Equal
+    只有当 几何体深度值 等于 "depth buffer 现有值", 此几何体才会被绘制 
+# GEqual
+    只有当 几何体深度值 大于等于 "depth buffer 现有值", 此几何体才会被绘制 
+# Greater
+    只有当 几何体深度值 大于 "depth buffer 现有值", 此几何体才会被绘制 
+# NotEqual
+    只有当 几何体深度值 不等于 "depth buffer 现有值", 此几何体才会被绘制 
+# Always
+    不执行 depth test. 任何深度的几何体都会被绘制
+
+
+## =========================================================== #
+#    ShaderLab command: ZWrite
+## =========================================================== #
+在渲染时, 设置 depth buffer 的内容是否被更新.
+通常, 实心物 要开启 zwrite
+半透明物 要关闭 zwrite.
+
+# Render pipeline compatibility
+全支持
+
+# Usage
+此 command 改写了 render state, 在 pass/SubShader 中都能使用
+
+# -- ZWrite On
+    开启写入
+
+# -- ZWrite Off
+    禁止写入
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# ------------------------ END ----------------------------- #
