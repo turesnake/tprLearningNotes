@@ -1101,46 +1101,476 @@ _TextureSampleAdd
 ## =========================================================== #
 #      Shader variants and keywords
 ## =========================================================== #
+可以编写一些 shader 小片段, 然后拿来做共享代码,.但当一个 keyword 被开启/禁用 时, 这个代码段会被编程成不同的 variants. 
+
+借用 variants, 可以将同一个 shader 分配给不同的 materials, 然后通过 keywords 的设置,获得不同的版本. 这意味着你的 shader代码只需编写一次, 就能最终编译获得多个 shader assets. 
+
+通过 启用/禁用 keywords, 你还可以通过 variants 来在运行时修改 shader 行为.
+
+拥有大量 variants 的 shader 被称为 “mega shaders” or “uber shaders”.
+unity 内置的 Standard Shader 就是一个 mega shader.
+
+# --------------------------------- #
+# Using shader variants and keywords
+
+# - Creating shader variants
+使用以下某个 progma指令 来新建 shader variant:
+
+    #pragma multi_compile
+    #pragma multi_compile_local
+    #pragma shader_feature
+    #pragma shader_feature_local
+
+可在 着色shader 和 compute shader 中使用它们.
+
+如果某个 keyword 只影响一个 shader stage, 可以对这些 指令 添加一个后缀, 来降低冗余的编译工作. 
+具体请看下方的 Stage-specific keyword directives 部分.
+
+然后,针对不同的 预处理指令, unity 会将这些 shader代码 编译多次.
+
+# - Enabling and disabling shader keywords
+使用如下 API 来 启用/禁用 shader keywords:
+
+Shader.EnableKeyword: 
+Shader.DisableKeyword: 
+                enable/disable a global keyword
+
+CommandBuffer.EnableShaderKeyword: 
+CommandBuffer.DisableShaderKeyword: 
+                use a CommandBuffer to enable/disable a global keyword
+
+Material.EnableKeyword: 
+Material.DisableKeyword: 
+                enable/disable a local keyword for a regular shader
+
+ComputeShader.EnableKeyword: 
+ComputeShader.DisableKeyword:
+                enable/disable a local keyword for a compute shader
+
+当你 启用/禁用 一个 keyword, unity会去使用对应的 variant.
+
+# - Stripping shader variants from your build
+可以阻止某些 variants 进入 build 包中. 一次来减少 build时间, 减小文件尺寸.
+
+使用如下 APIs:
+
+IPreprocessShaders.OnProcessShader:         
+        在 unity 将一个 常规shader 编译进 build 之前, 可调用的 callback
+
+IPreprocessComputeShaders.OnProcessComputeShader: 
+        在 unity 将一个 compute shader 编译进 build 之前, 可调用的 callback
+
+更多内容,查看此文章:
+https://blog.unity.com/technology/stripping-scriptable-shader-variants
 
 
+# --------------------------------- #
+# How multi_compile works
+示范代码:
+# --
+#pragma multi_compile FANCY_STUFF_OFF FANCY_STUFF_ON
+
+    此指令 生成两个 variants, 一个定义了 FANCY_STUFF_OFF, 另一个定义了 FANCY_STUFF_ON.
+    在运行时, 基于 material keyword (局部) 或 全局 keyword, unity 其中这两个 variant 中的一个. 
+    如果这两个 keyword 一个也没有启用, 则 unity 会默认使用 progma指令 中排第一个的,
+    也就是 FANCY_STUFF_OFF
+
+在单个 multi_compile 指令中, 可以放入任意多个 keywords,例如:
+# --
+#pragma multi_compile SIMPLE_SHADING BETTER_SHADING GOOD_SHADING BEST_SHADING
+
+若不想为 variant 生成 预定义的宏, 可以在这些 kwywords 的第一个位置 放一个 "__".
+这只是一种编程技巧. 关键字 "__" 没有任何特殊功能, 使用它只是为了节省 keywords 总数.
+在一个项目中, 可自定义的 keywords 数量总数是有上限的 (下文会提),
+举例:
+# --
+#pragma multi_compile __ FOO_ON
+
+    这个指令生成了 2 个 variants, 第一个定义了 keyword: __ (它不代表任何意义)
+    第二个定义了 keyword: FOO_ON (我们想要的一个变体)
+
+    在实际使用时, 如果我们没有开启 FOO_ON, 则 unity 会自动使用 第一个 variant,
+    它携带一个 __,  不起任何作用. (这正是我们想要的)
 
 
+# --------------------------------- #
+# Difference between shader_feature and multi_compile
+
+两者很类似, 唯一的区别是:
+shader_feature 中未使用的 variants, 不会被包含进最终的 build 包中.
+而 multi_compile 中的所有 variants, 不管是否被使用, 都会被包含进 build 包中.
+
+所以
+针对 material keyword (局部), 最好用 shader_feature
+针对 全局 keyword, 最好用 multi_compile
+
+此外,还存在一个只有一个 keyword 的写法:
+# --
+#pragma shader_feature FANCY_STUFF
+
+    它只是:
+#pragma shader_feature _ FANCY_STUFF
+    的简写形式.
 
 
+# --------------------------------- #
+# Combining several multi_compile lines
+看如下代码:
+# --
+#pragma multi_compile A B C
+#pragma multi_compile D E
+
+    第一行会生成 3 个变体, 但叠加第二行的 2 个变体后, 最终会获得 3*2=6 个变体!
+
+所以, 当你定义了 过多的 multi_compile 指令, 最终生成的 variants 数量是非常惊人的.
+比如, 10 行指令, 每行 2 个变体, 最终就会膨胀到 1024 个 variants
 
 
+# --------------------------------- #
+# Keyword limits
+unity 中, 一个项目内的 全局 keywords 数量的上限是 384 个. 而且 unity 自己还使用了 60 个.
+只有 全局 keyword 才占据这个数量名额. 
+所以要小心使用.
+
+# - Local keywords
+为了突破 全局keyword 数量限制, 可以改用 局部 keyword (material keyword):
+# --
+shader_feature_local
+multi_compile_local
+
+这两个 局部指令 只在 shader 内定义自己的 keyword. 
+
+当开始使用 局部kewyord 时, 程序性能可能发生变化, 但这个变化 取决于 项目是如何设置的.
+一个 shader 所关联的 局部/全局 keywords 数量 影响了性能: 推荐多使用 局部的, 少用全局的.
+
+如果 局部keyword 和 全局keyword 同名, 此时 unity 会优先使用 局部的.
+
+# -- Limitations  
+--
+    那些用来改写 全局 keyword 的 API, 不能改写 局部 keyword
+    (比如: Shader.EnableKeyword or CommandBuffer.EnableShaderKeyword)
+--
+    每个 shader 最多能有 64 个 局部 keywords
+--
+    If a Material has a local keyword enabled, and its shader changes to one that is no longer declared, Unity creates a new global keyword.
+    (没看懂...)
 
 
+# --------------------------------- #
+# Stage-specific keyword directives
+当新建一个 shader varinat 时, 默认行为是: 针对每个 variant, 生成整个 shader代码中的所有 stages. 
+
+万一那个 keyword 不影响所有 stage, 那么这个 "全部stage 都生成" 的行为就会导致冗余工作.
+当然, 在这个冗余的生成之后, unity 会把多余的 stage 再删掉. 这保证了 最终的 build 体积一定是不会变大的, 最后的运行时性能也不会受到影响.  但它确实影响了 variants 的编译时间.
+
+为避免此问题, 可使用 stage-specific keyword 指令. 它们在常规指令上 增加了 后缀.
+它们告诉 unity, 本 keyword 会影响哪些 stages. (没影响到的就不用编译了)
+
+# - Supported graphics APIs
+不是所有平台都支持 stage-specific keyword 指令:
+--
+    在 OpenGL and Vulkan 中编译 shader 时, editor 自动将任何 stage-specific keyword 指令 复原为 常规 keyword 指令 
+    (猜测是不支持)
+--
+    在 Metal 中编译 shader 时, vertex stage 和 tessellation stage 是绑定在一起的,
+    只要指定其中任何一个, 另一个 stage 也会被编译
+
+# - Using stage-specific keyword directives
+这些额外的后缀是:
+    _vertex
+    _fragment
+    _hull
+    _domain
+    _geometry
+    _raytracing
+
+比如写成:
+multi_compile_fragment
+shader_feature_local_vertex
+
+如果需要指定多个 stages, 可在后面跟上多个后缀
 
 
+# --------------------------------- #
+# Built-in multi_compile shortcuts
+
+在 built-in 管线中, 存在多种 缩写指令 (还是用于 variants)
+它们主要用来处理 不同的 光照, 阴影 和 lightmap.  
+
+multi_compile_fwdbase
+
+    编译所有被  PassType.ForwardBase 需要的 variants. 
+    这些 variants 处理不同的 lightmap类型, 以及 启用/禁用 主直射光的 阴影
+
+multi_compile_fwdadd
+
+    编译所有被 PassType.ForwardAdd 需要的 variants. 
+    这些 variants 处理 直射光, spot光, 点光源, 以及它们的 拥有 cookie texture 的 variants.
+
+multi_compile_fwdadd_fullshadows
+
+    和 multi_compile_fwdadd 类似, 但也包括对 灯光有 实时阴影 的能力。
+
+multi_compile_fog
+
+    多个 variants, 处理不同类型的 fog (off/linear/exp/exp2)
 
 
+大部分 内建缩写指令 生成多个 variants. 如果你知道你的项目 不需要它们, 可使用:
+#pragma skip_variants 来跳过一些 variants 的编译.
+比如:
+# --
+#pragma multi_compile_fwdadd
+#pragma skip_variants POINT POINT_COOKIE
+
+    第一句生成了 数个 variants, 第二句又把其中的一些给 删除了
+    (哪些包含 keywors: POINT 或 POINT_COOKIE 的 variants )
 
 
+# --------------------------------- #
+# Graphics tiers and shader variants
+# 图形层
+
+在运行时, unity 检测 gpu 的能力, 并决定使用对应的 Graphics tier.
+
+在 built-in 管线中, 你可为每个 Graphics tier 自动生成一组 variants. 使用指令:
+#pragma hardware_tier_variants
+
+这个 feature 只和 built-in 管线有关. 无法用于 srp.
+
+为了启用这个 feature, 写入指令:
+#pragma hardware_tier_variants renderer
+
+    参数 renderer 是一个有效的  graphics API
+
+unity 为每个 shader 额外生成 3 个 variants.(叠加在别的 keyword 影响下)
+这三个中,每一个 variant 都定义了一个 keyword (如下三个中的一个).
+它和设置在 GraphicsTier enum 中的值 是对应的:
+
+    UNITY_HARDWARE_TIER1
+    UNITY_HARDWARE_TIER2
+    UNITY_HARDWARE_TIER3
+
+你可以使用它们来写入 conditional fallbacks (条件回退) 或 针对 更低/更高的硬件的 额外 features.
+
+当 unity 第一次载入你的程序, 它会检查 GraphicsTier 的值, 然后将返回值 存入  Graphics.activeTier. 想要覆写 Graphics.activeTier 的值,直接修改它就行. 
+注意,你必须在 unity 加载任何 "你想修改的 shaders" 之前 执行上述操作. 
+一个好的位置是: 在你加载你的 主scene 之前, 在一个 "预加载scene" 中.
+
+为了减小这些 variant 对性能的冲击, unity 只在 player 中加载 一组 shaders.
+相同的 shader 不会占用额外的 存储空间.
+
+想要在 unity editor 中测试 tiers, 可在: Edit - Graphic tier 中选择一个 你希望 unity editor 使用的 tier
+
+注意, graphics tiers 和  Quality settings 无关.
 
 
+# Per-platform shader define settings and graphics tier variants
+在 built-in 管线中, 可使用  EditorGraphicsSettings.SetShaderSettingsForPlatform
+API 来覆写 unity 内部的 #defines, 针对给定的 built target 和 graphics tier.
+
+这个 feature 只和 built-in 管线有关. 无法用于 srp.
+
+注意, 对于给定的 built target, 针对 不同的 graphic tier, 如果提供了不同的 TierSettings 值, 那么就算你不写 #pragma hardware_tier_variants 指令, unity 也会为 shader 生成 tier variants.
 
 
+## =========================================================== #
+#      Shader data types and precision
+## =========================================================== #
+为了更好地支持 移动平台, unity 拥有一些额外的 关于 hlsl 语言的 类型.
+
+# --------------------------------- #
+# Basic data types
+shader 中的大部分计算都是在 浮点数 类型上进行的 (比如 float)
+几种浮点数类型为: float, half, fixed (有此包裹出来的 half3 and float4x4 也算)
+这几种类型 在精度, 性能 和 电量损耗上 都不一样.
+
+# - High precision: float
+32-bits
+常用于: 世界空间坐标, texture坐标, 用于 三角函数,幂运算,指数运算 的标量.
+
+# - Medium precision: half
+16-bits
+( range of –60000 to +60000, 精度约为3位小数 )
+
+用于: short vectors, 方向向量, object-space坐标, HDR颜色值.
+
+# - Low precision: fixed
+最低精度的  fixed point 值. 通常为 11-bits.
+( range of –2.0 to +2.0, 精度为 1/256 )
+
+用于: 常规颜色值(通常存储在 texture 中)
+
+# - Integer data types
+整型 通常在各个平台上运行良好.
+
+基于不同平台, 整型类型 可能不是由 gpu 提供的.
+比如: Direct3D 9 and OpenGL ES 2.0 中, gpu 只操作浮点数. 然后使用相当复杂的 浮点数数学指令 来模拟 外观简单的  "整形表达式" (涉及到 位运算 和 逻辑运算)
+
+在 Direct3D 11, OpenGL ES 3, Metal 以及其它移动平台, 它们能支持整型类型, 所以 位移动运算, 位掩码(bit mask) 都能正常工作.
 
 
+# --------------------------------- #
+# Composite vector/matrix types
+hlsl 内建的 向量/矩阵类型. 
+
+有些平台,比如 OpenGL ES 2.0, 只支持 方阵,而不是矩阵.
 
 
+# --------------------------------- #
+# Texture/Sampler types
+通常用以下语句声明:
+# --
+sampler2D _MainTex;
+samplerCUBE _Cubemap;
+
+在移动平台, 将默认使用 "低精度 samppler". 比如, 此时从 texture 访问到的值可能是 低精度数据. 
+如果你知道,你的 texture 内存储了 HDR值, 你可能会希望使用 half precision sampler:
+# --
+sampler2D_half _MainTex;
+samplerCUBE_half _Cubemap;
 
 
+如果你的 texture 包含 float值 (比如 depth texture), 也可使用 full precision sampler:
+# --
+sampler2D_float _MainTex;
+samplerCUBE_float _Cubemap;
 
 
+# --------------------------------- #
+# Precision, Hardware Support and Performance
+pc gpu 总是使用 高精度浮点是 (float). 比如  (Windows/Mac/Linux), 它们不关心你写的是: float, half, fixed. 最后都会使用 float 来处理.
+
+只有在移动平台上, 才会真的使用 half, fixed 类型. 这些类型主要是为了考虑 耗电问题 (偶尔也是因为性能). 最好在移动平台实际测试你的 shader, 以此来确定是否需要照顾精度问题.
+
+就算再移动平台, 不同的 gpu家族,对不同精度的支持也是不一样的:
+
+图标略...
+
+大部分现代移动平台, 将 float 设置为 32-bits, 将 half 和 fixed, 设置为 16-bits.
+一些旧的平台,在 vert shader 和 frag shader 中会出现不同的配置.
+
+使用低精度类型 总能变得更快, 这可能是由于改进了GPU寄存器分配，也可能是由于某些较低精度数学运算的特殊“快速路径”执行单元。
+即使在没有原始性能优势的情况下，使用较低的精度通常也会降低GPU的功耗，从而延长电池寿命。
+
+一个通用法则是, 除了 坐标 和 texture坐标, 剩余值都是用 半精度类型.
+只有在 半精度无法满足某些运算时, 才会提高精度.
+
+# - Support for infinities, NaNs and other special floating point values
+不同的 gpu 家族(主要是移动平台) 表现是不一样的.
+
+所有支持  Direct3D 10 的 pc gpu, 都支持非常明确的  IEEE 754 浮点数标准.
+这意味着,在这些平台, 浮点数的使用 和 cpu 上是一摸一样的.
+
+移动平台的支持显然不一样. 用0除0 在有些平台会得到 NaN, 在别的平台会得到  infinity,0 或别的未期望的值. 
+最好自己实际去目标平台测试下.
 
 
+# --------------------------------- #
+# External GPU Documentation
+gpu 生产商 有更详细的文档:
+
+略...
 
 
+## =========================================================== #
+#      Using sampler states
+## =========================================================== #
+在 shader 中对 texture 做采样的 大部分时候,  sampleing state 应该源自 
+texture settings (inspector).
+本质上, texture 和 sampler 是绑定在一起的. 当使用 DX9 风格的 shader语句时,两者时绑定的:
+# --
+sampler2D _MainTex;
+// ...
+half4 color = tex2D(_MainTex, uv);
+# ==
+
+可使用 hlsl keywords: sampler2D, sampler3D, samplerCUBE 来同时声明 texture 和 sampler
+
+大部分时候, 这就是你想要的, 同时也是一些老图形 API 唯一支持的(比如 OpenGL ES)
+
+# --------------------------------- #
+# Separate textures and samplers
+需要 图形API 和 gpu 都支持对 很多个 texture, 使用少数 sampler. 
+比如, Direct3D 11 允许在一个 shader 中最多存在 128 个 texture, 但只能有 16 个 samplers.
+
+unity 允许用 DX11 风格的 hlsl 语法来 分开声明 texture 和 sampler.  但它们的名字上要存在关联. 
+如果 sampler 的名字被命名为: “sampler”+TextureName, 那么这个 sampler 就能从那个 texture 中获得 sampling states.
+
+上面那段代码,可用 DX11 风格 重写一下:
+# --
+Texture2D _MainTex;
+SamplerState sampler_MainTex; // "sampler" + “_MainTex”
+// ...
+half4 color = _MainTex.Sample(sampler_MainTex, uv);
+# == 
+
+通过这个技术,可以重用 来自别的 texture 的 sampler 来对另一个 texture 进行采样.
+# --
+Texture2D _MainTex;
+Texture2D _SecondTex;
+Texture2D _ThirdTex;
+SamplerState sampler_MainTex; // "sampler" + “_MainTex”
+// ...
+half4 color = _MainTex.Sample(sampler_MainTex, uv);
+color += _SecondTex.Sample(sampler_MainTex, uv);
+color += _ThirdTex.Sample(sampler_MainTex, uv);
+# ==
+
+    在上面代码中, 有三个 texture, 一个 sampler.
+
+注意,这种 DX11 风格的 hlsl语法, 无法在一些旧平台使用( OpenGL ES 2.0)
+你可能需要设置指令 #pragma target 3.5 来主动跳过那些 不支持的平台.
 
 
+unity 提供数个 shader 宏来帮助 "声明和采样 textures". 
+# --
+UNITY_DECLARE_TEX2D(_MainTex);
+UNITY_DECLARE_TEX2D_NOSAMPLER(_SecondTex);
+UNITY_DECLARE_TEX2D_NOSAMPLER(_ThirdTex);
+// ...
+half4 color = UNITY_SAMPLE_TEX2D(_MainTex, uv);
+color += UNITY_SAMPLE_TEX2D_SAMPLER(_SecondTex, _MainTex, uv);
+color += UNITY_SAMPLE_TEX2D_SAMPLER(_ThirdTex, _MainTex, uv);
+# ==
+
+    这段代码可在 unity 支持的 任何平台运行. (多亏了宏的帮忙)
+    但在类似 DX9 的老平台,这段代码还是会退化为 "三个texture 配 三个 sampler" 的实现.
 
 
+# --------------------------------- #
+# Inline sampler states
+除了将 sampler 命名为: “sampler”+TextureName
+unity 还能识别 其它几种模式的 sampler 名字.
+当我们需要在 shader 中硬编码 sampling state 时,这很管用:
+# --
+Texture2D _MainTex;
+SamplerState my_point_clamp_sampler;
+// ...
+half4 color = _MainTex.Sample(my_point_clamp_sampler, uv);
+
+    sampler 的名字为: my_point_clamp_sampler
+    它可被识别为: 滤波模式为 点采样, wrapping模式为 clamp
+
+这种就叫做: Inline sampler states:
+--
+    滤波模式:  “Point”, “Linear” or “Trilinear”
+--
+    wrap mode:  “Clamp”, “Repeat”, “Mirror” or “MirrorOnce”
+    wrap mode 可以具体到每个 axis (轴向) (UVW) (每个轴的模式都单独设置)
+    比如写为:
+        “ClampU_RepeatV”
+--
+    当用于 深度值比较时,可设置 “Compare” (可选的)
+    和 HLSL SamplerComparisonState 类型, 还有 SampleCmp / SampleCmpLevelZero 函数一起使用
 
 
+不同模式的图示, 略...
 
 
+目前, Inline sampler states 只支持: Direct3D 11/12, PS4, XboxOne and Metal.
+
+注意: “MirrorOnce” wrapping mode 在大部分移动平台 不被支持. 使用它会被 fallback 到 Mirror 模式. 
 
 
-
+# ------------------------ END ------------------------------ #
