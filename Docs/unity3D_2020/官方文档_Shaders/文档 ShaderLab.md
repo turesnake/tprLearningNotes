@@ -317,7 +317,8 @@ tags 是键值对, unity 使用预定义的 键和值 来检测: 如何 以及�
 # Render pipeline compatibility
 各个 预定义 tags:
 -- [RenderPipeline]
-    built-in: 不支持
+    built-in 和 custom RP 不支持
+    只有 urp 和 hdrp 支持.
 
 -- [Queue]
     built-in: 不支持

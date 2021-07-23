@@ -137,7 +137,7 @@ unity 的 shader libraries, 它们包含 预处理macros, 能替你管理这些�
     强制同步编译. 这只会影响到 unity editor 中的渲染.
 
 # -- #pragma enable_cbuffer
-    当使用 CBUFFER_START(name) and CBUFFER_END macros 时, 从HLSLSupport 发射 cbuffer(name).
+    当使用 CBUFFER_START(name) and CBUFFER_END macros 时, 从 HLSLSupport 发射 cbuffer(name).
     哪怕当前的平台不支持 cbuffers, 
 
 
@@ -850,10 +850,14 @@ Direct3D 11 将所有 shader 变量 都打包进入 “constant buffers”.
 
 使用 CBUFFER_START(name) 和 CBUFFER_END 宏:
 # --
-CBUFFER_START(MyRarelyUpdatedVariables)
+CBUFFER_START( MyRarelyUpdatedVariables )
     float4 _SomeGlobalValue;
     ...
 CBUFFER_END
+# ==
+
+    CBUFFER_START 宏的参数 name, 是定义的这个 cbuffer 的name
+
 
 
 # -------------------- #

@@ -89,6 +89,13 @@ float4 _ScreenParams;
 # ------------------ #
 #   Macros.hlsl   [core]
 [file](../rp.core@10.1.0/ShaderLibrary/Macros.hlsl)
+包含：
+    TRANSFORM_TEX(tex, name)
+
+        将 2D uv值 (参数tex) 施加上 name_ST 的影响 (texture: tiling 和 offset 值)
+        返回一个调整过的 uv 值
+        此宏的目的仅仅是 施加 "tex"_ST 的修正
+        如果你的 texture 未设置 tiling 和 offset 修正, 可以不用调用此宏
 
 
 # ------------------ #
@@ -178,7 +185,7 @@ Returns 1 / sqrt(x)
 # ------------------ #
 # ret rcp (x);
 - hlsl
-为参数的每个分量，计算一个（近似值）的 倒数。（1/x）
+ 
 
 # ------------------ #
 # T trunc (T x);
@@ -290,7 +297,8 @@ struct BRDFData
     efficiently share data between managed C# code and 
     the native Unity engine code.
     ---
-    有待继续学习...
+    另一个文件中有具体描述, 可搜索之
+
 
 # VisibleLight
     包含一个 可见光 的数据
@@ -396,9 +404,134 @@ URP Manual: URP ShaderLab Pass tags
 
 
 
+
 # ---------------------------------------------- #
-#             
+#          flipped projection matrix 
 # ---------------------------------------------- #
+OpenGL风格的 texture 坐标系, 最下行 uv.v = 0;
+D3D风格的 texture 坐标系,    最上行 uv.v = 0;
+
+unity 整体遵循 OpenGL风格, 所以在处于 D3D类平台时, 会做一些修正措施:
+
+--
+    针对 普通 texture, unity 会直接翻转这个 texture 的 uv.v 轴坐标系. ( 0,1 之间的翻转)
+    可通过宏: UNITY_UV_STARTS_AT_TOP 来查找之.
+
+-- 针对 render target 这种 texture, unity 无法对齐进行翻转, 
+
+    unity 选择 翻转 投影矩阵 ( posVS -> posHCS ) 的 y轴 (朝向的翻转,从向上变成向下)
+
+    内置的 投影矩阵 据说可以自动调整(根据不同平台), 但自定义的投影矩阵, 就需要使用此文中介绍的方法来调整:
+    https://zhuanlan.zhihu.com/p/119145598
+
+    针对 unity 内置投影矩阵, 可在 shader 中检查:
+
+        _ProjectionParams.x
+
+    此值若为  1, 说明 投影矩阵 没有把 y轴 上下翻转
+    此值若为 -1, 说明 投影矩阵 已经把 y轴 上下翻转 (D3D类平台)
+
+    此时, 直接将这个 值乘以 posHCS.y 即可翻转过来.
+
+
+
+# ---------------------------------------------- #
+#        vert shader 生成的 posHCS 到底存了啥    
+# ---------------------------------------------- #
+
+# -1-
+整体上, 这个 posHCS 存储了最正常的 齐次裁剪空间pos. 这些值符合如下规律:
+
+    x/w: [ -1, 1 ]
+    y/w: [ -1, 1 ]
+    z/w: [ -1, 1 ]
+    w == 1 
+
+也就是说,对 posHCS 执行 齐次除法 (除以w项) 后, 将自动进入 NDC空间.
+
+单纯的 posHCS 数据不存在很强的含义, 它的存在仅仅是为了将 齐次除法 延迟到后面某个阶段. 
+从而允许在 中间插入 别的操作 (比如 clip, 我猜)
+
+总之, 涉及到 posHCS 的计算, 如果感觉不够直观, 都可以把 齐次除法加进去看看.
+
+# -2- y轴上下翻转
+
+    // Our world space, view space, screen space and NDC space are Y-up.
+    // Our clip space is flipped upside-down due to poor legacy Unity design.
+    // The flip is baked into the projection matrix, so we only have to flip
+    // manually when going from CS to NDC and back.
+
+    在 unity 中, WS, VS, SS 和 NDC 都是 y轴朝上, 但唯独 HCS y轴朝下 (这是 unity 特有的) 
+    unity 的 投影矩阵 内嵌了这个 翻转 y轴 的操作, 
+    所以, 当坐标从 cs 传入 NDC 然后再返回时, 只需手动 翻转一下.
+    ---
+
+    大致意思还是 上文片段: "flipped projection matrix" 中所述. 
+
+# -- 代码示范 -1- :
+# --
+#if UNITY_UV_STARTS_AT_TOP
+    posHCS.y *= -1.0;
+#endif
+# ==
+
+# -- 代码示范 -2- :
+# --
+posHCS.y *= _ProjectionParams.x; 
+# ==
+
+
+# -3- 如何在 frag shader 中访问 posHCS ?
+那个标记 semantic 为 SV_POSITION 的 posHCS 是没办法在 frag shader 中直接使用的, 它被 渲染管线使用了(还做了改写)
+
+我们可以在 vert shader 阶段, 复制一份顶点的 posHCS, 然后作为参数传递给 frag shader, 中间会经历插值运算,
+在 frag shader 中拿到 逐像素的 posHCS 值.
+
+
+
+# ---------------------------------------------- #
+#        如何获得像素的 posSS 屏幕空间坐标
+# ---------------------------------------------- #
+
+# == 理论 ==
+准备好当前位置的 posHCS, 执行齐次除法, 获得 NDC 值: posNDC (float3)
+取 posNDC 的 xy 两项, 此时它们的取值区间为 [-1, 1] 执行:
+    x*0.5 + 0.5,
+    y*0.5 + 0.5,
+
+即可得到 屏幕空间坐标: posSS
+
+# == 实践 ==
+具体该怎么算非常灵活, 实践证明不管是在 vert shader 中,还是在 frag shader 中计算,都可行.
+这里选择 unity 源码选择的方式: 延迟齐次除法:
+
+# vert shader
+编写代码:
+
+    // 这个值要作为参数 传递给 frag shader
+    // 之所以把大头工作放在 vert shader 中做, 也许是为了利用 从三角形到frags 的插值运算, 
+    // 建设这部分计算 (瞎猜的)
+    float4 posNDC = float4(
+        posHCS.x * 0.5,
+        posHCS.y * 0.5 * _ProjectionParams.x,
+        posHCS.z,
+        posHCS.w
+    );
+
+# frag shader
+编写代码:
+
+    float2 posSS = posNDC.xy / posNDC.w; // 延迟的齐次除法
+
+
+
+
+
+
+# == 现成 API ==
+-- ComputeScreenPos()
+-- GetVertexPositionInputs().positionNDC
+-- ComputeNormalizedDeviceCoordinatesWithZ()
 
 
 
