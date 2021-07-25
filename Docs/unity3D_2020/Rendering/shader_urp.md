@@ -3,6 +3,8 @@
 # ================================================================ #
 urp 使用了一套新的 API
 
+本文也立即了大量 srp 的使用技巧
+
 
 # ======================================================= #
 #                   常用 文件
@@ -487,6 +489,9 @@ posHCS.y *= _ProjectionParams.x;
 我们可以在 vert shader 阶段, 复制一份顶点的 posHCS, 然后作为参数传递给 frag shader, 中间会经历插值运算,
 在 frag shader 中拿到 逐像素的 posHCS 值.
 
+事实上, 就算彻底删除 frag shader 的参数项, 然后让 frag 函数返回一个 固定颜色值, 整个shader 也是可以正常运行的.
+这意味着, vert shader 输出的 posHCS, 并不需要显示地传入 frag shader 中
+
 
 
 # ---------------------------------------------- #
@@ -536,13 +541,91 @@ posHCS.y *= _ProjectionParams.x;
 
 
 # ---------------------------------------------- #
-#             
+#            _CameraNormalsTexture
 # ---------------------------------------------- #
+urp 10.0 开始支持 _CameraNormalsTexture
+
+# 如何使用它 ?
+首先新建一个 Renderer Feature
+    在 AddRenderPasses() 中添加：
+    m_ScriptablePass.ConfigureInput( ScriptableRenderPassInput.Normal );
+
+复制一套 Lit shader组文件，
+    或者别的已经实现了 DepthNormals pass 的 shader
+    在 frag() 中，已经配置好了 InputData 实例 inputData，
+
+inputData.normalizedScreenSpaceUV
+    就是 屏幕空间的 uv 坐标值
+
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareNormalsTexture.hlsl"
+
+
+float3 normalVal = SampleSceneNormals(uv);
+    xyz: [-1,1]
+    此时返回的是一个 单位向量（分量中存在负值）
+    想要显示它，需要做 nm*0.5+0.5 的操作
+
+
+
+
 
 
 # ---------------------------------------------- #
-#             
+#             ddx ddy fwidth
 # ---------------------------------------------- #
+#
+    这组概念 仅能在 frag shader 中使用。
+
+# ddx,ddy 原理
+    在 texture 采样流程中，gpu需要知道，当前位置，纹素 和 像素 之间的比例关系。这个比例有时存在形变，
+    比如一个 像素，它所覆盖的 可能是一个 梯形 的 纹理区域。gpu 通常使用 "偏导数xy" 来记录这个概念，比如
+    X轴方向，相邻的两个 screen-space pix，这两个 pix 的 center，所对应的 纹素，间距为多少。
+        ---
+    在 实际机器中，gpu 以 2X2 像素为一组，来记录这两个 偏导数的值：
+    以左下角像素 为基础，它和 右侧像素的 纹素间距，就是 ddx
+    它和 上方像素的 纹素间距，就是 ddy。
+    为了提高性能，在这 2X2 组内，4个像素点的 ddx，ddy 值是相同的，（都等于 左下角的那个）
+        ---
+    根据 此组偏导数 的大小，可以判断应该使用哪一层的贴图LOD
+    这个距离越大表示三角形离开摄像机越远，需要使用更小分辨率的贴图；
+    反之表示离开摄像机近，需要使用更高分辨率的贴图。
+
+# ddx，ddy 的使用
+    ddx,ddy 常被用在 texture 采样中，比如：
+        [urp]
+        float3 texVal = SAMPLE_TEXTURE2D_GRAD( _Tex, sampler_Tex, uv1, ddx(uv2), ddy(uv2) );
+
+# 为什么要用户手动输入 ddx，ddy
+    大部分情况，用户不需要管理这组值，gpu会自动计算默认的值
+    但有时，由于纹理贴合的方式，会导致一些 画面上的 bug，
+    比如 IQ：
+        https://www.iquilezles.org/www/articles/tunnel/tunnel.htm
+
+    为了搞定这些 bug，gpu 允许用户传入一组 指定的 ddx,ddy 计算方法。
+
+# 调用 ddx()，ddy() 后，最终的那组 偏导数 到底是怎么计算出来的 ?
+    这个问题确实很迷, 参见：
+        https://stackoverflow.com/questions/16365385/explanation-of-dfdx
+    
+    从表面看，我们向 ddx(),ddy() 传入的是一个 孤立的值，比如某个多次计算后的，发生形变的 uv 值。
+    为什么仅仅传入这个值，gpu 就能根据它，计算出最后需要的 xy偏导数呢 ？？？
+
+    因为在机器中，一组 frag 是同步运算的（比如上文提到的 2X2 4个像素）它们会非常一致地同时执行每一行代码。
+    所以，当开始执行 ddx(),ddy() 指令时，gpu 不光知道 本像素的 参数 uv2。还知道它所在的 2X2 组内，其余3个
+    像素的 参数 uv2 的值。
+    这样，整个 ddx(), ddy() 的行为就能得到解释了。
+
+# ddx(),ddy() 参数的注意事项：
+    参数的计算要保证是连续的
+    不要嵌套使用，比如写成 ddx(ddx()), 这样的行为可能是未定义的。
+    
+
+# fwidth
+    fwidth = abs(ddx(v)) + abs(ddy(v));
+    ---
+    用处：暂不明...
+
+
 
 
 

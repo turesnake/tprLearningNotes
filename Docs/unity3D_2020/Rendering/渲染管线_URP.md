@@ -2,17 +2,12 @@
 #                       unity3d 使用技巧
 # ================================================================//
 
+本文主要记录 urp 官方文档 中记录的那些知识
+
 
 # ----------------------------------------------#
 #             名词翻译
 # ----------------------------------------------#
-
-- reflect -- 反射
-- refract -- 折射
-- specular reflection -- 镜面反射
-- absorb  -- 吸收
-
-- depth of field    -- 景深
 
 - depth of field:aperture -- 景深中的孔径
 	aperture 越小，镜头中模糊的区域越大
@@ -20,17 +15,14 @@
 - tilt shift effect -- 移轴特效  
 	移轴摄影：就是通过夸张的景深效果，将正式城市，拍出微缩模型效果的技术
 
-- ambient occlusion -- 环境光遮罩
-
-- anti-aliasing     -- 反锯齿
 - tone mapping      -- 色调映射
 	一个将 HDR 转化为 LDR 的过程
+
 - auto exposure     -- 自动曝光
 
 - motion blur       -- 运动模糊/动态模糊
 - shutter angle     -- 快门角度
-- ray marching      -- 光线步进
-- semi-transparent  -- 半透明
+
 - volumetric rendering -- 立体渲染
 	用来表现云
 
@@ -54,7 +46,6 @@
 - incident ray         -- 入射射线
 - reflected ray        -- 反射射线
 
-- anisotropic          -- 各向异性
 - clearcoat            -- 透明涂层
 - clearcoat gloss      -- 清漆光泽
 - radial shear         -- 径向剪切
@@ -77,24 +68,6 @@
 #     可编程渲染管线 / scriptable render pipeline
 # ----------------------------------------------#
 
-==A== build-in render pipeline
-	就是当前文档中涉及的 默认的 渲染管线
-
-==B== SRP: scriptable render pipeline
-	一共有两种：
-	-1- high-definition render pipeline
-		面向 pc/家用机 等高端平台
-
-	-2- universal render pipeline
-		(旧称: lightweight render pipeline)
-		面向 手机等通用平台
-		---
-		未来会成为默认项
-
-------
-想要体验这个功能，请直接在 软件坞 新建项目，
-选择 high-definition RP 或 Universal RP Template
-
 ------
 如何将现有项目 升级为 usrp ？
 	-1- window - package manager - Universal RP - 安装这个包
@@ -110,14 +83,6 @@
 		就能实现转换
 		---
 		你会发现，部分 unity 自定义的材质实现了转换，剩余的好像仍然是 粉红色
-
-
-# ----------------------------------------------#
-#       Color space:  Linear / Gamma
-# ----------------------------------------------#
-优先选择 Linear 模式
-
-Gamma 模式 是历史上的一种妥协模式。
 
 
 

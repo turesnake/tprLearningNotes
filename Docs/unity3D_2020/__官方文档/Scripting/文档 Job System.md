@@ -366,7 +366,7 @@ struct IncrementByDeltaTimeJob: IJobParallelFor
 在后台，ParallelFor job 的调度更加复杂。在调度 ParallelFor jobs 时，C# job system 将工作分成多个 batch 以便在多个核心之间分配任务。每个 batch 包含一小部分 Execute 方法(数个)。
 然后，针对每个 CPU 核心，C# job system 会在 Unity’s native job system 中调度最多一个 job，并向该 native job 传递一些需要完成的 batchs。
 
-![job_system_01](官方文档_job_system_01.png)
+![job_system_01](job_system_01.png)
 
 当一个 native job 先于其他 job 之前完成自己负责的 batch，它会从其他 native job 那窃取剩余 batchs。它一次只能窃取 native job 剩余batchs的一半，以确保
 cache locality(缓存局部性)。
