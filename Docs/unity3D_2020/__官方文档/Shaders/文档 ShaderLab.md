@@ -385,11 +385,12 @@ render queue 是决定Unity渲染几何体的顺序的因素之一。
     “Queue” = “[queue name] + [offset]”
 
 # -- 已定义的 queue name:
--- Background
--- Geometry
--- AlphaTest
--- Transparent
--- Overlay
+-- Background:      1000
+-- Geometry:        2000
+-- AlphaTest:       2450    执行 Alpha Test 的物体
+-- Transparent:     3000    执行 Alpha Blend 的物体
+                                会按从后往前的顺序进行渲染
+-- Overlay:         4000
 
 # -- offset
 是一个整型. 
