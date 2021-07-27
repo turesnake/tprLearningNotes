@@ -316,7 +316,7 @@ tags 是键值对, unity 使用预定义的 键和值 来检测: 如何 以及�
 
 # Render pipeline compatibility
 各个 预定义 tags:
--- [RenderPipeline]
+-- [RenderPipeline] 
     built-in 和 custom RP 不支持
     只有 urp 和 hdrp 支持.
 

@@ -172,10 +172,14 @@ deferred shading 还拥有 高一致性 和 可预测的行为.
 它的缺点是: deferred shading 无法真正支持 AA(抗锯齿,猜测是 MSAA), 而且它
 无法处理 半透明物体(这些物体需要在 forward rendering 中被渲染).
 它也无法支持 Mesh renderer 的 Receive Shadows flag, 且, 只在有限范围内
-支持 culling masks. 最多只能使用 4 个 culling masks. 也就是, 你的 culling
-layer mask 必须至少包含所有层(减去 4 个任意层),所以必须设置 32 层中的 28 个层. 否则你将得到 图像伪影.
+支持 culling masks. 最多只能使用 4 个 culling masks. 
 
-(上段没看懂)
+(个人理解: 能被 culling 的layer 数量不能超过 4 个, 也就是, inspector culling mask 面板中,
+最多只能有 4个 layers 是不被勾选的)
+
+也就是, 你的 culling layer mask 必须至少包含所有层(减去 4 个任意层),所以必须勾选 32 层中的 28 个层. 否则你将得到 图像伪影.
+
+
 
 # Requirements
 它需要 支持 Multiple Render Targets (MRT) 的显卡, Shader model 3.0(或更高),并且支持 Depth render texture. 通常,2006年后的大部分显卡 都支持 deferred shading.

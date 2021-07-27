@@ -124,8 +124,18 @@ SRP Batcher 通过 批处理 “Bind 和 Draw commands序列” 来降低 GPU的
 简述：
     == 对于传统 Batch 来说，每个周期：==
         -- 收集 系统内存 中的所有 内置数据，填入 Object CBUFFER
+
+                比如各种 矩阵,如:
+                    unity_ObjectToWorld
+                    unity_WorldToObject
+                    unity_LODFade
+                    unity_WorldTransformParams
+                
         -- 将 Object CBUFFER 上传到 GPU
         -- 收集 系统内存 中的所有 材质数据，填入 Material CBUFFER
+
+                就是 Material Properties 这类数据
+
         -- 将 Material CBUFFER 上传到 GPU
         -- bind Material CBUFFER
         -- bind Object CBUFFER
@@ -140,27 +150,27 @@ SRP Batcher 通过 批处理 “Bind 和 Draw commands序列” 来降低 GPU的
         ～～ 然后检查，下一次 drawcall，是否为相同的 shader variant
 
 
-为了性能最大化，这些 batches 的尺寸要越大越好。为了实现这点，你可以使用任意多变的 mat实例。
+为了性能最大化，这些 batches 的尺寸要越大越好。为了实现这点，你可以使用任意多变的 material 实例。
 但要确保 总体的 shader variants 数量尽可能的少。（毕竟以此来判断是不是要重开 Batch）
 
-在内部 render loop 期间，当 unity 检测到一个新的 mat，cpu 会收集所有的 properties，
+在内部 render loop 期间，当 unity 检测到一个新的 material，cpu 会收集所有的 material properties，
 然后在 GPU 内存中设置不同的 constant buffers。这些 GPU buffers 的数量，取决于 shader 如何
 声明自己的 CBUFFERs
 
-在通常情况下，场景会使用很多种 mat，但只有有限数量的 shader variants。为了加速这种场景，
+在通常情况下，场景会使用很多种 material，但只有有限数量的 shader variants。为了加速这种场景，
 SRP 天生聚集了 paradigms（范例），比如：GPU data persistency（持久性）
 
-SRP Batcher 能让 mat数据 长期存在于 GPU 内存中。如果一个 mat 的内容没有发生变动，SRP Batcher
+SRP Batcher 能让 material 数据 长期存在于 GPU 内存中。如果一个 material 的内容没有发生变动，SRP Batcher
 就不需要重新设置并将新版本上传到 GPU。相反，SRP 使用一个 专用代码路径，将 unity引擎中的 roperties 
 快速上传到 GPU 的一个大型 buffer 中，如图：
 
 ![SRP Batch 图2](SRP_Batch_图2.png)
 简述：
-    它将所有 obj 的 Unity Engine properties 集中存储在一个 大的 GPU buffer 中
-    而 mat数据 则被单独储存在 GPU 的 mat CBUFFER 中，已应付 随时修改。这些 CBUFFER 是长期存在的
+    它将所有 obj 的 Unity Engine properties 集中存储在一个 大的 GPU buffer 中 (就是那些 矩阵信息)
+    而 material 数据 则被单独储存在 GPU 的 material CBUFFER 中，已应付 随时修改。这些 CBUFFER 是长期存在的
 
 
-这个方法能提高性能是因为：所有的 mat 内容现在都长期存在于 GPU 内存中。
+这个方法能提高性能是因为：所有的 material 内容现在都长期存在于 GPU 内存中。
 专用代码 将所有 逐obj properties，维护进一个大型的 逐obj的 GPU CBUFFER。
 
 
@@ -176,8 +186,16 @@ unity 也能正常完成渲染。这些不兼容的，将使用 standard SRP cod
 
 
 如果一个 shader 要想兼容 SRP Batcher，必须：
+
 -- 必须在一个名为 “UnityPerDraw” 的 CBUFFER 中声明所有的 built-in engine properties。
-    比如：unity_ObjectToWorld, unity_SHAr
+    这些数据格式, 被记录在一张名为 "UnityPerDraw.jpg" 中.
+    比如:
+        unity_ObjectToWorld
+        unity_WorldToObject
+        unity_LODFade
+        unity_WorldTransformParams
+    等.
+
 -- 必须在一个名为 “UnityPerMaterial” 的 CBUFFER 中声明所有的 mat properties。
 
 可以在 shader 的 Inspector 面板中查看 兼容性： SRP Batcher 条目
