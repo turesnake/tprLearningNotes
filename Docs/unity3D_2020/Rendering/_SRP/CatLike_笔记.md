@@ -18,7 +18,15 @@ https://catlikecoding.com/unity/tutorials/custom-srp/
 
 # 2.5 -- Dynamic Batching (不推荐使用)
 
- 
+
+# 3.1 -- Alpha Blend
+
+# 3.4 -- Alpha Test / Alpha Clipping
+
+# 3.5 -- Shader Features
+    借用 #pragma shader_feature _XXX 来单独为 alpha test 生成 variant
+
+
 
 
 
