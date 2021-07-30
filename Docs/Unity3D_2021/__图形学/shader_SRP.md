@@ -37,7 +37,9 @@ float4 _ScreenParams;
 #   Lighting.hlsl      [urp]
 [file](../rp.URP@10.1.0/ShaderLibrary/Lighting.hlsl)
 包含：
-    BRDF
+    BRDF:
+        DirectBRDFSpecular()
+
     UniversalFragmentPBR()
     UniversalFragmentBlinnPhong()
 
@@ -244,6 +246,13 @@ Returns 1 / sqrt(x)
 # ret lerp ( x, y, s );
 - hlsl
 线性插值: x*(1-s) + y*s
+
+
+
+# ------------------ #
+# ret saturate(x);
+Clamps the specified value within the range of 0 to 1.
+
 
 
 
@@ -1017,8 +1026,11 @@ clip( color.a - UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Cutoff) );
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
-#         
+#        
 # ---------------------------------------------- #
+
+
+
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #

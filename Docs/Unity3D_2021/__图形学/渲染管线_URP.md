@@ -209,6 +209,17 @@
 		当值为1时，全部反射环境色
 	- smoothness:   表面光滑度，越光滑，反射的景物越清晰 
 
+	CatLike 教程第三课: Directional Lights 中, 教授的就是 Metallic Mode
+
+
+# keyword:  _SPECULAR_SETUP
+通常会见到这个指令:
+
+    #pragma shader_feature_local_fragment _SPECULAR_SETUP
+
+它将为这个 shader 创造两种 variants, 分别支持 Specular setup 和 Metallic setup
+
+
 
 
 # ----------------------------------------------#
