@@ -452,7 +452,7 @@ URP Manual: URP ShaderLab Pass tags
     仅在 unity editor 中执行 lightmap 烘培时，unity 才执行此 pass。
     Unity strips this Pass from shaders when building a Player.
 
-## URP 不支持一下 LightMode tag：
+## URP 不支持以下 LightMode tag：
     Always, ForwardAdd, PrepassBase, PrepassFinal, Vertex, VertexLMRGBM, VertexLM 
 
 
@@ -1026,16 +1026,36 @@ clip( color.a - UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Cutoff) );
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
-#        
+#      Mesh Renderer:  Dynamic Occlusion
 # ---------------------------------------------- #
+当 Dynamic Occlusion 被开启, 且这个物体被 static occluder 遮挡 (从 camera 观察时)
+这个物体会被 culling. 
+
+Dynamic Occlusion 默认设为开启.
+
+当 Dynamic Occlusion 被关闭, 就算这个物体给 static occluder 遮蔽, 也不会被 culling.
+可以使用此功能来 渲染 "墙壁后的人" 
+(想想 CS 之类的游戏)
 
 
-
+此技术 和  occlusion culling  有关.
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
-#         
+#      commandbuffer.BeginSample( "name" )
+#      ...
+#      commandbuffer.EndSample( "name" )
 # ---------------------------------------------- #
+很复杂, 一言难尽...
+
+# --
+一个直观的表现是, 在 Frame Debug 窗口中, 会把 中间那段操作, 嵌套在一个 名为 "name" 的折叠作用域 中.
+
+catlike 常用这一招来 管理 Frame Debug 中的层级关系.
+
+
+
+
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #

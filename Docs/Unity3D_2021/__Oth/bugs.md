@@ -49,7 +49,17 @@ https://www.mono-project.com/download/stable/
 
 
 
+# ----------------------------------------------#
+#   Frame Debug 窗口 无法正确显示 shadowmap depth texture 内容
+# ----------------------------------------------#
+不管做什么操作, depth texture 都是全黑的.
+但是这个 texture 的内容并没有错, 它能支持后续的 shadow 绘制.
+仅仅是不在 Frame Debug 窗口中显出出来.
 
+原因在于: 2020.3.12f1c1(LTS) 这个版本存在bug, 它的 Frame Debug 就是无法显示 
+depth texture.
+
+换成某个 2021版本就好了 
 
 
 

@@ -9,6 +9,9 @@
     Using Depth Textures
 
 - Z-buffer 和 depth buffer 是同一个东西
+    
+    但它们存储的值好像是不用的, 前者存储的是 z值, 它并不是最原始的 深度值
+
 
 - z-value 就是 z-buffer 中，每个像素的 值
     取值范围在 [0,1]
@@ -16,6 +19,9 @@
     OpenGL - usesReversedZBuffer=false:
         near = 0f;
         far  = 1f;
+
+    (但在一些版本较新的 mac 系统中, 可能unity 自动使用的 meta, 而不是 opengl. 所以 此值 = true )
+
     绝大多数平台(含:Mac.Metal) - usesReversedZBuffer=true:
         near = 1f;
         far  = 0f;
