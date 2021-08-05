@@ -8,7 +8,7 @@
 - Manul: 
     Using Depth Textures
 
-- Z-buffer 和 depth buffer 是同一个东西
+- Z-buffer 和 depth buffer
     
     但它们存储的值好像是不用的, 前者存储的是 z值, 它并不是最原始的 深度值
 

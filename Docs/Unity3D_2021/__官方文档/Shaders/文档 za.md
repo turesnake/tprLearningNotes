@@ -80,15 +80,19 @@ float4 vert(float2 uv : TEXCOORD0) : SV_POSITION
 和 texture 纵坐标问题一样, clip-space 坐标系 在两大类平台中也是不同的.
 (又名 post-projection space coordinates)
 --
-    Direct3D类, clip-space 深度值, 近平面为 1.0, 远平面为 0.0
+    Direct3D类, clip-space depth, 近平面为 1.0, 远平面为 0.0
     (Direct3D, Metal and consoles)
 --
-    OpenGL类,   clip-space 深度值, 近平面为 -1.0, 远平面为 1.0
+    OpenGL类,   clip-space depth, 近平面为 -1.0, 远平面为 1.0
     (OpenGL and OpenGL ES.)
 
 可使用内置宏 UNITY_NEAR_CLIP_VALUE 来访问 当前平台的 近平面深度值.
 
 在脚本中,使用  GL.GetGPUProjectionMatrix  将 unity默认的约定(OpenGL风格) 转换为 D3D风格.(如果平台需要这样做时)
+
+# 此段中的 "深度值" 到底是指啥 ???
+tpr 猜测为 .z/.w 这个值,  
+
 
 
 # ---------------------------- #
@@ -208,16 +212,18 @@ ENDCG
         OpenGl风格平台,   range is [-near,far]
 
 
+
 注意 z值得反转, 设置它的主要目的是为了让 z值在不同深度的分布变得均匀
 (别的 图片文件 中有描述)
 
+
 所以, 当你使用的平台存在 z-reverse 时:
--- 
-    宏 UNITY_REVERSED_Z 会被定义
---
-    _CameraDepth texture 的 range 为 1 (near) to 0 (far).
---
-    Clip space range 为 “near” (near) to 0 (far).
+    -- 
+        宏 UNITY_REVERSED_Z 会被定义
+    --
+        _CameraDepth texture 的 range 为 1 (near) to 0 (far).
+    --
+        Clip space range 为 “near” (near) to 0 (far).
 
 
 然后,如下宏和函数 自动处理了 z-reverse 问题:
@@ -234,13 +240,15 @@ float z = tex2D(_CameraDepthTexture, uv);
 #endif
 # ==
 
+
 # - Using clip space
 如果你正在手动使用 clip spase z 深度值, 您可能还希望通过使用以下宏来抽象平台差异
 # --
 float clipSpaceRange01 = UNITY_Z_0_FAR_FROM_CLIPSPACE(rawClipSpace);
 
-注意, 此宏不在 OpenGL or OpenGL ES 平台更改 clip space, 在这些平台, 它返回:
-“-near”1 (near) to far (far)
+注意, 此宏不在 OpenGL or OpenGL ES 平台更改 clip space, 在这些平台, 它返回: [-near, far]
+(tpr注: 它是为了性能, 故意不修改的, 可查看源码注释)
+
 
 
 # - Projection matrices
@@ -260,6 +268,7 @@ m_shadowCamera.projectionMatrix = shadowProjection;
 // being concatenated to 'm_shadowMatrix'
 // because it is seen as any other matrix to a Shader.
 
+// 把矩阵的 第三行 全部取反
 if(SystemInfo.usesReversedZBuffer) 
 {
     shadowProjection[2, 0] = -shadowProjection[2, 0];
@@ -273,6 +282,7 @@ if(SystemInfo.usesReversedZBuffer)
 # - Depth (Z) bias
 unity 自动处理 z bias, 使得它能符合 z的朝向问题.
 但是,如果你正在使用一个 原生代码渲染插件, 你需要在你的 c/c++ 代码中 翻转 z值
+
 
 # --- Tools to check for depth (Z) direction
 使用  SystemInfo.usesReversedZBuffer 来检查你的平台 是否使用 z翻转

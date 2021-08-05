@@ -786,10 +786,28 @@ UNITY_PROJ_COORD(a)
     通过参数 提供一个 4分量的向量, 此宏返回一个 适合投影纹理读取的 纹理坐标。
     在大多数平台上，它直接返回给定的值。
 
+# 重要 !!!
 UNITY_NEAR_CLIP_VALUE
-    此宏被定义为 近平面的值. 
-    Direct3D类平台 使用 0.0,
-    OpenGL类平台 使用 -1.0
+    此宏被定义为:
+        a platform independent near clipping plane value for the clip space
+        平台无关的, clip-space 中的 近平面的值
+        ---
+        tpr注:
+            其实它不是 .z 值, 而是 .z/.w 值, 也就是 "depth" 深度值.
+
+    文档中写:
+        Direct3D类平台 使用 0.0,
+        OpenGL类平台 使用 -1.0
+    ---
+    tpr注: 此描述似乎是错误的:
+        由于 D3D 平台 往往开启了 reversed-z, 所以它们的 clip-space .z 值区间是: [1->0]
+        所以,按照源码展示, 此宏的正确值是:
+        --
+            此值在 D3D 风格平台中    设为 1.0,  如: D3D11, Metal, Switch, Vulkan
+        --
+            此值在 OpenGL 风格平台中 设为 -1.0, 如: GLCore, GLES2, GLES3
+
+
 
 UNITY_VPOS_TYPE
     定义一个数据类型, 此数据为 输入的像素坐标(VPOS)

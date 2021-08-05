@@ -1,5 +1,5 @@
 # ================================================================ #
-#            Catlike 笔记
+#            Catlike 内容索引
 # ================================================================ #
 
 https://catlikecoding.com/unity/tutorials/custom-srp/
@@ -49,8 +49,6 @@ https://catlikecoding.com/unity/tutorials/custom-srp/
 # ---------------------------- #
 # -4- Directional Shadows
 # ---------------------------- #
-
-
 
 # CullingOptions
 
