@@ -250,6 +250,16 @@ Returns 1 / sqrt(x)
 
 
 # ------------------ #
+# ret reflect(i, n);
+- hlsl
+计算反射向量: ret = i - 2 * n * dot(i n) .
+
+注意, 参数 i 虽为 "入射向量", 但它必须朝向 受光点 (和图形学中的 "入射角" 是反向的)
+而返回值向量, 方向背离 受光点 (符合图形学惯例)
+
+
+
+# ------------------ #
 # ret saturate(x);
 Clamps the specified value within the range of 0 to 1.
 
