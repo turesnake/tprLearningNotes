@@ -47,6 +47,34 @@ fresnel 项会表现得很自然.
 
 
 
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#               环境光 镜反部分: 天空盒, 反射探针
+# ---------------------------------------------------------------- #
+
+# unity_SpecCube0:
+
+    在这个 cubemap 中,存储 天空盒的 镜面反射光信息
+
+        TEXTURECUBE( unity_SpecCube0 );
+        SAMPLER( samplerunity_SpecCube0 );
+
+    这份数据 unity 已经帮我们准备好了. 只要提取即可.
+
+    奇怪的是, 在 catlike 中, 还使用此 数据 完成了 对 反射探针的数据的 获取,
+    有待进一步学习...
+
+
+
+# unity_SpecCube1:
+    有的文章说, 这个 cubemap 存储 离物体最近的反射探针 的信息.
+
+    但 catlike 中未提及.
+
+    此变量只存在于 旧版 shader 源码中 (CGIncludes)
+    在 Core, URP, HDRP 11.0 三个源码库中, 都只有 unity_SpecCube0,
+
+
+
 
 
 

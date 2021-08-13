@@ -325,7 +325,7 @@ vs 函数的核心输出就是一个被标记为 SV_POSITION 的 pos 值：
     xy分量，代表 uv坐标 [0.0, 1.0]
     z = 0
     w = 1;
-    (以上仅为 测量值)
+    
 
 
 # COLOR COLOR0

@@ -627,9 +627,20 @@ vert 函数的每一个参数, 都需要标注 semantics.
 --  
     TEXCOORD0 
         第一个 UV coordinate, 通常为 float2, float3 or float4.
+        一般只取其xy分量:
+
+            float2 baseUV     : TEXCOORD0;
+            
 --
-    TEXCOORD1, TEXCOORD2 and TEXCOORD3 
+    TEXCOORD1, TEXCOORD2 和 TEXCOORD3 
         分别是第2,第3,第4个 UV coordinates
+
+        按照 catlike 所说, TEXCOORD1 容纳的是 lightmap 的uv值:
+
+            float2 lightMapUV : TEXCOORD1;
+
+        TEXCOORD2 和 TEXCOORD3 的意义未知.
+
 --
     TANGENT 
         切线向量 (用于 normal mapping), 通常为 a float4.
