@@ -1766,46 +1766,51 @@ namespace UnityEngine.Rendering
         //   rt:
         //     The render texture requiring mipmaps generation.
         public void GenerateMips(RenderTargetIdentifier rt);
+
+
+        /*
+            Add a "get a temporary render texture" command.
+            (很常用的指令): 申请一个 临时的 render target (即 texture)
+            参数:
+                nameID:
+                    Shader property name for this texture.        
+                    通常是调用: Shader.PropertyToID("_AAA_Tex"); 获得的, 
+                    这是一个由 unity 分配的 texture property 的 id号
+
+                width, height:
+                    Width / height in pixels, or -1 for "camera pixel width".
+                    想要分配的 rt 的尺寸. 
+
+                depthBuffer:
+                    Depth buffer bits (0, 16 or 24).
+                    如果你要分配的 rt, 用不到 深度数据, 可直接写 0 
+                    (猜测就是不分配了)
+
+                filter:
+                    Texture filtering mode (default is Point).
+
+                format:
+                    Format of the render texture (default is ARGB32).
+        
+                readWrite:
+                    Color space conversion mode.
+        
+                antiAliasing:
+                    Anti-aliasing (default is no anti-aliasing).
+        
+                enableRandomWrite:
+                    Should random-write access into the texture be enabled (default is false).
+        
+                desc:
+                    Use this RenderTextureDescriptor for the settings when creating the temporary
+                    RenderTexture.
+        
+                memorylessMode:
+                    Render texture memoryless mode.
+        */
         public void GetTemporaryRT(int nameID, int width, int height, int depthBuffer, FilterMode filter, GraphicsFormat format, int antiAliasing, bool enableRandomWrite);
         public void GetTemporaryRT(int nameID, int width, int height, int depthBuffer, FilterMode filter, GraphicsFormat format, int antiAliasing);
-        //
-        // 摘要:
-        //     Add a "get a temporary render texture" command.
-        //
-        // 参数:
-        //   nameID:
-        //     Shader property name for this texture.
-        //
-        //   width:
-        //     Width in pixels, or -1 for "camera pixel width".
-        //
-        //   height:
-        //     Height in pixels, or -1 for "camera pixel height".
-        //
-        //   depthBuffer:
-        //     Depth buffer bits (0, 16 or 24).
-        //
-        //   filter:
-        //     Texture filtering mode (default is Point).
-        //
-        //   format:
-        //     Format of the render texture (default is ARGB32).
-        //
-        //   readWrite:
-        //     Color space conversion mode.
-        //
-        //   antiAliasing:
-        //     Anti-aliasing (default is no anti-aliasing).
-        //
-        //   enableRandomWrite:
-        //     Should random-write access into the texture be enabled (default is false).
-        //
-        //   desc:
-        //     Use this RenderTextureDescriptor for the settings when creating the temporary
-        //     RenderTexture.
-        //
-        //   memorylessMode:
-        //     Render texture memoryless mode.
+        
         public void GetTemporaryRT(int nameID, RenderTextureDescriptor desc, FilterMode filter);
         public void GetTemporaryRT(int nameID, int width, int height);
         public void GetTemporaryRT(int nameID, int width, int height, int depthBuffer);

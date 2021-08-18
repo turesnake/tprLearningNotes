@@ -94,7 +94,16 @@ texture propertie，一般拥有一些捆绑的信息：
         表示 texture 的 tiling, offset 信息
         ---
     [TexName]_TexelSize，类型为 float4：
-        表示 texture 尺寸信息。
+        表示 texture 中, 一个 texel 的边长尺寸(uv坐标系)
+
+        因为遵循 uv坐标系, 所以假设 tex w=400, h=600, (单位:texel)
+        则:
+            Tex_TexelSize.x = 1/400;
+            Tex_TexelSize.y = 1/600;
+            Tex_TexelSize.z = 400;
+            Tex_TexelSize.w = 600;
+            
+
         ---
     [TexName]_HDR, 类型为 float4：
         ...
