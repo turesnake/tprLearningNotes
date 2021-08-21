@@ -12,11 +12,6 @@ namespace UnityEngine.Rendering
 
 
 
-
-
-
-
-
     // 摘要:
     //     Parameters that configure a culling operation in the Scriptable Render Pipeline.
     [UsedByNativeCodeAttribute]

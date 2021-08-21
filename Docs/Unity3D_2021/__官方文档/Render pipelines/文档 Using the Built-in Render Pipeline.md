@@ -157,7 +157,6 @@ pass 只渲染 主直射光,遮蔽/lightprobe, lightmaps
 #     Deferred Shading rendering path
 # ================================================================ #
 
-
 # Overview
 当使用 deferred shading, 将不限制光源数量.
 所有光源都被实现为 逐像素,这意味着,它们都能正确处理 法线贴图.

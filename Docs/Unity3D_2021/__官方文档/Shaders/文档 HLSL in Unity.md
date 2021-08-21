@@ -451,7 +451,7 @@ fixed4 frag (fixed facing : VFACE) : SV_Target
 }
 
 
-# Vertex ID: SV_VertexID
+# Vertex ID:  
 [SV_VertexID]
 vertex shader 可接收一种变量, 它的类型是 无符号整型, 含义为 顶点的idx. 
 当你想从 texture 或 computerbuffer 中获得获取 额外的 逐顶点数据时, 很管用.

@@ -259,6 +259,13 @@ string SampleName => this.bufferName;
 
 
 
+# ---------------------------------------------- #
+#        using static ClassA;
+# ---------------------------------------------- #
+和 using nameSpace; 指令差不多, 不过不是针对 namespace,而是针对一个 类型. 
+
+It makes all constant, static, and type members of a class or struct 
+directly accessible without fully qualifying them.
 
 
 
