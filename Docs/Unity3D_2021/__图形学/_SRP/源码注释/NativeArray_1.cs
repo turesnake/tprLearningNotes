@@ -99,7 +99,7 @@ namespace Unity.Collections
         /* 
             同参数给定了 目标subarray 的 起始位置和长度
             return A view into the array that aliases the original array. Cannot be disposed.
-            返回的是 一个针对 原生c++数组 的别名的视图 (???).  无法被清除.
+            返回的是 一个针对 原生c++数组 的别名的视图 (?).  无法被清除.
 
             感觉不是将一组数据 复制出来.
 

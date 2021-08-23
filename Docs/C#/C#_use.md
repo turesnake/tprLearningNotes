@@ -269,6 +269,32 @@ directly accessible without fully qualifying them.
 
 
 
+# ---------------------------------------------- #
+#       null-coalescing operator: ??
+# ---------------------------------------------- #
+用 catlike srp 教程中代码举例:
+
+	CameraSettings Settings => settings ?? (settings = new CameraSettings());
+
+这是一个 只读属性, 内置一个 getter. 意思为:
+# 返回变量 settings, 如果它为 null, 就立刻给它新建一个实例, 然后再返回它.
+相等于:
+	CameraSettings Settings =>
+		settings == null ? settings = new CameraSettings() : settings;
+
+也相等于:
+	CameraSettings Settings {
+		get {
+			if (settings == null) {
+				settings = new CameraSettings();
+			}
+			return settings;
+		}
+	}
+
+
+
+
 
 
 
