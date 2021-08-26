@@ -276,7 +276,8 @@ pass 数量越多，开销越大。
 #               SV_POSITION
 # ---------------------------------------------- #
 
-# vs 端的输出值
+# ~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ===== vs 端的输出值 ===== #
 vs 函数的核心输出就是一个被标记为 SV_POSITION 的 pos 值：
 它表示： 顶点的 齐次裁剪空间 坐标。
 ---
@@ -295,10 +296,53 @@ vs 函数的核心输出就是一个被标记为 SV_POSITION 的 pos 值：
 这个输出值，尚未做 齐次除法（所以它的 w分量并未被 清为 1）
 
 
-# fs 端的输入值
+# ~~~~~~~~~~~~~~~~~~~~~~~~ #
+# ===== fs 端的输入值 ===== #
+
 标记为 SV_POSITION 的 pos，对于 fs 来说，是没什么意义的。
 请不要在 fs 中读取使用它（尽管我们可以读取）
 
+# ---------------
+# catlike 中选择直接使用它, 在 catlike - crp - 15_Particles: 2.1 部分
+
+#   在透视空间中:
+
+    xy: 
+        按 catlike 说法, 这是 frag 在 screen 中的 positionSS (一个像素长度为 1) 
+        然后又额外叠加了一段 offset:(0.5, 0.5), 以便指向像素的中心.
+
+        这样, 原本 screen 左下角为 (0, 0), 现在变成了 (0.5, 0.5)
+        而这个像素的右边邻居, 原本为 (1, 0), 现在变成了 (1.5, 0.5)
+
+        这意味着, 只要拿这组 xy, 去除以屏幕的宽高( _ScreenParams.xy )
+        就能获得 本 frag 中心位置的 screen-uv 值 [0,1]
+        ---
+
+    z:
+        ? 未说
+
+    w:
+        当作: view-space中, frag 的深度值 ( frag 到 camera所在的 xy平面的距离 )
+        (注意,不是从 frag 到 near-plane 的距离)
+
+
+#   在 正交空间中
+
+    xy:
+        估计和 透视模式 是相同的. 
+
+    z:
+        在正交空间, .z 存储了 frag 的转换后的 clip-space 的深度值. 它就是 rawDepth.
+        此值会被用来做 "深度值比较". 也会被写入 depth-buffer (若开启了 "深度写入" 功能)
+        此值区间为 [0,1], 在 正交空间中, 呈线性变化. 
+
+        通过公式: (far - near) * rawDepth + near 
+        可计算出 等同于 透视模式中, .w 的值
+        具体代码为:
+            (_ProjectionParams.z - _ProjectionParams.y) * rawDepth + _ProjectionParams.y;
+
+    w: 
+        正交空间中, .w 始终为1, 没啥使用价值.
 
 
 # ---------------------------------------------- #
@@ -464,6 +508,16 @@ Material Keywords:
     Vulkan.hlsl
 文件内，
 实质上和 上一种 hlsl 用法，是一样的...
+
+
+# ------- urp depth --------
+# TEXTURE2D ( _Tex ); 
+# float4 color = SAMPLE_DEPTH_TEXTURE_LOD(_Tex, sampler_point_clamp, uv, 0);
+SAMPLE_DEPTH_TEXTURE_LOD 和 SAMPLE_TEXTURE2D_LOD 功能差不多, 但前者只返回 x分量
+也就是存储在 depth buffer 中的 深度值
+主要此处用了 point sampler, 不使用任何滤波
+参数 0 表示使用 mipmap 中尺寸最大的那层 (depth buffer 好像也没用 mip)
+
 
 
 # ------- urp 3D --------
