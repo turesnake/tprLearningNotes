@@ -510,6 +510,18 @@ Material Keywords:
 实质上和 上一种 hlsl 用法，是一样的...
 
 
+# ------- urp 2D mip --------
+# TEXTURE2D ( _Tex ); 
+# SAMPLER ( sampler_Tex );
+# float4 color = SAMPLE_TEXTURE2D_LOD( _Tex, sampler_Tex, uv, 0 );
+最后一个参数是 mip lvl, 0表示尺寸最大的那一层 (金字塔的最底层)
+在涉及 mipmap 的计算中, 要用到以 _LOD 为后缀的函数.
+
+# 优化:
+另一方面, 按照 catlike 描述, 使用 _LOD 函数 替换普通的 texture 函数( mip参数写0)
+算是一种 shader 优化. 
+
+
 # ------- urp depth --------
 # TEXTURE2D ( _Tex ); 
 # float4 color = SAMPLE_DEPTH_TEXTURE_LOD(_Tex, sampler_point_clamp, uv, 0);
