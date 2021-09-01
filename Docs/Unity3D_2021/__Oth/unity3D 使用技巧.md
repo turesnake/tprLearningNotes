@@ -168,7 +168,30 @@ PBR 最好在 linear 模式中运行
 
 
 
+# ----------------------------------------------#
+#             Prefabs
+# ----------------------------------------------#
+将一个 gameobj 拖动到 Project 窗口中, 就能制作一个 prefabs 实例
 
+一个 prefab asset, 自己拥有固定的数据, 比如 transform 组件, 
+可点击 Project 窗口中的某个 prefab asset 查看. 
+
+一个在 Hierarchy 窗口中的 prefabs 实例, 可以复写这些默认值, 被复写的值, 往往会标记为 黑体字.
+修改 prefab asset, 可影响 场景中所有 它的实例, 当然, 那些复写了这个数据的 实例除外:
+当一个实例 复写了某一个数据, 这个数据就不再和 prefab asset 相互绑定了. 
+
+
+# --- 如何在运行时 生成 GameObj/Prefab 实例 ?
+
+# --
+Object.Instantiate( goTransform );
+# ==
+	参数可用 目标go 或 prefab 的 transform, 
+
+本质上这个函数通用度很高:
+	T Instantiate<T>(T original) where T : Object;
+
+只要传入一个 Object 类成员, 它都能给你复制, 返回值也是对应类型. 
 
 
 

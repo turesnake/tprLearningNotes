@@ -19,6 +19,9 @@
 	不应在整副骨架制作完毕前，绑定到模型
 	===
 
+----- 如何让 bone 在物体前面
+	obj模式, 选中 bone, 到右侧一个 "人形"面板. ViewPort Display,  启用 In Front
+
 
 ----- 制作镜向bone：
 	在 edit 模式，选中目标bone，
@@ -54,13 +57,16 @@
 	现在，这个 bone，不再绑定与 原有的 leg bone
 	---
 	在 pos 模式，先点选这个独立的小bone，再点选 其上面一节leg bone
-	然后，创建ik，此时只有一个选项： 
+	然后，创建ik ( Inverse Kinematics - Add IK to Bone )，此时只有一个选项： 
 	to active bone
 	点选之后，自动创建一个，只向 总bone系统 base节点的 ik关系
 	---
-	然后，选中绿色的那个，已经被设置了 ik 的bone（不是额外的一节小的）
-	进入 constraint 面板，调整 chain length 参数，
+	然后，选中 黄绿色的那个，已经被设置了 ik 的bone（不是额外的一节小的）
+	进入 constraint 面板( 骨头上绕着一个圈 )，调整 chain length 参数，
 	比如，调为2，让其指向正确的 绑定点。
+	这个数字可以多调调, 每调一个, 就在 原地(pose模式) 拉动下 下面的小骨头,
+	看看现在 黄绿色骨头 跟着谁在动 
+	
 	---
 	这样，一个 有效的 反向 ik 就绑定完成
 	---

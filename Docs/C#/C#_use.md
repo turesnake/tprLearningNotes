@@ -267,6 +267,8 @@ string SampleName => this.bufferName;
 It makes all constant, static, and type members of a class or struct 
 directly accessible without fully qualifying them.
 
+让目标类中, 所有的 const, static 变量/函数 都可直接调用( 无需写为 ClassA.Foo() )
+
 
 
 # ---------------------------------------------- #
@@ -292,6 +294,28 @@ directly accessible without fully qualifying them.
 		}
 	}
 
+
+
+
+# ---------------------------------------------- #
+#       在 scene 场景中 同步 camera 视角
+# ---------------------------------------------- #
+在 scene 场景中选择中意的视角,
+选中 Hierarchy 中的 camera,
+点击: GameObject - Aligh With View 
+
+此时, 目标 camera 的视角就被同步了. 
+
+
+
+# ---------------------------------------------- #
+#       VSync (垂直同步) in Game 窗口
+# ---------------------------------------------- #
+可单独设置 Game 窗口运行时的垂直同步,
+
+在左上角, 设置分辨率的条目中, 点选 VSync 
+
+注意, 想要此功能起效, 不能在运行时同时显示 Scene 和 Game 两个窗口
 
 
 
