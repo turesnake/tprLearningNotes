@@ -136,6 +136,25 @@ unity 的 shader libraries, 它们包含 预处理macros, 能替你管理这些�
 # -- #pragma editor_sync_compilation
     强制同步编译. 这只会影响到 unity editor 中的渲染.
 
+# tpr注:
+    当在 editor 中测试类似 procedural draw 之类的 高强度渲染任务时, 如果不给 procedural 渲染用 shader
+    设置此指令, unity 甚至整个电脑都会因此 歇菜.
+        ---
+    unity editor(不是 build) 拥有一个 feature: asynchronous shader compilation
+    editor 只会在需要时才编译 修改过的 shader, 而不是修改后立即编译. 这能提高 editor 的响应. 
+    当一个 shader 还在编译时, editor 会先用一个 青色/紫红色 dummy shader 来代替目标shader.
+    直到目标 shader 编译好后, 再替换回去. 
+        ---
+    但问题是,这个 dummy shader 无法工作于 procedural drawing; 这会显著拖慢 drawing process, 
+    甚至搞垮 unity 和 电脑. 
+        ---
+    一方面, 可通过 project settings 强制关闭 asynchronous shader compilation 功能. 
+    另一方面, 可以为负责 procedural 渲染 的 shader, 单独关闭 asynchronous shader compilation 功能.
+    方法就是使用本 指令. 
+
+
+
+
 # -- #pragma enable_cbuffer
     当使用 CBUFFER_START(name) and CBUFFER_END macros 时, 从 HLSLSupport 发射 cbuffer(name).
     哪怕当前的平台不支持 cbuffers, 

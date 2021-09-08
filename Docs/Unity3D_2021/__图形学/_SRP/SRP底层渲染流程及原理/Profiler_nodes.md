@@ -4,6 +4,17 @@
 记录 Profiler - timeline 这个面板中, 各个 nodes 的具体信息.
 
 
+# ---------------- #
+# 如何在 build 好的 app 中检测 profiler ?
+在 build 界面, 勾选: 
+--    Development Build
+--    Autoconnect Profiler
+然后实际运行这个 app, 然后回到 unity 中, 打开 profiler, 会发现它正在监视 app 的运行,
+等待数秒后,可以点击 那个 红点, 停止 profiler 的收集, 然后就能拖动 竖白线, 检查特定帧的信息.
+此时可以把 app 关掉.
+
+
+
 # ============================== #
 # -- CullSceneDynamicObjects
 
@@ -107,7 +118,11 @@ Per Object large buffer部分，里面8个小方块就代表着8个小的 buffer
 填充 gpu 中 per obj large buffer 中的, 一个batch 中的每一个小 buffer
 
 
+# ============================== #
+# -- EditorLoop
 
+仅在 Editor 模式才存在的, 如果检测 build 好的 app, 将不存在这些 node
+运行性能也会好很多. 
 
 
 

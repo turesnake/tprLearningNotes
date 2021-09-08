@@ -247,6 +247,8 @@ Returns 1 / sqrt(x)
 - hlsl
 线性插值: x*(1-s) + y*s
 
+Lerp is shorthand for linear interpolation
+
 
 
 # ------------------ #
@@ -707,6 +709,8 @@ https://catlikecoding.com/unity/tutorials/custom-srp/draw-calls/
 
 # 但是, 这样配置后的 obj, 将无法被归入 SRP Batcher 中, 变成一个个 孤零零的 batch
 
+# 但此技术支持 GPU Instancing 
+
 
 
 
@@ -1090,10 +1094,86 @@ catlike 常用这一招来 管理 Frame Debug 中的层级关系.
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
-#         
+#    是否可以在 CGPROGRAM  作用区内, include hlsl 文件 ?
 # ---------------------------------------------- #
+可以
+
+CGPROGRAM 和 HLSLPROGRAM 作用域的核心区别是 它们默认包含的 文件不相同
+
+
+
+
+
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#      如何在 ShaderGraph 中绑定我们自定义的 shader 程序  
+# ---------------------------------------------- #
+
+# -1-
+    新建一个 hlsl 文件, 写入一般 pass 中需要的代码. (不包含 #pragma 指令)
+
+# -2-
+    在此文件中, 额外准备一组 接口 dummy 函数组:
+
+        void ShaderGraphFunction_float (float3 In, out float3 Out) 
+        {
+            Out = In;
+        }
+        void ShaderGraphFunction_half (half3 In, out half3 Out) 
+        {
+            Out = In;
+        }
+    
+    这组 dummy 函数通常有两个, 分别以 _float, _half 结尾, 表示它们支持的精度
+    shaderGraph 一般就支持这两个精度.
+    注意. 这两个后缀, 是不算入 函数名的. 
+
+# -3-
+    在目标 shaderGraph 中, 新建一个 Custom Fuction Node. 
+        -- Type 设置为 File
+        -- Name 写 ShaderGraphFunction (注意看,没有 后缀)
+        -- Source 绑定 此 hlsl 文件
+        -- Inputs 区新建一个变量,  名字写 In, 类型为 Vector3
+        -- Outputs 区新建一个变量, 名字写 Out, 类型为 Vector3
+    
+    然后给这个 node 的 input 端绑定 positionOS, 
+    output端 则连接到 Vertex function 的 Position 上
+
+# -4-
+    如果还想添加 #pragma 之类的指令, 还需要另外新建一个 custom fuction node. 
+        -- Type 设为 String
+        -- Name 随意,可写为 InjectPragmas
+        -- Body 部分写注入的 指令信息, 比如:
+            #pragma xxxxx
+            #pragma xxxxx
+            Out = In;
+        
+        注意最后一句 Out = In; 必须加上. 
+
+        -- 然后同样设置 input 端 和 output 端.
+
+    这个 node 放在 上一个 custom function node 的前面, 以相同的方式串连. 
+
+# ---
+这样一样, 上面这两段信息 就能注入到 shaderGraph 所生成的 shader 程序中去了.
+
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
 #         
 # ---------------------------------------------- #
+
+
+
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#         
+# ---------------------------------------------- #
+
+
+
+
+
+
+
+
+
+

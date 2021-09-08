@@ -308,17 +308,12 @@ directly accessible without fully qualifying them.
 
 
 
+
+
 # ---------------------------------------------- #
-#       VSync (垂直同步) in Game 窗口
+#       float 最大值
 # ---------------------------------------------- #
-可单独设置 Game 窗口运行时的垂直同步,
-
-在左上角, 设置分辨率的条目中, 点选 VSync 
-
-注意, 想要此功能起效, 不能在运行时同时显示 Scene 和 Game 两个窗口
-
-
-
+float.MaxValue
 
 
 
