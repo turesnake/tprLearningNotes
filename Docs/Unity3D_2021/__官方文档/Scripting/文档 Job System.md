@@ -516,3 +516,37 @@ https://docs.unity3d.com/Packages/com.unity.entities@0.17/manual/index.html
     更多讨论 和 故障排除:
 https://forum.unity.com/forums/data-oriented-technology-stack.147/?_gl=1*1fb37bf*_ga*NTk3NDQwMDQwLjE2MjUyMTM1Njc.*_ga_1S78EFL1W5*MTYyNjQwNTg3OC4xNC4xLjE2MjY0MDc0NDUuMA..&_ga=2.99632670.1623209324.1626241396-597440040.1625213567
 
+
+
+
+
+
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#                让 jobs 支持多线程
+# ---------------------------------------------------------------- #
+参考 catlike bacis 06 jobs 那一章的最后两节.
+
+    jobHandle = job.ScheduleParallel(parts[li].Length, 5, jobHandle);
+
+使用 ScheduleParallel() 代替 Schedule();
+第二个参数为 innloop batch count; 意为: 每个 job thread 一次领取几段运算回去做;
+这个值如果被设置为 1, 则每一个 job thread, 每次都去总调度处那里, 领取一个运算回家做.
+虽然这能将任务充分平摊, 但增加了 频繁去领取job 的时间.
+
+可以设置为 2~5 之间;
+
+当一段任务的计算很繁重, 这个值可以用小的, 当一段任务的计算很轻, 这个值可以用大的 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

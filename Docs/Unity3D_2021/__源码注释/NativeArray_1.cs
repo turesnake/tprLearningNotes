@@ -111,8 +111,16 @@ namespace Unity.Collections
             将本容器控制的 原生内存, 解释为另一种 元素类型 U, 
 
             若未提供参数: expectedTypeSize, 则要求 T 和 U 两个类型的 内存字节数 相同
+
             若提供了此参数, 则允许 U 和 T 的 内存字节数不同, 同时也允许 目标内存段中, 存储的 U 类型元素的个数, 
             和原来的 T类型元素的个数 不同.  (不够精确)
+
+            模板参数: U:
+                希望变成的 元素类型. 
+
+            参数: expectedTypeSize
+                The expected size (in bytes, as given by sizeof) of the current element type of the array.
+                当前数组中,一个元素的 字节长度
         */
         public NativeArray<U> Reinterpret<U>() where U : struct;
         public NativeArray<U> Reinterpret<U>(int expectedTypeSize) where U : struct;

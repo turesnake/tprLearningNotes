@@ -316,4 +316,49 @@ directly accessible without fully qualifying them.
 float.MaxValue
 
 
+# ---------------------------------------------- #
+#       default(T) 表达式
+# ---------------------------------------------- #
+
+T t = default(T);
+
+# 猜测:
+感觉这句话的意思就是 初始化一个 所有变量成员都为默认值 的 实例;
+
+catlike 使用此语句来偷懒, 它是这么用的:
+
+	var k = default(T).doSome();
+
+等同于:
+
+	var k = new T().doSome();
+
+
+
+# ---------------------------------------------- #
+#       Extension Methods   扩展方法
+# ---------------------------------------------- #
+可在不修改 原class 代码的前提下, 扩展这个 class 的 method, 非常有用; 
+
+假设已经存在一个 class A;
+可为其实现 扩展方法:
+
+	static class A_Extensions
+	{
+		public static foo( this A a )
+		{...}
+	}
+
+之后, 我们就能直接调用: 
+
+	A an = new A();
+	an.foo();
+
+
+
+
+
+
+
+
 

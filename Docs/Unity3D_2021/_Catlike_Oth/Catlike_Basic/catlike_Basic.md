@@ -37,7 +37,8 @@ and instead provide that information with a compute shader via a buffer.
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
-#           
+#           MaterialPropertyBlock:
+#           逐 instance 的 material properties
 # ---------------------------------------------------------------- #
 
 在 06 Jobs 一章 3.5 小节. 
@@ -85,8 +86,13 @@ matrices 先被写入 MaterialPropertyBlock 中, 然后在被上交.
 
 
 
+# -------------------------------------- #
+#   DrawMeshInstancedProcedural() 参数中的 Bounds
+# -------------------------------------- #
+一个 AABB 盒, 此绘制指令会一次性将一个 mesh 绘制很多份, 
+可将这些绘制的 instances 看作一个整体, 它们需要一个 cull 检测边界. 这个边界由 bounds 提供
 
-
+超出这个边界的 物体,可能会被 cull (但在实践中, 我从没观察到过这种 cull )
 
 
 
