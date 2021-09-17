@@ -1564,6 +1564,8 @@ namespace Unity.Mathematics
         /*
             select( valueIfFalse, valueIfTrue, condition ).
             // 用参数 c 的正负来选择返回 a或b
+            // 若 c==false, 选 a
+            // 若 c==true,  选 b
         */
         public static double2 select(double2 a, double2 b, bool c);
         public static float4 select(float4 a, float4 b, bool4 c);

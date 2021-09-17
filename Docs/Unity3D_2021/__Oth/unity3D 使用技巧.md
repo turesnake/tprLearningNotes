@@ -347,5 +347,65 @@ Gradient gradient;
 
 
 
+# ---------------------------------------------- #
+#          FixedUpdate() 和 物理引擎
+# ---------------------------------------------- #
+以固定的 真实时间间隔 来调用, 默认间隔为 0.02秒 (一秒50次)
+次值的设置位于 project steeings - Time 中
+也可在 FixedUpdate() 函数内修改 Time.fixedDeltaTime 一值.
+
+# unity 内置物理引擎 工作在 FixedUpdat 中, 
+	所以, 如果要修改
+
+# 在 FixedUpdate() 中访问 Time.deltaTime, 将等同于访问 Time.fixedDeltaTime
+
+
+# 当 Time.fixedDeltaTime 非常大时
+	需要执行若干 渲染帧 后, 才会调用一次 FixedUpdate(), 而物理引擎只在 
+	FixedUpdate() 中被调用, 意味着 在这个巨大的间隙中, rigid物体 是不会移动的
+	(最后呈现出僵硬的步进式移动)
+
+-1-
+	一种解法是 缩短 Time.fixedDeltaTime,
+
+-2- 
+	一种解法是 设置组件: RigidBody - Interpolate:
+	-- None:
+	-- Interpolate:
+		物理引擎会在每一个 渲染帧中, 基于上上 物理帧 pos 和 上一计算出的 物理帧 pos 之间做插值.
+		(这个描述好像不太对)
+		所以开启这个方法后, 物体的实际位置会有一点点滞后
+		
+	-- Extrapolate:
+		物理引擎会在每一个 渲染帧中, 按照上一物理帧的数据, 预测当前渲染帧的位置.
+		此方法仅适用于 运动速度恒定的物体, 
+		否则物体的运动会 一卡一卡的. 
+
+
+# 每一次 物理运算环节 开始时:
+# -1- 先执行 FixedUpdate() 中的内容
+# -2- 执行 物理引擎 PhysX 的运算内容
+# -3- 调用 碰撞检测函数
+
+如果 rigid物体 和别的物体发生碰撞,
+	OnCollisionEnter()
+	OnCollisionExit()
+	OnCollisionStay()
+这三个 callbacks, 会在碰撞检测阶段被调用;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
