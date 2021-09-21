@@ -94,8 +94,7 @@ osx：
 # ---------------------------------------------- #
 #        获得  所在目录 的 path
 # ---------------------------------------------- #
-string path = 
-	System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+string path = System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
 	
 
 
@@ -111,6 +110,31 @@ string path =
 ArrayList 的性能也欠佳
 
 支持 null 作为有效元素。
+
+
+
+# ---------------------------------------------- #
+#               List<T>
+# ---------------------------------------------- #
+# 一些常见用法:
+
+List<int> list = new List<int>() { 1, 2, 3, 4 };
+list.Add( 5 );    // 添加 元素: 5
+list.Remove( 3 ); // 删除 元素: 3
+int maxx = list.Max();
+int minn = list.Min();
+int sum = list.Sum();  // 直接获得全容器元素总和
+
+list.Count; // 容器元素个数
+
+list.Item[idx];  // 容器内某元素的 属性 (get,set)
+
+list.Clear(); // 清空所有元素
+
+bool List<T>.Contains (T item); // 检查容器 是否存在某个元素
+
+void Insert (int idx, T item); // 向容器的 idx位置, 插入元素 item
+
 
 
 
@@ -298,19 +322,6 @@ directly accessible without fully qualifying them.
 
 
 # ---------------------------------------------- #
-#       在 scene 场景中 同步 camera 视角
-# ---------------------------------------------- #
-在 scene 场景中选择中意的视角,
-选中 Hierarchy 中的 camera,
-点击: GameObject - Aligh With View 
-
-此时, 目标 camera 的视角就被同步了. 
-
-
-
-
-
-# ---------------------------------------------- #
 #       float 最大值
 # ---------------------------------------------- #
 float.MaxValue
@@ -326,11 +337,9 @@ T t = default(T);
 感觉这句话的意思就是 初始化一个 所有变量成员都为默认值 的 实例;
 
 catlike 使用此语句来偷懒, 它是这么用的:
-
 	var k = default(T).doSome();
 
 等同于:
-
 	var k = new T().doSome();
 
 

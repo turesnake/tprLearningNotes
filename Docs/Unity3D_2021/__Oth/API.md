@@ -20,4 +20,26 @@ static Vector3 ClampMagnitude(Vector3 vector, float maxLength);
 
 
 
+# ----------------------------------------------#
+#           Debug.Assert
+# ----------------------------------------------#
+# release mode 中 assert 语句会被自动删除
+
+
+void Assert(
+    bool condition, // 判断条件, 为 false 时触发报错
+    string message, // string
+     Object context // 可传入 某个 obj, unity 会打印出来
+);
+
+类似的还有:
+
+    void Assert(bool condition);
+    void Assert(bool condition, string message);
+    void Assert(bool condition, Object context);
+
+
+
+
+
 

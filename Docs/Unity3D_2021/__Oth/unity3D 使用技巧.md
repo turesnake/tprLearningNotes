@@ -181,7 +181,11 @@ PBR 最好在 linear 模式中运行
 当一个实例 复写了某一个数据, 这个数据就不再和 prefab asset 相互绑定了. 
 
 
-# --- 如何在运行时 生成 GameObj/Prefab 实例 ?
+# ----------------------------------------------#
+#    如何在运行时 生成 GameObj/Prefab 实例 ?
+#    复制gameobj
+#    
+# ----------------------------------------------#
 
 # --
 Object.Instantiate( goTransform );
@@ -395,6 +399,14 @@ Gradient gradient;
 
 
 
+# ---------------------------------------------- #
+#       在 scene 场景中 同步 camera 视角
+# ---------------------------------------------- #
+在 scene 场景中选择中意的视角,
+选中 Hierarchy 中的 camera,
+点击: GameObject - Aligh With View 
+
+此时, 目标 camera 的视角就被同步了. 
 
 
 

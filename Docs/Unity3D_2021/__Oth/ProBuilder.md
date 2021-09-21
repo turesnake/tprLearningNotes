@@ -32,11 +32,27 @@
 
 
 
+# ----------------------------------------------#
+#         Set Collider 
+#        手动设置 碰撞体
+# ----------------------------------------------#
+有些 模型a 过于复杂,不适合直接当作碰撞体, 此时可额外建模一个 简易形状的 碰撞体物体b
+--
+    关闭 模型a 的 Mesh Collider 组件
+--
+    选中 碰撞体物体b, 在 probuilder 面板中, 点击 Set Collider 按钮
+    此时 物体b 会变成 半透明绿色, 在 运行时, 它将不可见, 并扮演 碰撞体
 
+# 更精确的控制
+恢复 模型a 的 Mesh Collider 组件
+将 模型a 单独放进 自定义 layer: Detailed
+将 模型b 单独放进 自定义 layer: SimpleCollier
+将 玩家控制的角色:运动球,  单独放进 自定义 layer: Agent
 
-
-
-
+修改 project settings - Physics - layer collision matrix
+    让 SimpleCollier 纵列上 只勾选 Agent, 意味着 只有 Agent 可以碰撞到它
+    让 Detailed 纵列上 不勾选 Agent, 意味着 Agent 无法碰撞到它
+        这样, 其它非玩家控制物体, 比如飞溅的碎片, 就能和 Detailed 层正常碰撞交互了
 
 
 

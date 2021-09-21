@@ -183,14 +183,12 @@ namespace UnityEngine
         // 返回结果:
         //     The return value between -1 and 1.
         public static float Cos(float f);
-        //
-        // 摘要:
-        //     Calculates the shortest difference between two given angles given in degrees.
-        //
-        // 参数:
-        //   current:
-        //
-        //   target:
+
+        /*
+            摘要:
+                Calculates the shortest difference between two given angles given in degrees.
+                因为角度始终在 0-360 内打转, 可用此函数 快速计算出, 任意两角度之间的 夹角
+        */
         public static float DeltaAngle(float current, float target);
         //
         // 摘要:
@@ -442,7 +440,10 @@ namespace UnityEngine
         /* 
             摘要:
             Moves a value current towards target.
-            讲一个值从 current 移动到 target, 且移动速度不超过 maxDelta
+            将一个值从 current 移动到 target, 且移动速度不超过 maxDelta
+
+            因为此函数只被调用了一次, 所以无法真的表达完整的 "移动过程"
+            而只是仅仅移动了 "一帧"
         
          参数:
            current: The current value.
@@ -451,18 +452,19 @@ namespace UnityEngine
         */
         public static float MoveTowards(float current, float target, float maxDelta);
 
-        //
-        // 摘要:
-        //     Same as MoveTowards but makes sure the values interpolate correctly when they
-        //     wrap around 360 degrees.
-        //
-        // 参数:
-        //   current:
-        //
-        //   target:
-        //
-        //   maxDelta:
+        /*
+            摘要:
+                Same as MoveTowards but makes sure the values interpolate correctly when they
+                wrap around 360 degrees.
+                可专门用于 角度的过度
+
+                因为此函数只被调用了一次, 所以无法真的表达完整的 "转动过程"
+                而只是仅仅转动了 "一帧"
+            参数:
+                maxDelta:
+        */
         public static float MoveTowardsAngle(float current, float target, float maxDelta);
+
         //
         // 摘要:
         //     Returns the next power of two that is equal to, or greater than, the argument.
