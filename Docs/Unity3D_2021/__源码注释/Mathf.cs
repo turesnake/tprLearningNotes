@@ -55,13 +55,16 @@ namespace UnityEngine
         // 参数:
         //   value:
         public static int Abs(int value);
-        //
-        // 摘要:
-        //     Returns the arc-cosine of f - the angle in radians whose cosine is f.
-        //
-        // 参数:
-        //   f:
+
+        /*
+         摘要:
+             Returns the arc-cosine of f - the angle in radians whose cosine is f.
+        
+         参数:
+           f: 必须位于 [-1,1] 区间, 否则本函数将计算出 NaN 
+        */
         public static float Acos(float f);
+
         //
         // 摘要:
         //     Compares two floating point values and returns true if they are similar.

@@ -392,10 +392,22 @@ Gradient gradient;
 # -3- 调用 碰撞检测函数
 
 如果 rigid物体 和别的物体发生碰撞,
+
+	OnTriggerEnter()
+	OnTriggerStay()
+	OnTriggerExit()
+
 	OnCollisionEnter()
 	OnCollisionExit()
 	OnCollisionStay()
-这三个 callbacks, 会在碰撞检测阶段被调用;
+这两组 callbacks, 会在碰撞检测阶段被调用;
+trigger组 会在 collision组 之前被调用 (如果有碰撞到 trigger 的话)
+
+# 想要调用 trigger组:
+	碰撞双方都必有 collider 组件,
+	有一方必须开启 isTrigger, 且同时带有 rigidbody 组件
+	另一方必须关闭 isTrigger, 是否带有 rigidbody 组件 随意
+	(双开, 双不开, 都不行)
 
 
 
