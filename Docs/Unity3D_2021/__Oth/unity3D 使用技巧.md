@@ -225,25 +225,6 @@ Project Settings - Quality - Other - VSync Count;
 
 
 
-# ---------------------------------------------- #
-#       Awake 
-#		Start 
-#		Updata 之间的区别
-# ---------------------------------------------- #
-
-# -- Awake
-	类似于 constructor 构造函数
-	会在本类的 成员 被新建完毕后,调用
-
-
-# -- Start
-	只有在 本组件的 Update 函数被 第一次调用之前, Start 函数才会被调用
-	(无论这个 组件是否有 update 函数)
-	如果一个 组件在运行时的某一时刻被新建, 它的第一个 update 会在下一帧被调用. 
-	 
-
-
-# -- Update
 
 
 # ---------------------------------------------- #
@@ -252,45 +233,6 @@ Project Settings - Quality - Other - VSync Count;
 Vector3 Scale(Vector3 a, Vector3 b);
 
 得到 new Vector3( a.x*b.x, a.y*b.y, a.z*b.z );
-
-
-# ---------------------------------------------- #
-#		MonoBehaviour.
-#       OnEnable()
-#		OnDisable()
-#		OnValidate()
-# ---------------------------------------------- #
-
-# -- OnEnable()
-	本组件每次在 editor 中热更新后 (也包括 刚启动的 Awake() 时),
-	进入 enable 状态的一瞬间, 会调用此函数
-
-# -- OnDisable()
-	被正式销毁时, 也包含每次 editor 热更新时的 重置
-
-	当 behaviour 类实例 被设置为 disabled 时, 此函数被调用.
-	当 obj 被销毁时, 此函数也被调用.
-
-	and can be used for any cleanup code. 
-	When scripts are reloaded after compilation has finished, OnDisable will be called, 
-	followed by an OnEnable after the script has been loaded.
-
-
-# -- OnValidate()
-	只在 editor 模式中有意义的函数, 当一个 脚本被 loaded, 或当一个变量在 inspector 中被修改时,
-	此函数被调用.
-
-	所以, 这个函数的内容, 可围绕那个刚在 inspector 中被修改的 变量展开, 比如, 修正它的范围.
-
-	注意:
-		不应在此函数中做别的事情,比如:
-		新建obj, 调用其它 非线程安全的 unity api. 
-		---
-		因为 此函数可能不会在 main thread 中被调用, 而是在类似于 loading thread 中.
-
-		不该在此处 执行 camera rendering 操作. 而是应该 add a listener to EditorApplication.update; 
-		and perform the rendering during the next Editor Update call.
-
 
 
 

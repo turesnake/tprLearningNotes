@@ -16,7 +16,8 @@ public struct Quat
 
     public float x,y,z,w; // 实部 放后面
 
-    public Quat(Quaternion Q):this(new Vector4(Q.x,Q.y,Q.z,Q.w)){}//把unity内置的四元数转换成我的四元数 用来调试用的
+    //把unity内置的四元数转换成我的四元数 用来调试用的
+    public Quat(Quaternion Q):this(new Vector4(Q.x,Q.y,Q.z,Q.w)){}
 
     public Quaternion Quaternion()
     {
@@ -48,6 +49,7 @@ public struct Quat
     public Quat(float x, float y, float z, float w) : this(new Vector4(x, y, z, w)) {}
     public Quat(Vector3 xyz, float W):this(new Vector4(xyz.x,xyz.y,xyz.z,W)){}
    
+
     public static Quat FromEular(Vector3 eular,RotateOrder order=RotateOrder.ZXY)
     {
         const float Deg2Rad =   Mathf.PI/(float)180;
@@ -86,14 +88,18 @@ public struct Quat
         }
         return result;
     }//欧拉角转四元数  unity默认旋转顺序是ZXY
+
+
     static Quat  CreatQuatFromAxis(Quat qx,Quat qy,Quat qz)
     {
         return qx*qy*qz;
     }
+
      public override string ToString()
      {
          return string.Format("{0} {1} {2} {3}",x,y,z,w);
      }
+
      public override bool Equals(object obj)
      {
          if (obj is Quat)
@@ -108,6 +114,7 @@ public struct Quat
 
      
      // 其实就是两个 四元数 的常规的 乘法运算, 单却能实现 "旋转" 之上的 "旋转"
+     // 这并不是完整的 qp(q^-1) 
      public static Quat operator*(Quat q1,Quat q2)
      {
          // 实部
@@ -129,6 +136,7 @@ public struct Quat
      }//重载乘法 倍增
 
 
+    // qp(q^-1) !!!!!!!!!
      public static Vector3 operator*(Quat q1,Vector3 dir)//重载乘法 某个轴绕四元数旋转后得到新方向
      {
          Quat qDir=new Quat(dir,0);
@@ -141,11 +149,13 @@ public struct Quat
      {
          return q1 * Inverted(q2);
      }//重载除法
+
      public static bool operator==(Quat q1, Quat q2)
      {
          if (q1.x == q2.x && q1.y == q2.y && q1.z == q2.z && q1.w == q2.w) return true;
          return false;
      }//重载等于
+
      public static bool operator!=(Quat q1, Quat q2)
      {
          if (q1.x != q2.x || q1.y != q2.y || q1.z != q2.z || q1.w != q2.w) return true;
@@ -231,9 +241,20 @@ public struct Quat
      public static Quat RotateAxisByAngle(float Angle, Vector3 axis) {
          float sin = Mathf.Sin(Angle/2*(Mathf.PI/180));
          float cos= Mathf.Cos(Angle/2*(Mathf.PI/180));
+         // 仅仅是制作一个 四元数, 沿目标轴旋转 半个角度, 
+         // 然后返回这个 四元数
          return new Quat(sin*axis,cos);
      }//绕着某个轴转某个角度 换算成四元数
 
+
+    // 找出旋转过程的 旋转轴, 要旋转的角度,
+    // 返回的是 半角四元数
+    // 
+    //      此处实现 和 unity 自带同名函数不同!
+    //      unity 自带函数, 返回的 四元数, 旋转完整的 目标角度 (而不是半各角度)
+    //
+    // ---
+    // 按照这个思路, 当我们把这个 返回四元数q 作用于某对象p, 需要执行: qp(q^-1) 才能实现完整的旋转
      public static Quat FromToRotation(Vector3 fromDirection,Vector3 toDirection)
      {
          if (fromDirection==Vector3.zero||toDirection==Vector3.zero)return Quat.Identity;
@@ -251,14 +272,24 @@ public struct Quat
          return new Quat(sinHalfThelta*aixs,cosHalfThelta);
      }//输入2个方向 转四元数
 
+
+    // 取出 本四元数 记录的 旋转轴 和 旋转角度 这两个信息
+    // 实现依据: 将 本四元数 看作: 
+    //      实部:  cos(Thlta/2)
+    //      虚部:  sin(Thlta/2)(xi,yj,zk)  
+    // 
+    // 返回的 旋转角度值 是 Thlta, 不是 半角, 和 unity 一致. 
+    //   
+    //
      public  void ToAngleAxis(out float angle, out Vector3 axis)
      {
-         Normalized();
-         float rad=Mathf.Acos(w) * 2;
+         Normalized();// 无视 本四元数的 模长 信息
+         float rad=Mathf.Acos(w) * 2; // 取出 本四元数 记录的 旋转角度 (弧度制)
          angle = rad * 180 / Mathf.PI;
          float sinHalfThlta = Mathf.Sin(rad / 2);
          axis=sinHalfThlta==0?new Vector3(1,0,0):xyz/sinHalfThlta;
      }//四元数转角度和轴向
+
 
      public static Quat Lerp(Quat quat1, Quat quat2, float t)//普通插值
      {
