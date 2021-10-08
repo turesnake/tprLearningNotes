@@ -338,7 +338,12 @@ catlike 使用此语句来偷懒, 它是这么用的:
 	A an = new A();
 	an.foo();
 
+# 注意, 这里的 static class 的名字可以自定义, 就比如上面的 A_Extensions
 
+
+# 离谱的是, 我们甚至能为 Enum 类型实现 Extension Methods
+# 这样一来, enum instance 也能调用自己的函数了,
+# 通常在这种代码中, 实现 enum instance 到某种具体类型实例的 转换
 
 
 

@@ -19,10 +19,12 @@ namespace UnityEngine
     {
         protected Transform();
 
-        //
-        // 摘要:
-        //     Position of the transform relative to the parent transform.
+        /*
+            Position of the transform relative to the parent transform.
+            据说修改它的开销要比 position 低, 毕竟后者是 ws的, 要逐层去访问父级信息
+        */
         public Vector3 localPosition { get; set; }
+
         //
         // 摘要:
         //     The rotation as Euler angles in degrees.
@@ -48,10 +50,13 @@ namespace UnityEngine
         // 摘要:
         //     A Quaternion that stores the rotation of the Transform in world space.
         public Quaternion rotation { get; set; }
-        //
-        // 摘要:
-        //     The world space position of the Transform.
+
+        /*
+            The world space position of the Transform.
+            据说修改它的开销要比  localPosition 高, 毕竟本属性是 ws的, 要逐层去访问父级信息
+        */
         public Vector3 position { get; set; }
+
         //
         // 摘要:
         //     The rotation of the transform relative to the transform rotation of the parent.

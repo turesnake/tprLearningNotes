@@ -42,8 +42,20 @@ Coroutines 可以让一段代码在 若干帧内 逐次执行.
 通过设置 enabled 为 false, 将一个 monobahaviour 设为 disabling, 这不能停止一个 Coroutine
 
 
+# ---------------------------------------------- #
+#     WaitForSeconds
+# ---------------------------------------------- #
 
+# ==:
+    WaitForSeconds wait = new WaitForSeconds(0.05f);
 
+    for( int i=0; i<Len; i++> ){
+        doSomething();
+        yield return wait;
+    }
+# --
+
+不再是每帧调用一次, 而是间隔一段指定时间后, 调用一次
 
 
 

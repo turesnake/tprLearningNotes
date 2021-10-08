@@ -44,8 +44,32 @@ ScriptableObject 的主要使用方式有:
 
 
  
+# ============================== #
+#   [System.NonSerialized]
+# ------------------------------ #
+
+那些没有被标注为 serialized 的 scriptable object 的 private字段, unity 是不会 存储它们的;
+然后, scriptable object 本身, 可在单个 editor session 内的多段 play sessions 之间长期存在;
+只要 editor 窗口持续存在,  private 字段的值也持续存在; 但在你下次启动 editor 时被重置;
+
+所以, 当我们在 editor 中复制旧的 scriptable object 实例, 生成新的 实例时, 上述机制会引发一些麻烦,
+所以最好明确这些 scriptable object 的 private字段 绝对不 "persists".
+
+所以要把这些 private字段, 设置为 [System.NonSerialized]
+
+当然这也意味着, 当 editor 中出现重编译, 这些值也会被重置
 
 
+
+# ============================== #
+#   ScriptableObject.CreateInstance(...)
+# ------------------------------ #
+    static ScriptableObject CreateInstance(string className);
+    static ScriptableObject CreateInstance(Type type);
+
+    static T CreateInstance<T>() where T : ScriptableObject;
+
+在代码中新建一个 ScriptableObject 的实例
 
 
 

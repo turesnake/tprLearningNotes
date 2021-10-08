@@ -270,6 +270,35 @@ pass 数量越多，开销越大。
 # : #include "UnityCG.cginc"
     导入了一些 常规函数和变量名，可以简化程序编写
 
+
+
+# ---------------------------------------------- #
+#           各内置文件 简述
+# ---------------------------------------------- #
+
+# UnityCG.cginc
+
+# UnityShaderVariables.cginc
+    defines a whole bunch of shader variables that are necessary 
+    for rendering, like transformation, camera, and light data. 
+    These are all set by Unity when needed.
+    ---
+    其实就是定义了很多 shader 变量, 存储在各种 cbuffer 结构体中
+
+# HLSLSupport.cginc
+    sets things up so you can use the same code no matter which platform 
+    you're targeting. So you don't need to worry about using 
+    platform-specific data types and such.
+
+# UnityInstancing.cginc
+    is specifically for instancing support, which is a specific rendering 
+    technique to reduce draw calls. Although it doesn't include the file directly, 
+    it depends on UnityShaderVariables.
+    ---
+    GPU Instancing 功能相关的
+
+
+
  
 
 # ---------------------------------------------- #
@@ -414,7 +443,7 @@ _MainTex_ST.zw: 平移值 ，对应 material 界面中的 offset
 为了便于记忆，我们称这个空间为 TBN空间 （对应 xyz 轴）
 
 
-当某个点的 法线向量没有 扰动时，它记录在 法线贴图中的数据应该是 (0.5, 0.5, 1.0, 1.0)
+当某个点的 法线向量没有 扰动时，它记录在 法线贴图中的数据应该是 (0, 0, 1.0, 1.0)
 解释起来就是：xy轴值都为0，z值为1，整个 法线向量，是个 单位向量。
 
 
@@ -578,18 +607,12 @@ depth comparison:
 
 
 
-
-
-
-
 # ---------------------------------------------- #
 #            逆矩阵的转置
 #            逆转置矩阵
 #            方向向量,法线 的空间转换 
 # ---------------------------------------------- #
 参见: "方向向量_法线_空间变换_逆矩阵的转置.jpg"
-
-
 
 
 
