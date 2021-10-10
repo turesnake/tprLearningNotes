@@ -59,6 +59,9 @@ void urp_vert(){
 void builtin_frag(){
     fixed3 viewDir = normalize( UnityWorldSpaceViewDir( posWS ) );// param: obj posWS: float3 
 }
+
+// 也可用 _WorldSpaceCameraPos : UnityShaderVariables.cginc
+
 // ---------------------- //
 void urp_vert(){
     fixed3 viewDir = normalize( _WorldSpaceCameraPos - posWS );

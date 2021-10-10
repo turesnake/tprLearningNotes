@@ -618,8 +618,15 @@ depth comparison:
 
 
 # ---------------------------------------------- #
-#             
+#          detail texture 变暗问题
+#          gamma -> linear space
+#        unity_ColorSpaceDouble   
 # ---------------------------------------------- #
+查找图片:
+    "detail_texture_变暗问题.jpg"
+
+出现位置:
+catlike - Rendering - 3.Combining Textures - 1.5节
 
 
 
