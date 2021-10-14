@@ -181,24 +181,13 @@ Union<TSource> (this IEnumerable<TSource> first, IEnumerable<TSource> second);
 
 
 # ------------ Concat -------------- #
-Concat<TSource> (this IEnumerable<TSource> first, Generic.IEnumerable<TSource> second);
+Concat<TSource> (
+    this IEnumerable<TSource>       first, 
+    Generic.IEnumerable<TSource>    second
+);
 
 连接两个序列
 
-
-
-# ============================================================== #
-#       OfType
-# -------------------------------------------------------------- #
-# 为延迟执行...
-
-原始序列中, 只有能被转换为目标类型的 元素, 才会被保留; 返回修改过的序列
-
-# 此函数是少数可作用于 the collection that hash non-parameterized type,
-# 比如 ArrayList;
-# 反过来, 本函数不用用于 继承于 IEnumerable<T> 的容器
-
-OfType<TResult> (this IEnumerable source);
 
 
 # ============================================================== #
@@ -695,4 +684,438 @@ Repeat<TResult> (TResult element, int count);
 
 
 
+
+# ============================================================== #
+#       SequenceEqual
+# -------------------------------------------------------------- #
+
+判断两个序列 是否相等;
+若两序列 元素个数相等, 且每个对应的元素也相等(使用指定的 判断方式)
+则这两个序列 相等, 此时返回 true
+
+若元素类型是自定义的, 这个类型需要继承 IEquatable<T>, 以便支持 元素之间的判断;
+
+bool 
+SequenceEqual<TSource> (
+    this IEnumerable<TSource> first, 
+    IEnumerable<TSource> second
+);
+
+
+bool 
+SequenceEqual<TSource> (
+    this IEnumerable<TSource>       first, 
+    IEnumerable<TSource>            second, 
+    IEqualityComparer<TSource>?     comparer
+);
+
+
+# ============================================================== #
+# 元素操作:
+#       ElementAt
+#       ElementAtOrDefault
+#       First
+#       FirstOrDefault
+#       Last
+#       LastOrDefault
+#       Single
+#       SingleOrDefault
+# -------------------------------------------------------------- #
+
+
+# -------------------- ElementAt --------------------- #
+TSource 
+ElementAt<TSource> (
+    this IEnumerable<TSource>   source, 
+    int                         index
+);
+
+返回序列中指定 idx 位置的元素; (idx 以0开始)
+
+若类型 TSource 实现了 IList<T>, 则返回指定idx 处的元素
+否则, 返回 the specified element. (没看懂)
+
+若 idx 越界, 返回异常;
+
+# -------------------- ElementAtOrDefault --------------------- #
+TSource? 
+ElementAtOrDefault<TSource> (
+    this IEnumerable<TSource>   source, 
+    int                         index
+);
+
+若 idx 越界, 返回 default(TSource);
+
+引用类型 和 可空类型的 default 值为 null;
+
+
+# -------------------- First --------------------- #
+TSource 
+First<TSource> (
+    this Generic.IEnumerable<TSource> source
+);
+
+返回序列的 第一个元素;
+
+TSource 
+First<TSource> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,bool>          predicate
+);
+
+有谓词版: 返回 符合谓词test 的 第一个元素; (谓词返回 true)
+
+若所有元素都不符合test, 爆出异常 InvalidOperationException;
+此时可改用: FirstOrDefault()
+
+若序列 或 谓词 为null, 爆出异常 ArgumentNullException;
+
+# -------------------- FirstOrDefault --------------------- #
+TSource? 
+FirstOrDefault<TSource> (
+    this IEnumerable<TSource> source
+);
+
+TSource? 
+FirstOrDefault<TSource> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,bool>          predicate
+);      
+
+若找不到合适的 第一个元素, 则返回 default(TSource);
+
+
+# -------------------- Last --------------------- #
+# -------------------- LastOrDefault --------------------- #
+TSource 
+Last<TSource> (
+    this IEnumerable<TSource> source
+);
+
+TSource Last<TSource> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,bool>          predicate
+);
+
+
+TSource? 
+LastOrDefault<TSource> (
+    this IEnumerable<TSource> source
+);
+
+TSource? 
+LastOrDefault<TSource> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,bool>           predicate
+);
+
+和 First 系列对应的;
+
+
+# -------------------- Single --------------------- #
+TSource 
+Single<TSource> (
+    this IEnumerable<TSource> source
+);
+
+返回序列中唯一一个元素, 如果序列为空,或元素多于一个, 爆出异常
+
+TSource 
+Single<TSource> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,bool>          predicate
+);
+
+返回序列中和谓词匹配的 单独一个元素, 如果没有元素匹配, 或多于一个匹配, 爆出异常;
+(只要匹配的只有一个就行, 元素有很多个是没问题的)
+
+
+# -------------------- SingleOrDefault --------------------- #
+TSource? 
+SingleOrDefault<TSource> (
+    this IEnumerable<TSource> source
+);
+
+TSource? 
+SingleOrDefault<TSource> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,bool>          predicate
+);
+
+不符合时不会爆出异常, 而是返回 default(TSource);
+
+
+
+
+# ============================================================== #
+# 转换数据类型
+#       AsEnumerable
+#       AsQueryable
+#       Cast
+#       OfType
+#       ToArray
+#       ToDictionary
+#       ToList
+#       ToLookup
+# -------------------------------------------------------------- #
+
+
+
+# -------------------- AsEnumerable --------------------- #
+IEnumerable<TSource> 
+AsEnumerable<TSource> (
+    this IEnumerable<TSource> source
+);
+
+在编译时, 将一个 "实现了 IEnumerable<T> 的类型", 转换为 IEnumerable<T> 本身;
+
+比如, 可用来: 不使用此类型自定义的一些方法, 而是直接使用 IEnumerable<T> 的原版方法;
+
+
+# -------------------- AsQueryable --------------------- #
+暂略...
+
+
+# -------------------- Cast --------------------- #
+# 为延迟执行...
+IEnumerable<TResult> 
+Cast<TResult> (
+    this IEnumerable source
+);
+
+将一个继承了 IEnumerable 的元素, 转换为 指定类型 IEnumerable<TResult>;
+
+比如, 可将 ArrayList 转换为 IEnumerable<string> 之类的
+
+
+
+# -------------------- OfType --------------------- #
+# 为延迟执行...
+IEnumerable<TResult>
+OfType<TResult> (this IEnumerable source);
+
+原始序列中, 只有能被转换为目标类型的 元素, 才会被保留; 返回修改过的序列
+
+# 此函数是少数可作用于 the collection that hash non-parameterized type,
+# 比如 ArrayList;
+# 反过来, 本函数不用用于 继承于 IEnumerable<T> 的容器
+
+
+# -------------------- ToArray --------------------- #
+# 为立即执行
+TSource[] 
+ToArray<TSource> (
+    this IEnumerable<TSource> source
+);
+
+从 IEnumerable<TSource> 序列中, 生成一个 array 并返回;
+
+
+# -------------------- ToDictionary --------------------- #
+Dictionary<TKey,TElement> 
+ToDictionary<TSource,TKey,TElement> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,TKey>          keySelector, 
+    Func<TSource,TElement>      elementSelector
+);
+
+
+Dictionary<TKey,TElement> 
+ToDictionary<TSource,TKey,TElement> (
+    this IEnumerable<TSource> source, 
+    Func<TSource,TKey> keySelector, 
+    Func<TSource,TElement> elementSelector, 
+    IEqualityComparer<TKey>? comparer
+);
+
+Dictionary<TKey,TSource> 
+ToDictionary<TSource,TKey> (
+    this IEnumerable<TSource> source, 
+    Func<TSource,TKey> keySelector
+);
+
+# 这一版中, pair.value 类型为 TSource
+
+Dictionary<TKey,TSource> 
+ToDictionary<TSource,TKey> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,TKey>          keySelector, 
+    IEqualityComparer<TKey>?    comparer
+);
+
+
+# -------------------- ToList --------------------- #
+List<TSource> 
+ToList<TSource> (
+    this IEnumerable<TSource> source
+);
+
+
+# -------------------- ToLookup --------------------- #
+ILookup<TKey,TElement> 
+ToLookup<TSource,TKey,TElement> (
+    this IEnumerable<TSource>       source, 
+    Func<TSource,TKey>              keySelector, 
+    Func<TSource,TElement>          elementSelector
+);
+
+Lookup 容器的 value 也是个容器, 可存储一组元素;
+
+将原始序列的元素 装填进去的时候, 还是原来的类似 ToDictionary 的操作,
+但在 Lookup 内部, 如果两次 insert, key值相同, 那么它们的 pair.value 会被放到一个 容器里
+(都被一个 key 索引到)
+
+
+
+ILookup<TKey,TElement> 
+ToLookup<TSource,TKey,TElement> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,TKey>          keySelector, 
+    Func<TSource,TElement>      elementSelector, 
+    IEqualityComparer<TKey>?    comparer
+);
+
+
+ILookup<TKey,TSource> 
+ToLookup<TSource,TKey> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,TKey>          keySelector
+);
+
+# 此版, pair.value 类型为 TSource;
+
+
+ILookup<TKey,TSource> 
+ToLookup<TSource,TKey> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,TKey>          keySelector, 
+    IEqualityComparer<TKey>?    comparer
+);
+
+
+# ============================================================== #
+# 聚合操作:
+#       Aggregate
+#       Average
+#       Count
+#       LongCount
+#       Max
+#       Min
+#       MaxBy
+#       MinBy
+#       Sum
+# -------------------------------------------------------------- #
+
+# -------------------- Aggregate --------------------- #
+TResult 
+Aggregate<TSource,TAccumulate,TResult> (
+    this IEnumerable<TSource>             source, 
+    TAccumulate                           seed,          // 用来初始化 accumulator
+    Func<TAccumulate,TSource,TAccumulate> func,          // 作用于每个元素的 累加器函数
+    Func<TAccumulate,TResult>             resultSelector //将最终累加器值,转换为返回值的函数
+);
+
+首先, 用 seed 初始化一个 累加器函数 func, 然后遍历原始序列, 将序列的每个元素传入
+累加器函数 中, 每遍历一个元素, func 都会被调用一次, 
+这么一圈走完后, 累加器中会留有一个具体的值,
+再使用函数 resultSelector 去处理这个 累加器中的值, 最终将处理结果 返回出来;
+
+可以看到, 虽然有一个名为 "累加器" 的东西, 其实他就是一个函数, 还是我们自己定义的
+
+范例:
+# ==:
+    string[] strs = { "a", "aa", "ccc", "1234567", "kk" };
+
+    string longestName = strs.Aggregate(
+        "bb",
+        (longest, next) => next.Length > longest.Length ? next : longest,
+        fruit => fruit.ToUpper()
+    );
+# --
+最终, longestName = "1234567";
+
+这段代码 先手握 "bb", 然后拿它去对比 原始序列中的每一个元素, 保留 长度最长的那个,
+最后对筛选出来的元素, 全部换成 大写字母, 返回;
+
+
+TAccumulate 
+Aggregate<TSource,TAccumulate> (
+    this IEnumerable<TSource>               source, 
+    TAccumulate                             seed, 
+    Func<TAccumulate,TSource,TAccumulate>   func
+);
+
+
+TSource 
+Aggregate<TSource> (
+    this IEnumerable<TSource>       source, 
+    Func<TSource,TSource,TSource>   func
+);
+
+
+
+# -------------------- Average --------------------- #
+float  Average (this IEnumerable<float> source);
+float? Average (this IEnumerable<float?> source);
+还有很多 变种.....
+
+求序列的平均值
+
+
+
+# -------------------- Count --------------------- #
+# -------------------- LongCount --------------------- #
+int Count<TSource> (this IEnumerable<TSource> source);
+
+统计序列中元素个数
+
+int Count<TSource> (this IEnumerable<TSource> source, Func<TSource,bool> predicate);
+
+统计序列中, 满足谓词的元素的个数
+
+long LongCount<TSource> (this IEnumerable<TSource> source);
+long LongCount<TSource> (this IEnumerable<TSource> source, Func<TSource,bool> predicate);
+
+
+# -------------------- Max --------------------- #
+float?      Max (this IEnumerable<float?> source);
+decimal     Max (this IEnumerable<decimal> source);
+double      Max (this IEnumerable<double> source);
+int         Max (this IEnumerable<int> source);
+long        Max (this IEnumerable<long> source);
+decimal?    Max (this IEnumerable<decimal?> source);
+double?     Max (this IEnumerable<double?> source);
+int?        Max (this IEnumerable<int?> source);
+....还有很多...
+
+返回最大值
+
+# -------------------- Min --------------------- #
+返回最小值
+
+
+
+# -------------------- MaxBy --------------------- #
+TSource? 
+MaxBy<TSource,TKey> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,TKey>          keySelector, 
+    IComparer<TKey>?            comparer
+);
+
+TSource? 
+MaxBy<TSource,TKey> (
+    this IEnumerable<TSource>   source, 
+    Func<TSource,TKey>          keySelector
+);
+
+不是直接比较 序列元素, 而是比较一个 key, 这个 key 由 keySelector 函数来提供;
+
+# -------------------- MinBy --------------------- #
+
+
+# -------------------- Sum --------------------- #
+double Sum (this IEnumerable<double> source);
+
+求和
 

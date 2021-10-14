@@ -271,7 +271,7 @@ directly accessible without fully qualifying them.
 
 
 # ---------------------------------------------- #
-#       null-coalescing operator: ??
+#       null-coalescing operator: ?? 空接合运算符
 # ---------------------------------------------- #
 用 catlike srp 教程中代码举例:
 
@@ -292,6 +292,55 @@ directly accessible without fully qualifying them.
 			return settings;
 		}
 	}
+
+
+# ================================================ #
+#   Nullable Types   			可空对象
+# 	Null Conditional Operator 	空条件运算符
+# ------------------------------------------------ #
+
+
+
+
+# --------------------------- #
+# Null Conditional Operator 	空条件运算符
+# ==:
+	int[] nums = null;
+	int n1 = nums.Length; 	// 会产生异常,进而报错
+	var e1 = nums[0];		// 会产生异常,进而报错
+
+	int? n2 = nums?.Length;
+	var e2 = nums?[0];
+# --
+首先检查目标变量是否为 null, 若为null, "?." 运算返回的也是一个 null,
+否则,执行正常的 . 访问运算;
+
+# 注意: int? n2 = nums?.Length;
+因为 右侧返回的内容可能为 null, 左侧用 int 去接是不可行的, 
+此时要用 可空类型 int? 去接;
+
+
+# 空条件运算符 最常用的场合是 delegate 的调用:
+不再需要写:
+	if(handler != null){       
+		handler(this, args);   
+	}
+
+可以改写为:
+	handler?.Invoke(this, args);
+
+
+
+# === 空条件运算符 与 空接合运算符 的联合使用 ==
+
+	int studentCount = Students?.Count ?? 0;
+
+-1- 若 Students为空, 中间获得 null, 被 ?? 接住后, 自动新建值 0 并返回
+-2- 若 Students不为空, 但 Count 为空, 被 ?? 接住后, 自动新建值 0 并返回
+-3- Students?.Count 获得非空值, 直接返回这个值
+
+
+
 
 
 
