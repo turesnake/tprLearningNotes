@@ -1354,14 +1354,28 @@ multi_compile_fwdbase
     编译所有被  PassType.ForwardBase 需要的 variants. 
     这些 variants 处理不同的 lightmap类型, 以及 启用/禁用 主直射光的 阴影
 
-multi_compile_fwdadd
+
+# multi_compile_fwdadd
 
     编译所有被 PassType.ForwardAdd 需要的 variants. 
     这些 variants 处理 直射光, spot光, 点光源, 以及它们的 拥有 cookie texture 的 variants.
 
+    包含以下宏:
+        POINT, DIRECTIONAL, SPOT, POINT_COOKIE, DIRECTIONAL_COOKIE.
+    
+    These variants are needed by PassType.ForwardAdd.
+
+
+
 multi_compile_fwdadd_fullshadows
 
     和 multi_compile_fwdadd 类似, 但也包括对 灯光有 实时阴影 的能力。
+
+    包含以下宏:
+        POINT, DIRECTIONAL, SPOT, POINT_COOKIE, DIRECTIONAL_COOKIE, 
+        SHADOWS_DEPTH, SHADOWS_SCREEN, SHADOWS_CUBE, SHADOWS_SOFT, SHADOWS_SHADOWMASK, 
+        LIGHTMAP_SHADOW_MIXING.
+
 
 multi_compile_fog
 

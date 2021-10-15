@@ -41,6 +41,7 @@ IQueryable 是负责生成SQL语句的，但并不马上执行；
 
 仅以 OrderBy 举例:
 # -1- ----------------------------- #
+IOrderedEnumerable<TSource> 
 OrderBy<TSource,TKey>(IEnumerable<TSource>, Func<TSource,TKey>)
 
 # 谓词: Func<TSource,TKey> keySelector
