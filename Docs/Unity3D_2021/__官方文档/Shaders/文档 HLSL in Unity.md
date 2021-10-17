@@ -1367,7 +1367,7 @@ multi_compile_fwdbase
 
 
 
-multi_compile_fwdadd_fullshadows
+# multi_compile_fwdadd_fullshadows
 
     和 multi_compile_fwdadd 类似, 但也包括对 灯光有 实时阴影 的能力。
 

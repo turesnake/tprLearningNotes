@@ -22,7 +22,7 @@
     #pragma multi_compile DIRECTIONAL POINT
 
 # 也可用 #pragma multi_compile_fwdadd 一次性包含以下宏:
-#    POINT, DIRECTIONAL, SPOT, POINT_COOKIE, DIRECTIONAL_COOKIE.
+#    POINT, DIRECTIONAL, SPOT, POINT_COOKIE, DIRECTIONAL_COOKIE
 
 定义好这些关键字的 variants;
 
@@ -63,6 +63,50 @@ _COOKIE 后缀的指的就是可以给光源增加一层 mask层, 制造类似�
     用来计算阴影值, 不想生成阴影时, 可传入 0;
 
 # 参数: worldPos
+
+
+
+
+# ---------------------------------------------- #
+#   normal map blending 如何混合两个 法线信息
+#   --------
+#   whiteout blending   白化混合
+#   BlendNormals(...)
+#   整合 普通法线贴图 和 detial法线贴图 信息
+# ---------------------------------------------- #
+
+本质就是希望能 "合理地混合 两份 法线贴图信息";
+和 albedo texture 不同, 法线贴图中的一个 texel, 存储的是一个 方向向量(法线), 
+它是一个整体, 无法像 color 那样, 每个通道独立地去混合;
+
+这类技术有很多种, 推荐阅读下文:
+    https://blog.selfshadow.com/publications/blending-in-detail/
+
+whiteout blending 是一种不错的方案, 也是 unity 默认的方案:
+
+# ----- whiteout blending ----- #
+unity 中的实现为:
+float3 tangentSpaceNormal = BlendNormals(mainNormal, detailNormal);
+
+    由于两个参数源都是 法线贴图 内的信息, 这是存储在 切线空间里的 法线向量;
+    所以最后整合出来的值(返回值), 也位于 切线空间中;
+
+    想要将其转换到 ws 中,需要执行:
+
+    i.normal = normalize(
+		tangentSpaceNormal.x * i.tangent +
+		tangentSpaceNormal.y * binormal +
+		tangentSpaceNormal.z * i.normal
+	);
+
+# ----- whiteout blending 实现代码: ----- #
+float3 r = normalize(float3(n1.xy + n2.xy, n1.z*n2.z));
+
+它是在 "偏导数方案" 的基础上, 做了几次简化调整后得到的;
+具体原理可看 catlike rendering - 06 Bumpiness 3.2
+
+
+
 
 
 

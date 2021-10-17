@@ -89,68 +89,12 @@ forward rendering 中的 “实时光源” 是很昂贵的。你可以控制在
 它是 forward rendering path 的一个 子集。
 
 
+
 # ================================================================ #
-#     Forward rendering path
+#     Forward rendering path 
 # ================================================================ #
-基于 一个物体相关联的 灯光数量，通过 一到多次 pass 渲染这个物体。
-基于每个光源的设置和强度，它们被 forward rendering 对待的方式也不一样。
+已放入同目录 子文档中........
 
-# Implementation Details
-一些最亮的 光源 会 逐像素渲染。然后，每个"顶点"(不是像素)最多计算 4个 点光源。剩余的光源被计算为 球谐。
-基于以下规则来 调度不同光源：
-
--- Render Mode 设置为 Not Important 的光源，总是 逐顶点 或 球谐。
--- 最亮的 直射光 总是 逐像素
--- Render Mode 设置为 Important 的光源，总是 逐像素。
--- 按照上述规则，如果获得的 逐像素 光源数量，仍然少于：
-    Project Setting - Quality - Rendering - Pixel Light Count 所标记的数量（通常为4）
-    那就针对剩余光源，按照亮度高低，将更多光源 选择为 逐像素。
-
-
-每个对象的渲染如下所示：
--- base pass 实现 一个 逐像素直射光, 以及所有的 逐顶点/球谐光
--- 剩余的 逐像素 光源 在 additional passes 中被实现, 一次 pass 实现一个光源
-
-
-[参见文档原图: 一组光源:ABCDEFGH 由近及远 围绕在一个物体周围]
-假设这些光源属性都相同, render mode 都设为 auto (还有:Important 之类的选项)
-
-此时,最亮的灯会被设置为 逐像素 (A~D)
-然后最多 4 个灯设置为 逐顶点 (D~G)
-剩余的灯设置为 球谐 (G~H)
-
-注意,上述三个集合间存在覆盖关系(比如 D 同时存在于 第一组和第二组)
-这样一来,当物体或光源 发生移动时,不会出现 "light popping"(光的震荡)
-
-# Base Pass
-base pass 用一个 逐像素直射光 和 所有的 逐顶点/球谐光 渲染物体.
-这个 pass 也处理任何 lightmaps, 源自 shader 的 遮蔽 和 自发光.
-此 pass 处理的 直射光 允许投射阴影.
-注意, 使用 lightmap 的物体,无法从 球谐光源 中获得照明.
-
-注意,当在 shader 中使用 "OnlyDirectional" pass flag 时, forward base
-pass 只渲染 主直射光,遮蔽/lightprobe, lightmaps
-( 球谐 和 逐顶点光 不被包含进 pass data 中 )
-
-# Additional Passes
-每个 Additional Pass 实现一个 逐像素 光源. 默认时,这些光源不产生阴影.
-(所以, forward rendering 只支持一个 直射光阴影) 
-除非使用了 "multi_compile_fwdadd_fullshadows" variant shortcut
-
-
-# Performance Considerations 性能注意事项
-
-球谐光 渲染速度很快. 它们的 cpu 成本很低, 对于 GPU 来说也近乎是免费的
-(bass pass 总是计算 球谐光, 但鉴于球谐光的工作方式, 不管存在多少个球谐光, 此计算的成本 都是相同的)
-
-球谐光的缺点:
--- 它们在物体的 顶点上进行计算,而不是像素. 这意味着它们不支持 light cookies
-    或 法线贴图.
--- 球谐光 很低频. 只支持 漫反射光照.
--- 球谐光不是 局部的, 靠近某些平面的 点光源,spot光源 如果被表达成 球谐,
-    它们的效果看起来会 "不正确".
-
-总之, 对于 动态物体来说, 球谐光足够用了.
 
 
 # ================================================================ #
