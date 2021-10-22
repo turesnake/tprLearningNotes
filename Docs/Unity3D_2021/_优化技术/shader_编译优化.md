@@ -23,3 +23,17 @@ so when limited to that instruction set you get four un-vectorized calls to a
 floor function instead, which is suboptimal.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
