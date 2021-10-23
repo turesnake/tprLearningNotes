@@ -23,7 +23,14 @@ so when limited to that instruction set you get four un-vectorized calls to a
 floor function instead, which is suboptimal.
 
 
+# 更常见的是多次调用 tex2D() 等采样函数
+    甚至将这些 采样函数写到不同的 函数中,
+    或者写到一个函数内, 然后在不同地方 被调用很多次.
+    这些都能被 编译器优化为 "只调用一次 tex2D()"
 
+
+
+    
 
 
 
