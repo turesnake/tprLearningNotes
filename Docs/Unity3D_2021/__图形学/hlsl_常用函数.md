@@ -4,6 +4,15 @@
 
 
 # ------------------ #
+#     clip()
+仅在 frag shader 中调用的函数, 立即终止渲染此 fragment
+
+    clip( alpha - 0.5 );
+
+    若此 frag 透明度小于 0.5; 终止渲染它;
+
+
+# ------------------ #
 #      归一化函数
 # real3 SafeNormalize (float3 inVec);
 - Common.hlsl [core]

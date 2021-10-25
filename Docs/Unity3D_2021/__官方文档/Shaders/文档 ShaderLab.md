@@ -1831,8 +1831,12 @@ ZTest [operation]
 # -- ZWrite On
     开启写入
 
+    也可写为: ZWrite 1
+
 # -- ZWrite Off
     禁止写入
+
+    也可写为: ZWrite 0
 
 
 
