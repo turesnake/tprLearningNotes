@@ -1407,7 +1407,7 @@ Offset -1, -1
 和 gpu 得 stencil buffer 相关.
 
 stencil buffer 为 framebuffer 中得每个像素, 存储一个 8-bit 值. 
-在执行 pix shader 之前, gpu 可以将这个像素中得 stencil buffer 中得值, 和某个参考值做比较, 这个过程就叫做 stencil test.
+在执行 pix shader 之前, gpu 可以将这个像素中得 stencil buffer 中的值, 和某个参考值做比较, 这个过程就叫做 stencil test.
 
 如果 stencil test 通过了(成功了), gpu 再执行 depth test. 
 如果 stencil test 没通过, 这个像素得剩余计算都会被跳过 (放弃执行)
