@@ -1379,9 +1379,16 @@ multi_compile_fwdbase
         LIGHTMAP_SHADOW_MIXING.
 
 
-multi_compile_fog
-
+# multi_compile_fog
     多个 variants, 处理不同类型的 fog (off/linear/exp/exp2)
+    包含以下keywords:
+        FOG_LINEAR, FOG_EXP, FOG_EXP2.
+
+    它还生成 不包含以上所有 keywords 的 variants,
+    可通过修改 Graphics settings window 来控制它的行为
+
+
+
 
 
 大部分 内建缩写指令 生成多个 variants. 如果你知道你的项目 不需要它们, 可使用:

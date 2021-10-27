@@ -41,7 +41,7 @@ nomrt: 看起来像是: "no multiple render targets"
 
 
 # --------------------- #
-#  G-Buffers:
+#  G-Buffers: (GBuffer)
     需要 4 张 texture, 每个像素, LDR模式存储 160-bits信息, HDR模式存储 192-bits信息
 
     可在 scene 窗口中查看 gbuffer 信息, 左上角显示模式中, 分别为:
@@ -76,6 +76,45 @@ nomrt: 看起来像是: "no multiple render targets"
 # ++++++++++++++++++++++++++++++++++++++++++++++ #
 #          各种零碎的 源码值, 宏 的分析   (11.0 版)
 # ---------------------------------------------- #
+
+
+# 宏: UNITY_ENABLE_REFLECTION_BUFFERS:
+   在 延迟渲染模式中, 如果 render reflection probes in deferred way, 则此宏被定义;
+   通常只要进入 延迟渲染模式, 此宏就会被定义;
+
+但用户可手动关闭它:
+    project settings - Graphic - Build-In Shader Settings - Deferred Reflections;
+    将这个值设置成 “No support”, 即可关闭;
+
+    当此值被关闭, 延迟渲染中的 反射探针将像 前向渲染中那样去执行: 
+    基于每个物体的 pos 去混合 多个 反射探针的值;
+
+
+
+...
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++ #
+#           反射探针
+# ---------------------------------------------- #
+
+What's different in deferred mode is that the probes aren't blended per object. 
+Instead, they are blended per pixel.
+
+延迟渲染中, 探针之间不按 物体进行混合, 而是按像素进行混合;
+这个意思是说, 物体表面的每个像素, 都会以自己为 pos 去执行 两个反射探针的混合;
+而且 前向渲染中, 则是基于 物体 pos 的, 
+
+
+这部分的一些内容没看懂,  有必要未来重学一遍...
+
+
+
+
+
+
+
 
 
 
