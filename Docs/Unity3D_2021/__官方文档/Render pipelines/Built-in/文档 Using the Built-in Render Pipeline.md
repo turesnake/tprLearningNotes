@@ -6,33 +6,61 @@
 可通过 command buffers 和 callbacks 拓展此管线。
 
 # Rendering （callbacks）
-== OnPreCull: 
+# == OnPreCull: 
     在 相机 cull 场景之前调用。
 
-== OnBecameVisible/OnBecameInvisible:
+# == OnBecameVisible/OnBecameInvisible:
     当个物体，对任何相机 变得 “可见”/“不可见”（即：进入/离开 视野）时调用
 
-== OnWillRenderObject:
+# == OnWillRenderObject:
     如果一个物体可见，每个相机都会调用此函数一次 ？？？
 
-== OnPreRender:
+# == OnPreRender:
     在相机开始渲染场景之前
 
-== OnRenderObject: 
+# == OnRenderObject: 
     在所有 “regular 场景渲染” 都完成后被调用。
     可在这个时间点调用 GL 类，或 Graphics.DrawMeshNow 来绘制 自定义几何体
 
-== OnPostRender: 
+# == OnPostRender: 
     在相机结束场景渲染后 调用
 
-== OnRenderImage: 
+# == OnRenderImage: 
     在场景渲染完成后调用，以允许 针对图像的 post-processing
+    ---
+    unity 会检查一个 camera 是否有哪些组件包含 OnRenderImage() 方法,
+    如果有, 则在渲染晚场景后, 调用这些 OnRenderImage() 方法;
+    ---
+    所以, 此方法要实现在 camera 的组件脚本中;
+    ---
+    若有多个脚本都包含此方法, 就按这些脚本被绑定的顺序, 依次调用这些方法;
+    此时, 上一个方法的 destination, 会变成下一个方法的 source 参数; 依次链接;
+    在具体是线上, unity 会创建 1~n 个 临时 rt 来存储这些 中间数据;
 
-== OnGUI:
+
+#   void OnRenderImage (RenderTexture source, RenderTexture destination);
+    参数:
+    source: 数据源
+    destination: 写入目的地, 此值若为 null, 表示目的地为 framebuffer;
+
+#   此函数不支持 SRP;
+
+
+#  [ImageEffectOpaque]
+    若不希望这个方法的操作, 作用于 transparent 物体, 可在此方法前添加这个 attribute:
+
+    意为:   Any Image Effect with this attribute will be rendered after opaque geometry 
+            but before transparent geometry.
+
+    这会修改 OnRenderImage() 方法被调用的时间点: 变到 前向渲染-transparent 之前;
+
+
+
+# == OnGUI:
     每一帧调用数次 以响应 GUI 事件。先是 Layout，Repaint 事件。
     然后针对每一个 input event 执行 Layout 和 鼠标/键盘 事件。
 
-== OnDrawGizmos:
+# == OnDrawGizmos:
     绘制 scene 视窗内的 gizmos（图标）时
 
 

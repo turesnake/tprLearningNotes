@@ -246,6 +246,8 @@ float z = tex2D(_CameraDepthTexture, uv);
 # --
 float clipSpaceRange01 = UNITY_Z_0_FAR_FROM_CLIPSPACE(rawClipSpace);
 
+    此宏将各种平台的 z 值都映射为 [0,far] 区间;
+
 注意, 此宏不在 OpenGL or OpenGL ES 平台更改 clip space, 在这些平台, 它返回: [-near, far]
 (tpr注: 它是为了性能, 故意不修改的, 可查看源码注释)
 
