@@ -39,23 +39,8 @@
 # --------------------- #
 # half4 _LightShadowData;
 
- -- 有人指出 2019版 cpu端实现为:
-    _LightShadowData = new Vector4(
-        1 - light.shadowStrength,                                                             
-        Mathf.Max( camera.farClipPlane / QualitySettings.shadowDistance, 1.0f ),                
-        5.0f / Mathf.Min( camera.farClipPlane, QualitySettings.shadowDistance ),                
-        -1.0f * (2.0f + camera.fieldOfView / 180.0f * 2.0f)                                    
-    );
-    // x = 1.0 - shadowStrength
-    // y = max(cameraFarClip / shadowDistance, 1.0) // but not used in current built-in shader codebase
-    // z = shadow bias
-    // w = -1.0f * (2.0f + camera.fieldOfView / 180.0f * 2.0f) // fov is regarded as 0 when orthographic.
+在: CGIncludes.11.0 中有详细注释;
 
--- bgolus 旧版:
-    x: shadow strength, (目前来看应该是: 1 - shadow strength )
-    y: 好像无用
-    z: 1.0 / shadow far distance
-    w: shadow near distance
 
 
 # --------------------- #
@@ -190,7 +175,7 @@
 -- spot光:
     fixed UnitySampleShadowmap (float4 shadowCoord)
 
--- pint光:
+-- point光:
     half UnitySampleShadowmap (float3 vec)
 
 

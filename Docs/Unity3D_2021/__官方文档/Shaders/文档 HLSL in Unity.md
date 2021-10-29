@@ -1111,7 +1111,6 @@ unity_DeltaTime
 
 _LightColor0 (declared in UnityLightingCommon.cginc)
 _WorldSpaceLightPos0
-unity_WorldToLight (declared in AutoLight.cginc)
 
 unity_4LightPosX0,
 unity_4LightPosY0, 
@@ -1123,7 +1122,7 @@ unity_WorldToShadow
 
 
 _LightColor
-unity_WorldToLight
+unity_WorldToLight (declared in AutoLight.cginc)
 unity_WorldToShadow
 
 

@@ -177,6 +177,44 @@ min( NaN, NaN )     -> NaN;
     将参数 x, 约束在 min, max 之间;
  
 
+# ------------------ #
+# tex2Dlod
+float4 tex2Dlod( sampler2D s, float4 t);
+
+    Samples a 2D texture with mipmaps. 
+    The mipmap LOD is specified in t.w.
+    ------
+
+    使用 t.xy 去对 s (一个 2d mipmap texture)进行采样, 
+    同时, t.w 指定了使用的 lvl 层级, 
+
+    比如 t.w=2.5, 意味着需要采样 lvl=2 和 3 两层, 
+    然后根据设置的 filter mode, 采用不同的混合器 去混合这两个值;
+
+# ------------------ #
+# tex2Dbias
+float4 tex2Dbias( sampler2D s, float4 t);
+
+    Samples a 2D texture after biasing the mip level by t.w.
+    ------
+
+    使用 t.xy 去对 s (一个 2d mipmap texture)进行采样, 
+    同时使用 t.w 去对 已经计算出来的 mip lvl 值 做偏移;
+
+    比如, t.w=2.5, 意味着不管你在这个 fragment 中计算出来的 lvl 值是多少,
+    都要再累加一个 2.5, 然后再去采样和混合;
+
+    偏移值为正数, 最后选用的 mip 层就会更模糊,
+    偏移值为负数, 则更清晰;
+
+    此处 tex2D 选用的 mip lvl 是通过 ddx,ddy 之类的工具 自动算出来的;
+
+
+
+
+
+
+
 
 
 
