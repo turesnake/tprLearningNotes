@@ -52,7 +52,7 @@ ComputeGrabScreenPos 函数.
 
 你还需要调整在 "渲染到屏幕" 和 "渲染到texture" 两者间的渲染问题: 针对 Direct3D类平台 的进行上下翻转.
 
-内建变量 ProjectionParams.x 存在两种值: -1, +1
+内建变量 _ProjectionParams.x 存在两种值: -1, +1
 若为 -1:
     说明这个投影已经执行了 上下翻转,已适应 opengl平台约定.
 若为 +1:
@@ -147,11 +147,11 @@ void vert (inout appdata_full v, out Input o)
     比如一个函数返回一个 float4 值, 但只有 xyz分量被设置了. 此时也会报错
 # -3-
     在 vert shader 中使用 tex2D.
-    这样做是无效的, 因为 UV衍生品 在 vert shader 中并不存在. 你应该改为显式地 采样一个 mip lvl.
+    这样做是无效的, 因为 UV衍生品, (猜测,比如 ddx,ddy) 
+    在 vert shader 中并不存在. 你应该改为显式地 采样一个 mip lvl.
     比如,使用 tex2Dlod (tex, float4(uv,0,0)).
     还需要写入 #pragma target 3.0, 以支持 tex2Dlod 的使用
 
-    (???????)
 
 # ---------------------------- #
 # DirectX 11 (DX11) HLSL syntax in Shaders
@@ -161,9 +161,9 @@ Surface Shader 编译管线 的一些部分 无法理解  DirectX 11 风格的 h
 如果使用 hlsl features,比如 StructuredBuffers, RWTextures, (或者其它不属于 DirectX 9 的语法), 请将它们包裹进一个 DirectX 11 独占的 预处理宏 之中,如下:
 # --
 #ifdef SHADER_API_D3D11
-// DirectX11-specific code, for example
-StructuredBuffer<float4> myColors;
-RWTexture2D<float4> myRandomWriteTexture;
+    // DirectX11-specific code, for example
+    StructuredBuffer<float4> myColors;
+    RWTexture2D<float4> myRandomWriteTexture;
 #endif
 # ==
 
@@ -215,6 +215,7 @@ ENDCG
 
 注意 z值得反转, 设置它的主要目的是为了让 z值在不同深度的分布变得均匀
 (别的 图片文件 中有描述)
+尤其是当 near 值很小, far 值又很大时;
 
 
 所以, 当你使用的平台存在 z-reverse 时:
@@ -230,6 +231,7 @@ ENDCG
 -- Linear01Depth(float z)
 -- LinearEyeDepth(float z)
 -- UNITY_CALC_FOG_FACTOR(coord)
+
 
 # - Fetching the depth Buffer
 如果你正在手动提取 z-buffer 值, 你可能要检测下 z-reverse 问题,如下:
@@ -250,6 +252,7 @@ float clipSpaceRange01 = UNITY_Z_0_FAR_FROM_CLIPSPACE(rawClipSpace);
 
 注意, 此宏不在 OpenGL or OpenGL ES 平台更改 clip space, 在这些平台, 它返回: [-near, far]
 (tpr注: 它是为了性能, 故意不修改的, 可查看源码注释)
+(因为通常 near 值很小, 可忽略不计)
 
 
 

@@ -4,7 +4,7 @@
 
 
 # ------------------ #
-#     clip()
+#     clip();
 仅在 frag shader 中调用的函数, 立即终止渲染此 fragment
 
     clip( alpha - 0.5 );
@@ -71,26 +71,39 @@
 Interprets the bit pattern of x as an integer / floating-point
 不是简单的 cast 操作
 
+
 # ------------------ #
-# ret rsqrt (x);
+#   rsqrt
+ret rsqrt (x);
+
 - hlsl
 Returns 1 / sqrt(x)
 
 # ------------------ #
-# ret rcp (x);
+#   rcp
+ret rcp (x);
+
 - hlsl
 
 
 # ------------------ #
-# T trunc (T x);
+#   trunc
+T trunc (T x);
+
 - hlsl
 返回 参数分量的 整数部分 （原参数是否被改变 ？？？ ）
-# T frac (T x);
+
+# ------------------ #
+#   frac
+T frac (T x);
+
 - hlsl
 返回 参数分量的 小数部分 （原参数是否被改变 ？？？ ）
 
 # ------------------ #
-# ret lerp ( x, y, s );
+#   lerp
+ret lerp ( x, y, s );
+
 - hlsl
 线性插值: x*(1-s) + y*s
 
@@ -100,7 +113,9 @@ Lerp is shorthand for linear interpolation
 
 
 # ------------------ #
-# ret reflect(i, n);
+#   reflect
+ret reflect(i, n);
+
 - hlsl
 计算反射向量: ret = i - 2 * n * dot(i n) .
 
@@ -110,8 +125,9 @@ Lerp is shorthand for linear interpolation
 
 
 # ------------------ #
-# ret saturate(x);
-Clamps the specified value within the range of 0 to 1.
+#   saturate
+ret saturate(x);
+    Clamps the specified value within the range of 0 to 1.
 
 
 
@@ -172,7 +188,8 @@ min( NaN, NaN )     -> NaN;
 
 
 # ------------------ #
-# ret clamp( x, min, max );
+#   clamp
+ret clamp( x, min, max );
 
     将参数 x, 约束在 min, max 之间;
  
@@ -208,6 +225,17 @@ float4 tex2Dbias( sampler2D s, float4 t);
     偏移值为负数, 则更清晰;
 
     此处 tex2D 选用的 mip lvl 是通过 ddx,ddy 之类的工具 自动算出来的;
+
+
+
+# ------------------ #
+#   sign
+int sign(x)
+
+    若参数 x<0,     ret -1;
+    若参数 x==0,    ret 0;
+    若参数 x>0,     ret 1;
+
 
 
 

@@ -96,7 +96,9 @@
         float attenuation = tex2D( _ShadowMapTexture, uv );
 
     就能直接获得 光照衰减值, 而无需进行 shadowmap 和 depth map 的比较啥的,
-    这说明这一步比较, unity 已经自动完成了, 现在它存储在  _ShadowMapTexture 中的就是衰减值;
+    这说明这一步比较, unity 已经自动完成了这些工作, 现在存储在  _ShadowMapTexture 中的就是衰减值;
+
+
 
 
 # --------------------- #
