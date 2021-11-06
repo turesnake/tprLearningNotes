@@ -68,7 +68,7 @@ tpr注: 说白了就是,当你开启了 Auto Generate 后, 它允许你一边调
     catlike 设置为 32
 
 # -- Indirect Samples
-    和上条相似,不过用于 简介光照的计算.
+    和上条相似,不过用于 间接光照的计算.
     针对室外场景, 100 已经足够了,
     针对室内场景(还内置了自发光物体), 需要不断提高此值, 直到渲染出满意的效果为止. 
     ---
@@ -232,7 +232,7 @@ tpr注: 说白了就是,当你开启了 Auto Generate 后, 它允许你一边调
         不会生成第二张 存储 "入射光主方向" 的 lightmap. 
 
 # -- Indirect Intensity
-    区间[0,5]. 控制 "存储在 实时 和 烘焙的 lightmap" 中的
+    可选区间[0,5]. 控制 "存储在 实时 和 烘焙的 lightmap" 中的
     间接光的强度. 
     默认值为 1, 大于1,则变强, 小于1,则变弱. 
 
@@ -465,6 +465,63 @@ Unity can load Scenes additively. 这意味着你可使用 Multi-Scene editing,
 # ================================================================ #
 
 未开始...
+
+
+
+
+# ================================================================ #
+#      Lightmapping and the Shader Meta Pass
+# ================================================================ #
+如果一个 go 想要支持 lightmap, 它所使用的 material 必须含有 Meta Pass;
+
+meta pass 会将一个物体的 albedo 和 emission 信息 提供给 lightmapper;
+即便后续烘焙出 光照信息;
+
+meta pass 在 texture-space 中提供 albedo 和 emission 信息; 
+
+这些值与实时渲染中使用的值是分开的，这意味着您可以使用 Meta Pass 来控制 GameObject 从光照烘焙系统的角度来看的外观，而不会影响其在运行时的外观。
+
+一个有效的例子是:
+如果你希望 悬崖上的绿苔藓 在你的 lightmap 中生成夸张的绿色间接光,
+但又不希望在 实时 pass 中为地形重新着色;
+(没看懂...)
+
+
+unity 的每一种 built-in materials 都实现了 meta pass;
+standard shader 也包含 meta pass;
+
+如果你在使用自定义 shader, 你需要手动实现一个 meta pass;
+
+# Example Shader with a Meta pass
+...
+
+
+# Technical information
+在 unity 所有默认 meta passes 中, 光照烘焙系统使用 meta pass 来处理 diffuse 和 metallic surface 的 albedo 信息;
+
+lightmapper 处理 diffuse 传输, 且在每次反弹中使用 surface albedo;
+几乎接近黑色的 metallic surface albedo 不反弹任何光线;
+
+渲染 albedo 的 meta shader pass, 将 albedp 偏向具有金属色调的更亮的颜色。
+
+电介质材质拥有 接近白色(无色)的 镜反颜色;
+金属拥有 有色的 镜反颜色;
+
+如果你想拥有不同的表现, 你应该自定义一个 meta pass;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

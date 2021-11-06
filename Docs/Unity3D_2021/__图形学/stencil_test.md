@@ -203,6 +203,13 @@ Stencil
     将 stencil buffer 中当前值 -1, 如果这个值已经是 0了, 则维持在 0
 # Invert
     将 stencil buffer 中当前值 的8个bit 全部反转
+    注意:
+        当配合 Cull Off 使用时, 
+        一个 frag 将被测试两次, 正向面一次, 反向面一次;
+        每一次进入 标记为 Invert 的这个分支, 都会执行一次翻转;
+        如果进入两次, 就会执行两次翻转, (等于被抵消了)
+        ---
+        延迟渲染使用了这个技术
 # IncrWrap
     将 stencil buffer 中当前值 +1, 如果这个值已经是 255了, 则将其变为 0
 # DecrWrap

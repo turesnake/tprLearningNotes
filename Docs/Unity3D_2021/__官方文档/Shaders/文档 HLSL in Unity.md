@@ -935,9 +935,10 @@ UNITY_SAMPLE_TEX2D(name,uv)
     从一个 texture 和 sampler pair 上进行采样.
     使用参数 uv 提供的 坐标值
 
-UNITY_SAMPLE_TEX2D_SAMPLER( name,samplername,uv)
+UNITY_SAMPLE_TEX2D_SAMPLER( name, samplername, uv )
     从 参数name 指向的 texture 上进行采样,
     使用 参数samplername 指向的 sampler, 它来自别的 texture
+
  
 UNITY_SAMPLE_TEX2DARRAY(name,uv)
     使用一个 float3 uv, 在一个 texture array 上进行采样.
@@ -1350,10 +1351,18 @@ shader_feature_local_vertex
 在 built-in 管线中, 存在多种 缩写指令 (还是用于 variants)
 它们主要用来处理 不同的 光照, 阴影 和 lightmap.  
 
-multi_compile_fwdbase
+
+# multi_compile_fwdbase
 
     编译所有被  PassType.ForwardBase 需要的 variants. 
     这些 variants 处理不同的 lightmap类型, 以及 启用/禁用 主直射光的 阴影
+
+    包含以下 keywords:
+        DIRECTIONAL LIGHTMAP_ON DIRLIGHTMAP_COMBINED DYNAMICLIGHTMAP_ON 
+        SHADOWS_SCREEN SHADOWS_SHADOWMASK LIGHTMAP_SHADOW_MIXING LIGHTPROBE_SH. 
+            ---
+        These variants are needed by PassType.ForwardBase.
+
 
 
 # multi_compile_fwdadd
@@ -1376,6 +1385,7 @@ multi_compile_fwdbase
         POINT, DIRECTIONAL, SPOT, POINT_COOKIE, DIRECTIONAL_COOKIE, 
         SHADOWS_DEPTH, SHADOWS_SCREEN, SHADOWS_CUBE, SHADOWS_SOFT, SHADOWS_SHADOWMASK, 
         LIGHTMAP_SHADOW_MIXING.
+
 
 
 # multi_compile_fog

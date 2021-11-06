@@ -20,6 +20,11 @@
     #pragma multi_compile _ LIGHTMAP_ON 
 
 那些启用了 lightmap 的 gameobj, 会主动使用 启用了 LIGHTMAP_ON  的 shader variant
+如果一个 shader 是支持 lightmap 功能的, unity 就会去寻找它的 标有 LIGHTMAP_ON keyword 的 variant;
+注意:
+    LIGHTMAP_ON 和 VERTEXLIGHT_ON 两者不能兼容 (catlike:built-in)
+    即: lightmap 和 顶点光 两套系统只能选其一;
+
 
 # --3--
 在 struct Attributes 中, 可设置:
