@@ -149,8 +149,7 @@
     未开启shadow, 则返回 1 
 
 
-# UNITY_LIGHT_ATTENUATION(destName, input, worldPos)
-
+# UNITY_LIGHT_ATTENUATION( destName, input, worldPos )
 参数:
     destName:   户自定义一个变量名, 一般为 "attenuation"
                     一个 光照衰减值, 宏内部会 声明这个变量, 并计算出它的值;
