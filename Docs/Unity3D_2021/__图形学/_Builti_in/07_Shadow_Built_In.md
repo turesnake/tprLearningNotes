@@ -112,20 +112,35 @@
     这个半成品值的 zw 分量 未做任何处理, 仍保留着参数 posCS 中的值;
 
 
-# ------- 阴影三剑客 -------- #
-#   SHADOW_COORDS
-#   TRANSFER_SHADOW
-#   SHADOW_ATTENUATION
-# --------------------------- #
+# +++++++++++++++ 阴影三剑客 ++++++++++++++++ #
+#   SHADOW_COORDS       --> UNITY_SHADOW_COORDS
+#   TRANSFER_SHADOW     --> UNITY_TRANSFER_SHADOW
+#   SHADOW_ATTENUATION  --> 
+# ------------------------------------------- #
+unity 5.6 之后, light mode: Mixed 被做了改动, 同时改了一系列代码;
+随之而来的就是, 为支持新的 Mixed mode, 需要将旧的宏 替换为 新宏;
 
-# SHADOW_COORDS(idx)
+三剑客只是老的称呼, 在 unity 5.6 之后的版本中, 实际使用的宏的数量将多于 3 个;
+
+
+
+# ------------------------:
+# SHADOW_COORDS(idx)        [old]
+# UNITY_SHADOW_COORDS(idx)  [new]
++++
+关于旧宏:
     根据不同平台, 是否渲染 shadow, 自动定义一个 float4/3 shadowCoordinates : TEXCOORD#;
     参数 idx 规定了 TEXCOORD... 后面的序号;
     
     若不渲染阴影, 此宏 do nothing;
 
-# TRANSFER_SHADOW
-就是在 vertex shader 中计算一个 posSS 的半成品;
+
+# ------------------------:
+# TRANSFER_SHADOW(idx)                  [old]
+# UNITY_TRANSFER_SHADOW(idx, v.uv1)     [new]
++++
+关于旧宏:
+    就是在 vertex shader 中计算一个 posSS 的半成品;
 
     -1- 平行光 cascade shadowmap 中:
         a._ShadowCoord = ComputeScreenPos(a.pos);        
@@ -139,7 +154,36 @@
     -4- no shadow:
         空
 
++++
+关于新宏:
+    添加了一个参数: 
+    ---
+    unity 5.6 以后, 只会将 "screen-space coordinates for directional shadows" 放入 v->f 插值器中;
+    ( 平行光的 shadowmap )
 
+    从现在开始, point光, spot光的 shadow coords 都在 frag shader 中被计算; 
+    新消息是, 在某些情景中, lightmap coords 也被用于 shadowmask (挺合理)
+
+    为了支持这些变动, 我们需要向新宏 再传入一个参数: v.uv1; 即 顶点的 lightmap coord 信息 (2号uv)
+
+# UNITY_INITIALIZE_OUTPUT():
+    在做出如上两个 宏的更换后, 会跳出新的 编译错误, 这是因为 UNITY_SHADOW_COORDS 宏会在某些情况下错误地生成
+    一个本不需要的 插值变量 (被 v->f 插值); 
+
+    在 standard shader 中, 这个编译错误不会出现, 我们模仿 standard 的方式去处理此问题:
+
+        Interpolators MyVertexProgram (VertexData v) {
+            Interpolators i;
+            UNITY_INITIALIZE_OUTPUT(Interpolators, i);
+            …
+        }
+    
+    按照源码, 此宏只是在需要的情景下, 简单地将实例 i 中的变量全部设置为 0;
+    剩余情景下, 则什么也不做;
+
+
+
+# ------------------------:
 # SHADOW_ATTENUATION
     采样 _ShadowMapTexture, 计算光照衰减值;
 
@@ -149,6 +193,7 @@
     未开启shadow, 则返回 1 
 
 
+# ------------------------:
 # UNITY_LIGHT_ATTENUATION( destName, input, worldPos )
 参数:
     destName:   户自定义一个变量名, 一般为 "attenuation"
@@ -161,6 +206,28 @@
     ---
     不同的光源有不同的实现;
     内部可能会使用到 SHADOW_ATTENUATION;
+
+注意:
+    在 unity 5.6 之后, 此宏的内容已经被改动;
+    若在自定义 shader 中使用此宏, 且 主平行光的 light mode 为 Mixed 的话, 可能无法支持 shadow fade 功能;
+    (就是在 shadow 达到 shadow distance 距离后, 会突然消失, 而不是渐渐消失)
+
+    ---
+    这是因为:
+    本宏的部分实际已经高度绑定了 standard shader 的剩余代码, 为了性能考虑, 它将部分代码,
+    比如计算 shadow fade 值, 移到了别的更深的函数中去;
+
+    当 HANDLE_SHADOWS_BLENDING_IN_GI 被定义时, 本宏的实现中, 旧会跳过 shadow fade 的计算;
+    我们需要手动补上这段后, shadow fade 才能正常显示;
+    具体补充方式, 见 catlike - rendering 17 - 1.3 节;
+        (其实就是手动计算一个 shadow fade 值, 然后累加到 本宏已经 计算的 attenuation 上去)
+
+# -- 宏: HANDLE_SHADOWS_BLENDING_IN_GI
+    若同时定义了 SHADOWS_SCREEN 和 LIGHTMAP_ON, 此宏将被定义为 1;
+    (即: 同时开启了 -1-: 平行光 cascade shadowmap, -2- lightmap )
+    (而这恰恰就是将 主平行光设置为 Mixed mode 之后的情况)
+    
+
  
     
 # --------------------- #

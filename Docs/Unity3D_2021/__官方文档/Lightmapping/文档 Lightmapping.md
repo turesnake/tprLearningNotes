@@ -477,6 +477,8 @@ Unity can load Scenes additively. 这意味着你可使用 Multi-Scene editing,
 meta pass 会将一个物体的 albedo 和 emission 信息 提供给 lightmapper;
 即便后续烘焙出 光照信息;
 
+meta pass 会被 lightmapper 调用两次, 一次用来收集 albedo, 一次用来收集 emission;
+
 meta pass 在 texture-space 中提供 albedo 和 emission 信息; 
 
 这些值与实时渲染中使用的值是分开的，这意味着您可以使用 Meta Pass 来控制 GameObject 从光照烘焙系统的角度来看的外观，而不会影响其在运行时的外观。

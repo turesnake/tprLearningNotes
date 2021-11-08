@@ -103,7 +103,12 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++ #
 
 
+# ---------------------------------- #
 # UNITY_TRANSFER_LIGHTING (...);
+#define UNITY_TRANSFER_LIGHTING( a, coord ) COMPUTE_LIGHT_COORDS(a) UNITY_TRANSFER_SHADOW(a, coord)
+
+    -----
+    Lucifer 原文:
     阴影计算，这里主要是去计算采样阴影贴图时所需要的 texture coord;
     
 要分如下4种情况处理：
@@ -126,8 +131,17 @@
     SHADOWS_CUBE，
     也就是说当前光照为 point光 的时候，那么对应的纹理坐标为3d的，即代码：
         a._ShadowCoord.xyz = mul(unity_ObjectToWorld, v.vertex).xyz - _LightPositionRange.xyz;
+    =====
 
 
+
+
+
+
+
+
+
+# ---------------------------------- #
 # VertexGIForward (...):
 o.ambientOrLightmapUV = VertexGIForward( v, posWorld, normalWorld );
 
@@ -165,6 +179,8 @@ o.ambientOrLightmapUV = VertexGIForward( v, posWorld, normalWorld );
 #   fragForwardBaseInternal (...);
 # ++++++++++++++++++++++++++++++++++++++++++++++ #
 
+
+# ---------------------------------- #
 # UNITY_APPLY_DITHER_CROSSFADE( i.pos.xy );
 
     LOD group相关，这个特别容易被忽略，个人觉得这个功能确实弊大于利。
@@ -177,6 +193,8 @@ o.ambientOrLightmapUV = VertexGIForward( v, posWorld, normalWorld );
     不管硬件使用的优化方案是 early Z 还是隐藏面消除，都会被disable。
     所以如果用 LOD group 的话，Fade Mode尽量还是不要选择 “Cross Fade” 吧。
     
+
+# ---------------------------------- #
 # FRAGMENT_SETUP(s)
 
     首先，先根据是否有 视差贴图，计算出最终版本的 UV信息，
@@ -201,6 +219,7 @@ o.ambientOrLightmapUV = VertexGIForward( v, posWorld, normalWorld );
     非金属的diffuseColor约等于albedo，这个也就很容易理解了。
 
 
+# ---------------------------------- #
 # FragmentGI :
 UnityGI gi = FragmentGI (s, occlusion, i.ambientOrLightmapUV, atten, mainLight);
 

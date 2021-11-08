@@ -40,6 +40,7 @@
     == Shadowmask:
         对所有 Mixed 光源, 启用: Shadowmask Lighting Mode 
         (此模式在 URP 中不被支持)
+        ( URP 10.1 以及之后的版本 支持 )
 
 
 # ---------------------------------- #
@@ -74,21 +75,29 @@
     -- 
         动态物体投射出的阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
+        在范围之外, 接收不到 由动态物体投射出的阴影
     -- 
         静态物体投射出的实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
+        在范围之外, 接收不到 由静态物体投射出的阴影
 
 == 静态物体 (被 Mixed 光照到)
     -- 
         直接光照 被实时生成
     --
         间接光照 被烘焙进 Lightmap  
-    --
-        静态物体投射出的实时阴影, 
-        在 shadow distance 范围内, 使用 shadowmap 来表达
     -- 
         动态物体投射出的实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
+        在范围之外, 接收不到 由动态物体投射出的阴影
+    --
+        静态物体投射出的实时阴影, 
+        在 shadow distance 范围内, 使用 shadowmap 来表达
+        在范围之外, 接收不到 由静态物体投射出的阴影
+
+    总结:
+        一旦超出 shadow distance 范围, 任意物体都无法接收 任何投影;
+        在这个距离上, 投影将彻底丧失;
 
 
 # Setting your Scene’s Lighting Mode to Baked Indirect 
@@ -118,8 +127,11 @@
 
 
 在阴影部分 和 Baked Indirect Lighting Mode 存在差异:
-Shadowmask Lighting Mode 允许 unity 在运行时结合使用: 烘焙阴影 和 实时阴影.
-也支持在远超 Shaodw Distance 的距离上表现出阴影. 
+    本模式 允许 unity 在运行时结合使用: 烘焙阴影 和 实时阴影.
+    也支持在远超 Shaodw Distance 的距离上表现出阴影. 
+    ---
+    即: Shaodw Distance 还是使用实时阴影, 距离之外使用 烘培阴影;
+
 
 它是通过:
     -- 一张额外的 lightmap texture (被命名为 shadow mask)
@@ -127,11 +139,16 @@ Shadowmask Lighting Mode 允许 unity 在运行时结合使用: 烘焙阴影 和
     -- 额外的 LPPVs (存储了 occlusion 信息)
 来实现额.
 
+# 注: LPPVs
+    就是在一个物体内, 放置数个 lightprobe, 来增加单个物体受到的间接光的 细腻度;
+
+
 在所有的 Lighting Modes 中, Shadowmask Lighting Mode 提供了保真度最高的 阴影效果. 但同时 它的 性能成本 和 存储要求 也是最高的. 
 
 它适用于以下场合: 开放世界, 可看到远处的物体(进而需要它们的阴影), 运行在 高端中端设备上. 
 
-# ================================================== #
+
+# ================================== #
 # Render pipeline support
 -- built-in 支持. 
     在只支持 4 个 render targets 的设备上(移动平台), Shadowmask Lighting Mode 会强制 unity 使用 forward rendering. 
@@ -143,10 +160,10 @@ Shadowmask Lighting Mode 允许 unity 在运行时结合使用: 烘焙阴影 和
     https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html?subfolder=/manual/Shadows-in-HDRP.html%23shadowmasks
 
 
-# ================================================== #
+# ================================== #
 # Mixed Light behavior
 
-# ------------------------------ #
+# ---------------------------- #
 # -- With the Distance Shadowmask quality setting
 若将 Project Settings - Quality - shadowmask Mode 
 设置为: Distance Shadowmask
@@ -161,6 +178,7 @@ Mixed 光源的行为如下:
     -- 
         动态物体投射出的实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
+        在范围之外, 接收不到由 动态物体投射的阴影
 #   -- 
         静态物体投射出的实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
@@ -168,10 +186,13 @@ Mixed 光源的行为如下:
         静态物体投射的 烘焙阴影, 
         在 shadow distance 范围之外, 
         使用 light Probe(occlusion) 来实现
+        ---
+        这个值已经不能算阴影了, 只能算遮蔽值; 动态物体会变暗, 仅此而已
+        动态物体的身上不会出现 明确清晰的 阴影边界
 
     === 总结: ===
     只在 有限范围内接收 由动态物体 投射的阴影
-    可在 全局范围内接收 由静态物体 投射的阴影 
+    可在 全局范围内接收 由静态物体 投射的阴影(遮蔽值)
         ( shadowmap + light Probe(occlusion) )
 
 
@@ -183,6 +204,7 @@ Mixed 光源的行为如下:
     -- 
         动态物体投射出的实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达 
+        在范围之外, 接收不到由 动态物体投射的阴影
 #   --
         静态物体投射出的实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
@@ -190,6 +212,8 @@ Mixed 光源的行为如下:
         静态物体投射的 烘焙阴影, 
         在 shadow distance 范围之外, 
         使用 lightmap( shadowMask ) 来实现
+        ---
+        依然是明确清晰的阴影, 有边界信息
 
     === 总结: ===
     只在 有限范围内接收 由动态物体 投射的阴影
@@ -212,6 +236,7 @@ Mixed 光源的行为如下:
     -- 
         动态物体投射出的 实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
+        在范围之外, 接收不到 由动态物体投射出的阴影
 #   -- 
         静态物体投射的 烘焙阴影, 
         在任意范围内  (shadow distance 范围以内和以外) 
@@ -231,6 +256,7 @@ Mixed 光源的行为如下:
     -- 
         动态物体投射出的实时阴影, 
         在 shadow distance 范围内, 使用 shadowmap 来表达
+        在范围之外, 接收不到 由动态物体投射出的阴影
 #   -- 
         静态物体投射的 烘焙阴影, 
         在任意范围内  (shadow distance 范围以内和以外) 
@@ -248,7 +274,7 @@ Mixed 光源的行为如下:
 
 相应的代价就是, 近处的 静态物体投射的阴影, 质量比较差. (毕竟 lightmap(shadowmask) 分辨率有限)
 
-问题: 在后者模式中, 静态物体还会被写入 shadowmap 吗 ? 
+# 问题: 在后者模式中, 静态物体还会被写入 shadowmap 吗 ? 
 
 
 
