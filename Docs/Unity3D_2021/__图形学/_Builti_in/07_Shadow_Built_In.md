@@ -132,7 +132,7 @@ unity 5.6 之后, light mode: Mixed 被做了改动, 同时改了一系列代码
     根据不同平台, 是否渲染 shadow, 自动定义一个 float4/3 shadowCoordinates : TEXCOORD#;
     参数 idx 规定了 TEXCOORD... 后面的序号;
     
-    若不渲染阴影, 此宏 do nothing;
+    如果不渲染阴影, 此宏 do nothing;
 
 
 # ------------------------:
@@ -162,7 +162,8 @@ unity 5.6 之后, light mode: Mixed 被做了改动, 同时改了一系列代码
     ( 平行光的 shadowmap )
 
     从现在开始, point光, spot光的 shadow coords 都在 frag shader 中被计算; 
-    新消息是, 在某些情景中, lightmap coords 也被用于 shadowmask (挺合理)
+    新消息是, 在某些情景中, lightmap coords 也被用于 shadowmask 
+    (挺合理, 毕竟 lightmap 和 shadowmask 共用同一套 uv值 )
 
     为了支持这些变动, 我们需要向新宏 再传入一个参数: v.uv1; 即 顶点的 lightmap coord 信息 (2号uv)
 
@@ -217,10 +218,20 @@ unity 5.6 之后, light mode: Mixed 被做了改动, 同时改了一系列代码
     本宏的部分实际已经高度绑定了 standard shader 的剩余代码, 为了性能考虑, 它将部分代码,
     比如计算 shadow fade 值, 移到了别的更深的函数中去;
 
-    当 HANDLE_SHADOWS_BLENDING_IN_GI 被定义时, 本宏的实现中, 旧会跳过 shadow fade 的计算;
+    当 HANDLE_SHADOWS_BLENDING_IN_GI 被定义时, 也就是在 "主平行光为 Mixed 模式" 这个pass 中:
+    本宏的实现中, 就会跳过 shadow fade 的计算;
     我们需要手动补上这段后, shadow fade 才能正常显示;
     具体补充方式, 见 catlike - rendering 17 - 1.3 节;
         (其实就是手动计算一个 shadow fade 值, 然后累加到 本宏已经 计算的 attenuation 上去)
+
+    -------
+    同时, 针对 point光, spot光:
+    此宏主动计算了 shadow fade, 
+    如果有 shadwomask ,甚至主动采样了 shadowmask,
+    一步到位地计算好了最终形态的 shadow attenuation;
+    
+    在处理这两种光源时, 我们后续不需要做什么操作;
+    
 
 # -- 宏: HANDLE_SHADOWS_BLENDING_IN_GI
     若同时定义了 SHADOWS_SCREEN 和 LIGHTMAP_ON, 此宏将被定义为 1;

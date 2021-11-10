@@ -42,6 +42,13 @@ fixed UnitySampleBakedOcclusion (float2 lightmapUV, float3 worldPos);
 
 
 # ------------------------------:
+#  UNITY_HALF_PRECISION_FRAGMENT_SHADER_REGISTERS
+如其名字:
+如果某个平台的 frag shader 不需要 全尺寸浮点数, 那个这个宏就会被 unity 脚本端 自动启动
+
+
+
+# ------------------------------:
 #  UnityMixRealtimeAndBakedShadows(...)
 half UnityMixRealtimeAndBakedShadows(
     half realtimeShadowAttenuation, // 实时阴影衰减值
@@ -52,43 +59,59 @@ half UnityMixRealtimeAndBakedShadows(
     此函数同时支持 前向渲染, 延迟渲染:
     用来混合 实时阴影信息(包含 shadow fade) 和 烘焙阴影信息:
 
-    // -- Static objects --
-    // FWD BASE PASS
+# +++++++++++++++++++++++++++++++++:
+# 不同物体再不同模式下, 会开启的宏:
+
+#   // --- Static objects ---:
+    // FWD BASE PASS: ( 其实也被用于 延迟渲染的 base pass )
     // ShadowMask mode          = LIGHTMAP_ON + SHADOWS_SHADOWMASK + LIGHTMAP_SHADOW_MIXING
     // Distance shadowmask mode = LIGHTMAP_ON + SHADOWS_SHADOWMASK
     // Subtractive mode         = LIGHTMAP_ON + LIGHTMAP_SHADOW_MIXING
     // Pure realtime direct lit = LIGHTMAP_ON
 
-    // FWD ADD PASS
+    // FWD ADD PASS:
     // ShadowMask mode          = SHADOWS_SHADOWMASK + LIGHTMAP_SHADOW_MIXING
     // Distance shadowmask mode = SHADOWS_SHADOWMASK
     // Pure realtime direct lit = LIGHTMAP_ON
 
-    // DEFERRED LIGHTING PASS
+    // DEFERRED LIGHTING PASS:
     // ShadowMask mode          = LIGHTMAP_ON + SHADOWS_SHADOWMASK + LIGHTMAP_SHADOW_MIXING
     // Distance shadowmask mode = LIGHTMAP_ON + SHADOWS_SHADOWMASK
     // Pure realtime direct lit = LIGHTMAP_ON
 
-    // -- Dynamic objects --
-    // FWD BASE PASS + FWD ADD ASS
+
+#   // --- Dynamic objects ---:
+    // FWD BASE PASS + FWD ADD ASS:
     // ShadowMask mode          = LIGHTMAP_SHADOW_MIXING
     // Distance shadowmask mode = N/A
     // Subtractive mode         = LIGHTMAP_SHADOW_MIXING (only matter for LPPV. Light probes occlusion being done on CPU)
     // Pure realtime direct lit = N/A
 
-    // DEFERRED LIGHTING PASS
+    // 之所以没标注 动态物体的 延迟渲染 base pass
+    // 也许是因为 动态物体不需要 烘焙数据
+
+    // DEFERRED LIGHTING PASS:
     // ShadowMask mode          = SHADOWS_SHADOWMASK + LIGHTMAP_SHADOW_MIXING
     // Distance shadowmask mode = SHADOWS_SHADOWMASK
     // Pure realtime direct lit = N/A
 
 
+# ------------------------------:
+# 宏: LIGHTMAP_ON
+在本 pass 中需要用到 lightmap;
+一般出现在:
+    前向渲染: 静态物体的 base pass
+    延迟渲染: light pass 中
+
+不会出现在 动态物体的 pass 中, 毕竟动态物体无法读取 lightmap 信息;
 
 
+# ------------------------------:
+# 宏: SHADOWS_SHADOWMASK
+当 Lighting - Lighting Mode 设置为 Shadowmask;
+而且本pass 渲染的物体 确实需要用到 shadowmask 数据时;
 
-
-
-
-
+此时 不管是 ShadowMask mode, 还是 Distance shadowmask mode, 此宏都启动;
 
 
 

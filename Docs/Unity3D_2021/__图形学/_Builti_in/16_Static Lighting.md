@@ -40,6 +40,7 @@
 # ---------------------------------------------- #
 lightmap 由 unity 自己生成, 用户自定义的 shader 需要遵守一些细节:
 
+
 # ----------------------- #
 #  transparent 模式:
 若某个物体的 material 是 transparent 模式, lightmap系统将只识别
@@ -58,6 +59,10 @@ lightmap 由 unity 自己生成, 用户自定义的 shader 需要遵守一些细
 # 相关文件:
     UnityStandardMeta.cginc  // standard shader 即调用此处 vs, fs 函数
     UnityMetaPass.cginc
+
+
+
+
 
 
 # ----------------------- #
@@ -88,7 +93,33 @@ lightmap 由 unity 自己生成, 用户自定义的 shader 需要遵守一些细
     在此不展开
 
 
+# ----------------------- #
+# lightmap 中存储的内容:
+lightmap 本质还是 texture, 只不过是场景中很多个 静态物体的 texture 的大集合;
+单独针对某一个静态物体的话,
+lightmap 中存储的就是, 这个静态物体表面的某个点上, 所受到的 "间接光漫反射部分"
 
+即, 只要正确且简单地从 lightmap 中采样, 获得的数据, 就是这个 frag 的 "间接光漫反射部分";
+
+
+# ----------------------- #
+# 第二张贴图: Directional map 中的信息:
+这张图的每个 texel, 都存储一个 方向向量(代模长)
+代表了 静态物体表面的这个点上, 他所收到的 四面八方的 间接光漫反射光 中, 强度最大的那个方向,
+其模长表示: 这个主方向的光,占据总体光的百分比;
+
+提起了两张贴图的数据后, 可用 DecodeDirectionalLightmap(...) 来计算精确的 "间接光漫反射部分";
+
+    使用此法可以表达 物体的法线贴图信息;
+    
+此法本身使用 "半兰伯特公式" 来计算最终的 "间接光漫反射部分":
+
+# 半兰伯特公式:
+     = lightColor * diffuseColor * ( dot(Normal,LightDir) * 0.5 + 0.5)
+
+
+
+     
 
 
 

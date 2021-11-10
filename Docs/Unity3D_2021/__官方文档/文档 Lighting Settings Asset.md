@@ -166,7 +166,8 @@
 # ---------------------------- #
 # -- With the Distance Shadowmask quality setting
 若将 Project Settings - Quality - shadowmask Mode 
-设置为: Distance Shadowmask
+设置为: 
+#     [Distance_Shadowmask]
 
 Mixed 光源的行为如下:
 
@@ -224,7 +225,9 @@ Mixed 光源的行为如下:
 # ------------------------------ #
 # With the Shadowmask quality setting
 若将 Project Settings - Quality - shadowmask Mode 
-设置为: Shadowmask
+设置为: 
+#     [Shadowmask]
+
 
 Mixed 光源的行为如下:
 
@@ -246,6 +249,9 @@ Mixed 光源的行为如下:
     只在 有限范围内接收 由动态物体 投射的阴影
     可在 全局范围内接收 由静态物体 投射的阴影 
         ( 仅使用 light Probe(occlusion) )
+
+    同时, 由于 静态物体生成的 light probe(occlusion) 的精度往往很粗糙,
+    这会影响到 动态物体的 收光表现;
 
 
 # == 静态物体 (被 Mixed 光源照亮)
@@ -275,7 +281,7 @@ Mixed 光源的行为如下:
 相应的代价就是, 近处的 静态物体投射的阴影, 质量比较差. (毕竟 lightmap(shadowmask) 分辨率有限)
 
 # 问题: 在后者模式中, 静态物体还会被写入 shadowmap 吗 ? 
-
+不会! 
 
 
 
