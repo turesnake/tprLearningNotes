@@ -133,6 +133,21 @@ unity 5.6 之后, light mode: Mixed 被做了改动, 同时改了一系列代码
     参数 idx 规定了 TEXCOORD... 后面的序号;
     
     如果不渲染阴影, 此宏 do nothing;
+    ----
+
+# 平行光, spot光 声明 float4 变量:
+    这是一个 半成品的 posSS, 它需要在 frag shader 中执行 除w 后才算完整;
+
+# point光 声明 float3 变量:
+    记录的是一个 dirWS3: 光源pos->目标点pos;
+        (因为实在 vertex shader 中声明的, 所以此处的 "目标点" 其实是 顶点)
+    然后经过 v->f 插值运算, 
+        注意,此处无需 除w; 毕竟我们存储的仅仅是一个 方向向量;
+
+    最终获得每个 frag 的 dirWS: 光源pos->每个frag的pos;
+    ---
+    和 平行光, spot光不同, 在这里, 我们可以直接拿着这个 dir 去 shadowmap cube 中进行采样;
+
 
 
 # ------------------------:
@@ -254,8 +269,23 @@ unity 5.6 之后, light mode: Mixed 被做了改动, 同时改了一系列代码
 -- spot光:
     fixed UnitySampleShadowmap (float4 shadowCoord)
 
+    参数是 SHADOW_COORDS 生成的 "半成品posSS";
+    此函数自己会对这个 半成品 执行 除w,
+
+    然后拿着 xy 就能充当 uv, 去 shadowmap 中采样;
+
+    留着 z 值也是为了做 深度比较;(针对一些老平台,gles2.0)
+
+    ---
+    在实现 硬阴影时, 只需采样一次. 软阴影则要采样数次;
+
+
 -- point光:
     half UnitySampleShadowmap (float3 vec)
+
+    参数是 dirWS: 光源pos->目标frag的pos
+
+    直接拿着这个 dir 就能去 shadowmap cube 中采样; 
 
 
 
@@ -270,8 +300,9 @@ unity 选择使用 float cube map 来存储一个 深度值,
 这对函数就是用来干这个的;
 
  
-
-
+# --------------------- #
+# spot 光的 shadowmap
+只需要渲染一张 map, 且不需要 cascade
 
 
 

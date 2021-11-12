@@ -105,6 +105,8 @@ half UnityMixRealtimeAndBakedShadows(
 
 不会出现在 动态物体的 pass 中, 毕竟动态物体无法读取 lightmap 信息;
 
+不会出现在 前向渲染的 add pass 中;
+
 
 # ------------------------------:
 # 宏: SHADOWS_SHADOWMASK

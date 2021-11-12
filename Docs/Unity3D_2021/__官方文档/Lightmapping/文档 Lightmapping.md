@@ -512,6 +512,9 @@ lightmapper 处理 diffuse 传输, 且在每次反弹中使用 surface albedo;
 如果你想拥有不同的表现, 你应该自定义一个 meta pass;
 
 
+# meta pass 同时被用于 lightmap 和 enlighten
+
+
 
 
 

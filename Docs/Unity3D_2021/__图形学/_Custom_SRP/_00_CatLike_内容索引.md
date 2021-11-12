@@ -5,6 +5,8 @@
 https://catlikecoding.com/unity/tutorials/custom-srp/
 的 内容索引
 
+这个文件几乎无效了...
+
 
 # ---------------------------- #
 # -2- Draw Calls
