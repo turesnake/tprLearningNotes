@@ -1416,116 +1416,86 @@ namespace UnityEngine.Rendering
         // 摘要:
         //     Adds a command to multiply the instance count of every draw call by a specific multiplier.
         //     似乎是用于 VR 的;
-        //
         // 参数:
         //   multiplier:
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::SetInstanceMultiplier", HasExplicitThis = true)]
         public void SetInstanceMultiplier(uint multiplier);
         
-
-        // 摘要:
-        //     Add a "set invert culling" command to the buffer.
-        //
-        // 参数:
-        //   invertCulling:
-        //     A boolean indicating whether to invert the backface culling (true) or not (false).
+        /*
+            摘要:
+                Add a "set invert culling" command to the buffer.
+            参数:
+            invertCulling:
+                A boolean indicating whether to invert the backface culling (true) or not (false).
+                ---
+                默认是 Cull Back, 若参数为 true, 则执行翻转: Cull Front;
+        */
         [NativeMethodAttribute("AddSetInvertCulling")]
         public void SetInvertCulling(bool invertCulling);
-        //
+        
+
         // 摘要:
         //     Add a command to set the projection matrix.
-        //
         // 参数:
         //   proj:
         //     Projection (camera to clip space) matrix.
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::SetProjectionMatrix", HasExplicitThis = true, ThrowsException = true)]
         public void SetProjectionMatrix(Matrix4x4 proj);
-        //
-        // 摘要:
-        //     Set random write target for level pixel shaders.
-        //
-        // 参数:
-        //   index:
-        //     Index of the random write target in the shader.
-        //
-        //   buffer:
-        //     Buffer to set as the write target.
-        //
-        //   preserveCounterValue:
-        //     Whether to leave the append/consume counter value unchanged.
-        //
-        //   rt:
-        //     RenderTargetIdentifier to set as the write target.
+        
+
+        /*
+            摘要:
+            Set random write target for level pixel shaders.
+            和  Graphics.SetRandomWriteTarget() 功能和限制相同; 
+
+            在 Shader Model 4.5 或更高版本中, 在 frag shader 中可向某些 texture/buffers 的任意地址 写入数据;
+            此行为在 UsingDX11GL3Features 链接中被称为 "unordered access views" (UAV); 
+            (连接中未找到相关信息)
+
+            这种 "random write targets" 的设置, 和 multiple render target 的设置是相似的:
+
+            要么使用一个 render texture, 它的 enableRandomWrite flag 被开启,
+            要么使用一个 ComputeBuffer 当作 target
+
+            在不同平台之间, UAV 的索引方式是略有不同的; 
+            在 DX11 中, 第一个有效的 UAV idx 是 "active render target" 的数量;
+            (感觉就是在队列后面新分配一个 idx)
+            所以在 单个 render target 的常见情况下, idx 会从 1 开始;
+
+            使用 自动转换 hlsl shaders 的平台, 将会匹配此行为;
+
+            However, with hand-written GLSL shaders the indexes will match the bindings.
+             On PS4 the indexing starts always from 1 to match the most common case.
+
+            这些 target 会一直存在, 直到你手动调用 Graphics.ClearRandomWriteTargets() 清除他们;
+            在你的渲染完成之后, 最好调用上述函数; 
+
+            如果你没这么做, 一些渲染问题会出现, 一些内置 unity 渲染 pass 会崩溃;
+            
+            参数:
+            index:
+                Index of the random write target in the shader.
+            
+            buffer:
+                Buffer to set as the write target.
+            
+            preserveCounterValue:
+                Whether to leave the append/consume counter value unchanged.
+                是否保持 附加/消耗 计数器值 不变。
+                --
+                当设置一个 ComputeBuffer 时, 此参数表示是否让 counter value 保持不变
+                若为 false, counter value 将被重置为 0 (也是默认行为)
+            
+            rt:
+                RenderTargetIdentifier to set as the write target.
+        */
         public void SetRandomWriteTarget(int index, GraphicsBuffer buffer, bool preserveCounterValue);
-        //
-        // 摘要:
-        //     Set random write target for level pixel shaders.
-        //
-        // 参数:
-        //   index:
-        //     Index of the random write target in the shader.
-        //
-        //   buffer:
-        //     Buffer to set as the write target.
-        //
-        //   preserveCounterValue:
-        //     Whether to leave the append/consume counter value unchanged.
-        //
-        //   rt:
-        //     RenderTargetIdentifier to set as the write target.
         public void SetRandomWriteTarget(int index, GraphicsBuffer buffer);
-        //
-        // 摘要:
-        //     Set random write target for level pixel shaders.
-        //
-        // 参数:
-        //   index:
-        //     Index of the random write target in the shader.
-        //
-        //   buffer:
-        //     Buffer to set as the write target.
-        //
-        //   preserveCounterValue:
-        //     Whether to leave the append/consume counter value unchanged.
-        //
-        //   rt:
-        //     RenderTargetIdentifier to set as the write target.
         public void SetRandomWriteTarget(int index, ComputeBuffer buffer, bool preserveCounterValue);
-        //
-        // 摘要:
-        //     Set random write target for level pixel shaders.
-        //
-        // 参数:
-        //   index:
-        //     Index of the random write target in the shader.
-        //
-        //   buffer:
-        //     Buffer to set as the write target.
-        //
-        //   preserveCounterValue:
-        //     Whether to leave the append/consume counter value unchanged.
-        //
-        //   rt:
-        //     RenderTargetIdentifier to set as the write target.
         public void SetRandomWriteTarget(int index, RenderTargetIdentifier rt);
-        //
-        // 摘要:
-        //     Set random write target for level pixel shaders.
-        //
-        // 参数:
-        //   index:
-        //     Index of the random write target in the shader.
-        //
-        //   buffer:
-        //     Buffer to set as the write target.
-        //
-        //   preserveCounterValue:
-        //     Whether to leave the append/consume counter value unchanged.
-        //
-        //   rt:
-        //     RenderTargetIdentifier to set as the write target.
         public void SetRandomWriteTarget(int index, ComputeBuffer buffer);
-        //
+        
+
         // 摘要:
         //     Adds a command to set the RayTracingAccelerationStructure to be used with the
         //     RayTracingShader.
@@ -1543,25 +1513,9 @@ namespace UnityEngine.Rendering
         //   rayTracingAccelerationStructure:
         //     The RayTracingAccelerationStructure to be used.
         public void SetRayTracingAccelerationStructure(RayTracingShader rayTracingShader, int nameID, RayTracingAccelerationStructure rayTracingAccelerationStructure);
-        //
-        // 摘要:
-        //     Adds a command to set the RayTracingAccelerationStructure to be used with the
-        //     RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     The RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the RayTracingAccelerationStructure in shader coder.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   rayTracingAccelerationStructure:
-        //     The RayTracingAccelerationStructure to be used.
         public void SetRayTracingAccelerationStructure(RayTracingShader rayTracingShader, string name, RayTracingAccelerationStructure rayTracingAccelerationStructure);
-        //
+        
+
         // 摘要:
         //     Adds a command to set an input or output buffer parameter on a RayTracingShader.
         //
@@ -1579,23 +1533,6 @@ namespace UnityEngine.Rendering
         //   buffer:
         //     Buffer to set.
         public void SetRayTracingBufferParam(RayTracingShader rayTracingShader, string name, ComputeBuffer buffer);
-        //
-        // 摘要:
-        //     Adds a command to set an input or output buffer parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     The RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     The name of the constant buffer in shader code.
-        //
-        //   nameID:
-        //     The ID of the property name for the constant buffer in shader code. Use Shader.PropertyToID
-        //     to get this ID.
-        //
-        //   buffer:
-        //     Buffer to set.
         public void SetRayTracingBufferParam(RayTracingShader rayTracingShader, int nameID, ComputeBuffer buffer);
         //
         // 摘要:
@@ -1622,82 +1559,11 @@ namespace UnityEngine.Rendering
         //   size:
         //     The number of bytes to bind.
         public void SetRayTracingConstantBufferParam(RayTracingShader rayTracingShader, int nameID, ComputeBuffer buffer, int offset, int size);
-        //
-        // 摘要:
-        //     Adds a command to set a constant buffer on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     The RayTracingShader to set parameter for.
-        //
-        //   nameID:
-        //     The ID of the property name for the constant buffer in shader code. Use Shader.PropertyToID
-        //     to get this ID.
-        //
-        //   name:
-        //     The name of the constant buffer in shader code.
-        //
-        //   buffer:
-        //     The buffer to bind as constant buffer.
-        //
-        //   offset:
-        //     The offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
         public void SetRayTracingConstantBufferParam(RayTracingShader rayTracingShader, string name, GraphicsBuffer buffer, int offset, int size);
-        //
-        // 摘要:
-        //     Adds a command to set a constant buffer on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     The RayTracingShader to set parameter for.
-        //
-        //   nameID:
-        //     The ID of the property name for the constant buffer in shader code. Use Shader.PropertyToID
-        //     to get this ID.
-        //
-        //   name:
-        //     The name of the constant buffer in shader code.
-        //
-        //   buffer:
-        //     The buffer to bind as constant buffer.
-        //
-        //   offset:
-        //     The offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
         public void SetRayTracingConstantBufferParam(RayTracingShader rayTracingShader, int nameID, GraphicsBuffer buffer, int offset, int size);
-        //
-        // 摘要:
-        //     Adds a command to set a constant buffer on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     The RayTracingShader to set parameter for.
-        //
-        //   nameID:
-        //     The ID of the property name for the constant buffer in shader code. Use Shader.PropertyToID
-        //     to get this ID.
-        //
-        //   name:
-        //     The name of the constant buffer in shader code.
-        //
-        //   buffer:
-        //     The buffer to bind as constant buffer.
-        //
-        //   offset:
-        //     The offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
         public void SetRayTracingConstantBufferParam(RayTracingShader rayTracingShader, string name, ComputeBuffer buffer, int offset, int size);
-        //
+        
+
         // 摘要:
         //     Adds a command to set a float parameter on a RayTracingShader.
         //
@@ -1714,24 +1580,9 @@ namespace UnityEngine.Rendering
         //   val:
         //     Value to set.
         public void SetRayTracingFloatParam(RayTracingShader rayTracingShader, string name, float val);
-        //
-        // 摘要:
-        //     Adds a command to set a float parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the variable in shader code.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   val:
-        //     Value to set.
         public void SetRayTracingFloatParam(RayTracingShader rayTracingShader, int nameID, float val);
-        //
+        
+
         // 摘要:
         //     Adds a command to set multiple consecutive float parameters on a RayTracingShader.
         //
@@ -1748,24 +1599,9 @@ namespace UnityEngine.Rendering
         //   values:
         //     Values to set.
         public void SetRayTracingFloatParams(RayTracingShader rayTracingShader, string name, params float[] values);
-        //
-        // 摘要:
-        //     Adds a command to set multiple consecutive float parameters on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the variable in shader code.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   values:
-        //     Values to set.
         public void SetRayTracingFloatParams(RayTracingShader rayTracingShader, int nameID, params float[] values);
-        //
+        
+
         // 摘要:
         //     Adds a command to set an integer parameter on a RayTracingShader.
         //
@@ -1782,24 +1618,9 @@ namespace UnityEngine.Rendering
         //   val:
         //     Value to set.
         public void SetRayTracingIntParam(RayTracingShader rayTracingShader, int nameID, int val);
-        //
-        // 摘要:
-        //     Adds a command to set an integer parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the variable in shader code.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   val:
-        //     Value to set.
         public void SetRayTracingIntParam(RayTracingShader rayTracingShader, string name, int val);
-        //
+        
+
         // 摘要:
         //     Adds a command to set multiple consecutive integer parameters on a RayTracingShader.
         //
@@ -1816,24 +1637,9 @@ namespace UnityEngine.Rendering
         //   values:
         //     Values to set.
         public void SetRayTracingIntParams(RayTracingShader rayTracingShader, string name, params int[] values);
-        //
-        // 摘要:
-        //     Adds a command to set multiple consecutive integer parameters on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the variable in shader code.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   values:
-        //     Values to set.
         public void SetRayTracingIntParams(RayTracingShader rayTracingShader, int nameID, params int[] values);
-        //
+        
+
         // 摘要:
         //     Adds a command to set a matrix array parameter on a RayTracingShader.
         //
@@ -1850,24 +1656,9 @@ namespace UnityEngine.Rendering
         //   values:
         //     Value to set.
         public void SetRayTracingMatrixArrayParam(RayTracingShader rayTracingShader, int nameID, params Matrix4x4[] values);
-        //
-        // 摘要:
-        //     Adds a command to set a matrix array parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the variable in shader code.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   values:
-        //     Value to set.
         public void SetRayTracingMatrixArrayParam(RayTracingShader rayTracingShader, string name, params Matrix4x4[] values);
-        //
+        
+
         // 摘要:
         //     Adds a command to set a matrix parameter on a RayTracingShader.
         //
@@ -1884,24 +1675,9 @@ namespace UnityEngine.Rendering
         //   val:
         //     Value to set.
         public void SetRayTracingMatrixParam(RayTracingShader rayTracingShader, int nameID, Matrix4x4 val);
-        //
-        // 摘要:
-        //     Adds a command to set a matrix parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the variable in shader code.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   val:
-        //     Value to set.
         public void SetRayTracingMatrixParam(RayTracingShader rayTracingShader, string name, Matrix4x4 val);
-        //
+        
+
         // 摘要:
         //     Adds a command to select which Shader Pass to use when executing ray/geometry
         //     intersection shaders.
@@ -1914,7 +1690,8 @@ namespace UnityEngine.Rendering
         //     The Shader Pass to use when executing ray tracing shaders.
         [NativeMethodAttribute("AddSetRayTracingShaderPass")]
         public void SetRayTracingShaderPass([NotNullAttribute("ArgumentNullException")] RayTracingShader rayTracingShader, string passName);
-        //
+        
+
         // 摘要:
         //     Adds a command to set a texture parameter on a RayTracingShader.
         //
@@ -1932,25 +1709,9 @@ namespace UnityEngine.Rendering
         //   rt:
         //     Texture value or identifier to set, see RenderTargetIdentifier.
         public void SetRayTracingTextureParam(RayTracingShader rayTracingShader, string name, RenderTargetIdentifier rt);
-        //
-        // 摘要:
-        //     Adds a command to set a texture parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the texture variable in shader code.
-        //
-        //   nameID:
-        //     The ID of the property name for the texture in shader code. Use Shader.PropertyToID
-        //     to get this ID.
-        //
-        //   rt:
-        //     Texture value or identifier to set, see RenderTargetIdentifier.
         public void SetRayTracingTextureParam(RayTracingShader rayTracingShader, int nameID, RenderTargetIdentifier rt);
-        //
+        
+
         // 摘要:
         //     Adds a command to set a vector array parameter on a RayTracingShader.
         //
@@ -1967,24 +1728,9 @@ namespace UnityEngine.Rendering
         //   values:
         //     Value to set.
         public void SetRayTracingVectorArrayParam(RayTracingShader rayTracingShader, int nameID, params Vector4[] values);
-        //
-        // 摘要:
-        //     Adds a command to set a vector array parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Property name.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   values:
-        //     Value to set.
         public void SetRayTracingVectorArrayParam(RayTracingShader rayTracingShader, string name, params Vector4[] values);
-        //
+        
+
         // 摘要:
         //     Adds a command to set a vector parameter on a RayTracingShader.
         //
@@ -2001,794 +1747,209 @@ namespace UnityEngine.Rendering
         //   val:
         //     Value to set.
         public void SetRayTracingVectorParam(RayTracingShader rayTracingShader, int nameID, Vector4 val);
-        //
-        // 摘要:
-        //     Adds a command to set a vector parameter on a RayTracingShader.
-        //
-        // 参数:
-        //   rayTracingShader:
-        //     RayTracingShader to set parameter for.
-        //
-        //   name:
-        //     Name of the variable in shader code.
-        //
-        //   nameID:
-        //     Property name ID. Use Shader.PropertyToID to get this ID.
-        //
-        //   val:
-        //     Value to set.
         public void SetRayTracingVectorParam(RayTracingShader rayTracingShader, string name, Vector4 val);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
+        
+
+        /*
+            摘要:
+            Add a "set active render target" command.
+
+            可通过数种方式来获得一个 rt:
+            -- a RenderTexture object
+            -- a temporary render texture created with CommandBuffer.GetTemporaryRT()
+            -- one of built-in temporary textures (BuiltinRenderTextureType)
+            
+            所有这些都通过一个 RenderTargetIdentifier struct 来表达; 
+            它拥有一些 隐式转换运算符, 来节省打字时间;
+            
+            你不需要在 command buffer 执行期间 显式保留 active render targets;
+            (current render targets are saved & restored afterwards).
+
+            本函数包含大量重载, 需要一些额外的参数, 比如: mipLevel (int), cubemapFace;
+
+            有的重载设置一个 single RenderTarget, 且没有显式设置 mipLevel, cubemapFace and depthSlice 参数时,
+            将遵循 创建 RenderTargetIdentifier 时指定的 mipLevel、cubemapFace 和 depthSlice 值。
+
+            除非另有指定，否则设置 MRT (multiple render targets) 的重载会将 mipLevel、cubemapFace 和 depthSlice
+            设置为 0、Unknown 和 0。
+            如果在参数中指定了这些信息, 那么这些信息将被用于 MRT 中的所有 render targets
+
+            注意在 线性颜色空间中, 需要正确设置 sRGB<->Linear color conversion state;
+
+            鉴于前一个渲染状态 和当前渲染状态 可能不同, 可在调用本函数之前, 或任何手动渲染之前, 调用 GL.sRGBWrite() 
+
+            当前不支持 Rendering.RenderTargetIdentifier.Clear;
+            应改为调用 CommandBuffer.ClearRenderTarget();  它有优化加成;
+
+            参数:
+            rt:
+                Render target to set for both color & depth buffers.
+            
+            color:
+                Render target to set as a color buffer.
+            
+            colors:
+                Render targets to set as color buffers (MRT).
+            
+            depth:
+                Render target to set as a depth buffer.
+            
+            mipLevel:
+                The mip level of the render target to render into.
+            
+            cubemapFace:
+                The cubemap face of a cubemap render target to render into.
+            
+            depthSlice:
+                Slice of a 3D or array render target to set.
+            
+            loadAction:
+                Load action that is used for color and depth/stencil buffers.
+            
+            storeAction:
+                Store action that is used for color and depth/stencil buffers.
+            
+            colorLoadAction:
+                Load action that is used for the color buffer.
+            
+            colorStoreAction:
+                Store action that is used for the color buffer.
+            
+            depthLoadAction:
+                Load action that is used for the depth/stencil buffer.
+            
+            depthStoreAction:
+                Store action that is used for the depth/stencil buffer.
+            
+            binding: 没解释...
+        */
         public void SetRenderTarget(RenderTargetBinding binding);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetBinding binding, int mipLevel, CubemapFace cubemapFace, int depthSlice);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier[] colors, RenderTargetIdentifier depth, int mipLevel, CubemapFace cubemapFace, int depthSlice);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier color, RenderBufferLoadAction colorLoadAction, RenderBufferStoreAction colorStoreAction, RenderTargetIdentifier depth, RenderBufferLoadAction depthLoadAction, RenderBufferStoreAction depthStoreAction);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier color, RenderTargetIdentifier depth, int mipLevel, CubemapFace cubemapFace, int depthSlice);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier[] colors, RenderTargetIdentifier depth);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier color, RenderTargetIdentifier depth, int mipLevel);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier rt);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier rt, RenderBufferLoadAction loadAction, RenderBufferStoreAction storeAction);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier rt, RenderBufferLoadAction colorLoadAction, RenderBufferStoreAction colorStoreAction, RenderBufferLoadAction depthLoadAction, RenderBufferStoreAction depthStoreAction);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier color, RenderTargetIdentifier depth, int mipLevel, CubemapFace cubemapFace);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier rt, int mipLevel, CubemapFace cubemapFace);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier rt, int mipLevel);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier rt, int mipLevel, CubemapFace cubemapFace, int depthSlice);
-        //
-        // 摘要:
-        //     Add a "set active render target" command.
-        //
-        // 参数:
-        //   rt:
-        //     Render target to set for both color & depth buffers.
-        //
-        //   color:
-        //     Render target to set as a color buffer.
-        //
-        //   colors:
-        //     Render targets to set as color buffers (MRT).
-        //
-        //   depth:
-        //     Render target to set as a depth buffer.
-        //
-        //   mipLevel:
-        //     The mip level of the render target to render into.
-        //
-        //   cubemapFace:
-        //     The cubemap face of a cubemap render target to render into.
-        //
-        //   depthSlice:
-        //     Slice of a 3D or array render target to set.
-        //
-        //   loadAction:
-        //     Load action that is used for color and depth/stencil buffers.
-        //
-        //   storeAction:
-        //     Store action that is used for color and depth/stencil buffers.
-        //
-        //   colorLoadAction:
-        //     Load action that is used for the color buffer.
-        //
-        //   colorStoreAction:
-        //     Store action that is used for the color buffer.
-        //
-        //   depthLoadAction:
-        //     Load action that is used for the depth/stencil buffer.
-        //
-        //   depthStoreAction:
-        //     Store action that is used for the depth/stencil buffer.
-        //
-        //   binding:
         public void SetRenderTarget(RenderTargetIdentifier color, RenderTargetIdentifier depth);
-        //
-        // 摘要:
-        //     Add a "set shadow sampling mode" command.
-        //
-        // 参数:
-        //   shadowmap:
-        //     Shadowmap render target to change the sampling mode on.
-        //
-        //   mode:
-        //     New sampling mode.
+
+        /*
+            摘要:
+            Add a "set shadow sampling mode" command.
+
+            -- CompareDepths:
+                默认选项, 此时 sampler 会做深度值比较, 然后返回 0 或 1, 表示 shadowmap 中对应的深度值 更小 或 更大;
+
+            -- RawDepth:
+                如果你希望能像访问 普通texture 那样去访问 shadowmap, 那就设置为 RawDepth;
+                当 本个 command buffer 的最后一个指令被执行完毕后, Shadowmap's sampling mode 会被重置回默认配置;
+                调用 SystemInfo.supportsRawShadowDepthSampling() 来检查本平台是否支持 RawDepth; 比如 DirectX9 就不支持;
+
+            -- None:
+                如果 texture 不是 shadowmap, 就用这个
+
+            参数:
+            shadowmap:
+                Shadowmap render target to change the sampling mode on.
+            
+            mode:
+                New sampling mode.
+                更多信息参见另一个文件中的笔记
+        */
         public void SetShadowSamplingMode(RenderTargetIdentifier shadowmap, ShadowSamplingMode mode);
+
+
+        // 感觉 VR 相关;
         public void SetSinglePassStereo(SinglePassStereoMode mode);
-        //
-        // 摘要:
-        //     Add a command to set the view matrix.
-        //
-        // 参数:
-        //   view:
-        //     View (world to camera space) matrix.
+
+        /*
+            摘要:
+            Add a command to set the view matrix.
+
+            如果这个 view matrix 是你手动生成的, 比如用了 Matrix4x4.LookAt 的逆矩阵, 
+            此时你需要对它的 z轴取反, 来符合 view-space 的 右手性质;
+            比如:
+                var lookMatrix = Matrix4x4.LookAt(tr.position, tr.position + tr.forward, tr.up);
+                var scaleMatrix = Matrix4x4.TRS( Vector3.zero, Quaternion.identity, new Vector3(1, 1, -1));
+                var viewMatrix = scaleMatrix * lookMatrix.inverse;
+            
+            参数:
+            view:
+                View (world to camera space) matrix.
+        */
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::SetViewMatrix", HasExplicitThis = true, ThrowsException = true)]
         public void SetViewMatrix(Matrix4x4 view);
-        //
-        // 摘要:
-        //     Add a command to set the rendering viewport.
-        //
-        // 参数:
-        //   pixelRect:
-        //     Viewport rectangle in pixel coordinates.
+
+
+        /*
+            摘要:
+            Add a command to set the rendering viewport.
+            默认情况下, 当 render target 被更改后, viewport 会被自动设置为 覆盖整个 rt;
+            此时就需要用本函数来 人为改成想要的 区域;
+            
+            参数:
+            pixelRect:
+                Viewport rectangle in pixel coordinates.
+        */
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::SetViewport", HasExplicitThis = true, ThrowsException = true)]
         public void SetViewport(Rect pixelRect);
-        //
-        // 摘要:
-        //     Add a command to set the view and projection matrices.
-        //
-        // 参数:
-        //   view:
-        //     View (world to camera space) matrix.
-        //
-        //   proj:
-        //     Projection (camera to clip space) matrix.
+        
+
+        /*
+            摘要:
+            Add a command to set the view and projection matrices.
+
+            截至 2021.1 版本, 此函数仅兼容 built-in 管线, 不兼容 srp三管线;
+
+
+            和 SetViewMatrix() 类似, 如果 view matrix 是自己实现的, 需要注意 z轴反转问题;
+            
+            参数:
+            view:
+                View (world to camera space) matrix.
+            
+            proj:
+                Projection (camera to clip space) matrix.
+        */
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::SetViewProjectionMatrices", HasExplicitThis = true, ThrowsException = true)]
         public void SetViewProjectionMatrices(Matrix4x4 view, Matrix4x4 proj);
-        //
+        
+
+
         // 摘要:
         //     Adds an "AsyncGPUReadback.WaitAllRequests" command to the CommandBuffer.
         [NativeMethodAttribute("AddWaitAllAsyncReadbackRequests")]
         public void WaitAllAsyncReadbackRequests();
+
+        
+        
+        // 摘要:
+        //     Instructs the GPU to wait until the given GraphicsFence is passed.
+        //
+        // 参数:
+        //   fence:
+        //     The GraphicsFence that the GPU will be instructed to wait upon before proceeding
+        //     with its processing of the graphics queue.
+        //
+        //   stage:
+        //     On some platforms there is a significant gap between the vertex processing completing
+        //     and the pixel processing beginning for a given draw call. This parameter allows
+        //     for a requested wait to be made before the next item's vertex or pixel processing
+        //     begins. If a compute shader dispatch is the next item to be submitted then this
+        //     parameter is ignored.
         public void WaitOnAsyncGraphicsFence(GraphicsFence fence, SynchronisationStageFlags stage);
-        //
-        // 摘要:
-        //     Instructs the GPU to wait until the given GraphicsFence is passed.
-        //
-        // 参数:
-        //   fence:
-        //     The GraphicsFence that the GPU will be instructed to wait upon before proceeding
-        //     with its processing of the graphics queue.
-        //
-        //   stage:
-        //     On some platforms there is a significant gap between the vertex processing completing
-        //     and the pixel processing beginning for a given draw call. This parameter allows
-        //     for a requested wait to be made before the next item's vertex or pixel processing
-        //     begins. If a compute shader dispatch is the next item to be submitted then this
-        //     parameter is ignored.
         public void WaitOnAsyncGraphicsFence(GraphicsFence fence);
-        //
-        // 摘要:
-        //     Instructs the GPU to wait until the given GraphicsFence is passed.
-        //
-        // 参数:
-        //   fence:
-        //     The GraphicsFence that the GPU will be instructed to wait upon before proceeding
-        //     with its processing of the graphics queue.
-        //
-        //   stage:
-        //     On some platforms there is a significant gap between the vertex processing completing
-        //     and the pixel processing beginning for a given draw call. This parameter allows
-        //     for a requested wait to be made before the next item's vertex or pixel processing
-        //     begins. If a compute shader dispatch is the next item to be submitted then this
-        //     parameter is ignored.
         public void WaitOnAsyncGraphicsFence(GraphicsFence fence, SynchronisationStage stage);
-        //
+        
+        
+
+        /*
         // 摘要:
         //     This functionality is deprecated, and should no longer be used. Please use CommandBuffer.WaitOnAsyncGraphicsFence.
         //
@@ -2807,5 +1968,7 @@ namespace UnityEngine.Rendering
         public void WaitOnGPUFence(GPUFence fence, SynchronisationStage stage);
         [Obsolete("CommandBuffer.WaitOnGPUFence has been deprecated. Use WaitOnGraphicsFence instead (UnityUpgradable) -> WaitOnAsyncGraphicsFence(*)", false)]
         public void WaitOnGPUFence(GPUFence fence);
+        */
+
     }
 }
