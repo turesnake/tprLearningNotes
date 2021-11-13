@@ -237,9 +237,6 @@ struct BRDFData
 #             unity SRP 提到的 class
 # ------------------------------------------------------- #
 
-# ScriptableRenderContext
-    简称 context
-    定义当前 rp 使用的 状况 和 指令。
 
 # CommandBuffer
     存储一组 render commands

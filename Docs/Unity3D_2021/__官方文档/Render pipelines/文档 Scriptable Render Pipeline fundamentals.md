@@ -17,10 +17,6 @@ srp 是一套 API，允许用户用 C# 配置渲染 commands。unity 将这些 c
     继承于： RenderPipeline
     它需要 覆写一个 Render 函数，这是整个管线的 调用入口！
 
-# ScriptableRenderContext
-这是一个类，它在 “srp中的 客户 c#代码” 和 “unity底层图形代码（可能为c++）” 之间做连接。
-
-使用此 context API 来 调度和执行 渲染指令。
 
 # Entry points and callbacks
 使用如下指令，使得 unity 可在特定时间调用 你的 c# 代码：
