@@ -42,7 +42,6 @@ namespace UnityEngine
 
 
 
-        
         // 摘要:
         //      Enable random access write into this render texture on Shader Model 5.0 level shaders. 
         //      See Also: RenderTexture.enableRandomWrite.
@@ -75,70 +74,110 @@ namespace UnityEngine
         //     property decides what special rendering occurs, if any. Instead of setting this
         //     manually, use the value returned by XR.XRSettings.eyeTextureDesc|eyeTextureDesc
         //     or other VR functions returning a RenderTextureDescriptor.
-        public VRTextureUsage vrUsage { readonly get; set; }
-        //
+        public VRTextureUsage vrUsage { readonly get; set; } // VR
+
+        
         // 摘要:
-        //     Determines how the RenderTexture is sampled if it is used as a shadow map. See
-        //     Also: ShadowSamplingMode for more details.
+        //     Determines how the RenderTexture is sampled if it is used as a shadow map.
+        //      -- CompareDepths
+        //      -- RawDepth
+        //      -- None
         public ShadowSamplingMode shadowSamplingMode { readonly get; set; }
-        //
+
+        
         // 摘要:
-        //     Dimensionality (type) of the render texture. See Also: RenderTexture.dimension.
+        //   Dimensionality (type) of the render texture. See Also: RenderTexture.dimension.
+        //   比如:
+        //      2D, cubemap, 3D, Tex2DArray, CubeArray 这种的
         public TextureDimension dimension { readonly get; set; }
-        //
+
+
         // 摘要:
-        //     The precision of the render texture's depth buffer in bits (0, 16, 24/32 are
-        //     supported). See Also: RenderTexture.depth.
+        //      The precision of the render texture's depth buffer in bits 
+        //      (0, 16, 24/32 are supported). 
+        //      See Also: RenderTexture.depth.
         public int depthBufferBits { get; set; }
-        //
-        // 摘要:
-        //     The format of the stencil data that you can encapsulate within a RenderTexture.
-        //     Specifying this property creates a stencil element for the RenderTexture and
-        //     sets its format. This allows for stencil data to be bound as a Texture to all
-        //     shader types for the platforms that support it. This property does not specify
-        //     the format of the stencil buffer, which is constrained by the depth buffer format
-        //     specified in RenderTexture.depth. Currently, most platforms only support R8_UInt
-        //     (DirectX11, DirectX12), while PS4 also supports R8_UNorm.
+
+        /*
+            摘要:
+            你可以封装在 render texture 中的 stencil 数据 的格式;
+
+            指定此属性将为 Render Texture 创建一个 stencil 元素, 并设置其格式; 
+
+            这允许将 stencil 数据 作为一个 texture, 
+            绑定到 "支持 stencil 的平台的" 所有的 shader 类型;
+
+            This property does not specify the format of the stencil buffer, 
+            which is constrained by the depth buffer format specified in RenderTexture.depth.
+            ---
+            本 property 并不指定 stencil buffer 的格式,  
+            后者由 RenderTexture.depth (即 depth buffer format) 来指定;
+            (没看懂...)
+
+            目前, 大部分平台仅支持 R8_UInt (DirectX11, DirectX12), 
+            while PS4 also supports R8_UNorm.
+        */
         public GraphicsFormat stencilFormat { readonly get; set; }
+
+
         public RenderTextureFormat colorFormat { get; set; }
-        //
+
+        
         // 摘要:
-        //     If true and msaaSamples is greater than 1, the render texture will not be resolved
+        //     If true and 本类的 msaaSamples is greater than 1, the render texture will not be resolved
         //     by default. Use this if the render texture needs to be bound as a multisampled
         //     texture in a shader.
         public bool bindMS { get; set; }
-        //
+
+        
         // 摘要:
         //     The color format for the RenderTexture.
         public GraphicsFormat graphicsFormat { get; set; }
-        //
-        // 摘要:
-        //     User-defined mipmap count.
+
+        /*
+            摘要:
+            User-defined mipmap count. 感觉就是 mip 层数
+
+            Use this property to override the number of mipmaps that will be generated for this render texture. 
+            Only supported on devices that return true for SystemInfo.hasMipMaxLevel.
+            
+            See Also: RenderTextureDescriptor.useMipMap.
+        */
         public int mipCount { readonly get; set; }
-        //
-        // 摘要:
-        //     Volume extent of a 3D render texture.
+        
+        /*
+            摘要:
+            Volume extent of a 3D render texture.
+
+            For "volumetric render textures" (see 本类的 dimension), 
+            this variable determines the volume extent. Ignored for non-3D textures. 
+            
+            The valid range for 3D textures is 1 to 2000.
+        */
         public int volumeDepth { readonly get; set; }
-        //
+        
+
         // 摘要:
         //     The multisample antialiasing level for the RenderTexture. See Also: RenderTexture.antiAliasing.
         public int msaaSamples { readonly get; set; }
-        //
-        // 摘要:
-        //     The height of the render texture in pixels.
+        
+        /*
+            摘要:
+            The width / height of the render texture in pixels.
+        */
         public int height { readonly get; set; }
-        //
-        // 摘要:
-        //     The width of the render texture in pixels.
         public int width { readonly get; set; }
-        //
+
+        
         // 摘要:
         //     This flag causes the render texture uses sRGB read/write conversions.
         public bool sRGB { get; set; }
-        //
+
+        
         // 摘要:
-        //     Set to true to enable dynamic resolution scaling on this render texture. See
-        //     Also: RenderTexture.useDynamicScale.
+        //     Set to true to enable dynamic resolution scaling on this render texture. 
+        //     See Also: RenderTexture.useDynamicScale.
         public bool useDynamicScale { get; set; }
+        
     }
 }

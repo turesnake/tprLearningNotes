@@ -91,16 +91,33 @@ namespace UnityEngine
         protected internal RenderTexture();
 
 
-
-
+        /*
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("RenderTexture.enabled is always now, no need to use it.", false)]
         public static bool enabled { get; set; }
-        //
-        // 摘要:
-        //     Currently active render texture.
+        */
+
+
+        /*
+            摘要:
+            Currently active render texture.
+
+            渲染都会被写入 active Render Texture; 
+            如果 active Render Texture 是 null, 则一切都会被渲染进 main window
+
+            设置此值, 其作用和调用 Graphics.SetRenderTarget() 是相同的;
+            通常, 你会在 实现自定义图形效果时, 才回来修改和询问 active render texture;
+
+            如果你的目的是 想让 camera 渲染进一个指定的 texture 中, 那么你应该去调用: Camera.targetTexture();
+
+            当一个 render texture 变成 active 态, 而且它之前没被这么使用过, 那么它的 hardware rendering context
+            会被自动创建;
+
+            See Also: Graphics.SetRenderTarget();
+        */
         public static RenderTexture active { get; set; }
         
+
         /*
             摘要:
             If true and antiAliasing is greater than 1, the render texture will not be resolved
@@ -117,94 +134,134 @@ namespace UnityEngine
         
 
         // 摘要:
-        //     The height of the render texture in pixels.
+        //     The width / height of the render texture in pixels.
         public override int height { get; set; }
-        //
+        public override int width { get; set; }
+
+
         // 摘要:
         //     Dimensionality (type) of the render texture.
+        //   比如:
+        //      2D, cubemap, 3D, Tex2DArray, CubeArray 这种的
         public override TextureDimension dimension { get; set; }
-        //
+
+        
+        /*
         // 摘要:
         //     If enabled, this Render Texture will be used as a Texture3D.
         [Obsolete("Use RenderTexture.dimension instead.", false)]
         public bool isVolume { get; set; }
-        //
+        */
+
+
         // 摘要:
         //     The color format of the render texture.
         [NativePropertyAttribute("ColorFormat")]
         public GraphicsFormat graphicsFormat { get; set; }
-        //
+
+
         // 摘要:
         //     Render texture has mipmaps when this flag is set.
         [NativePropertyAttribute("MipMap")]
         public bool useMipMap { get; set; }
-        //
+
+        
         // 摘要:
         //     Does this render texture use sRGB read/write conversions? (Read Only).
         [NativePropertyAttribute("SRGBReadWrite")]
         public bool sRGB { get; }
-        //
+
+        
         // 摘要:
         //     If this RenderTexture is a VR eye texture used in stereoscopic rendering, this
         //     property decides what special rendering occurs, if any.
         [NativePropertyAttribute("VRUsage")]
-        public VRTextureUsage vrUsage { get; set; }
-        //
+        public VRTextureUsage vrUsage { get; set; } // VR
+
+        
         // 摘要:
         //     The render texture memoryless mode property.
         [NativePropertyAttribute("Memoryless")]
         public RenderTextureMemoryless memorylessMode { get; set; }
+
+
         public RenderTextureFormat format { get; set; }
-        //
-        // 摘要:
-        //     The format of the stencil data that you can encapsulate within a RenderTexture.
-        //     Specifying this property creates a stencil element for the RenderTexture and
-        //     sets its format. This allows for stencil data to be bound as a Texture to all
-        //     shader types for the platforms that support it. This property does not specify
-        //     the format of the stencil buffer, which is constrained by the depth buffer format
-        //     specified in RenderTexture.depth. Currently, most platforms only support R8_UInt
-        //     (DirectX11, DirectX12), while PS4 also supports R8_UNorm.
+
+        /*
+            摘要:
+            你可以封装在 render texture 中的 stencil 数据 的格式;
+
+            指定此属性将为 Render Texture 创建一个 stencil 元素, 并设置其格式; 
+
+            这允许将 stencil 数据 作为一个 texture, 
+            绑定到 "支持 stencil 的平台的" 所有的 shader 类型;
+
+            This property does not specify the format of the stencil buffer, 
+            which is constrained by the depth buffer format specified in RenderTexture.depth.
+            ---
+            本 property 并不指定 stencil buffer 的格式,  
+            后者由 RenderTexture.depth (即 depth buffer format) 来指定;
+            (没看懂...)
+
+            目前, 大部分平台仅支持 R8_UInt (DirectX11, DirectX12), 
+            while PS4 also supports R8_UNorm.
+        */
         public GraphicsFormat stencilFormat { get; set; }
-        //
+
+
+        
         // 摘要:
         //     Mipmap levels are generated automatically when this flag is set.
         public bool autoGenerateMips { get; set; }
+
+
+        /*
         [Obsolete("Use RenderTexture.dimension instead.", false)]
         public bool isCubemap { get; set; }
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use RenderTexture.autoGenerateMips instead (UnityUpgradable) -> autoGenerateMips", false)]
         public bool generateMips { get; set; }
-        //
+        */
+        
+
         // 摘要:
         //     This struct contains all the information required to create a RenderTexture.
-        //     It can be copied, cached, and reused to easily create RenderTextures that all
-        //     share the same properties.
+        //     It can be copied, cached, and reused to easily create RenderTextures that all share the same properties.
         public RenderTextureDescriptor descriptor { get; set; }
-        //
+        
+
         // 摘要:
-        //     The precision of the render texture's depth buffer in bits (0, 16, 24/32 are
-        //     supported).
+        //     The precision of the render texture's depth buffer in bits 
+        //     (0, 16, 24/32 are supported).
         public int depth { get; set; }
-        //
+
+        
         // 摘要:
         //     Depth/stencil buffer of the render texture (Read Only).
         public RenderBuffer depthBuffer { get; }
-        //
-        // 摘要:
-        //     The width of the render texture in pixels.
-        public override int width { get; set; }
-        //
+        
+
         // 摘要:
         //     Color buffer of the render texture (Read Only).
         public RenderBuffer colorBuffer { get; }
-        public bool isPowerOfTwo { get; set; }
-        //
+
+
+        public bool isPowerOfTwo { get; set; } // 文档中没见到说明
+        
+
         // 摘要:
         //     Is the render texture marked to be scaled by the.
         public bool useDynamicScale { get; set; }
-        //
-        // 摘要:
-        //     Volume extent of a 3D render texture or number of slices of array texture.
+
+        
+        
+        /*
+            摘要:
+            Volume extent of a 3D render texture or number of slices of array texture.
+
+            -- For volumetric render textures (see dimension), this variable determines the volume extent.
+            -- For array render texture (see dimension), this variable determines the number of slices.
+        */
         public int volumeDepth { get; set; }
 
 
@@ -228,12 +285,80 @@ namespace UnityEngine
 
 
 
-        //
-        // 摘要:
-        //     Enable random access write into this render texture on Shader Model 5.0 level
-        //     shaders.
+        /*
+            摘要:
+            Enable random access write into this render texture on Shader Model 5.0 level shaders.
+
+            Shader Model 5.0 level frag shader 或者 compute shaders, 可以向 texture 的任意地址写入信息;
+            此功能被称为 "unordered access views" in UsingDX11GL3Features. (UAV)
+
+            想要启动此功能, 在新建 render texture 之前, 设置此 flag;
+
+            如果一个 texture 启动了此 flag, 在 hlsl 中, 它能被当作一个 RWTexture* resources 来写入;
+            在 glsl 中, 它能被当作一个 image resources 来写入;
+
+            使用 Graphics.SetRandomWriteTarget() 也能在 frag shader 中设置一个 random access write target
+
+            Use SystemInfo.SupportsRandomWriteOnRenderTextureFormat() 来证实:
+            if a given format can be used as this depends on the graphics API/hardware/driver.
+        */
         public bool enableRandomWrite { get; set; }
 
+
+        
+
+        /*
+            摘要:
+            Allocate a temporary render texture.
+
+            如果你为了某些临时计算, 想要一个快速的 Render Texture 时, 此函数对此需求做了优化;
+            事后可调用 RenderTexture.ReleaseTemporary() 来释放之; 以便未来可以服用此 rt;
+
+            在内部, unity 维护了一个 temporary render textures 的池子, 所以, 一个 GetTemporary() 调用
+            很可能会返回一个 已经新建且被复用过的 rt (只要它的 size, format 是符合需求的)
+
+            只要在数帧之内被没有被用到, 这些 temporary render textures 就会被销毁;
+
+            如果你正在执行一系列 后处理 "blits" 操作, 最好针对每一个 blit, 都单独申请和释放一个 temporary render texture,
+            这样对性能是最有利的; 这比复用同一个 temporary render texture 要高效多了;
+
+            这对 移动平台(tile-based) 和 multi-GPU systems 都是最有益的;
+
+            本函数会在内部调用 RenderTexture.DiscardContents() 这有助于避免对先前 render texture 的内容执行昂贵的恢复操作。
+
+            调用本函数返回的 temporary render texture, 里面的任何数据都是不可信的, 说不定就是残留的垃圾信息,
+            也可能会复写为某种但一个的颜色值,  这些依平台而定;
+            
+        // 参数:
+        //   width:
+        //     Width in pixels.
+        //
+        //   height:
+        //     Height in pixels.
+        //
+        //   depthBuffer:
+        //     Depth buffer bits (0, 16 or 24). Note that only 24 bit depth has stencil buffer.
+        //
+        //   format:
+        //     Render texture format.
+        //
+        //   readWrite:
+        //     Color space conversion mode.
+        //
+        //   antiAliasing:
+        //     Number of antialiasing samples to store in the texture. Valid values are 1, 2,
+        //     4, and 8. Throws an exception if any other value is passed.
+        //
+        //   memorylessMode:
+        //     Render texture memoryless mode.
+        //
+        //   desc:
+        //     Use this RenderTextureDesc for the settings when creating the temporary RenderTexture.
+        //
+        //   vrUsage:
+        //
+        //   useDynamicScale:
+        */
         [ExcludeFromDocs]
         public static RenderTexture GetTemporary(int width, int height);
         [ExcludeFromDocs]
@@ -250,179 +375,192 @@ namespace UnityEngine
         public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing);
         [ExcludeFromDocs]
         public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing, RenderTextureMemoryless memorylessMode, VRTextureUsage vrUsage);
-        //
-        // 摘要:
-        //     Allocate a temporary render texture.
-        //
-        // 参数:
-        //   width:
-        //     Width in pixels.
-        //
-        //   height:
-        //     Height in pixels.
-        //
-        //   depthBuffer:
-        //     Depth buffer bits (0, 16 or 24). Note that only 24 bit depth has stencil buffer.
-        //
-        //   format:
-        //     Render texture format.
-        //
-        //   readWrite:
-        //     Color space conversion mode.
-        //
-        //   antiAliasing:
-        //     Number of antialiasing samples to store in the texture. Valid values are 1, 2,
-        //     4, and 8. Throws an exception if any other value is passed.
-        //
-        //   memorylessMode:
-        //     Render texture memoryless mode.
-        //
-        //   desc:
-        //     Use this RenderTextureDesc for the settings when creating the temporary RenderTexture.
-        //
-        //   vrUsage:
-        //
-        //   useDynamicScale:
         public static RenderTexture GetTemporary(int width, int height, [Internal.DefaultValue("0")] int depthBuffer, [Internal.DefaultValue("RenderTextureFormat.Default")] RenderTextureFormat format, [Internal.DefaultValue("RenderTextureReadWrite.Default")] RenderTextureReadWrite readWrite, [Internal.DefaultValue("1")] int antiAliasing, [Internal.DefaultValue("RenderTextureMemoryless.None")] RenderTextureMemoryless memorylessMode, [Internal.DefaultValue("VRTextureUsage.None")] VRTextureUsage vrUsage, [Internal.DefaultValue("false")] bool useDynamicScale);
         [ExcludeFromDocs]
         public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format);
         [ExcludeFromDocs]
         public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing);
-        //
-        // 摘要:
-        //     Allocate a temporary render texture.
-        //
-        // 参数:
-        //   width:
-        //     Width in pixels.
-        //
-        //   height:
-        //     Height in pixels.
-        //
-        //   depthBuffer:
-        //     Depth buffer bits (0, 16 or 24). Note that only 24 bit depth has stencil buffer.
-        //
-        //   format:
-        //     Render texture format.
-        //
-        //   readWrite:
-        //     Color space conversion mode.
-        //
-        //   antiAliasing:
-        //     Number of antialiasing samples to store in the texture. Valid values are 1, 2,
-        //     4, and 8. Throws an exception if any other value is passed.
-        //
-        //   memorylessMode:
-        //     Render texture memoryless mode.
-        //
-        //   desc:
-        //     Use this RenderTextureDesc for the settings when creating the temporary RenderTexture.
-        //
-        //   vrUsage:
-        //
-        //   useDynamicScale:
         public static RenderTexture GetTemporary(RenderTextureDescriptor desc);
         [ExcludeFromDocs]
         public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing, RenderTextureMemoryless memorylessMode, VRTextureUsage vrUsage);
         [ExcludeFromDocs]
         public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, [Internal.DefaultValue("1")] int antiAliasing, [Internal.DefaultValue("RenderTextureMemoryless.None")] RenderTextureMemoryless memorylessMode, [Internal.DefaultValue("VRTextureUsage.None")] VRTextureUsage vrUsage, [Internal.DefaultValue("false")] bool useDynamicScale);
-        //
-        // 摘要:
-        //     Release a temporary texture allocated with GetTemporary.
-        //
+        
+
+        /*
+            摘要:
+            Release a temporary texture allocated with GetTemporary.
+            如果一个 temp render texture 在数帧之内没有被使用到, 它会被自动销毁;
         // 参数:
-        //   temp:
+        //   temp: 目标
+        */
         [FreeFunctionAttribute("GetRenderBufferManager().GetTextures().ReleaseTempBuffer")]
         public static void ReleaseTemporary(RenderTexture temp);
-        //
+
+
+        
         // 摘要:
         //     Does a RenderTexture have stencil buffer?
-        //
         // 参数:
         //   rt:
         //     Render texture, or null for main screen.
         [FreeFunctionAttribute("RenderTextureSupportsStencil")]
         public static bool SupportsStencil(RenderTexture rt);
+
+
+        /*
+            好像用于 VR
+        */
         [NativeThrowsAttribute]
         public void ConvertToEquirect(RenderTexture equirect, Camera.MonoOrStereoscopicEye eye = Camera.MonoOrStereoscopicEye.Mono);
-        //
-        // 摘要:
-        //     Actually creates the RenderTexture.
-        //
-        // 返回结果:
-        //     True if the texture is created, else false.
+        
+
+        /*
+            摘要:
+            Actually creates the RenderTexture.
+
+            RenderTexture 的构造函数不会真的在硬件层 上分配一个真正的 texture, 
+            通常来说, 一个 texture 会在自己第一次被设置为 active 的时候才被 created;
+
+            调用本函数能让你提前 落实这个 硬件层 texture 的新建工作;
+
+            当然, 如果这个 texture 已经确实被创建了, 那么调用本函数不会执行啥工作;
+        
+            返回结果:
+                True if the texture is created, else false.
+        */
         public bool Create();
-        //
-        // 摘要:
-        //     Hint the GPU driver that the contents of the RenderTexture will not be used.
-        //
-        // 参数:
-        //   discardColor:
-        //     Should the colour buffer be discarded?
-        //
-        //   discardDepth:
-        //     Should the depth buffer be discarded?
+
+        
+
+        /*
+            摘要:
+            Hint the GPU driver that the contents of the RenderTexture will not be used.
+            ---
+            提示 gpu驱动, 这个 render texture 上的内容不会被使用;
+
+            在某些平台上, 如果你能提示某个 render texture 的内容不再被需要, 这能提高性能;
+            此时, 当这个 rt 被别的地方使用时, 系统就不需要将它内部的数据 复制到一个 暂存地, 最好再复制回来;
+            Xbox 360, XBox One and many mobile GPUs benefit from this.
+
+            知道当目标 render texture 是当前的 active render target 时, 这个操作才是管用的;
+            在此函数被调用之后, 目标 render texture 中的内容是未定义的;
+
+            默认时, color buffer 和 depth buffer 都会被 discarded,
+            不过通过两个参数, 可具体定制细节
+
+            参数:
+            discardColor:
+                Should the colour buffer be discarded?
+            
+            discardDepth:
+                Should the depth buffer be discarded?
+        */
         public void DiscardContents(bool discardColor, bool discardDepth);
-        //
-        // 摘要:
-        //     Hint the GPU driver that the contents of the RenderTexture will not be used.
-        //
-        // 参数:
-        //   discardColor:
-        //     Should the colour buffer be discarded?
-        //
-        //   discardDepth:
-        //     Should the depth buffer be discarded?
         public void DiscardContents();
-        //
-        // 摘要:
-        //     Generate mipmap levels of a render texture.
+
+
+        /*
+            摘要:
+            Generate mipmap levels of a render texture.
+
+            Use this function to manually re-generate mipmap levels of a render texture. 
+
+            The render texture has to have mipmaps (useMipMap set to true), 
+            and automatic mip generation turned off (autoGenerateMips set to false).
+
+            在有些平台(比如 D3D9), 是没有办法手动生成 render texture mip 各个层的内容的;
+            在这种情况下, 本函数啥也不干
+        */
         public void GenerateMips();
-        //
-        // 摘要:
-        //     Retrieve a native (underlying graphics API) pointer to the depth buffer resource.
-        //
-        // 返回结果:
-        //     Pointer to an underlying graphics API depth buffer resource.
+
+
+
+        /*
+            摘要:
+            Retrieve a native (underlying graphics API) pointer to the depth buffer resource.
+
+            可调用本函数来启用 源自 native code plugins(插件) 的 depth buffer manipulation(控制);
+
+            因为本 class 继承于 Texture, 所以可调用 Texture.GetNativeTexturePtr() 来获得 
+            a native pointer to the color buffer of a render texture;
+
+            对于 Depth and ShadowMap render texture formats, 上面这两个函数能得到相同的结果;
+
+            若在 project's quality settings 中开启 anti aliasing, 上面这两个函数也能得到相同的结果;
+            (为啥)
+
+            注意, 当使用多线程渲染时, 调用此函数将会与 rendering thread 同步,(这是一个缓慢的操作)
+            所以, 为了性能, 最好在初始化阶段 调用本函数;
+
+            返回结果:
+            Pointer to an underlying graphics API depth buffer resource.
+        */
         public IntPtr GetNativeDepthBufferPtr();
+
+
+        /*
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("GetTexelOffset always returns zero now, no point in using it.", false)]
         public Vector2 GetTexelOffset();
-        //
+        */
+
+
+        
         // 摘要:
         //     Is the render texture actually created?
+        //  returns true if the hardware resources for this render are created.
         public bool IsCreated();
-        //
-        // 摘要:
-        //     Indicate that there's a RenderTexture restore operation expected.
+
+
+        /*
         [Obsolete("This function has no effect.", false)]
         public void MarkRestoreExpected();
-        //
-        // 摘要:
-        //     Releases the RenderTexture.
+        */
+
+
+        /*
+            摘要:
+            Releases the RenderTexture.
+
+            This function releases the hardware resources used by the render texture. 
+            The texture itself is not destroyed, and will be automatically created again when being used.
+
+            和其它 "native engine object" 一样, 需要注意 rt 的生命周期, 然后在你使用完毕后, 就及时释放它们;
+            这样, 它们就不会向常规类型那样, 被 垃圾回收 掉;
+        */
         public void Release();
-        //
-        // 摘要:
-        //     Force an antialiased render texture to be resolved.
-        //
-        // 参数:
-        //   target:
-        //     The render texture to resolve into. If set, the target render texture must have
-        //     the same dimensions and format as the source.
+
+
+        /*
+            摘要:
+            Force an antialiased render texture to be resolved.
+
+            如果那个 antialiased render texture 启动了 RenderTexture.bindTextureMS flag,
+            它就不会被自动 解析;
+
+            Sometimes, it's useful to have both the resolved and the unresolved version of the texture 
+            at different stages of the pipeline. 
+
+            If the target parameter is omitted, the render texture will be resolved into itself.
+            
+            参数:
+            target:
+                The render texture to resolve into. If set, the target render texture must have
+                the same dimensions and format as the source.
+        */
         public void ResolveAntiAliasedSurface(RenderTexture target);
-        //
-        // 摘要:
-        //     Force an antialiased render texture to be resolved.
-        //
-        // 参数:
-        //   target:
-        //     The render texture to resolve into. If set, the target render texture must have
-        //     the same dimensions and format as the source.
         public void ResolveAntiAliasedSurface();
+
+
+        /*
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("UsSetBorderColor is no longer supported.", true)]
         public void SetBorderColor(Color color);
-        //
+        */
+
+
+        
         // 摘要:
         //     Assigns this RenderTexture as a global shader property named propertyName.
         //
@@ -430,6 +568,7 @@ namespace UnityEngine
         //   propertyName:
         [FreeFunctionAttribute(Name = "RenderTextureScripting::SetGlobalShaderProperty", HasExplicitThis = true)]
         public void SetGlobalShaderProperty(string propertyName);
+        
     }
 }
 
