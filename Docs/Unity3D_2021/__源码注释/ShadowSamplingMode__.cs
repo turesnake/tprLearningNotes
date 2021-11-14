@@ -4,7 +4,7 @@
 
 namespace UnityEngine.Rendering
 {
-    //
+    
     // 摘要:
     //     Used by CommandBuffer.SetShadowSamplingMode.
     public enum ShadowSamplingMode
@@ -27,7 +27,7 @@ namespace UnityEngine.Rendering
         //          采样格式: tex2D(_Shadowmap, uv).r;.
         //      感觉都是 hlsl 原生指令...
         RawDepth = 1,
-        //
+        
         // 摘要:
         //     In ShadowSamplingMode.None, depths are not compared. Use this value if a Texture
         //     is not a shadowmap.

@@ -12,9 +12,33 @@ using UnityEngine.Rendering;
 
 namespace UnityEngine
 {
-    //
-    // 摘要:
-    //     Render textures are textures that can be rendered to.
+    /*
+        摘要:
+        Render textures are textures that can be rendered to.
+
+        可被用来实现:
+        -- image based rendering effects
+        -- dynamic shadows
+        -- projectors (几乎没被使用的那个东西)
+        -- surveillance cameras (监控摄像机)
+
+        一个特殊用途是, 将它们设置为一个 camera 的 "target texture" property; (Camera.targetTexture)
+        此时, camera 将渲染进这个 texture 中, 而不是渲染到 屏幕上;
+
+        注意:
+        render texture 的内容可能会在某些 events 中丢失; 比如:
+            -- 载入一个新的 level
+            -- system going to a screensaver mode
+            -- in and out of fullscreen
+            -- 等等
+        当这些事情发生时, 你的那些已经存在的 render textures 会再次变成 "not yet created";
+        此时可使用 RenderTexture.IsCreated() 来检查;
+
+        和其它 "native engine object" 类型一样, 需要注意 render textures 的生命周期,
+        且在你完成使用后, 使用 RenderTexture.Release() 释放他们;
+
+        这样, 它们就不会像 常规托管类型那样, 被垃圾回收了;
+    */
     [NativeHeaderAttribute("Runtime/Graphics/RenderBufferManager.h")]
     [NativeHeaderAttribute("Runtime/Graphics/RenderTexture.h")]
     [NativeHeaderAttribute("Runtime/Camera/Camera.h")]
@@ -22,7 +46,8 @@ namespace UnityEngine
     [UsedByNativeCodeAttribute]
     public class RenderTexture : Texture
     {
-        //
+
+        /*
         // 摘要:
         //     Creates a new RenderTexture object.
         //
@@ -48,33 +73,8 @@ namespace UnityEngine
         //
         //   textureToCopy:
         //     Copy the settings from another RenderTexture.
+        */
         public RenderTexture(RenderTexture textureToCopy);
-        //
-        // 摘要:
-        //     Creates a new RenderTexture object.
-        //
-        // 参数:
-        //   width:
-        //     Texture width in pixels.
-        //
-        //   height:
-        //     Texture height in pixels.
-        //
-        //   depth:
-        //     Number of bits in depth buffer (0, 16 or 24). Note that only 24 bit depth has
-        //     stencil buffer.
-        //
-        //   format:
-        //     Texture color format.
-        //
-        //   readWrite:
-        //     How or if color space conversions should be done on texture read/write.
-        //
-        //   desc:
-        //     Create the RenderTexture with the settings in the RenderTextureDescriptor.
-        //
-        //   textureToCopy:
-        //     Copy the settings from another RenderTexture.
         public RenderTexture(RenderTextureDescriptor desc);
         [ExcludeFromDocs]
         public RenderTexture(int width, int height, int depth);
@@ -84,36 +84,14 @@ namespace UnityEngine
         public RenderTexture(int width, int height, int depth, DefaultFormat format);
         [ExcludeFromDocs]
         public RenderTexture(int width, int height, int depth, RenderTextureFormat format, int mipCount);
-        //
-        // 摘要:
-        //     Creates a new RenderTexture object.
-        //
-        // 参数:
-        //   width:
-        //     Texture width in pixels.
-        //
-        //   height:
-        //     Texture height in pixels.
-        //
-        //   depth:
-        //     Number of bits in depth buffer (0, 16 or 24). Note that only 24 bit depth has
-        //     stencil buffer.
-        //
-        //   format:
-        //     Texture color format.
-        //
-        //   readWrite:
-        //     How or if color space conversions should be done on texture read/write.
-        //
-        //   desc:
-        //     Create the RenderTexture with the settings in the RenderTextureDescriptor.
-        //
-        //   textureToCopy:
-        //     Copy the settings from another RenderTexture.
         public RenderTexture(int width, int height, int depth, [Internal.DefaultValue("RenderTextureFormat.Default")] RenderTextureFormat format, [Internal.DefaultValue("RenderTextureReadWrite.Default")] RenderTextureReadWrite readWrite);
         public RenderTexture(int width, int height, int depth, GraphicsFormat format, int mipCount);
+
         [RequiredByNativeCodeAttribute]
         protected internal RenderTexture();
+
+
+
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("RenderTexture.enabled is always now, no need to use it.", false)]

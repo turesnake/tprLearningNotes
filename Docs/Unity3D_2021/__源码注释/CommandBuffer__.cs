@@ -1928,21 +1928,26 @@ namespace UnityEngine.Rendering
         public void WaitAllAsyncReadbackRequests();
 
         
-        
-        // 摘要:
-        //     Instructs the GPU to wait until the given GraphicsFence is passed.
-        //
-        // 参数:
-        //   fence:
-        //     The GraphicsFence that the GPU will be instructed to wait upon before proceeding
-        //     with its processing of the graphics queue.
-        //
-        //   stage:
-        //     On some platforms there is a significant gap between the vertex processing completing
-        //     and the pixel processing beginning for a given draw call. This parameter allows
-        //     for a requested wait to be made before the next item's vertex or pixel processing
-        //     begins. If a compute shader dispatch is the next item to be submitted then this
-        //     parameter is ignored.
+        /*
+            摘要:
+            Instructs the GPU to wait until the given GraphicsFence is passed.
+
+            A GraphicsFence represents a point during GPU processing after a specific compute shader dispatch or draw call has completed. 
+            ---
+            一个 GraphicsFence 表示 "一个特定 computer shader dispatch" 或 "一个 draw call 执行完成后", GPU 处理期间的一个点...
+
+            它被用来同步 "异步计算队列" 和 "图形渲染队列";
+            
+            参数:
+            fence:
+                在继续处理图形队列之前，GPU 将被指示等待的 GraphicsFence。
+            
+            stage:
+                在某些平台上, 在单个 draw call 之内, 在 vs 结束到 fs 开始之前存在一段明显的间隙;
+                本参数允许 在下一个 item 的 vs 或 fs开始执行之前, 执行一次等待 (插入一个 GraphicsFence )
+                如果下一个要执行的 item 是 computer shader dispatch, 那么本参数将被忽略
+
+        */
         public void WaitOnAsyncGraphicsFence(GraphicsFence fence, SynchronisationStageFlags stage);
         public void WaitOnAsyncGraphicsFence(GraphicsFence fence);
         public void WaitOnAsyncGraphicsFence(GraphicsFence fence, SynchronisationStage stage);
@@ -1953,17 +1958,6 @@ namespace UnityEngine.Rendering
         // 摘要:
         //     This functionality is deprecated, and should no longer be used. Please use CommandBuffer.WaitOnAsyncGraphicsFence.
         //
-        // 参数:
-        //   fence:
-        //     The GPUFence that the GPU will be instructed to wait upon.
-        //
-        //   stage:
-        //     On some platforms there is a significant gap between the vertex processing completing
-        //     and the pixel processing completing for a given draw call. This parameter allows
-        //     for requested wait to be before the next items vertex or pixel processing begins.
-        //     Some platforms can not differentiate between the start of vertex and pixel processing,
-        //     these platforms will wait before the next items vertex processing. If a compute
-        //     shader dispatch is the next item to be submitted then this parameter is ignored.
         [Obsolete("CommandBuffer.WaitOnGPUFence has been deprecated. Use WaitOnGraphicsFence instead (UnityUpgradable) -> WaitOnAsyncGraphicsFence(*)", false)]
         public void WaitOnGPUFence(GPUFence fence, SynchronisationStage stage);
         [Obsolete("CommandBuffer.WaitOnGPUFence has been deprecated. Use WaitOnGraphicsFence instead (UnityUpgradable) -> WaitOnAsyncGraphicsFence(*)", false)]
