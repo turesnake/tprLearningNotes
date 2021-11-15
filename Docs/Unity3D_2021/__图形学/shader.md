@@ -206,7 +206,7 @@ pass 数量越多，开销越大。
             Always [Default] 
                 - 总是执行此渲染，不考虑任何光照
             ForwardBase 
-                - 用于 Forward 渲染，使用：遮蔽，主直射光，逐顶点光/球谐光，lightmaps
+                - 用于 Forward 渲染，使用：遮蔽，主平行光，逐顶点光/球谐光，lightmaps
             ForwardAdd
                 - 用于 Forward 渲染，使用：额外的逐像素光，每个灯一个 pass
             Deferred

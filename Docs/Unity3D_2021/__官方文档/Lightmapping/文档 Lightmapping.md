@@ -62,7 +62,7 @@ tpr注: 说白了就是,当你开启了 Auto Generate 后, 它允许你一边调
     默认不开启
 
 # -- Direct Samples
-    用于计算 直射光时, 每个 texel 发射的 path 的数量. (毕竟是 path-tracing). 
+    用于计算 直接光照 时, 每个 texel 发射的 path 的数量. (毕竟是 path-tracing). 
     数量越多, 渲染的质量越好, 烘焙耗时也越长
     ---
     catlike 设置为 32
@@ -365,7 +365,7 @@ Asset - Create - Lightmap Parameters
 
     看不懂...
 
-    它同时对 直射光, 间接光, AO 都起作用.
+    它同时对 直接光照, 间接光, AO 都起作用.
     它对于 摆脱不需要的 遮蔽/阴影 有管用.
 
 # -- Baked Tag

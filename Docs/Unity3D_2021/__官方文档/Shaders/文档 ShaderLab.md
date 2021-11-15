@@ -764,7 +764,7 @@ urp  管线的,     已整理在 shader_urp.md 中
 
     当设置 "PassFlags" = "OnlyDirectional" :
 
-    unity 仅将 主直射光 和 遮蔽/light probe 数据 提供给此 pass. 
+    unity 仅将 主平行光 和 遮蔽/light probe 数据 提供给此 pass. 
     这意味着, 非重要光源 的数据 不会被传递给 顶点光 或 球谐 shader 变量.
 
 代码示范:

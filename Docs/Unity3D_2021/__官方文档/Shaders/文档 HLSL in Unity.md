@@ -1355,7 +1355,7 @@ shader_feature_local_vertex
 # multi_compile_fwdbase
 
     编译所有被  PassType.ForwardBase 需要的 variants. 
-    这些 variants 处理不同的 lightmap类型, 以及 启用/禁用 主直射光的 阴影
+    这些 variants 处理不同的 lightmap类型, 以及 启用/禁用 主平行光的 阴影
 
     包含以下 keywords:
         DIRECTIONAL LIGHTMAP_ON DIRLIGHTMAP_COMBINED DYNAMICLIGHTMAP_ON 
@@ -1368,7 +1368,7 @@ shader_feature_local_vertex
 # multi_compile_fwdadd
 
     编译所有被 PassType.ForwardAdd 需要的 variants. 
-    这些 variants 处理 直射光, spot光, 点光源, 以及它们的 拥有 cookie texture 的 variants.
+    这些 variants 处理 平行光, spot光, 点光源, 以及它们的 拥有 cookie texture 的 variants.
 
     包含以下宏:
         POINT, DIRECTIONAL, SPOT, POINT_COOKIE, DIRECTIONAL_COOKIE.

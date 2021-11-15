@@ -6,9 +6,13 @@
 能避免 unity 去渲染这些 "完全被遮挡" 的物体.
 
 每一帧, Cameras 都会对场景中的 renderers 执行 culling 检测, 以检测它们是否
-有必要被 剔除出 渲染. 默认, cameras 执行 "平截头体 culling", 任何不在此 区域
-内的 物体, 都将被剔除. 但是,  "平截头体culling" 并不检测 这个 物体是否 被完全遮挡.
+有必要被 剔除出 渲染. 默认, cameras 执行 frustum culling "平截头体 culling", 任何不在此 区域
+内的 物体, 都将被剔除. 但是,  "平截头体culling" 并不检测 这个 物体是否 被另一个物体完全遮挡, 
 此时就需要执行 Occlusion culling. 
+
+tpr:
+    从这个角度看, Occlusion culling 并不是 frustum culling,
+    而是它的补充;
 
 # When to use occlusion culling
 

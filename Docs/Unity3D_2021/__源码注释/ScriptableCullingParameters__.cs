@@ -9,50 +9,65 @@ using System.Runtime.CompilerServices;
 namespace UnityEngine.Rendering
 {
     
+    /*
+        摘要:
+        Parameters that configure a culling operation in the Scriptable Render Pipeline.
 
+        通过调用 Camera.TryGetCullingParameters() 来获得 本类实例;
+        catlike 中也是这么实现的, 得到了这个 unity 自动生成的 实例后, 我们再做有限的修改;
 
+        注意, 在 built-in 管线中, 你可以从一个 camera 中获取和查看它的 ScriptableCullingParameters 信息;
+        然而, 这个数据是只读的;
 
-    // 摘要:
-    //     Parameters that configure a culling operation in the Scriptable Render Pipeline.
+        在得到这个数据后, 可以将其作为参数传入 ScriptableRenderContext.Cull(), 
+        以执行一次真正的 Cull 操作, 并且返回一个 CullingResults 数据;
+
+        随后, 你可使用这个 CullingResults 数据 去调用 ScriptableRenderContext.DrawRenderers();
+
+    */
     [UsedByNativeCodeAttribute]
     public struct ScriptableCullingParameters : IEquatable<ScriptableCullingParameters>
     {
-        //
+        
         // 摘要:
         //     Maximum amount of culling planes that can be specified.
         public static readonly int maximumCullingPlaneCount;
-        //
-        // 摘要:
-        //     The amount of layers available.
+        
+        /*
+            摘要:
+            The amount of layers available.
+
+            猜测:
+                此处的 layer 猜测是指 camera CullingMask 中的那些 layers, (参见 camera inspector)
+        */
         public static readonly int layerCount;
 
-        //
+        
         // 摘要:
         //     The upper limit to the value ScriptableCullingParameters.maximumPortalCullingJobs.
         public static int cullingJobsUpperLimit { get; }
-        //
+
+
         // 摘要:
         //     The lower limit to the value ScriptableCullingParameters.maximumPortalCullingJobs.
         public static int cullingJobsLowerLimit { get; }
         
 
-
         /* 
             此变量控制: 有多少 激活态的 jobs 正在执行 occlusion culling
-            值必须在 1-16 之间, 默认为 6. 最好的值随场景的变化而变化,
+            值必须在 1-16 之间, 默认为 6. 最好的值随场景的变化而变化;
+
             当 culling system 执行 culling 时, 他会把场景 分割为很多块, 
             每个 job 处理一个 grid, 
 
             job 数量越多, 每个job 需要处理的 grid 也越小, 性能也越好.
             当然, 每多一个 job, 就多一份 开销, 不是越多越好 
         */
-
-        // 摘要:
-        //     This parameter controls how many active jobs contribute to occlusion culling.
         public int maximumPortalCullingJobs { get; set; }
+
         
         /* 
-            此变量决定了 occlusion culling 的检测距离 query distance, 
+            This parameter determines query distance for occlusion culling.
 
             当 LOD 发生改变时, 此变量控制 distance. 
 
@@ -75,37 +90,58 @@ namespace UnityEngine.Rendering
         */
         // 摘要:
         //     This parameter determines query distance for occlusion culling.
-        public float accurateOcclusionThreshold { get; set; }
-        //
+        public float accurateOcclusionThreshold { get; set; } // 精确的 Occlusion Threshold
+
+        
+
         // 摘要:
         //     Distance between the virtual eyes.
-        public float stereoSeparationDistance { get; set; }
-        //
+        public float stereoSeparationDistance { get; set; } // VR
         // 摘要:
         //     The projection matrix generated for single-pass stereo culling.
-        public Matrix4x4 stereoProjectionMatrix { get; set; }
-        //
+        public Matrix4x4 stereoProjectionMatrix { get; set; } // VR
         // 摘要:
         //     The view matrix generated for single-pass stereo culling.
-        public Matrix4x4 stereoViewMatrix { get; set; }
+        public Matrix4x4 stereoViewMatrix { get; set; } // VR
         
     
+
         // 摘要:
         //     Camera Properties used for culling.
+        //     -- camera culling plane. 6个面
+        //     -- shadow culling plane. 6个面
         public CameraProperties cameraProperties { get; set; }
-        //
-        // 摘要:
-        //     Reflection Probe Sort options for the cull.
+        
+
+        /*
+            摘要:
+            Reflection Probe Sort options for the cull.
+            用于 cull 操作的 反射探针排序选项
+            -- None:                Do not sort reflection probes.
+            -- Importance
+            -- Size:                Sort probes from largest to smallest.
+            -- ImportanceThenSize
+        */
         public ReflectionProbeSortingCriteria reflectionProbeSortingCriteria { get; set; }
-        //
-        // 摘要:
-        //     Flags to configure a culling operation in the Scriptable Render Pipeline.
+        
+
+        /*
+            摘要:
+            Flags to configure a culling operation in the Scriptable Render Pipeline.
+            此 enum 的具体信息 参考另一个 文件;
+            ---
+            catlike 中会手动改写此 配置;
+        */
         public CullingOptions cullingOptions { get; set; }
-        //
+
+
+        
         // 摘要:
-        //     Shadow distance to use for the cull.
+        //      Shadow distance to use for the cull.
+        //      超出此距离的 阴影 不被渲染;
         public float shadowDistance { get; set; }
-        //
+
+        
         // 摘要:
         //     Position for the origin of the cull.
         public Vector3 origin { get; set; }
@@ -114,81 +150,127 @@ namespace UnityEngine.Rendering
         /* 
             culling 操作的 矩阵. 
 
-            unity 从  Camera.cullingMatrix property 中复制来此值.
+            unity 从相关 camera 的  Camera.cullingMatrix (变量) 中复制来此值.
             在真的执行 culling 操作之间, 你可以覆写 此值. 
+            ---
+            没发现 哪个代码中自定义了此值
         */
-        // 摘要:
-        //     The matrix for the culling operation.
         public Matrix4x4 cullingMatrix { get; set; }
         
+
         /* 
+            The mask for the culling operation.
             culling 操作的 掩码. 
 
-            unity 从  Camera.cullingMask property 中复制来此值. 
+            unity 从相关 camera 的  Camera.cullingMask (变量) 中复制来此值. 
             在真的执行 culling 操作之间, 你可以覆写 此值. 
+            ---
+
+            Camera.cullingMask:
+                就是 camera inspector 中的哪个 CullingMask 勾选栏, 里面放的是 32 个 Layers 信息;
+                unity 定义了头部几个, 剩余的可以被用户自定义; 
+
+            字如其名, 这破东西确实是用来设置 cull 操作的...... 
+            猜测: 32个 flags (layer) 中, 被勾选的那些(设置为1的), 将会参与 cull 操作;
         */
-        // 摘要:
-        //     The mask for the culling operation.
         public uint cullingMask { get; set; }
-        //
+
+
+        
         // 摘要:
         //     LODParameters for culling.
+        //     此 struct 具体信息 看另一个文件
         public LODParameters lodParameters { get; set; }
-        //
+        
+
+
         // 摘要:
         //     Is the cull orthographic.
+        //    应该和 camera.orthographic 相关;
         public bool isOrthographic { get; set; }
-        //
-        // 摘要:
-        //     Number of culling planes to use.
+
+        
+        /*
+            摘要:
+            Number of culling planes to use.
+            猜测:
+                估计是拿着此值来做 for 循环遍历用的, 遍历每一个 culling plane
+        */
         public int cullingPlaneCount { get; set; }
         
+
         /* 
+            This parameter controls how many visible lights are allowed.
+
             允许的 最大 可见光源 数量. 
             默认设置为 -1, 表示 无限多个. 
 
-            当为其设置了上限, 总是优先安排 直射光,  
+            当为其设置了上限, 总是优先安排 平行光,  
             然后根据 离相机的距离 逐个添加剩余的 光源
         */
-        // 摘要:
-        //     This parameter controls how many visible lights are allowed.
         public int maximumVisibleLights { get; set; }
+
 
         public override bool Equals(object obj);
         public bool Equals(ScriptableCullingParameters other);
-        //
+        
+
         // 摘要:
         //     Fetch the culling plane at the given index.
-        //
         // 参数:
         //   index:
         public Plane GetCullingPlane(int index);
+
+
         public override int GetHashCode();
-        //
-        // 摘要:
-        //     Get the distance for the culling of a specific layer.
-        //
-        // 参数:
-        //   layerIndex:
+
+
+        /*
+            摘要:
+            Get the distance for the culling (of a specific layer).
+
+            猜测:
+                此处的 layer 猜测是指 camera CullingMask 中的那些 layers, (参见 camera inspector)
+                可用下方的 SetLayerCullingDistance() 来设置每个 layer 的 culling distance 值;
+
+                此处的 culling distance 的概念, 是否类似 shadow distance: 超出部分被 cull 呢?
+            
+            参数:
+            layerIndex:
+        */
         public float GetLayerCullingDistance(int layerIndex);
-        //
-        // 摘要:
-        //     Set the culling plane at a given index.
-        //
-        // 参数:
-        //   index:
-        //
-        //   plane:
+
+
+        /*
+            摘要:
+            Set the culling plane at a given index.
+
+            猜测:
+                感觉这些 culling plane 就是 frustum 的 6个面;
+                当然, 用户应该也能定义额外的 plane, 来 cull 更多物体;
+            
+            参数:
+            index:
+            plane:
+        */
         public void SetCullingPlane(int index, Plane plane);
-        //
-        // 摘要:
-        //     Set the distance for the culling of a specific layer.
-        //
-        // 参数:
-        //   layerIndex:
-        //
-        //   distance:
+
+
+        /*
+            摘要:
+            Set the distance for the culling of a specific layer.
+
+            猜测:
+                此处的 layer 猜测是指 camera CullingMask 中的那些 layers, (参见 camera inspector)
+
+                此处的 culling distance 的概念, 是否类似 shadow distance: 超出部分被 cull 呢?
+            
+            参数:
+            layerIndex:
+            distance:
+        */
         public void SetLayerCullingDistance(int layerIndex, float distance);
+
 
         public static bool operator ==(ScriptableCullingParameters left, ScriptableCullingParameters right);
         public static bool operator !=(ScriptableCullingParameters left, ScriptableCullingParameters right);

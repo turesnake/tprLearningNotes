@@ -19,7 +19,7 @@
 
 # -- Baked Global Illumination
     若被启用, unity 开始使用 烘焙的GI系统.
-    此时, 被设为 Baked 的光源, 将把自己的 直射光,间接光 全部写入 lightmap 中.
+    此时, 被设为 Baked 的光源, 将把自己的 直接光照,间接光 全部写入 lightmap 中.
     被设为 Mixed 的光源, 其具体行为受到下方 Lighting Mode 设置的影响. 
 
     若被关闭, 则被设置为 Baked, Mixed 的光源, 统统被强制看作 Realtime 光源. 
