@@ -111,7 +111,12 @@ namespace UnityEngine.Rendering
                 for this render pass, or -1 to disable depth/stencil.
 
         */
-        public void BeginRenderPass(int width, int height, int samples, NativeArray<AttachmentDescriptor> attachments, int depthAttachmentIndex = -1);
+        public void BeginRenderPass(
+            int width, int height, 
+            int samples, 
+            NativeArray<AttachmentDescriptor> attachments, 
+            int depthAttachmentIndex = -1
+        );
         
         
         public ScopedRenderPass BeginScopedRenderPass(int width, int height, int samples, NativeArray<AttachmentDescriptor> attachments, int depthAttachmentIndex = -1);
@@ -169,9 +174,65 @@ namespace UnityEngine.Rendering
 
 
         /*
+            Schedules the drawing of a set of visible objects, and optionally overrides the GPU's render state.
 
+            渲染指定的一组 可见物体, 同时还向本类体内的 command list 中添加一系列 commands;
+            这些 commands 最后会在 ScriptableRenderContext.Submit() 调用中, 被全部执行;
+            ---
 
+            指定渲染命令的同时, 还能 use one or more RenderStateBlock structs 
+            to override the GPU's render state in the following ways:
+            --
+                向本函数的 stateBlock, 传入单个render state 信息;
+                unity 使用这 单个信息, 去覆写 "本次函数调用将要渲染的 所有物体"
+            -- 
+                You can use the stateBlocks parameter to provide an array of RenderStateBlock structs, 
+                and the renderTypes parameter to provide an array of values for the SubShader Tag with a name of RenderType. 
+                For each element in the renderTypes array, if Unity finds geometry with a SubShader Tag name of RenderType 
+                and a matching value, it uses the render state defined in the corresponding element of the stateBlocks array. 
+                If there are multiple matches, Unity uses the first one. If an element in the renderTypes array has the 
+                default value for ShaderTagId, Unity treats this as a catch-all and uses the corresponding render state for 
+                all geometry.
 
+                向本函数的 stateBlocks 参数, 传入一个 RenderStateBlock array;
+                向本函数的 renderTypes 参数, 传入一个 ShaderTagId array,
+                    针对这个 array 中的每一个 ShaderTagId 的 name 值,
+                    unity 都会区查找到一个 "RenderType" tag 值 等于这个 name 值 的 SubShader;
+
+                    这个查找 会针对 "本次函数调用涉及的所有可见物体" 去执行;
+
+                    如果某个物体 含有这个 SubShader, unity 就会去 参数 stateBlocks 的同位置中获得一个
+                    RenderStateBlock 实例, 用这个数据, 来覆写这个物体的 SubShader 中的 render states;
+
+                    如果从这个物体中找到好几个符合的 SubShader,  unity 使用第一个的 idx;
+
+                    如果 renderTypes array 中的某个元素是 ShaderTagId 的 "默认值"
+                    (没找到, 猜测是 ShaderTagId.None )
+                    unity 会把这个 idx 处的 stateBlocks 信息, 作用到 "本次函数调用涉及的所有可见物体" 身上去;
+
+            -- 
+                You can use the stateBlocks parameter to provide an array of RenderStateBlock structs, 
+                and use the tagName, tagValues, and isPassTagName parameters to specify the name and values 
+                of any SubShader Tag or Pass Tag. For each element in the tagNames and tagValues arrays, 
+                Unity identifies geometry with a matching SubShader Tag or Pass Tag name and value, 
+                and applies the render state defined in the corresponding element of the stateBlocks array. 
+                If there are multiple matches, Unity uses the first one. If an element in the tagValues has the 
+                default value for ShaderTagId, Unity treats this as a catch-all and uses the corresponding render 
+                state for all geometry.
+
+                ---
+                可向本函数参数 stateBlocks 传入 一组 RenderStateBlock 值;
+                然后向参数 tagName, tagValues, isPassTagName, 指定一组符合要求的 "SubShader or pass";
+"
+                针对每一个 "本次函数调用涉及的所有可见物体", unity 都会找出它含有的 符合上述要求的 "SubShader or pass",
+                然后使用对应idx 的 stateBlocks 中的信息, 去覆写这个 "SubShader or pass" 的 render states;
+
+                和上一种方法类似, 
+                    如果从这个物体中找到好几个符合的 SubShader,  unity 使用第一个的 idx;
+
+                    如果 renderTypes array 中的某个元素是 ShaderTagId 的 "默认值"
+                    (没找到, 猜测是 ShaderTagId.None )
+                    unity 会把这个 idx 处的 stateBlocks 信息, 作用到 "本次函数调用涉及的所有可见物体" 身上去;
 
             参数:
             cullingResults:
@@ -185,22 +246,58 @@ namespace UnityEngine.Rendering
                 此 class 已在另一文件中翻译;
 
             stateBlock:
+                A set of values that Unity uses to override the GPU's render state.
+
+                此参数实例 存储了各个 render target 的 "render states",
+                "render states" 其实就是 shader 中的 ZClip, ZWrite, Stencil test 那堆指令;
+
+                使用此参数, 可以覆写 物体 material shader 中设置好的 "render states";
+                还能用 此参数内的 mask 来指定覆写哪几种 指令;
 
             tagName:
+                The name of a SubShader Tag or Pass Tag.
+                用下面的 isPassTagName 来做选择;
+
+                注意, 这是一个 tag 的 "name" (key)
 
             isPassTagName:
+                -- true,  tagName specifies a Pass Tag. 
+                -- false, tagName specifies a SubShader Tag.
 
             tagValues:
+                An array of ShaderTagId structs, 
+                where the name is the value of a given SubShader Tag or Pass Tag.
+
+                注意, 这是一个 tag 的 "value", (和上面的 tagName 对应)
 
             renderTypes:
+                An array of ShaderTagId structs, 
+                where the name is the value of a SubShader Tag that has the name "RenderType".
+                ---
+                这个 array 中的每一个 ShaderTagId 所存储的 name 值, 
+                它都对应一个存在的 SubShader, 要求这个 SubShader 的 tag: "RenderType" 的值, 
+                和这个 name 中记录的是相同的;
+                ---
+                用这个办法来 存储和传递一组 SubShaders 信息;
+
+                也就是说, 本参数中存储的是一组 SubShader 的 cpu端id;
 
             stateBlocks:
+                An array of structs that describe which parts of the GPU's render state to override.
 
         */
         public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings, NativeArray<ShaderTagId> renderTypes, NativeArray<RenderStateBlock> stateBlocks);
         public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings);
         public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings, ref RenderStateBlock stateBlock);
-        public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings, ShaderTagId tagName, bool isPassTagName, NativeArray<ShaderTagId> tagValues, NativeArray<RenderStateBlock> stateBlocks);
+        public void DrawRenderers(
+            CullingResults cullingResults, 
+            ref DrawingSettings drawingSettings, 
+            ref FilteringSettings filteringSettings, 
+            ShaderTagId tagName, 
+            bool isPassTagName, 
+            NativeArray<ShaderTagId> tagValues, 
+            NativeArray<RenderStateBlock> stateBlocks
+        );
         
         
         

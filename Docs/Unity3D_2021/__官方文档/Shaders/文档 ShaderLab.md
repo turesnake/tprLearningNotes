@@ -1367,13 +1367,14 @@ pass / SubShader 都能写
 
 通常用来避免 shadowmap 中的 自遮挡现象, 或称为 暗斑.
 
-想要设置特定几何体的 depth bias, 要么使用本 command, 要么使用  RenderStateBlock. 
+想要设置特定几何体的 depth bias, 要么使用本 command, 要么在 cpu脚本端 使用  RenderStateBlock. 
 
 想要设置 可影响所有几何体的 全局 depth bias, 使用  CommandBuffer.SetGlobalDepthBias. 
 
 如果 局部和全局的都设置了, 则会在 全局 bias 的基础上, 再累加 局部 bias.
 
-如果你直接修改 Light Inspectr 中的 bias 和 normal bias 两值, 也可得到相似的结果(缓解自遮挡), 然而, 这种方法的工作原理 是不一样的, 而且它并不改变 gpu 的 render state.
+如果你直接修改 Light Inspectr 中的 bias 和 normal bias 两值, 也可得到相似的结果(缓解自遮挡), 
+然而, 这种方法的工作原理 是不一样的, 而且它并不改变 gpu 的 render state.
 
 # Render pipeline compatibility
 全支持
@@ -1386,6 +1387,12 @@ pass / SubShader 都能写
 
 # factor 可用的值:
 float值, [-1.0, 1.0]
+    Scales the maximum Z slope, also called the "depth slope", to produce a variable depth offset for each polygon.
+
+    Polygons that are not parallel to the near and far clip planes have Z slope. 
+    Adjust this value to avoid visual artifacts on such polygons.
+
+    ---
     调整 z-斜率 (或: 深度斜率) 的最大值.
     为每个多边形 生成可变的 depth offset
 
@@ -1394,6 +1401,15 @@ float值, [-1.0, 1.0]
 
 # units 可用的值:
 float值, [-1.0, 1.0]
+
+    Scales the minimum "resolvable depth buffer value", to produce a constant depth offset. 
+    The minimum depth resolvable depth buffer value (one unit) varies by device.
+
+    A negative value means that the GPU draws the polygon closer to the camera. 
+    A positive value means that the GPU draws the polygon further away from the camera.
+
+    ---
+
     调整 "最小可分辨深度缓冲区值", 来生成一个 constant depth offset.
     "最小可分辨深度缓冲区值"( 1 units ) 因设备而异.
 
@@ -1533,7 +1549,7 @@ Shader "GrabPassInvert"
 此 command 改写了 render state, 在 pass/SubShader 中都能使用
 
 # -- ZClip True
-默认设置
+[默认设置]
 将 depth clip mode 设置为 [clip]
 
     超出的 frags 全部被 "抛弃了" (不执行后续渲染工作)
@@ -1547,6 +1563,7 @@ Shader "GrabPassInvert"
     当你正在渲染 "stencil shadow", 可以用此设置
 
 
+# ---------------------
 # 关于 stencil shadow
 这是一个 正在退出历史舞台的 阴影算法.
 它只能制作由 几何体投射 的阴影, 且阴影边界非常锐利.

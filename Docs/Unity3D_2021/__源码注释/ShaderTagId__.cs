@@ -10,8 +10,14 @@ namespace UnityEngine.Rendering
         摘要:
         Shader tag ids are used to refer to various names in shaders.
 
-        目前看就是对一个 shader name(string) 的封装,
-        不知道 内部是否执行了啥功能;
+        ShaderTagId 的这个名字, 要和 shader pass 的一个 tag: LightMode 的值一样才行;
+
+        这样, unity 就能把 cpu脚本端的 ShaderTagId 实例, 和 shader 中的某个 pass 绑定到一起;
+
+        但是在 ScriptableRenderContext.DrawRenderers() 函数的参数 renderTypes 中, 
+        好像也拿去对应 SubShader tag: "RenderType" 的值... 
+
+
         
     */
     public struct ShaderTagId : IEquatable<ShaderTagId>
