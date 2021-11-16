@@ -131,28 +131,79 @@ namespace UnityEngine.Rendering
 
 
         /*
+            执行真正的 camera Cull 操作;
+            并返回: 可见对象: 物体, 光源, 反射探针; 这些信息被整合为一个 CullingResults 实例;
 
-        
+            Culling results 和本类实例 "context" 是相互绑定的;
+            一旦此次 render loop 结束, 存储 Culling results 的内存也将得到释放;
+
+            参数:
+            parameters
+                Parameters for culling.
+                由于这是一个 struct, 直接当参数传入会引发 复制, 所以最好选择 ref 方式传入
         */
         public CullingResults Cull(ref ScriptableCullingParameters parameters);
         
-        // 摘要:
-        //     Schedules the drawing of a subset of Gizmos (before or after post-processing)
-        //     for the given Camera.
-        //
-        // 参数:
-        //   camera:
-        //     The camera of the current view.
-        //
-        //   gizmoSubset:
-        //     Set to GizmoSubset.PreImageEffects to draw Gizmos that should be affected by
-        //     postprocessing, or GizmoSubset.PostImageEffects to draw Gizmos that should not
-        //     be affected by postprocessing. See also: GizmoSubset.
+
+
+        /*
+            摘要:
+            Schedules the drawing of a subset of Gizmos (before or after post-processing) for the given Camera.
+            绘制 Gizmos 中的一部分;
+            
+            参数:
+            camera:
+                The camera of the current view.
+            
+            gizmoSubset:
+                enum:
+                -- PreImageEffects:
+                        draw Gizmos that should be affected by postprocessing;
+                        should be rendered before ImageEffects.
+                -- PostImageEffects:
+                        draw Gizmos that should not be affected by postprocessing.
+                        should be rendered after ImageEffects.
+        */
         public void DrawGizmos(Camera camera, GizmoSubset gizmoSubset);
+
+
+
+        /*
+
+
+
+
+            参数:
+            cullingResults:
+                The set of visible objects to draw. 
+
+            drawingSettings:
+                A struct that describes how to draw the objects.
+
+            filteringSettings:
+                对 "可见物体" 的过滤, 只有其中一部分会被渲染;
+                此 class 已在另一文件中翻译;
+
+            stateBlock:
+
+            tagName:
+
+            isPassTagName:
+
+            tagValues:
+
+            renderTypes:
+
+            stateBlocks:
+
+        */
         public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings, NativeArray<ShaderTagId> renderTypes, NativeArray<RenderStateBlock> stateBlocks);
         public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings);
         public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings, ref RenderStateBlock stateBlock);
         public void DrawRenderers(CullingResults cullingResults, ref DrawingSettings drawingSettings, ref FilteringSettings filteringSettings, ShaderTagId tagName, bool isPassTagName, NativeArray<ShaderTagId> tagValues, NativeArray<RenderStateBlock> stateBlocks);
+        
+        
+        
         public void DrawShadows(ref ShadowDrawingSettings settings);
         
         /*

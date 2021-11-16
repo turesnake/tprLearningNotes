@@ -47,11 +47,13 @@ namespace UnityEngine.Rendering
         public int lightAndReflectionProbeIndexCount { get; }
 
 
-        
-        // 摘要:
-        //     Gets the number of per-object light indices.
-        // 返回结果:
-        //     The number of per-object light indices.
+        /*
+            摘要:
+            Gets the number of per-object light indices.
+
+            "per-object light indices" 是一个 unity 自带系统, 可在笔记中搜索此关键词;
+            此系统存在问题, 最好别用;
+        */
         public int lightIndexCount { get; }
 
 

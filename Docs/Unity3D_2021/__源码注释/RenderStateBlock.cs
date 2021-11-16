@@ -6,11 +6,35 @@ using System;
 
 namespace UnityEngine.Rendering
 {
-    //
-    // 摘要:
-    //     A set of values used to override the render state. Note that it is not enough
-    //     to set e.g. blendState, but that mask must also include RenderStateMask.Blend
-    //     for the override to occur.
+    /*
+        摘要:
+        A set of values that Unity uses to override the GPU's "render state".
+
+        "render state":
+            就是 shader 中设定的:
+                -- blend src dst;
+                -- blend op
+                -- cull
+                -- ZClip
+                -- Offset
+                -- Conservative
+            等配置指令;
+        
+        现在我们可以在 cpu 脚本端 设置这些数据, 并且覆写 gpu 中的设置;
+        (猜测 是覆写 那些写在 shader 中的配置)
+
+
+        当你正在调用 ScriptableRenderContext.DrawRenderers() 时, 你可使用本类实例作为参数,
+        去覆写 部分/全部 物体的 render state;
+
+        注意:
+            必须要设置 本类的 mask 成员, to tell Unity which parts of the "render state" to override to apply. 
+            比如, 若想使用  blendState 中的值, 那么 mask 中就必须包含 RenderStateMask.Blend;
+
+            注意, 这样做还不能完全设置 blendState, 但是 mask 必须包含 RenderStateMask.Blend;
+            这样, 覆写才会发生;
+
+    */
     public struct RenderStateBlock : IEquatable<RenderStateBlock>
     {
         //

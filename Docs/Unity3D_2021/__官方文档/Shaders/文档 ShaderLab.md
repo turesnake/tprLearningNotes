@@ -976,15 +976,20 @@ Category 块 并不影响 shader性能. 它和 "复制黏贴相同的代码" 是
 启用/禁用 gpu 中的  alpha-to-coverage 模式.
 
 
+推荐查看文章:
+https://bgolus.medium.com/anti-aliased-alpha-test-the-esoteric-alpha-to-coverage-8b177335ae4f
+
+
 # 知乎解释:
-基于 MSAA 技术, 以 8x 为例, 在一个 pix 内采样8次, 但后面执行的 着色计算不是8次(次数取决于 8次采样 收集到的 物体数量 ) 
+基于 MSAA 技术, 以 8x 为例, 在一个 pix 内采样8次, 但后面执行的 着色计算不是8次 (次数取决于 8次采样 收集到的 物体数量 ) 
+
 alpha-to-coverage 技术则在 msaa 基础上加了一层操作:
 
 详细过程：对于每个 frag，计算每个 sample 的 coverage。运行 pixel shader得到alpha。以 8x samples 的 framebuffer 为例，如果一个 frag 的 alpha 是0.25，那么那么就以某种 pattern 丢掉 6 次采样, 只向 framebuffer 的两个 sample 上写入shading 结果。最后利用 multi-sample framebuffer 的 resample 过程来获得半透明的近似。
 
 这样一来，只要没有太多的透明像素重叠在一起，近似效果还是足够好的（如果几何复杂度太高，这么做会引入大量的 aliasing ）。
 
-如果我们不使用数学方法来解释的话，可以这么理解：alpha to coverage 本质上把一个透明的 frag 变成了不透明但是只 cover 了一部分像素的 frag。而我们知道渲染不透明的东西是无关顺序的，所以 alpha coverage 也无关顺序。
+如果我们不使用数学方法来解释的话，可以这么理解：alpha-to-coverage 本质上把一个透明的 frag 变成了不透明但是只 cover 了一部分像素的 frag。而我们知道渲染不透明的东西是无关顺序的，所以 alpha coverage 也无关顺序。
 # 知乎解释 ~完~
 
 当你使用 MSAA 伴随 alpha test 时, 会出现大量伪影, Alpha-to-coverage 可以消除它. 尤其是一些 vegetation shaders.
