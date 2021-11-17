@@ -18,7 +18,7 @@ namespace UnityEngine.Rendering
         使用此 context API 来 调度和执行 渲染指令。
 
 
-        当你定义了一个 自定义渲染管线, 可使用本类实例来 schedule and submit state updates and drawing commands to the GPU.
+        在你的自定义渲染管线, 使用本类实例来 schedule and submit "state updates" and "drawing commands" to the GPU.
 
         在一个 RenderPipeline.Render() callback 函数内, 针对每个 camera, 可先后执行
         -- culls objects that the render pipeline doesn't need to render (see CullingResults)
@@ -29,9 +29,9 @@ namespace UnityEngine.Rendering
             dispatch compute shaders
             other rendering tasks
         -- 调用 ScriptableRenderContext.Submit() 真的要求执行以上命令;
+        =======
 
-
-        NativeHeaderAttribute: 感觉像是声明了 原生c++代码的 头文件...
+        [NativeHeaderAttribute]: 感觉像是声明了 原生c++代码的 头文件...
     */
     [NativeHeaderAttribute("Runtime/Graphics/ScriptableRenderLoop/ScriptableDrawRenderersUtility.h")]
     [NativeHeaderAttribute("Runtime/Export/RenderPipeline/ScriptableRenderContext.bindings.h")]
@@ -68,6 +68,8 @@ namespace UnityEngine.Rendering
 
             按照文档描述, render pass 非常适合用来实现 延迟渲染;
             且文档给出了一个 详细的使用 代码案例;
+
+            未在 urp, hdrp, catlike srp 中看到此函数被使用;
 
             ------
             render pass 提供了一种在 srp 的上下文中 切换 render target 的新方法;
@@ -109,7 +111,6 @@ namespace UnityEngine.Rendering
             depthAttachmentIndex:
                 The index of the attachment to be used as the depth/stencil buffer 
                 for this render pass, or -1 to disable depth/stencil.
-
         */
         public void BeginRenderPass(
             int width, int height, 
@@ -120,7 +121,6 @@ namespace UnityEngine.Rendering
         
         
         public ScopedRenderPass BeginScopedRenderPass(int width, int height, int samples, NativeArray<AttachmentDescriptor> attachments, int depthAttachmentIndex = -1);
-        
         
         public ScopedSubPass BeginScopedSubPass(NativeArray<int> colors, bool isDepthStencilReadOnly = false);
         public ScopedSubPass BeginScopedSubPass(NativeArray<int> colors, bool isDepthReadOnly, bool isStencilReadOnly);
@@ -240,6 +240,9 @@ namespace UnityEngine.Rendering
 
             drawingSettings:
                 A struct that describes how to draw the objects.
+                描述了:
+                -- how to sort visible objects (sortingSettings)
+                -- which shader passes to use (shaderPassName).
 
             filteringSettings:
                 对 "可见物体" 的过滤, 只有其中一部分会被渲染;
@@ -300,9 +303,27 @@ namespace UnityEngine.Rendering
         );
         
         
-        
+        /*
+            Schedules the drawing of shadow casters for a single Light.
+
+            Please note that in the case of DrawShadows called multiple times for the same light and using split spheres, 
+            shadow casters whose shadow volumes are fully covered by an earlier split will be discarded in following splits 
+            for performance reasons. One should thus use the split with the smallest index in case of split overlaps.
+            ---
+            如果一个光源选择了 cull sphere 版的 cascade shadowmap,(通常是平行光)
+            那么针对每一个 cascade split, 都要调用一次 本函数;
+
+            如果一个物体(renderer), 在上一次 调用本函数时, 被完全包裹在当时的那个 cull sphere 中 (而不是一部分露在边界上)
+            那么这个物体, 会在之后的所有 DrawShadows() 函数调用中, 都被剔除掉; 
+            这是一种 提高性能的机制;
+
+            为了迎合这种机制, 我们必须安排好 cascade split 的调用次序:
+            先针对 最小 cull sphere 的那个 split 来调用本函数;
+            然后逐次增大;
+        */
         public void DrawShadows(ref ShadowDrawingSettings settings);
         
+
         /*
             摘要:
                 Schedules the drawing of the skybox.
@@ -317,6 +338,7 @@ namespace UnityEngine.Rendering
         */
         public void DrawSkybox(Camera camera);
         
+
         // 摘要:
         //     Draw the UI overlay.
         //
@@ -324,22 +346,39 @@ namespace UnityEngine.Rendering
         //   camera:
         //     The camera of the current view.
         public void DrawUIOverlay(Camera camera);
+
         
-        // 摘要:
-        //     Schedules the drawing of a wireframe overlay for a given Scene view Camera.
-        //
-        // 参数:
-        //   camera:
-        //     The Scene view Camera to draw the overlay for.
+
+        /*
+            摘要:
+            Schedules the drawing of a wireframe(线框) overlay for a given Scene view Camera.
+
+            此函数仅在 editor 中工作, 
+            而且要把 Camera.cameraType 设置为 SceneView,
+            把 SceneView.CameraMode.drawMode 设置为 TexturedWire;
+
+            否则, 本函数不做任何工作;
+
+            To draw gizmos on top of the wireframe overlay in your Scene view
+            先调用本函数, 再调用 DrawGizmos();
+
+            参数:
+            camera:
+                The Scene view Camera to draw the overlay for.
+        */
         public void DrawWireOverlay(Camera camera);
+
+
         
         // 摘要:
         //     Schedules the end of a currently active render pass.
         public void EndRenderPass();
+
         
         // 摘要:
         //     Schedules the end of the currently active sub pass.
         public void EndSubPass();
+
 
         public bool Equals(ScriptableRenderContext other);
         public override bool Equals(object obj);
@@ -359,6 +398,7 @@ namespace UnityEngine.Rendering
                 commandBuffer: Specifies the Command Buffer to execute.
         */
         public void ExecuteCommandBuffer(CommandBuffer commandBuffer);
+
         
         // 摘要:
         //     Schedules the execution of a Command Buffer on an async compute queue. The ComputeQueueType
@@ -373,10 +413,21 @@ namespace UnityEngine.Rendering
         //     executed on.
         public void ExecuteCommandBufferAsync(CommandBuffer commandBuffer, ComputeQueueType queueType);
 
+
         public override int GetHashCode();
         
-        // 摘要:
-        //     Schedules an invocation of the OnRenderObject callback for MonoBehaviour scripts.
+
+        /*
+            摘要:
+            Schedules an invocation of the OnRenderObject callback for MonoBehaviour scripts.
+
+            This method triggers MonoBehaviour.OnRenderObject();
+            ---
+            调用此函数来 触发 callback: MonoBehaviour.OnRenderObject();
+
+            You should typically call this function after the Camera renders the Scene 
+            but before adding post-processing.
+        */
         public void InvokeOnRenderObjectCallback();
         
 
@@ -412,16 +463,6 @@ namespace UnityEngine.Rendering
         //   eye:
         //     The current eye to be rendered.
         public void StartMultiEye(Camera camera);
-        
-        // 摘要:
-        //     Schedules a fine-grained beginning of stereo rendering on the ScriptableRenderContext.
-        //
-        // 参数:
-        //   camera:
-        //     Camera to enable stereo rendering on.
-        //
-        //   eye:
-        //     The current eye to be rendered.
         public void StartMultiEye(Camera camera, int eye);
         
         // 摘要:
@@ -436,32 +477,9 @@ namespace UnityEngine.Rendering
         //
         //   isFinalPass:
         public void StereoEndRender(Camera camera, int eye);
-        
-        // 摘要:
-        //     Schedule notification of completion of stereo rendering on a single frame.
-        //
-        // 参数:
-        //   camera:
-        //     Camera to indicate completion of stereo rendering.
-        //
-        //   eye:
-        //     The current eye to be rendered.
-        //
-        //   isFinalPass:
         public void StereoEndRender(Camera camera);
-        
-        // 摘要:
-        //     Schedule notification of completion of stereo rendering on a single frame.
-        //
-        // 参数:
-        //   camera:
-        //     Camera to indicate completion of stereo rendering.
-        //
-        //   eye:
-        //     The current eye to be rendered.
-        //
-        //   isFinalPass:
         public void StereoEndRender(Camera camera, int eye, bool isFinalPass);
+
         
         // 摘要:
         //     Schedules a stop of stereo rendering on the ScriptableRenderContext.
@@ -470,6 +488,7 @@ namespace UnityEngine.Rendering
         //   camera:
         //     Camera to disable stereo rendering on.
         public void StopMultiEye(Camera camera);
+
         
         /*
             摘要:
@@ -477,6 +496,7 @@ namespace UnityEngine.Rendering
                真正的 "提交" commands
         */
         public void Submit();
+
 
         public static bool operator ==(ScriptableRenderContext left, ScriptableRenderContext right);
         public static bool operator !=(ScriptableRenderContext left, ScriptableRenderContext right);

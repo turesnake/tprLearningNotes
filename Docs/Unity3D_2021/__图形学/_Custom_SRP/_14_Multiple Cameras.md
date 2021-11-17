@@ -51,15 +51,20 @@
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
 #                旧方案:  Culling Masks
+#                          cullingmask
 #                新方案:  Rendering layer Mask
+#                          RenderinglayerMask
 # ---------------------------------------------------------------- #
+
+# +++++++++++++++++++++++++++++++++++ 
+# --- 旧方案: Culling Masks:
 每个物体可以设置自己所属的  Layer, (Inspector 右上方, static 下方)
 然后每个 camera, light 都可选择 自己能影响的 layers (可复选)
 并剔除掉 无关的 layers 中的物体.
-这个 culling mask 操作发生再 渲染的 culling step.
+这个 culling mask 操作发生在 渲染的 culling 阶段:
 
 
-# ----- 此技术的 大 BUG: ----- #
+# ----- 旧方案的 大 BUG: ----- #
 # 平行光 的 culling mask, 只能剔除阴影, 无法剔除光照
 
 # Point/Spot 光的 culling mask:
@@ -73,9 +78,13 @@
     但它又能剔除掉 平行光的 阴影...
 
     这个问题我们无法解决, HDRP 直接不支持 针对 lights 的 culling mask.
+
 #   作为替代, unity 为 srp 提供了 Rendering layer Mask
 
-# --- Rendering layer Mask 的优点:
+
+# +++++++++++++++++++++++++++++++++++ 
+# --- 新方案: Rendering layer Mask:
+# 优点:
 # -1- 一个物体 可以设置 多个 Rendering layers, 不仅仅一个
 # -2- Rendering layer 仅用于渲染(光照计算,阴影), 而 普通的 object-Layer 还被用于 物理引擎. 
 

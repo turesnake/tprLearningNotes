@@ -446,6 +446,7 @@ namespace UnityEngine
         // 参数:
         //   direction:
         public Vector3 TransformDirection(Vector3 direction);
+        
         //
         // 摘要:
         //     Transforms the position x, y, z from local space to world space.
@@ -464,6 +465,7 @@ namespace UnityEngine
         // 参数:
         //   position:
         public Vector3 TransformPoint(Vector3 position);
+
         //
         // 摘要:
         //     Transforms vector x, y, z from local space to world space.
@@ -482,7 +484,8 @@ namespace UnityEngine
         // 参数:
         //   vector:
         public Vector3 TransformVector(Vector3 vector);
-        //
+
+        
         // 摘要:
         //     Moves the transform by x along the x axis, y along the y axis, and z along the
         //     z axis.
@@ -496,20 +499,9 @@ namespace UnityEngine
         //
         //   relativeTo:
         public void Translate(float x, float y, float z);
-        //
-        // 摘要:
-        //     Moves the transform by x along the x axis, y along the y axis, and z along the
-        //     z axis.
-        //
-        // 参数:
-        //   x:
-        //
-        //   y:
-        //
-        //   z:
-        //
-        //   relativeTo:
         public void Translate(float x, float y, float z, [DefaultValue("Space.Self")] Space relativeTo);
+        public void Translate(float x, float y, float z, Transform relativeTo);
+
         //
         // 摘要:
         //     Moves the transform in the direction and distance of translation.
@@ -519,37 +511,8 @@ namespace UnityEngine
         //
         //   relativeTo:
         public void Translate(Vector3 translation);
-        //
-        // 摘要:
-        //     Moves the transform in the direction and distance of translation.
-        //
-        // 参数:
-        //   translation:
-        //
-        //   relativeTo:
         public void Translate(Vector3 translation, [DefaultValue("Space.Self")] Space relativeTo);
-        //
-        // 摘要:
-        //     Moves the transform by x along the x axis, y along the y axis, and z along the
-        //     z axis.
-        //
-        // 参数:
-        //   x:
-        //
-        //   y:
-        //
-        //   z:
-        //
-        //   relativeTo:
-        public void Translate(float x, float y, float z, Transform relativeTo);
-        //
-        // 摘要:
-        //     Moves the transform in the direction and distance of translation.
-        //
-        // 参数:
-        //   translation:
-        //
-        //   relativeTo:
         public void Translate(Vector3 translation, Transform relativeTo);
+
     }
 }

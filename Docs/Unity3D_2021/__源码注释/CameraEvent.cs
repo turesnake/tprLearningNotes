@@ -1,13 +1,3 @@
-// CameraEvent
-// 简略笔记 
-
-// 用于 built-in 管线 Camera.AddCommandBuffer() 中。
-// 代表的是 built-in 管线中，能将 commandbuffer 插入的 时间点
-
-// 由此可观察 built-in 管线的 渲染流程
-
-
-
 
 #region 程序集 UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 // UnityEngine.CoreModule.dll
@@ -15,10 +5,16 @@
 
 namespace UnityEngine.Rendering
 {
-    //
-    // 摘要:
-    //     Defines a place in camera's rendering to attach Rendering.CommandBuffer objects
-    //     to.
+    /*
+        摘要:
+        Defines a place in camera's rendering to attach Rendering.CommandBuffer objects to.
+
+        用于 built-in 管线 Camera.AddCommandBuffer() 中。
+        代表的是 built-in 管线中，能将 commandbuffer 插入的 时间点
+
+        由此可观察 built-in 管线的 渲染流程
+
+    */
     public enum CameraEvent
     {
         //

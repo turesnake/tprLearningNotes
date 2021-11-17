@@ -367,6 +367,8 @@ tags 是键值对, unity 使用预定义的 键和值 来检测: 如何 以及�
     值为随便某个字符串(反正不是上面两个)
     urp 和 hdrp 都不兼容
 
+更详细信息, 可在笔记中查找 Shader__.cs 文件中的: globalRenderPipeline 变量;
+
 
 # ------------------ #
 # tag: Queue
@@ -487,6 +489,7 @@ https://docs.unity.cn/2021.1/Documentation/Manual/class-Projector.html
 
 ## =========================================================== #
 #     ShaderLab: assigning a LOD value to a SubShader
+#     Shader LOD
 ## =========================================================== #
 LOD - level of detial
 

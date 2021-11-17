@@ -131,18 +131,21 @@ namespace UnityEngine.Rendering
         //     Return the default SpeedTree v7 Shader for this pipeline.
         public virtual Shader defaultSpeedTree7Shader { get; }
 
-        //
-        // 摘要:
-        //     Create a IRenderPipeline specific to this asset.
 
-        // 由用户来实现此 abstract 函数
-        // 在程序渲染第一帧之前,unity 会主动调用此函数
-        // 如果运行中途, RenderPipelineAsset 的一个设置发生了改变, unity 会销毁当前的 Render Pipe Instance
-        // 然后在下一帧之前,重新调用本函数
+        /*
+            摘要:
+            Create a IRenderPipeline specific to this asset.
+
+            由用户来实现此 abstract 函数
+            在程序渲染第一帧之前,unity 会主动调用此函数
+            如果运行中途, RenderPipelineAsset 的一个设置发生了改变, unity 会销毁当前的 Render Pipe Instance
+            然后在下一帧之前,重新调用本函数
  
-        // 返回结果:
-        //     Created pipeline.
+            返回结果:
+                Created pipeline.
+        */
         protected abstract RenderPipeline CreatePipeline();
+        
 
         //
         // 摘要:

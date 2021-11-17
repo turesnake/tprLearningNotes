@@ -41,20 +41,6 @@ NativeArray<VisibleReflectionProbe> visibleReflectionProbes;
 
 
 
-# ----------------------------------------------#
-#            ShadowSplitData   [class]
-# ----------------------------------------------#
-directional light 通常存在 perspective aliasing 的问题，
-即：近处的 shadow，比远处的 更容易锯齿化。
-
-为了解决这个问题，unity 使用了 Shadow Cascades 技术。
-将 shadow map 按照由近及远的顺序，切割成数段，每一段使用不同精度（分辨率）的map
-
-当调用 ComputeDirectionalShadowMatricesAndCullingPrimitives(),
-将获得一个 ShadowSplitData 实例，里面就包含 cascade 相关的数据
-
-本 class 实例，只记录 单个光 的单个 cascade 区间 的信息。
-
 
 
 
