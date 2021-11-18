@@ -371,13 +371,9 @@ namespace UnityEngine
             Global properties are used if a shader needs them but the material does not have them defined 
             (for example, if the shader does not expose them in Properties block).
 
-
-            
-
         // 参数:
         //   nameID:
         //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
         //   name:
         //     The name of the property.
         //
@@ -390,43 +386,52 @@ namespace UnityEngine
         public static void SetGlobalBuffer(int nameID, ComputeBuffer value);
 
 
-        //
-        // 摘要:
-        //     Sets a global color property for all shaders.
-        //
-        // 参数:
-        //   nameID:
-        //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
-        //   name:
-        //     The name of the property.
-        //
-        //   value:
+        /*
+            摘要:
+            Sets a global color property for all shaders.
+
+            如果你有一系列 自定义 shaders, 它们都使用同一个 全局颜色;
+            此时, 你就可以定义一个 全局颜色 property, 而不用在每一个 shader 的 material 中去一一设置那个 颜色值
+
+            注意:
+            和 Material.SetColor() 不同, 本函数不执行 颜色空间转换, 他仅仅是 SetGlobalVector() 的小变体
+
+            参数:
+            nameID:
+                The name ID of the property retrieved by Shader.PropertyToID.
+            name:
+                The name of the property.
+            
+            value:
+        */
         public static void SetGlobalColor(string name, Color value);
         public static void SetGlobalColor(int nameID, Color value);
 
 
-        //
-        // 摘要:
-        //     Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for all shader
-        //     types.
-        //
-        // 参数:
-        //   nameID:
-        //     The name ID of the constant buffer retrieved by Shader.PropertyToID.
-        //
-        //   name:
-        //     The name of the constant buffer to override.
-        //
-        //   value:
-        //     The buffer to override the constant buffer values with, or null to remove binding.
-        //
-        //   offset:
-        //     Offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
+        /*
+            摘要:
+            Sets a ComputeBuffer or GraphicsBuffer as a "named constant buffer" for all shader types.
+
+
+            
+            参数:
+            nameID:
+                The name ID of the constant buffer retrieved by Shader.PropertyToID.
+            name:
+                The name of the constant buffer to override.
+            
+            value:
+                The buffer to override the constant buffer values with, or null to remove binding.
+                用这个 buffer 的值去覆盖 constant buffer 的值,
+                若此参数为 null, 则执行解除绑定的操作
+            
+            offset:
+                Offset in bytes from the beginning of the buffer to bind. Must be a multiple
+                of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
+            
+            size:
+                The number of bytes to bind.
+        */
         public static void SetGlobalConstantBuffer(int nameID, GraphicsBuffer value, int offset, int size);
         public static void SetGlobalConstantBuffer(string name, GraphicsBuffer value, int offset, int size);
         public static void SetGlobalConstantBuffer(int nameID, ComputeBuffer value, int offset, int size);

@@ -953,94 +953,44 @@ namespace UnityEngine
         //   values:
         //     Array of values to set.
         public void SetColorArray(int nameID, Color[] values);
-        //
-        // 摘要:
-        //     Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material.
-        //
-        // 参数:
-        //   name:
-        //     The name of the constant buffer to override.
-        //
-        //   value:
-        //     The ComputeBuffer to override the constant buffer values with, or null to remove
-        //     binding.
-        //
-        //   offset:
-        //     Offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
-        //
-        //   nameID:
-        //     The shader property ID of the constant buffer to override.
+
+
+        /*
+            摘要:
+            Sets a ComputeBuffer or GraphicsBuffer as a "named constant buffer" for the material.
+
+
+            可使用此函数来 覆写: 居住在 "给定名字的 constant buffer" 中的所有 shader 参数;
+
+You can use this method to override all the shader parameters that reside in a constant buffer with a given name. 
+
+
+The parameters are overridden with the contents of the given buffer. To use this method, the following must be true: The ComputeBuffer or GraphicsBuffer must have been created with a corresponding ComputeBufferType.Constant or GraphicsBuffer.Target.Constant flag. The data layout of the constant buffer must match exactly with the data provided in the buffer. All the different shader variants for this Material must se the same constant buffer layout for the given constant buffer.
+
+        
+            参数:
+            name:
+                The name of the constant buffer to override.
+            nameID:
+                The shader property ID of the constant buffer to override.
+        
+            value:
+                The ComputeBuffer to override the constant buffer values with, or null to remove binding.
+            
+            offset:
+                从 buffer 的起始位置, 到绑定位置的 offset, 必须是 SystemInfo.constantBufferOffsetAlignment 的整数倍,
+                当然也可设置为0, 意为绑定在 buffer 的起始位置
+            
+            size:
+                The number of bytes to bind.
+                要绑定的内容的 字节数
+        */
         public void SetConstantBuffer(string name, ComputeBuffer value, int offset, int size);
-        //
-        // 摘要:
-        //     Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material.
-        //
-        // 参数:
-        //   name:
-        //     The name of the constant buffer to override.
-        //
-        //   value:
-        //     The ComputeBuffer to override the constant buffer values with, or null to remove
-        //     binding.
-        //
-        //   offset:
-        //     Offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
-        //
-        //   nameID:
-        //     The shader property ID of the constant buffer to override.
         public void SetConstantBuffer(int nameID, ComputeBuffer value, int offset, int size);
-        //
-        // 摘要:
-        //     Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material.
-        //
-        // 参数:
-        //   name:
-        //     The name of the constant buffer to override.
-        //
-        //   value:
-        //     The ComputeBuffer to override the constant buffer values with, or null to remove
-        //     binding.
-        //
-        //   offset:
-        //     Offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
-        //
-        //   nameID:
-        //     The shader property ID of the constant buffer to override.
         public void SetConstantBuffer(string name, GraphicsBuffer value, int offset, int size);
-        //
-        // 摘要:
-        //     Sets a ComputeBuffer or GraphicsBuffer as a named constant buffer for the material.
-        //
-        // 参数:
-        //   name:
-        //     The name of the constant buffer to override.
-        //
-        //   value:
-        //     The ComputeBuffer to override the constant buffer values with, or null to remove
-        //     binding.
-        //
-        //   offset:
-        //     Offset in bytes from the beginning of the buffer to bind. Must be a multiple
-        //     of SystemInfo.constantBufferOffsetAlignment, or 0 if that value is 0.
-        //
-        //   size:
-        //     The number of bytes to bind.
-        //
-        //   nameID:
-        //     The shader property ID of the constant buffer to override.
         public void SetConstantBuffer(int nameID, GraphicsBuffer value, int offset, int size);
+
+
         //
         // 摘要:
         //     Sets a named float value.

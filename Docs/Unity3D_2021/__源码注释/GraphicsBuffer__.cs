@@ -148,8 +148,22 @@ namespace UnityEngine
         /*
             摘要:
             Retrieve a native (underlying graphics API) pointer to the buffer.
-            
 
+            以便让 native code plugins(插件) 来处理 graphics buffer data;
+
+            当你使用 unity api 去修改 buffer 数据时, 它会改变底层的 graphics API native pointer;
+
+            此时要再次调用本函数, 获得新的 native pointer
+            
+            返回的数据的类型, 取决于 底层图形API:
+            -- ID3D11Buffer on D3D11
+            -- ID3D12Resource on D3D12
+            -- buffer "name" (as GLuint) on OpenGL/ES
+            -- MTLBuffer on Metal
+
+            注意:
+            当使用 多线程渲染 时, 调用本函数会让本线程与 rendering thread 强制同步,(这是很缓慢的)
+            所以最好在程序的 初始阶段 就设置好 必要的 buffer 的 pointer;
 
             返回结果:
                 Pointer to the underlying graphics API buffer.
@@ -159,67 +173,82 @@ namespace UnityEngine
 
         
 
-
-        //
+        
         // 摘要:
         //     Returns true if this graphics buffer is valid, or false otherwise.
         public bool IsValid();
-        //
-        // 摘要:
-        //     Release a Graphics Buffer.
-        public void Release();
-        //
-        // 摘要:
-        //     Sets counter value of append/consume buffer.
-        //
-        // 参数:
-        //   counterValue:
-        //     Value of the append/consume counter.
-        public void SetCounterValue(uint counterValue);
-        [SecuritySafeCritical]
-        public void SetData<T>(NativeArray<T> data, int nativeBufferStartIndex, int graphicsBufferStartIndex, int count) where T : struct;
-        //
-        // 摘要:
-        //     Partial copy of data values from an array into the buffer.
-        //
-        // 参数:
-        //   data:
-        //     Array of values to fill the buffer.
-        //
-        //   managedBufferStartIndex:
-        //     The first element index in data to copy to the graphics buffer.
-        //
-        //   count:
-        //     The number of elements to copy.
-        //
-        //   graphicsBufferStartIndex:
-        //     The first element index in the graphics buffer to receive the data.
-        //
-        //   nativeBufferStartIndex:
-        [SecuritySafeCritical]
-        public void SetData(Array data, int managedBufferStartIndex, int graphicsBufferStartIndex, int count);
-        [SecuritySafeCritical]
-        public void SetData<T>(NativeArray<T> data) where T : struct;
-        [SecuritySafeCritical]
-        public void SetData<T>(List<T> data) where T : struct;
-        //
-        // 摘要:
-        //     Set the buffer with values from an array.
-        //
-        // 参数:
-        //   data:
-        //     Array of values to fill the buffer.
-        [SecuritySafeCritical]
-        public void SetData(Array data);
-        [SecuritySafeCritical]
-        public void SetData<T>(List<T> data, int managedBufferStartIndex, int graphicsBufferStartIndex, int count) where T : struct;
-
-
 
 
         
         // 摘要:
-        //     The type of graphics buffer.
+        //     Release a Graphics Buffer.
+        public void Release();
+
+
+        /*
+            摘要:
+            Sets counter value of append/consume buffer.
+
+            "Append/consume buffer" and "counter buffers" 使用一个特殊的 counter 变量来跟踪 buffer 中元素的个数;
+
+            注意:
+            如果 buffer 通过 Graphics.SetRandomWriteTarget() 绑定, 那么它就不能调用本函数;
+
+            参数:
+            counterValue:
+            Value of the append/consume counter.
+        */
+        public void SetCounterValue(uint counterValue);
+
+
+        
+        /*
+            将 cpu端 参数 data 中的数据, 部分/全部 复制到本 buffer 中;
+            
+            参数:
+            data:
+                Array of values to fill the buffer.
+            
+            nativeBufferStartIndex:
+                (data 存储在 cpu端 原生代码中) 
+
+            managedBufferStartIndex:
+                (data 存储在 cpu端 托管代码中) 
+                The first element index in data to copy to the graphics buffer.
+            
+            graphicsBufferStartIndex:
+                The first element index in the graphics buffer to receive the data.
+                本 buffer 的idx
+
+            count:
+                要复制的元素的个数
+        */
+        [SecuritySafeCritical]
+        public void SetData(Array data, int managedBufferStartIndex, int graphicsBufferStartIndex, int count);
+
+        [SecuritySafeCritical]
+        public void SetData<T>(List<T> data, int managedBufferStartIndex, int graphicsBufferStartIndex, int count) where T : struct;
+
+        [SecuritySafeCritical]
+        public void SetData<T>(NativeArray<T> data, int nativeBufferStartIndex, int graphicsBufferStartIndex, int count) where T : struct;
+        
+
+        [SecuritySafeCritical]
+        public void SetData<T>(NativeArray<T> data) where T : struct;
+
+        [SecuritySafeCritical]
+        public void SetData<T>(List<T> data) where T : struct;
+
+        [SecuritySafeCritical]
+        public void SetData(Array data);
+        
+
+
+        /*
+            摘要:
+            The type of graphics buffer.
+            这些 flag 是可以相互组合的
+        */
         [Flags]
         public enum Target
         {
