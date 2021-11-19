@@ -197,26 +197,29 @@ namespace UnityEngine
 
 
         /*
-            当使用 Shader.SetConstantBuffer() 或 Material.SetConstantBuffer() 绑定一个 constant buffer 时,
+            当使用 Shader.SetConstantBuffer() (不存在了) 或 Material.SetConstantBuffer() 绑定一个 constant buffer 时,
             允许的 最小的 buffer offset (in bytes) 值;
 
+            如果当前 active renderer 支持 "直接绑定 constant buffer" (参考 SystemInfo.supportsSetConstantBuffer)
+            同时还支持 binding constant buffers with an offset,
 
+            那么本变量指定了 "minimum required alignment in bytes for the offset parameter"
+            ( offset 所需的 最小对齐字节数 )
 
-
-
-
-
-
-
+            如果本变量值为 0, 那么当前 renderer 仅支持 "binding constant buffers at offset 0";
+            ( 比如, 例如，不公开 DX11.1 功能的 DX11 设备 )
         */
         public static int constantBufferOffsetAlignment { get; }
 
 
         /*
             摘要:
-             Does the current renderer support binding constant buffers directly? (Read Only)
+            Does the current renderer support binding constant buffers directly? (Read Only)
 
-             
+            类似 Material.SetConstantBuffer() 这种函数, 允许使用一个 ComputeBuffer / GraphicsBuffer 中的数据
+            去覆写一个 "指定的 constant buffer" 中的全部 shader 参数;
+
+            如果当前 active renderer 支持 "直接" 绑定一个 constant buffer, 则返回 true;
         */
         public static bool supportsSetConstantBuffer { get; }
 

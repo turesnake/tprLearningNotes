@@ -122,11 +122,25 @@ namespace UnityEngine
 
         /*
             摘要:
-            Disables/Enables a global shader keyword.
+            Disables/Enables a "global shader keyword".
 
-            就是: #pragma shader_feature, #pragma multi_compile 中声明的那些 keywords
-
-            启用一个 keyword, 会让 unity 去选择符合要求的 shader variant;
+            tpr:
+                -1-:
+                    必须在 shader 代码中使用: 
+                        #pragma multi_compile           (全局)
+                        #pragma shader_feature          (全局)
+                    声明一个 全局的 目标名字 keyword 才行, 这样编译器才会真的生成两路 shader variants;
+                    ---
+                -2-:
+                    在 shader 代码中, 使用这个 kayword 来获得不同的效果;
+                    ---
+                -3-:
+                    在 任意脚本代码中, 不管是在 Start() 还是 Update() 中,
+                    只要调用本函数,都会立即启用这个 keyword; 
+                    然后,
+                    unity 会针对整个程序中的所有 shaders, 
+                    去寻找它们的 variants 中支持这个 keyword 的版本, 并调用这些 variants;
+                    ---
             
             参数:
             keyword:
@@ -325,7 +339,7 @@ namespace UnityEngine
 
         /*
             摘要:
-            Checks whether a global shader keyword is enabled for this material.
+            Checks whether a "global shader keyword" is enabled for this material.
         
             参数:
             keyword:
@@ -368,8 +382,12 @@ namespace UnityEngine
             摘要:
             Sets a global buffer property for all shaders.
             
-            Global properties are used if a shader needs them but the material does not have them defined 
-            (for example, if the shader does not expose them in Properties block).
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
 
         // 参数:
         //   nameID:
@@ -389,6 +407,13 @@ namespace UnityEngine
         /*
             摘要:
             Sets a global color property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
 
             如果你有一系列 自定义 shaders, 它们都使用同一个 全局颜色;
             此时, 你就可以定义一个 全局颜色 property, 而不用在每一个 shader 的 material 中去一一设置那个 颜色值
@@ -412,8 +437,19 @@ namespace UnityEngine
             摘要:
             Sets a ComputeBuffer or GraphicsBuffer as a "named constant buffer" for all shader types.
 
+            See Material.SetConstantBuffer() for usage. 
 
-            
+            If a constant buffer is bound both globally and per-material, the per-material buffer is used. 
+            However, if a constant buffer is bound globally, it overrides all shader parameters in all materials 
+            that reside in any constant buffer with the given name.
+            ---
+            如果一个 constant buffer 既绑定了 全局值, 又设置了 "逐material值", 此时就使用 "逐material 值";
+
+            但是, 如果一个 constant buffer 被绑定了 全局值(可能是只设置了 全局值时)
+            这个全局值将 覆写 所有 material 的 "位于 给定名字的 constant buffer 体内的" 所有 shader 参数值;
+
+            请特别注意此函数, 特别是当你使用 常用的 constant buffer 名字时, 它将产生未预期的行为;
+
             参数:
             nameID:
                 The name ID of the constant buffer retrieved by Shader.PropertyToID.
@@ -438,39 +474,58 @@ namespace UnityEngine
         public static void SetGlobalConstantBuffer(string name, ComputeBuffer value, int offset, int size);
 
 
-        //
-        // 摘要:
-        //     Sets a global float property for all shaders.
-        //
-        // 参数:
-        //   nameID:
-        //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
-        //   name:
-        //     The name of the property.
-        //
-        //   value:
+        /*
+            摘要:
+            Sets a global float property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+
+
+            如果你有一系列 自定义 shaders, 它们都使用同一个 全局变量;
+            此时, 你就可以定义一个 全局 property, 而不用在每一个 shader 的 material 中去一一设置那个 变量值;
+            
+            参数:
+            nameID:
+                The name ID of the property retrieved by Shader.PropertyToID.
+            name:
+                The name of the property.
+            value:
+        */
         public static void SetGlobalFloat(string name, float value);
         public static void SetGlobalFloat(int nameID, float value);
 
 
         
-        //
-        // 摘要:
-        //     Sets a global float array property for all shaders.
-        //
+        /*
+            摘要:
+            Sets a global float array property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+            
         // 参数:
         //   nameID:
         //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
         //   name:
         //     The name of the property.
         //
         //   values:
+        */
         public static void SetGlobalFloatArray(int nameID, List<float> values);
         public static void SetGlobalFloatArray(int nameID, float[] values);
         public static void SetGlobalFloatArray(string name, List<float> values);
         public static void SetGlobalFloatArray(string name, float[] values);
+
+
 
 
         /*
@@ -480,50 +535,71 @@ namespace UnityEngine
         */
 
 
-        //
-        // 摘要:
-        //     Sets a global integer property for all shaders.
-        //
+        /*
+            摘要:
+            Sets a global integer property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+            
         // 参数:
         //   nameID:
         //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
         //   name:
         //     The name of the property.
         //
         //   value:
+        */
         public static void SetGlobalInteger(int nameID, int value);
         public static void SetGlobalInteger(string name, int value);
 
 
-        //
-        // 摘要:
-        //     Sets a global matrix property for all shaders.
-        //
+        /*
+            摘要:
+            Sets a global matrix property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+            
         // 参数:
         //   nameID:
         //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
         //   name:
         //     The name of the property.
         //
         //   value:
+        */
         public static void SetGlobalMatrix(string name, Matrix4x4 value);
         public static void SetGlobalMatrix(int nameID, Matrix4x4 value);
 
 
-        //
-        // 摘要:
-        //     Sets a global matrix array property for all shaders.
-        //
+        /*
+            摘要:
+            Sets a global matrix array property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+            
         // 参数:
         //   nameID:
         //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
         //   name:
         //     The name of the property.
         //
         //   values:
+        */
         public static void SetGlobalMatrixArray(int nameID, Matrix4x4[] values);
         public static void SetGlobalMatrixArray(string name, Matrix4x4[] values);
         public static void SetGlobalMatrixArray(int nameID, List<Matrix4x4> values);
@@ -537,22 +613,31 @@ namespace UnityEngine
         */
 
 
-        //
-        // 摘要:
-        //     Sets a global texture property for all shaders.
-        //
-        // 参数:
-        //   nameID:
-        //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
-        //   name:
-        //     The name of the property.
-        //
-        //   value:
-        //     The texture to set.
-        //
-        //   element:
-        //     Optional parameter that specifies the type of data to set from the RenderTexture.
+        /*
+            摘要:
+            Sets a global texture property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+
+            参数:
+            nameID:
+                The name ID of the property retrieved by Shader.PropertyToID.
+            name:
+                The name of the property.
+            value:
+                The texture to set.
+            
+            element:
+                Optional parameter that specifies the type of data to set from the RenderTexture.
+                需要从 render texture 中读取的 数据的类型: color, depth, stencil;
+
+                一个 render texture 是可同时持有好几种数据的, 比如同时持有 color 和 dpeth;
+        */
         public static void SetGlobalTexture(string name, Texture value);
         public static void SetGlobalTexture(int nameID, Texture value);
         public static void SetGlobalTexture(int nameID, RenderTexture value, RenderTextureSubElement element);
@@ -565,170 +650,306 @@ namespace UnityEngine
         public static void SetGlobalTextureMatrixName(string propertyName, string matrixName);
         */
 
+        /*
+            摘要:
+            Sets a global vector property for all shaders.
 
-        //
-        // 摘要:
-        //     Sets a global vector property for all shaders.
-        //
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+            
         // 参数:
         //   nameID:
         //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
         //   name:
         //     The name of the property.
-        //
         //   value:
+        */
         public static void SetGlobalVector(string name, Vector4 value);
         public static void SetGlobalVector(int nameID, Vector4 value);
 
 
-        //
-        // 摘要:
-        //     Sets a global vector array property for all shaders.
-        //
+        /*
+            摘要:
+            Sets a global vector array property for all shaders.
+
+            "Gloabl Property":
+                那些放在 Shader: Properties block 中的是 material property, 它们可被映射到 matetial inspector 中去;
+                Global properties 则更为广泛, 可理解为: 程序中 所有 shader 都能去访问的一个 "全局变量";
+                这些 global property 需要在 hlsl 中先显式声明后, 才能访问使用;
+                ---
+                使用优先级上: 逐物体 MaterialPropertyBlock > material property > global property;
+            
         // 参数:
         //   nameID:
         //     The name ID of the property retrieved by Shader.PropertyToID.
-        //
         //   name:
         //     The name of the property.
-        //
         //   values:
+        */
         public static void SetGlobalVectorArray(int nameID, Vector4[] values);
         public static void SetGlobalVectorArray(string name, List<Vector4> values);
         public static void SetGlobalVectorArray(string name, Vector4[] values);
         public static void SetGlobalVectorArray(int nameID, List<Vector4> values);
 
 
-        //
-        // 摘要:
-        //     Prewarms all shader variants of all Shaders currently in memory.
+
+        /*
+            摘要:
+            Prewarms all shader variants of all Shaders currently in memory.
+
+            在内存中预热 当前所有 shader 的 所有 shader variants;
+
+            关于这部分内容, 可在笔记中搜索: "Shader loading"
+
+            虽然这个功能很方便, 但是大量 shader 的预热会导致 load时间的边长, 内存开销的增大;
+            此时可尝试将这些 shader variants 放入 class ShaderVariantCollection 中;
+
+            注意:
+            本函数被 DX11 and OpenGL 完全支持,
+            但在 DX12, Vulkan, and Metal, 还不全面 (此处翻译略...)
+        */
         [FreeFunctionAttribute]
         public static void WarmupAllShaders();
-        //
-        // 摘要:
-        //     Search for the pass tag specified by tagName on the shader's active SubShader
-        //     and returns the value of the tag.
-        //
+
+
+        /*
+            摘要:
+            Search for the "pass tag" specified by tagName on the shader's active SubShader
+            and returns the value of the tag.
+
+            {tagName : tagValue} 是一个 键值对;
+            针对当前 active subshader, 本函数根据参数 tagName, 查找这个 pass tag, 并返回它对应的 tagValue 值;
+
+            但从参数可见, 它还指定了 pass idx, 所以是具体到一个 pass 中去查找 "目标 pass tag" 的;
+            
         // 参数:
         //   passIndex:
         //     The index of the pass.
         //
         //   tagName:
         //     The name of the pass tag.
+        */
         public ShaderTagId FindPassTagValue(int passIndex, ShaderTagId tagName);
-        //
-        // 摘要:
-        //     Finds the index of a shader property by its name.
-        //
+
+
+        /*
+            摘要:
+            Finds the index of a "shader property" by its name.
+
+            从本函数取得的 idx, 可被用于 Shader.GetPropertyType(), Shader.GetPropertyFlags(),
+            以获得此 "shader property" 的更多细节信息;
+
+            如果 unity 无法找到指定名字的 shader property, 本函数将返回 -1;
+
         // 参数:
         //   propertyName:
         //     The name of the shader property.
+        */
         public int FindPropertyIndex(string propertyName);
+
+
+        /*
+            Find the name of a "texture stack" a texture belongs too.
+            ---
+            寻找一个用 propertyIndex 指定的 "texture stack" 的 name值; 
+
+            "texture stack" 
+                似乎和 Virtual Texture 技术相关, vt是用来优化 "开发大世界 地面 texture 加载" 的技术;
+                ---
+                在此先浅显地将其理解为 一个可以容纳 textures 的 stack;
+
+            参数:
+            propertyIndex:
+                Index of the property.
+                应该是通过 FindPropertyIndex() 得到的;
+
+            stackName:
+                输出值, contanis the name of the stack if one was found.
+
+            layerIndex:
+                输出值, contains the "stack layer index" of the texture property.
+            
+            返回值:
+                bool True, if a stack was found for the given texture property, false if not.
+        */
         public bool FindTextureStack(int propertyIndex, out string stackName, out int layerIndex);
-        //
-        // 摘要:
-        //     Returns the dependency shader.
-        //
+
+
+        /*
+            摘要:
+            Returns the dependency shader.
+            The shader source file lists dependency shaders in the "DependencyName" = "ShaderName" format.
+            ---
+            shader source file 会以: "DependencyName" = "ShaderName" 的形式, 将 "dependency shaders" 罗列出来;
+
+            猜测:
+                参数 name 估计就是指向上文中的 "DependencyName";
+                以此寻找到 "ShaderName" 信息;
+
         // 参数:
         //   name:
         //     The name of the dependency to query.
+        */
         public Shader GetDependency(string name);
-        //
-        // 摘要:
-        //     Returns an array of strings containing attributes of the shader property at the
-        //     specified index.
-        //
-        // 参数:
-        //   propertyIndex:
-        //     The index of the shader property.
+
+        /*
+            摘要:
+            Returns an array of strings containing "attributes of the shader property" at the specified index.
+
+            "attributes":
+                比如: 
+                    [NoScaleOffset] _DetailNormalMap("Detail Normals", 2D) = "bump" {}
+                此处的 NoScaleOffset 就是 attribute;
+
+            如果这个 property 没有设置 attribute, 本函数返回一个 空array;
+
+            某些 attributes 会被unity 识别为 ShaderPropertyFlags, 它们是不会被包含进 返回值array 中的;
+            (其实 ShaderPropertyFlags 中包含了相当部分的 主流 attributes...)
+
+            如果 unity 不能通过参数 propertyIndex 找到对应的 property, 将抛出异常;
+            
+            参数:
+            propertyIndex:
+                The index of the shader property.
+                应该是通过 FindPropertyIndex() 得到的;
+        */
         public string[] GetPropertyAttributes(int propertyIndex);
-        //
+
+        
         // 摘要:
         //     Returns the number of properties in this Shader.
         public int GetPropertyCount();
-        //
-        // 摘要:
-        //     Returns the default float value of the shader property at the specified index.
-        //
-        // 参数:
-        //   propertyIndex:
-        //     The index of the shader property.
+
+
+        /*
+            摘要:
+            Returns the default float value of the shader property at the specified index.
+
+            就是在 Shader Property{...} 这个代码块内设置的, 这个 property 的默认值;
+
+            如果无法通过参数 propertyIndex 找到 property, 或者找到的 property 不是 float 或 Range 类型,
+            本函数将抛出异常;
+            
+            参数:
+            propertyIndex:
+                The index of the shader property.
+                应该是通过 FindPropertyIndex() 得到的;
+        */
         public float GetPropertyDefaultFloatValue(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the default Vector4 value of the shader property at the specified index.
-        //
+
+        /*
+            摘要:
+            Returns the default Vector4 value of the shader property at the specified index.
+
+            就是在 Shader Property{...} 这个代码块内设置的, 这个 property 的默认值;
+
+            如果无法通过参数 propertyIndex 找到 property, 或者找到的 property 不是 float 或 Range 类型,
+            本函数将抛出异常;
+        
         // 参数:
         //   propertyIndex:
         //     The index of the shader property.
+                应该是通过 FindPropertyIndex() 得到的;
+        */
         public Vector4 GetPropertyDefaultVectorValue(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the description string of the shader property at the specified index.
-        //
+
+        /*
+            摘要:
+            Returns the "description string" of the shader property at the specified index.
+
+            如果无法通过参数 propertyIndex 找到 property, 本函数将抛出异常;
+        
         // 参数:
         //   propertyIndex:
         //     The index of the shader property.
+                应该是通过 FindPropertyIndex() 得到的;
+        */
         public string GetPropertyDescription(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the ShaderPropertyFlags of the shader property at the specified index.
-        //
+
+
+        /*
+            摘要:
+            Returns the ShaderPropertyFlags of the shader property at the specified index.
+
+            如果无法通过参数 propertyIndex 找到 property, 本函数将抛出异常;
+
         // 参数:
         //   propertyIndex:
-        //     The index of the shader property.
+        //     The index of the shader property. 应该是通过 FindPropertyIndex() 得到的;
+        */
         public ShaderPropertyFlags GetPropertyFlags(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the name of the shader property at the specified index.
-        //
+
+
+        /*
+            摘要:
+            Returns the name of the shader property at the specified index.
+        
+                如果无法通过参数 propertyIndex 找到 property, 本函数将抛出异常;
         // 参数:
         //   propertyIndex:
-        //     The index of the shader property.
+        //     The index of the shader property. 应该是通过 FindPropertyIndex() 得到的;
+        */
         public string GetPropertyName(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the nameId of the shader property at the specified index.
-        //
-        // 参数:
-        //   propertyIndex:
-        //     The index of the shader property.
         public int GetPropertyNameId(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the min and max limits for a <a href="Rendering.ShaderPropertyType.Range.html">Range</a>
-        //     property at the specified index.
-        //
+
+
+        /*
+            摘要:
+            Returns the min and max limits for a <a href="Rendering.ShaderPropertyType.Range.html">Range</a>
+            property at the specified index.
+
+            如果无法通过参数 propertyIndex 找到 property, 或者找到的 property 不是 Range 类型,
+            本函数将抛出异常;
+        
         // 参数:
         //   propertyIndex:
-        //     The index of the shader property.
+        //     The index of the shader property. 应该是通过 FindPropertyIndex() 得到的;
+        */ 
         public Vector2 GetPropertyRangeLimits(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the default Texture name of a <a href="Rendering.ShaderPropertyType.Texture.html">Texture</a>
-        //     shader property at the specified index.
-        //
+
+
+        /*
+            摘要:
+            Returns the default Texture name of a "Texture shader property" at the specified index.
+
+            如果无法通过参数 propertyIndex 找到 property, 或者找到的 property 不是 Texture 类型,
+            本函数将抛出异常;
+        
         // 参数:
         //   propertyIndex:
-        //     The index of the shader property.
+        //     The index of the shader property. 应该是通过 FindPropertyIndex() 得到的;
+        */
         public string GetPropertyTextureDefaultName(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the TextureDimension of a <a href="Rendering.ShaderPropertyType.Texture.html">Texture</a>
-        //     shader property at the specified index.
-        //
+
+
+        /*
+            摘要:
+            Returns the "TextureDimension" (class) of a "Texture shader property" at the specified index.
+            
+            如果无法通过参数 propertyIndex 找到 property, 或者找到的 property 不是 Texture 类型,
+            本函数将抛出异常;
+
         // 参数:
         //   propertyIndex:
-        //     The index of the shader property.
+        //     The index of the shader property. 应该是通过 FindPropertyIndex() 得到的;
+        */
         public TextureDimension GetPropertyTextureDimension(int propertyIndex);
-        //
-        // 摘要:
-        //     Returns the ShaderPropertyType of the property at the specified index.
-        //
+
+
+        /*
+            摘要:
+            Returns the ShaderPropertyType of the property at the specified index.
+
+            如果无法通过参数 propertyIndex 找到 property, 本函数将抛出异常;
+            
         // 参数:
         //   propertyIndex:
-        //     The index of the shader property.
+        //     The index of the shader property. 应该是通过 FindPropertyIndex() 得到的;
+        */
         public ShaderPropertyType GetPropertyType(int propertyIndex);
     }
 }
