@@ -65,14 +65,42 @@ namespace UnityEngine
         // 摘要:
         //     The parent of the transform.
         public Transform parent { get; set; }
-        //
-        // 摘要:
-        //     Matrix that transforms a point from world space into local space (Read Only).
+
+
+
+        /*
+            摘要:
+            Matrix that transforms a point from world space into local space (Read Only).
+
+            注意:
+                如果你正在设置 shader parameter, 
+                不能使用 Transform.worldToLocalMatrix; (本变量)
+                而要改用: Renderer.worldToLocalMatrix;
+
+                猜测似乎与 static batch 相关; 当一个物体被合并为 static batch 后
+                (很多个mesh 合并成一个 大mesh)
+                它的 Renderer 的矩阵会变成 单位矩阵, 而 Transform 矩阵还是原来那个;
+                (这是我暂时找到的唯一相关信息...)
+        */
         public Matrix4x4 worldToLocalMatrix { get; }
-        //
-        // 摘要:
-        //     Matrix that transforms a point from local space into world space (Read Only).
+
+        /*
+            摘要:
+            Matrix that transforms a point from local space into world space (Read Only).
+
+            注意:
+                如果你正在设置 shader parameter, 
+                不能使用 Transform.localToWorldMatrix; (本变量)
+                而要改用: Renderer.localToWorldMatrix; 
+
+                猜测似乎与 static batch 相关; 当一个物体被合并为 static batch 后
+                (很多个mesh 合并成一个 大mesh)
+                它的 Renderer 的矩阵会变成 单位矩阵, 而 Transform 矩阵还是原来那个;
+                (这是我暂时找到的唯一相关信息...)
+        */
         public Matrix4x4 localToWorldMatrix { get; }
+
+
         //
         // 摘要:
         //     Returns the topmost transform in the hierarchy.
