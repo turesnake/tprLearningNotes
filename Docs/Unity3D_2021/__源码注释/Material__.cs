@@ -25,7 +25,6 @@ namespace UnityEngine
     public class Material : Object
     {
 
-
         /*
             摘要:
             Create a temporary Material.
@@ -919,7 +918,7 @@ namespace UnityEngine
             摘要:
             Sets a named integer value.
         
-            当 material 绑定的是 standard shader 时, 要注意, 要在设置颜色的同时,
+            当 material 绑定的是 standard shader 时, 要注意, 要在设置变量的同时,
             还是用 EnableKeyword() 去开启对应的 keyword, 才能彻底起效;
             更多细节查看:
             https://docs.unity3d.com/2021.1/Documentation/Manual/MaterialsAccessingViaScript.html
@@ -1019,28 +1018,38 @@ namespace UnityEngine
         public bool SetPass(int pass);
 
 
-        // 暂未翻译...
-        // 摘要:
-        //     Enables or disables a Shader pass on a per-Material level.
-        //
+        /*
+            摘要:
+            Enables or disables a Shader pass on a per-Material level.
+
+            默认, 所有 shader passes 都是 enabled;
+
+            通过 pass 的 pass tag: "LightMode" 的值 (也就是参数 passName 提供的) 找到 material
+            体内对应的 shader pass; 然后可以开启/禁用它;
+
         // 参数:
         //   passName:
-        //     Shader pass name (case insensitive).
+        //     Shader pass name (case insensitive).(不区分大小写)
         //
         //   enabled:
         //     Flag indicating whether this Shader pass should be enabled.
+        */
         [FreeFunctionAttribute("MaterialScripting::SetShaderPassEnabled", HasExplicitThis = true)]
         public void SetShaderPassEnabled(string passName, bool enabled);
 
 
-        // 暂未翻译...
-        // 摘要:
-        //     Sets a named texture.
-        //
+        /*
+            摘要:
+            Sets a named texture.
+
+            当 material 绑定的是 standard shader 时, 要注意, 要在设置变量的同时,
+            还是用 EnableKeyword() 去开启对应的 keyword, 才能彻底起效;
+            更多细节查看:
+            https://docs.unity3d.com/2021.1/Documentation/Manual/MaterialsAccessingViaScript.html
+        
         // 参数:
         //   nameID:
         //     Property name ID, use Shader.PropertyToID to get it.
-        //
         //   name:
         //     Property name, e.g. "_MainTex".
         //
@@ -1049,6 +1058,7 @@ namespace UnityEngine
         //
         //   element:
         //     Optional parameter that specifies the type of data to set from the RenderTexture.
+        */
         public void SetTexture(string name, Texture value);
         public void SetTexture(int nameID, Texture value);
         public void SetTexture(int nameID, RenderTexture value, RenderTextureSubElement element);
