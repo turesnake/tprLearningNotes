@@ -157,6 +157,7 @@ namespace UnityEngine.Rendering
         */
         public Matrix4x4 cullingMatrix { get; set; }
         
+        
 
         /* 
             The mask for the culling operation.
@@ -167,11 +168,13 @@ namespace UnityEngine.Rendering
             ---
 
             Camera.cullingMask:
-                就是 camera inspector 中的哪个 CullingMask 勾选栏, 里面放的是 32 个 Layers 信息;
+                就是 camera inspector 中的那个 CullingMask 勾选栏, 里面放的是 32 个 Layers 信息;
                 unity 定义了头部几个, 剩余的可以被用户自定义; 
 
             字如其名, 这破东西确实是用来设置 cull 操作的...... 
-            猜测: 32个 flags (layer) 中, 被勾选的那些(设置为1的), 将会参与 cull 操作;
+            猜测: 32个 flags (layer) 中, 
+            -- 被勾选的那些(设置为1的), 将会参与 cull 操作, 通过的可以被渲染, 不通过的被 cull 掉;
+            -- 没有被勾选的那些, 则彻底不被渲染;
         */
         public uint cullingMask { get; set; }
 
@@ -233,7 +236,9 @@ namespace UnityEngine.Rendering
                 此处的 layer 猜测是指 camera CullingMask 中的那些 layers, (参见 camera inspector)
                 可用下方的 SetLayerCullingDistance() 来设置每个 layer 的 culling distance 值;
 
-                此处的 culling distance 的概念, 是否类似 shadow distance: 超出部分被 cull 呢?
+                此处的 culling distance 的概念, 可以参考: "Camera.layerCullSpherical" 的翻译:
+                    -- 有的选择 far plane distance 来执行 cull 操作;
+                    -- 有的选择 cull sphere 半径 来做 cull 操作;
             
             参数:
             layerIndex:
@@ -263,7 +268,9 @@ namespace UnityEngine.Rendering
             猜测:
                 此处的 layer 猜测是指 camera CullingMask 中的那些 layers, (参见 camera inspector)
 
-                此处的 culling distance 的概念, 是否类似 shadow distance: 超出部分被 cull 呢?
+                此处的 culling distance 的概念, 可以参考: "Camera.layerCullSpherical" 的翻译:
+                    -- 有的选择 far plane distance 来执行 cull 操作;
+                    -- 有的选择 cull sphere 半径 来做 cull 操作;
             
             参数:
             layerIndex:

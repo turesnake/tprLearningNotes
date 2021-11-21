@@ -5,17 +5,18 @@
 
 namespace UnityEngine.Rendering
 {
-    //
-    // 摘要:
-    //     ReflectionProbeBlendInfo contains information required for blending probes.
+    /*
+        摘要:
+        ReflectionProbeBlendInfo contains information required for blending probes.
+    */
     [UsedByNativeCodeAttribute]
     public struct ReflectionProbeBlendInfo
     {
-        //
+        
         // 摘要:
         //     Reflection Probe used in blending.
         public ReflectionProbe probe;
-        //
+        
         // 摘要:
         //     Specifies the weight used in the interpolation between two probes, value varies
         //     from 0.0 to 1.0.

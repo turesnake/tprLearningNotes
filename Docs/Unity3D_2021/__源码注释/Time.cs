@@ -36,6 +36,7 @@ namespace UnityEngine
         // 摘要:
         //     The total number of frames since the start of the game (Read Only).
         public static int frameCount { get; }
+
         
         /*     
             The scale at which time passes.
@@ -44,6 +45,8 @@ namespace UnityEngine
             将影响 deltaTime
         */
         public static float timeScale { get; set; }
+
+
         //
         // 摘要:
         //     The maximum time a frame can spend on particle updates. If the frame takes longer
@@ -69,11 +72,14 @@ namespace UnityEngine
         //     phase to the current one (Read Only).
         public static float fixedUnscaledDeltaTime { get; }
 
+
         /*     
             The timeScale-independent interval in seconds from the last frame to the current one (Read Only).
             不受 Time.timeScale 的影响, 彻底正确的 deltaTime, 可用来测 fps 
         */
         public static float unscaledDeltaTime { get; }
+
+
         //
         // 摘要:
         //     The double precision timeScale-independent time at the beginning of the last
@@ -108,12 +114,15 @@ namespace UnityEngine
         //     The time since the last MonoBehaviour.FixedUpdate started (Read Only). This is
         //     the time in seconds since the start of the game.
         public static float fixedTime { get; }
+        
 
         /*     
             The interval in seconds from the last frame to the current one (Read Only).
             会受到 Time.timeScale 的影响; 
         */
         public static float deltaTime { get; }
+
+
         //
         // 摘要:
         //     The double precision time since this frame started (Read Only). This is the time
