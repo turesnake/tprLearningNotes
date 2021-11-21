@@ -40,7 +40,7 @@ namespace UnityEngine
         
         
         // 摘要:
-        //     HDR decode values of the default reflection probe texture. 用于解码
+        //     "HDR decode values" of the default reflection probe texture. 用于解码
         [StaticAccessorAttribute("GetReflectionProbes()")]
         public static Vector4 defaultTextureHDRDecodeValues { get; }
 
@@ -65,7 +65,7 @@ namespace UnityEngine
             若设为 0, 表示彻底不混合, 两个 反射探针之间的过度 就是硬切换;
 
             catlike rendering 13 - 3.2 中有详细介绍;
-            此值在 inspector component 中有显示, 但尽在 延迟渲染 中可编辑;
+            此值在 inspector component 中有显示, 但仅仅在 延迟渲染 中可被编辑;
         */
         public float blendDistance { get; set; }
 
