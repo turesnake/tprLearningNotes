@@ -12,7 +12,8 @@ namespace UnityEngine
 
         A single RenderTexture object represents both color and depth buffers, 
         but many complex rendering algorithms require using 
-        the same depth buffer with multiple color buffers or vice versa.
+        the same depth buffer with multiple color buffers 
+        or vice versa.
         --
         一个简单的 rendertexture 对象同时意味着一个 color buffer 和一个 depth buffer;
 

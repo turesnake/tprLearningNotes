@@ -59,40 +59,6 @@ void Blit(Texture source, RenderTexture dest, Material mat);
 
 
 
-# ------------------------------:
-# Camera.CalculateFrustumCorners(...);
-
-void CalculateFrustumCorners(
-    Rect viewport,  // 选择视窗中的哪一块, 选择整个视窗就写入: x=0,y=0,w=1,h=1
-    float z,        // 射线射到的那个平面, 距离camera 的深度值, 比如 far plane 深度值;
-    Camera.MonoOrStereoscopicEye eye, //
-    Vector3[] outCorners    // out rays
-);
-
-此函数自动计算出 4个 rays 方向向量, 从 camera 射向目标平面(比如 far plane) 的四个角落;
-平截头体张开的角度则由第一参数: viewport 来控制;
-
-4个 rays 顺序为: bottom-left, top-left, top-right, bottom-right;
-
-# 计算出的 rays, 位于 camera-space;
-    假设 viewport 为 (0,0,1,1) 的话( full screen)
-    则计算出的 rays 会是类似于:
-    
-    {
-        { -1026.4, -577.4, 1000 },
-        { -1026.4,  577.4, 1000 },
-        {  1026.4,  577.4, 1000 },
-        {  1026.4, -577.4, 1000 }
-    }
-    FOV = 60度, far depth = 1000; 
-
-    可手工验证上述值;
-    ----
-
-    所以, 必须要类加上 camera 的 posWS 和 朝向,
-    才能进一步计算出这四个 ray 的 world-space 空间中的表达;
-
-此函数被用于 fog 计算;
 
 
 

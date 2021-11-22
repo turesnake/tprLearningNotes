@@ -14,10 +14,20 @@ namespace UnityEngine
         摘要:
         A Camera is a device through which the player views the world.
 
+        A posSS is defined in pixels. 
+            -- The bottom-left of the screen is (0,0); 
+            -- the right-top is (pixelWidth,pixelHeight). 
+            -- The z position is in world units from the Camera.
 
+        A pos-viewport-space is normalized and relative to the Camera. 
+            -- The bottom-left of the Camera is (0,0); 
+            -- the top-right is (1,1). 
+            -- The z position is in world units from the Camera.
 
+        A posWS is defined in global coordinates (for example, Transform.position).
 
-
+        Note that a class must not inherit from Camera directly. 
+        If you need to inherit from Camera see ScriptableCamera.(没找到)
 
     */
     [NativeHeaderAttribute("Runtime/Shaders/Shader.h")]
@@ -304,7 +314,7 @@ namespace UnityEngine
 
 
         /*
-            The aspect ratio (width divided by height).  纵横比, 宽度除以高度;
+            The aspect ratio (width divided by height).  横纵比, w/h, 宽度除以高度;
 
             通常, 这个值会直接使用 screen's aspect ratio 值, 哪怕这个 camera 没有覆盖全屏;
 
@@ -537,10 +547,12 @@ namespace UnityEngine
 
         /*
             Where on the screen is the camera rendered in normalized coordinates.
-
             The values in rect range from zero (left/bottom) to one (right/top).
 
-            没看懂....
+            tpr:
+                本 camera 的渲染, 在屏幕上覆盖的区域; 
+                如果这个 camera 覆盖全屏, 则得到:(x:0.00, y:0.00, width:1.00, height:1.00)
+
         */
         [NativePropertyAttribute("NormalizedViewportRect")]
         public Rect rect { get; set; }
@@ -573,155 +585,294 @@ namespace UnityEngine
         */
 
 
-        //
-        // 摘要:
-        //     Number of command buffers set up on this camera (Read Only).
+
+        // Number of command buffers set up on this camera (Read Only).
         public int commandBufferCount { get; }
-        //
+
+        
         // 摘要:
         //     Returns the eye that is currently rendering. If called when stereo is not enabled
         //     it will return Camera.MonoOrStereoscopicEye.Mono. If called during a camera rendering
         //     callback such as OnRenderImage it will return the currently rendering eye. If
         //     called outside of a rendering callback and stereo is enabled, it will return
         //     the default eye which is Camera.MonoOrStereoscopicEye.Left.
-        public MonoOrStereoscopicEye stereoActiveEye { get; }
-        //
+        public MonoOrStereoscopicEye stereoActiveEye { get; }//vr
+        
         // 摘要:
         //     Defines which eye of a VR display the Camera renders into.
-        public StereoTargetEyeMask stereoTargetEye { get; set; }
-        //
+        public StereoTargetEyeMask stereoTargetEye { get; set; }//vr
+        
         // 摘要:
         //     Determines whether the stereo view matrices are suitable to allow for a single
         //     pass cull.
-        public bool areVRStereoViewMatricesWithinSingleCullTolerance { get; }
-        //
+        public bool areVRStereoViewMatricesWithinSingleCullTolerance { get; }//vr
+        
         // 摘要:
         //     Distance to a point where virtual eyes converge.
-        public float stereoConvergence { get; set; }
-        //
+        public float stereoConvergence { get; set; }//vr
+        
         // 摘要:
         //     The distance between the virtual eyes. Use this to query or set the current eye
         //     separation. Note that most VR devices provide this value, in which case setting
         //     the value will have no effect.
-        public float stereoSeparation { get; set; }
-        //
+        public float stereoSeparation { get; set; }//vr
+        
         // 摘要:
         //     Stereoscopic rendering.
-        public bool stereoEnabled { get; }
-        //
-        // 摘要:
-        //     There are two gates for a camera, the sensor gate and the resolution gate. The
-        //     physical camera sensor gate is defined by the sensorSize property, the resolution
-        //     gate is defined by the render target area.
+        public bool stereoEnabled { get; }//vr
+
+
+
+
+        /*
+            There are two gates for a camera, the "sensor gate" and the "resolution gate". 
+            The physical camera sensor gate is defined by the "Camera.sensorSize", 
+            the resolution gate is defined by the render target area.
+
+            本变量定义了, sensor gate 的尺寸 是如何调整去适配 resolution gate 的;
+
+            To use this property, enable "Camera.usePhysicalProperties"
+            此 enum 在本文件最下方;
+        */
         public GateFitMode gateFit { get; set; }
-        //
-        // 摘要:
-        //     If not null, the camera will only render the contents of the specified Scene.
+
+
+        /*
+            If not null, the camera will only render the contents of the specified Scene.
+
+            若本变量不为 null, 那么 camera 只会渲染 指定的 scene 中的物体;
+            (这么看, 本变量默认为 null)
+
+            Currently, only Scenes created by EditorSceneManager.NewPreviewScene() are supported.
+        */
         public Scene scene { get; set; }
-        //
-        // 摘要:
-        //     Should the jittered matrix be used for transparency rendering?
+
+
+        /*
+            Should the jittered matrix be used for transparency rendering?
+            详细内容见下面两个变量;
+        */
         [NativePropertyAttribute("UseJitteredProjectionMatrixForTransparent")]
         public bool useJitteredProjectionMatrixForTransparentRendering { get; set; }
-        //
-        // 摘要:
-        //     Get or set the raw projection matrix with no camera offset (no jittering).
+
+
+        /*
+            Get or set the raw projection matrix with no camera offset (no jittering).
+
+            对于很多 "时间性 image effects", 当前正在渲染的 camera 需要在 default projection 的基础上
+            做微小的 偏移; (也就是说, camera 发生了抖动 ‘jittered’ )
+
+            使用本变量来指定: 在偏移发生之前 所用的 "default perspective matrix";
+
+            可以对那些 半透明物体 选择使用 "jittered 矩阵", 或 "非 jittered 矩阵",
+            参考上一个变量;
+
+            如果你同时使用 motion vectors 和 camera jittering, 使用本变量来保证 帧之间的 motion vectors
+            保持稳定;
+
+            如果想要设置 jittered matrix, 可用: "Camera.projectionMatrix"
+        */
         public Matrix4x4 nonJitteredProjectionMatrix { get; set; }
-        //
-        // 摘要:
-        //     Set a custom projection matrix.
+
+
+
+        /*
+            Set a custom projection matrix.
+
+            如果你改写此变量, camera 将不再 "基于它自己的 fov" 去更新渲染,
+            直到你调用 Camera.ResetProjectionMatrix() 为止;
+
+            只有当你真的需要一个 non-standard projection 时, 才去自定义本变量;
+            本变量被 Unity's water rendering 使用, 来设置一个 液体投影矩阵;
+
+            注意:
+            传递给 shader 的 投影矩阵, 可能会基于平台或其它 state 而发生修改;
+             
+            If you need to calculate projection matrix for shader use from camera's projection, 
+            use GL.GetGPUProjectionMatrix();
+        */
         public Matrix4x4 projectionMatrix { get; set; }
-        //
-        // 摘要:
-        //     Matrix that transforms from world to camera space.
+
+
+
+        /*
+            Matrix that transforms from world to camera-space.
+
+            This matrix is often referred to as "view matrix" in graphics literature.
+
+            unity 的 view-space 为右手坐标系;
+
+            If you change this matrix, camera 不再基于自己的 Transform 组件信息来更新自己的 渲染;
+            直到你调用 Camera.ResetWorldToCameraMatrix();
+        */
         public Matrix4x4 worldToCameraMatrix { get; set; }
-        //
-        // 摘要:
+
         //     Matrix that transforms from camera space to world space (Read Only).
         public Matrix4x4 cameraToWorldMatrix { get; }
-        //
-        // 摘要:
-        //     Set the target display for this Camera.
+
+
+        /*
+            Set the target display for this Camera.
+
+            This setting makes a Camera render into the specified display. 
+            Maximum number of displays (eg.monitors) supported is 8.
+
+            本变量对 Android and iOS 平台不起作用, 
+            此时改用: Camera.SetTargetBuffers();
+        */
         public int targetDisplay { get; set; }
-        //
-        // 摘要:
-        //     Gets the temporary RenderTexture target for this Camera.
+
+
+        /*
+            Gets the temporary RenderTexture target for this Camera.
+
+            可在 camera 的 OnPostRender 回调函数中 访问 render target 的内容;
+        */
         public RenderTexture activeTexture { get; }
-        //
-        // 摘要:
-        //     Destination render texture.
+
+
+        /*
+            Destination render texture.
+
+            Usually cameras render directly to screen, 也可用本变量指定一个 rt;
+            当本值为 null, camera renders to screen.
+
+            当设置了此值, the camera always renders into the whole texture; 
+            effectively "Camera.rect" and "Camera.pixelRect" are ignored.
+
+            还能让 camera 渲染进特定的 RenderBuffers, 或一次渲染进 multiple textures;
+            使用: Camera.SetTargetBuffers()
+        */
         public RenderTexture targetTexture { get; set; }
-        //
-        // 摘要:
-        //     How tall is the camera in pixels (accounting for dynamic resolution scaling)
-        //     (Read Only).
+
+
+        /*
+            the  w/h of the camera in pixels (考入了 dynamic resolution 的缩放) (Read Only).
+        */
         public int scaledPixelHeight { get; }
-        //
-        // 摘要:
-        //     How wide is the camera in pixels (accounting for dynamic resolution scaling)
-        //     (Read Only).
         public int scaledPixelWidth { get; }
-        //
-        // 摘要:
-        //     How tall is the camera in pixels (not accounting for dynamic resolution scaling)
-        //     (Read Only).
+
+
+
+        /*
+            How tall is the camera in pixels (不考虑 dynamic resolution 的缩放) (Read Only).
+            Use this to return the "height of the Camera viewport" is in pixels
+        */
         public int pixelHeight { get; }
-        //
-        // 摘要:
-        //     The vertical field of view of the Camera, in degrees.
+
+
+        /*
+            The vertical field-of-view (of the Camera, in degrees);
+
+            若 camera 为正交透视模式, 将忽视本值;
+
+            ... 一些关于 VR 的内容, 此处未翻译 ... 
+
+            如果你改写了 Camera.projectionMatrix, camera 将忽略本值;
+            直到你调用 Camera.ResetProjectionMatrix();
+        */
         [NativePropertyAttribute("VerticalFieldOfView")]
         public float fieldOfView { get; set; }
-        //
-        // 摘要:
-        //     Where on the screen is the camera rendered in pixel coordinates.
+
+        /*
+            Where on the screen is the camera rendered in pixel coordinates.
+
+            camera 的渲染区, 在屏幕上占据的区域, 不过是以 像素为单位的;
+
+            如果一个项目, 屏幕长宽设置为: 1920,1080;
+            且 camera 覆盖整个屏幕, 那么本变量的值为: (x:0.00, y:0.00, width:1920.00, height:1080.00)
+        */
         [NativePropertyAttribute("ScreenViewportRect")]
         public Rect pixelRect { get; set; }
-        //
-        // 摘要:
-        //     Get the view projection matrix used on the last frame.
+
+
+
+        //     Get the view-projection-matrix used on the last frame.
         public Matrix4x4 previousViewProjectionMatrix { get; }
-        //
-        // 摘要:
-        //     The distance of the near clipping plane from the the Camera, in world units.
+
+
+
+        //     The distance of the near/far clipping plane from the the Camera, in world units.
         [NativePropertyAttribute("Near")]
         public float nearClipPlane { get; set; }
-        //
-        // 摘要:
-        //     The distance of the far clipping plane from the Camera, in world units.
+
         [NativePropertyAttribute("Far")]
         public float farClipPlane { get; set; }
 
-        public static void CalculateProjectionMatrixFromPhysicalProperties(out Matrix4x4 output, float focalLength, Vector2 sensorSize, Vector2 lensShift, float nearClip, float farClip, GateFitParameters gateFitParameters = default);
-        //
-        // 摘要:
-        //     Converts field of view to focal length. Use either sensor height and vertical
-        //     field of view or sensor width and horizontal field of view.
-        //
+
+        /*
+            Calculates the projection matrix from: 
+                focal length, sensor size, lens shift, near/far plane distance, and Gate fit parameters. 
+                
+            如果不想计入 Gate fit, 可在参数 gateFitParameters.mode 上使用 None;
+
+            参数:
+            output:
+                The calculated matrix. 输出端
+
+            focalLength:
+                Focal length in millimeters. 焦距, 毫米为单位
+
+            sensorSize:
+                Sensor dimensions in Millimeters.
+
+            lensShift:
+                Lens offset relative to the sensor size.
+
+            nearClip:
+            farClip:
+
+            gateFitParameters:
+                Gate fit parameters to use
+                class 内容见本文件底部;
+        */
+        public static void CalculateProjectionMatrixFromPhysicalProperties(
+            out Matrix4x4 output, 
+            float focalLength, 
+            Vector2 sensorSize, 
+            Vector2 lensShift, 
+            float nearClip, 
+            float farClip, 
+            GateFitParameters gateFitParameters = default
+        );
+        
+        
+        /*
+            摘要:
+            Converts fov to focal length(焦距). Use either:
+                -- sensor height and vertical fov 
+                -- sensor width and horizontal fov
+
         // 参数:
         //   fieldOfView:
-        //     field of view in degrees.
+        //     fov in degrees.
         //
         //   sensorSize:
         //     Sensor size in millimeters.
         //
         // 返回结果:
-        //     Focal length in millimeters.
+        //     Focal length in millimeters. 焦距
+        */
         [NativeNameAttribute("FieldOfViewToFocalLength_Safe")]
         public static float FieldOfViewToFocalLength(float fieldOfView, float sensorSize);
-        //
-        // 摘要:
-        //     Converts focal length to field of view.
-        //
+
+
+        /*
+            摘要:
+            Converts focal length(焦距) to fov
+        
         // 参数:
         //   focalLength:
-        //     Focal length in millimeters.
+        //     Focal length in millimeters. 焦距, 毫米为单位
         //
         //   sensorSize:
-        //     Sensor size in millimeters. Use the sensor height to get the vertical field of
-        //     view. Use the sensor width to get the horizontal field of view.
-        //
+        //     Sensor size in millimeters. 
+                Use the sensor height to get the vertical fov;
+                Use the sensor width to get the horizontal fov;
+        
         // 返回结果:
-        //     field of view in degrees.
+        //     fov in degrees.
+        */
         [NativeNameAttribute("FocalLengthToFieldOfView_Safe")]
         public static float FocalLengthToFieldOfView(float focalLength, float sensorSize);
 
@@ -745,51 +896,77 @@ namespace UnityEngine
         public static int GetAllCameras(Camera[] cameras);
 
 
-        //
-        // 摘要:
-        //     Converts the horizontal field of view (FOV) to the vertical FOV, based on the
-        //     value of the aspect ratio parameter.
-        //
+        /*
+            摘要:
+            Converts the horizontal FOV to the vertical FOV, 
+            基于参数 aspectRatio (横纵比,w/h)
+
+        
         // 参数:
-        //   horizontalFOV:
+        //   horizontalFieldOfView:
         //     The horizontal FOV value in degrees.
         //
         //   aspectRatio:
         //     The aspect ratio value used for the conversion
-        //
-        //   horizontalFieldOfView:
+        */
         [NativeNameAttribute("HorizontalToVerticalFieldOfView_Safe")]
         public static float HorizontalToVerticalFieldOfView(float horizontalFieldOfView, float aspectRatio);
+
+        // 和上一个函数相反
+        public static float VerticalToHorizontalFieldOfView(float verticalFieldOfView, float aspectRatio);
+
+
+        // 官方文档中没提及
+        // 也无法才测试中访问此函数
         [FreeFunctionAttribute("CameraScripting::SetupCurrent")]
         public static void SetupCurrent(Camera cur);
-        //
-        // 摘要:
-        //     Converts the vertical field of view (FOV) to the horizontal FOV, based on the
-        //     value of the aspect ratio parameter.
-        //
-        // 参数:
-        //   verticalFieldOfView:
-        //     The vertical FOV value in degrees.
-        //
-        //   aspectRatio:
-        //     The aspect ratio value used for the conversion
-        public static float VerticalToHorizontalFieldOfView(float verticalFieldOfView, float aspectRatio);
-        //
-        // 摘要:
-        //     Add a command buffer to be executed at a specified place.
-        //
+
+
+        /*
+            摘要:
+            Add a command buffer to be executed at a specified place.
+
+            Multiple command buffers can be set to execute at the same camera event 
+            (or even the same buffer can be added multiple times)
+        
         // 参数:
         //   evt:
         //     When to execute the command buffer during rendering.
         //
         //   buffer:
         //     The buffer to execute.
+        */
         public void AddCommandBuffer(CameraEvent evt, CommandBuffer buffer);
-        //
-        // 摘要:
-        //     Adds a command buffer to the GPU's async compute queues and executes that command
-        //     buffer when graphics processing reaches a given point.
-        //
+
+
+        /*
+            摘要:
+            Adds a command buffer to the "GPU's async compute queues" and executes that command
+            buffer when graphics processing reaches a given point.
+        
+            Multiple command buffers can be set to execute at the same camera event 
+            (or even the same buffer can be added multiple times).
+
+            在 "async compute queues" 上, command buffer 只能调用以下指令:
+            (否则将报错)
+            -- CommandBuffer.BeginSample
+            -- CommandBuffer.CopyCounterValue
+            -- CommandBuffer.CopyTexture
+            -- CommandBuffer.CreateGPUFence
+            -- CommandBuffer.DispatchCompute
+            -- CommandBuffer.EndSample
+            -- CommandBuffer.IssuePluginEvent
+            -- CommandBuffer.SetComputeBufferParam
+            -- CommandBuffer.SetComputeFloatParam
+            -- CommandBuffer.SetComputeFloatParams
+            -- CommandBuffer.SetComputeTextureParam
+            -- CommandBuffer.SetComputeVectorParam
+            -- CommandBuffer.WaitOnGPUFence
+
+            此 command buffer 传递的所有 治理, 都被保证在同一个 queue 上执行;
+            如果目标平台不支持 async compute queues,
+            那么这些工作将被 派遣到 graphics queue;
+
         // 参数:
         //   evt:
         //     The point during the graphics processing at which this command buffer should
@@ -800,30 +977,101 @@ namespace UnityEngine
         //
         //   queueType:
         //     The desired async compute queue type to execute the buffer on.
+        */
         public void AddCommandBufferAsync(CameraEvent evt, CommandBuffer buffer, ComputeQueueType queueType);
+
+
+        /*
+            此函数自动计算出 4个 rays 方向向量, 从 camera 射向目标平面(比如 far plane) 的四个角落;
+            平截头体张开的角度则由第一参数: viewport 来控制;
+
+            4个 rays 顺序为: bottom-left, top-left, top-right, bottom-right;
+
+            计算出的 rays, 位于 camera-space;
+                假设 viewport 为 (0,0,1,1) ( full screen)
+                且 FOV = 60度, far depth = 1000; 
+                则计算出的 rays 会是类似于:
+                {
+                    { -1026.4, -577.4, 1000 },
+                    { -1026.4,  577.4, 1000 },
+                    {  1026.4,  577.4, 1000 },
+                    {  1026.4, -577.4, 1000 }
+                }
+                可手工验证上述值;
+                ----
+
+                所以, 必须要在此返回值基础上, 累加上 camera 的 posWS 和 朝向,
+                才能进一步计算出这四个 ray 的 world-space 空间中的表达;
+
+            可用来高效计算 the posWS of a pixel in an image effect shader. 
+            此函数被 built-in 管线用于 fog 计算;
+
+            参数:
+            viewport:
+                Normalized viewport coordinates to use for the frustum calculation.
+                选择屏幕中的哪一块, 选择整个屏幕就写入: x=0,y=0,w=1,h=1
+            z:
+                Z-depth from the camera origin at which the corners will be calculated.
+                射线射到的那个平面, 距离camera 的深度值, 比如 far plane 深度值;
+            eye:
+                Camera eye projection matrix to use.
+                catlike 中选择使用: camera.stereoActiveEye;
+
+            outCorners:
+                输出端
+                Output array for the frustum corner vectors. Cannot be null and length must be >= 4.
+                out rays;
+
+
+        */
         public void CalculateFrustumCorners(Rect viewport, float z, MonoOrStereoscopicEye eye, Vector3[] outCorners);
-        //
-        // 摘要:
-        //     Calculates and returns oblique near-plane projection matrix.
-        //
+
+
+        /*
+            摘要:
+            Calculates and returns oblique near-plane projection matrix.
+
+            Given a clip plane vector, 本函数返回 camera's projection matrix 
+            which has this clip plane set as its near plane.
+
+            "Oblique View Frustum":
+                近平面是一个自定义的 斜向的面;
+                通常使用此技术来克服 平面反射(倒影) 中的一些小bug;
+                参见:
+                https://blog.csdn.net/a1047120490/article/details/106743734
+
         // 参数:
         //   clipPlane:
-        //     Vector4 that describes a clip plane.
+        //     Vector4 that describes a clip plane.  剪切平面
         //
         // 返回结果:
         //     Oblique near-plane projection matrix.
+        */
         [FreeFunctionAttribute("CameraScripting::CalculateObliqueMatrix", HasExplicitThis = true)]
         public Matrix4x4 CalculateObliqueMatrix(Vector4 clipPlane);
-        //
-        // 摘要:
-        //     Makes this camera's settings match other camera.
-        //
+
+
+        /*
+            摘要:
+            Makes this camera's settings match other camera.
+        
+            This will copy all camera's variables:
+            (field of view, clear flags, culling mask, ...) from the other camera. 
+             
+            It will also set this camera's transform to match the other camera, 
+            as well as this camera's layer to match the layer of the other camera.
+
+            当使用 Camera.RenderWithShader() 时, 可能会用到本函数
+
         // 参数:
         //   other:
-        //     Copy camera settings to the other camera.
+        //     数据源
+        */
         [FreeFunctionAttribute("CameraScripting::CopyFrom", HasExplicitThis = true)]
         public void CopyFrom(Camera other);
-        public void CopyStereoDeviceProjectionMatrixToNonJittered(StereoscopicEye eye);
+
+
+        public void CopyStereoDeviceProjectionMatrixToNonJittered(StereoscopicEye eye);// vr
 
 
         /*
@@ -833,7 +1081,7 @@ namespace UnityEngine
         */
 
 
-        //
+        
         // 摘要:
         //     Get command buffers to be executed at a specified place.
         //
@@ -845,27 +1093,36 @@ namespace UnityEngine
         //     Array of command buffers.
         [FreeFunctionAttribute("CameraScripting::GetCommandBuffers", HasExplicitThis = true)]
         public CommandBuffer[] GetCommandBuffers(CameraEvent evt);
-        //
-        // 摘要:
-        //     Retrieves the effective vertical field of view of the camera, including GateFit.
-        //     Fitting the sensor gate and the resolution gate has an impact on the final field
-        //     of view. If the sensor gate aspect ratio is the same as the resolution gate aspect
-        //     ratio or if the camera is not in physical mode, then this method returns the
-        //     same value as the fieldofview property.
-        //
+
+
+        /*
+            摘要:
+            Retrieves the "effective vertical fov" of the camera, including GateFit.
+            适配  sensor gate 和 resolution gate 会对最终的 fov 产生影响;
+        
+            If the "sensor gate 横纵比" 等于 "resolution gate 横纵比", 或者 camera 不在 physical mode,
+            则本函数返回的值和 "Camera.fieldOfView" 一样;
+
         // 返回结果:
-        //     Returns the effective vertical field of view.
+        //     Returns the "effective vertical fov"
+        */
         public float GetGateFittedFieldOfView();
-        //
-        // 摘要:
-        //     Retrieves the effective lens offset of the camera, including GateFit. Fitting
-        //     the sensor gate and the resolution gate has an impact on the final obliqueness
-        //     of the projection. If the sensor gate aspect ratio is the same as the resolution
-        //     gate aspect ratio, then this method returns the same value as the lenshift property.
-        //     If the camera is not in physical mode, then this methods returns Vector2.zero.
-        //
+
+
+
+        /*
+            摘要:
+            Retrieves the effective lens offset of the camera, including GateFit. 
+            适配  sensor gate 和 resolution gate 会对最终的 fov 产生影响;
+
+            if the "sensor gate 横纵比" 等于 "resolution gate 横纵比",
+            则本函数返回的值和 "Camera.lensShift" 一样;
+
+            如果 camera 不在 physical mode, 则返回 Vector2.zero.
+
         // 返回结果:
-        //     Returns the effective lens shift value.
+        //     Returns the "effective lens shift value"
+        */
         public Vector2 GetGateFittedLensShift();
 
 
@@ -879,7 +1136,7 @@ namespace UnityEngine
         */
 
 
-        public Matrix4x4 GetStereoNonJitteredProjectionMatrix(StereoscopicEye eye);
+        public Matrix4x4 GetStereoNonJitteredProjectionMatrix(StereoscopicEye eye);// vr
 
 
         /*
@@ -890,7 +1147,7 @@ namespace UnityEngine
 
 
         [FreeFunctionAttribute("CameraScripting::GetStereoProjectionMatrix", HasExplicitThis = true)]
-        public Matrix4x4 GetStereoProjectionMatrix(StereoscopicEye eye);
+        public Matrix4x4 GetStereoProjectionMatrix(StereoscopicEye eye);// vr
 
 
         /*
@@ -902,89 +1159,168 @@ namespace UnityEngine
 
 
         [FreeFunctionAttribute("CameraScripting::GetStereoViewMatrix", HasExplicitThis = true)]
-        public Matrix4x4 GetStereoViewMatrix(StereoscopicEye eye);
-        //
-        // 摘要:
-        //     Remove all command buffers set on this camera.
+        public Matrix4x4 GetStereoViewMatrix(StereoscopicEye eye);// vr
+
+
+
+
+        // Remove all command buffers set on this camera.
         public void RemoveAllCommandBuffers();
-        //
-        // 摘要:
-        //     Remove command buffer from execution at a specified place.
-        //
+
+
+
+        /*
+            摘要:
+            Remove command buffer from execution at a specified place.
+
+            If the same buffer is added multiple times on this camera event, 
+            all occurrences of it will be removed. (全部被移除)
+        
         // 参数:
         //   evt:
         //     When to execute the command buffer during rendering.
         //
         //   buffer:
-        //     The buffer to execute.
+        //     The buffer to execute. 要被移除的
+        */
         public void RemoveCommandBuffer(CameraEvent evt, CommandBuffer buffer);
-        //
-        // 摘要:
-        //     Remove command buffers from execution at a specified place.
-        //
+
+
+        /*
+            摘要:
+            Remove command buffers from execution at a specified place.
+            This function removes all command buffers set on the specified camera event.
+        
         // 参数:
         //   evt:
         //     When to execute the command buffer during rendering.
+        */
         public void RemoveCommandBuffers(CameraEvent evt);
-        //
-        // 摘要:
-        //     Render the camera manually.
+
+
+        /*
+            Render the camera manually.
+
+            This will render the camera. It will use the camera's clear flags, target texture and all other settings.
+
+            The camera will send OnPreCull, OnPreRender and OnPostRender to any scripts attached, 
+            and render any eventual image filters.
+
+            这用于精确控制渲染顺序。
+            To make use of this feature, create a camera and disable it. Then call Render on it.
+
+            如果一个 camera 正在被渲染(它是启用状态的), 那么你是不能对它调用 本函数的;
+            此时你可以新建一个 camera, 调用 camera.CopyFrom() 来复制目标camera 的数据;
+            然后把手头的 camera 设置为 disable, 然后调用本函数 手动渲染它;
+
+            建议查看: Camera.RenderWithShader();
+        */
         [FreeFunctionAttribute("CameraScripting::Render", HasExplicitThis = true)]
         public void Render();
+
+
+        // 文档未提及
         [FreeFunctionAttribute("CameraScripting::RenderDontRestore", HasExplicitThis = true)]
         public void RenderDontRestore();
-        //
-        // 摘要:
-        //     Render into a static cubemap from this camera.
-        //
-        // 参数:
-        //   cubemap:
-        //     The cube map to render to.
-        //
-        //   faceMask:
-        //     A bitmask which determines which of the six faces are rendered to.
-        //
+
+
+        /*
+            摘要:
+            Render into a "static" cubemap from this camera.
+        
+            本函数主要在 editor 中被用于: "baking" static cubemaps of your Scene. 
+            (文档提供了一个 代码示范)
+            
+            If you want a realtime-updated cubemap, 请改用下方 RenderTexture 版本的;
+
+            Camera's position, clear flags and clipping plane distances 
+            will be used to render into cubemap faces. 
+
+            一些硬件不支持本函数;
+
+            注意:
+                ReflectionProbes 是一种更高效的实现 实时反射的 方法;
+
+            参数:
+            cubemap:
+                The cube map to render to.
+            
+            faceMask:
+                A bitmask which determines which of the six faces are rendered to.
+                Each bit that is set corresponds to a face;
+                Bit numbers are integer values of CubemapFace enum.
+                By default all six cubemap faces will be rendered 
+                (default value 63 has six lowest bits on).
+        
         // 返回结果:
         //     False if rendering fails, else true.
+        */
         public bool RenderToCubemap(Cubemap cubemap, int faceMask);
         public bool RenderToCubemap(Cubemap cubemap);
-        //
-        // 摘要:
-        //     Render into a cubemap from this camera.
-        //
-        // 参数:
-        //   faceMask:
-        //     A bitfield indicating which cubemap faces should be rendered into.
-        //
-        //   cubemap:
-        //     The texture to render to.
-        //
-        // 返回结果:
-        //     False if rendering fails, else true.
+
+        /*
+            可以渲染进一个 动态的实时的 cubemap;
+
+            这往往很昂贵, 尤其是当在一帧中集中完成6个面的渲染时;
+
+            注意:
+                参数 RenderTexture 的 dimension 必须设置为 Cube 模式. 
+
+
+            额外参数:
+                stereoEye:
+                    A Camera eye corresponding to the left or right eye for stereoscopic rendering, 
+                    or neither for non-stereoscopic rendering.
+
+                    这个版本有额外的解释, 此处未翻译... 
+        */
         public bool RenderToCubemap(RenderTexture cubemap, int faceMask);
         public bool RenderToCubemap(RenderTexture cubemap);
-        public bool RenderToCubemap(RenderTexture cubemap, int faceMask, MonoOrStereoscopicEye stereoEye);
-        //
-        // 摘要:
-        //     Render the camera with shader replacement.
-        //
+        public bool RenderToCubemap(RenderTexture cubemap, int faceMask, MonoOrStereoscopicEye stereoEye);//vr
+
+
+
+
+        /*
+            摘要:
+            Render the camera with shader replacement.
+
+            This will render the camera. It will use the camera's clear flags, target texture and all other settings.
+
+            The camera will "not" send OnPreCull, OnPreRender or OnPostRender to attached scripts.
+            Image filters will "not: be rendered either.
+
+            本函数用于特殊功能: 
+            -- rendering screenspace normal buffer of the whole Scene
+            -- heat vision (热视觉)
+
+            To make use of this feature, usually you create a camera and disable it. Then call RenderWithShader on it.
+
+            如果一个 camera 正在被渲染(它是启用状态的), 那么你是不能对它调用 本函数的;
+            此时你可以新建一个 camera, 调用 camera.CopyFrom() 来复制目标camera 的数据;
+            然后把手头的 camera 设置为 disable, 然后调用本函数 手动渲染它;
+
         // 参数:
         //   shader:
         //
         //   replacementTag:
+        */
         [FreeFunctionAttribute("CameraScripting::RenderWithShader", HasExplicitThis = true)]
         public void RenderWithShader(Shader shader, string replacementTag);
-        //
-        // 摘要:
+
+
+
         //     Revert all camera parameters to default.
         public void Reset();
-        //
-        // 摘要:
-        //     Revert the aspect ratio to the screen's aspect ratio.
+
+
+        //  Revert the aspect ratio to the screen's aspect ratio.
+        //  Call this to end the effect of setting "Camera.aspect"
         public void ResetAspect();
-        //
-        // 摘要:
-        //     Make culling queries reflect the camera's built in parameters.
+
+
+        //  Make culling queries reflect the camera's built in parameters.
+        // 让 culling 查询 返回 camera 的内置参数
         public void ResetCullingMatrix();
 
 
@@ -997,80 +1333,139 @@ namespace UnityEngine
         */
 
 
-        //
-        // 摘要:
+
         //     Make the projection reflect normal camera's parameters.
+        //  Call this to end the effect of setting "Camera.projectionMatrix"
         public void ResetProjectionMatrix();
-        //
-        // 摘要:
+
+
         //     Remove shader replacement from camera.
+        //  Call this to end the effect of setting "Camera.SetReplacementShader()"
         public void ResetReplacementShader();
-        //
-        // 摘要:
+
+
+        
+
         //     Reset the camera to using the Unity computed projection matrices for all stereoscopic
         //     eyes.
-        public void ResetStereoProjectionMatrices();
-        //
-        // 摘要:
+        public void ResetStereoProjectionMatrices();//vr
+
         //     Reset the camera to using the Unity computed view matrices for all stereoscopic
         //     eyes.
-        public void ResetStereoViewMatrices();
-        //
-        // 摘要:
-        //     Resets this Camera's transparency sort settings to the default. Default transparency
-        //     settings are taken from GraphicsSettings instead of directly from this Camera.
+        public void ResetStereoViewMatrices();// vr
+
+
+        /*
+            摘要:
+            Resets this Camera's transparency sort settings to the default. Default transparency
+            settings are taken from GraphicsSettings instead of directly from this Camera.
+
+            Once "Camera.transparencySortMode" or "Camera.transparencySortAxis" are called from the script, 
+            the rendering pipeline ignores the settings in the GraphicsSettings 
+            and takes the settings directly from the Camera.
+
+            Calling this method causes the 管线 to refer to the settings in GraphicsSettings instead of this Camera.
+            (本函数也适用于 SceneView Cameras)
+        */
         public void ResetTransparencySortSettings();
-        //
-        // 摘要:
+
+
+
         //     Make the rendering position reflect the camera's position in the Scene.
+        //   Call this to end the effect of setting "Camera.worldToCameraMatrix"
         public void ResetWorldToCameraMatrix();
-        //
-        // 摘要:
-        //     Returns a ray going from camera through a screen point.
-        //
+
+
+        /*
+            摘要:
+             Returns a ray going from camera through a screen point.
+
+             Resulting ray is in world space, starting on the near plane of the camera 
+             and going through position's (x,y) pixel coordinates on the screen (position.z is ignored).
+        
+        
         // 参数:
         //   eye:
-        //     Optional argument that can be used to specify which eye transform to use. Default
-        //     is Mono.
+        //     Optional argument that can be used to specify which eye transform to use. Default is Mono.
         //
         //   pos:
+                猜测是 posSS, 使用了 xy值, z值被忽略;
+                Screenspace is defined in pixels. 
+                    The bottom-left of the screen is (0,0); 
+                    the right-top is (pixelWidth -1,pixelHeight -1).
+        */
         public Ray ScreenPointToRay(Vector3 pos);
-        public Ray ScreenPointToRay(Vector3 pos, MonoOrStereoscopicEye eye);
-        //
-        // 摘要:
-        //     Transforms position from screen space into viewport space.
-        //
+        public Ray ScreenPointToRay(Vector3 pos, MonoOrStereoscopicEye eye);//vr
+
+
+        /*
+            摘要:
+            Transforms position from screen-space into viewport-space.
+
+            Screenspace is defined in pixels. 
+                The bottom-left of the screen is (0,0); 
+                the right-top is (pixelWidth,pixelHeight). 
+                The z position is in world units from the camera.
+
+            Viewport space is normalized and relative to the camera. 
+                The bottom-left of the camera is (0,0); 
+                the top-right is (1,1). 
+                The z position is in world units from the camera.
+
+
         // 参数:
         //   position:
+                posSS, 具体描述如上;
+        */
         public Vector3 ScreenToViewportPoint(Vector3 position);
-        //
-        // 摘要:
-        //     Transforms a point from screen space into world space, where world space is defined
-        //     as the coordinate system at the very top of your game's hierarchy.
-        //
+
+
+        /*
+            摘要:
+            Transforms a point from screen-space into world-space, 
+           
+            World space coordinates can still be calculated even when provided as an off-screen coordinate, 
+            for example for instantiating an off-screen object near a specific corner of the screen.
+            ---
+            就算传入一个 离屏 参数posSS, 也能计算出对应的 posWS; 不一定要在 屏幕范围内;
+
+            Screenspace is defined in pixels. 
+                The bottom-left of the screen is (0,0); 
+                the right-top is (pixelWidth,pixelHeight). 
+                The z position is in world units from the camera.
+
+
         // 参数:
         //   position:
-        //     A screen space position (often mouse x, y), plus a z position for depth (for
-        //     example, a camera clipping plane).
-        //
+        //      posSS (often mouse x, y), 
+                plus a z position for depth (for example, a camera clipping plane).
+        
         //   eye:
         //     By default, Camera.MonoOrStereoscopicEye.Mono. Can be set to Camera.MonoOrStereoscopicEye.Left
         //     or Camera.MonoOrStereoscopicEye.Right for use in stereoscopic rendering (e.g.,
         //     for VR).
         //
         // 返回结果:
-        //     The worldspace point created by converting the screen space point at the provided
-        //     distance z from the camera plane.
+        //     The posWS created by converting the posSS at the provided distance z from the camera plane.
+        */
         public Vector3 ScreenToWorldPoint(Vector3 position);
-        public Vector3 ScreenToWorldPoint(Vector3 position, MonoOrStereoscopicEye eye);
-        //
-        // 摘要:
-        //     Make the camera render with shader replacement.
-        //
+        public Vector3 ScreenToWorldPoint(Vector3 position, MonoOrStereoscopicEye eye);//vr
+
+
+
+        /*
+            摘要:
+            Make the camera render with shader replacement.
+
+            调用本函数后, camera 会使用替换的 shader 来执行渲染;
+
+            Call "Camera.ResetReplacementShader()" to reset it back to normal rendering.
+
         // 参数:
         //   shader:
         //
         //   replacementTag:
+        */
         public void SetReplacementShader(Shader shader, string replacementTag);
 
 
@@ -1083,7 +1478,7 @@ namespace UnityEngine
         */
 
 
-        public void SetStereoProjectionMatrix(StereoscopicEye eye, Matrix4x4 matrix);
+        public void SetStereoProjectionMatrix(StereoscopicEye eye, Matrix4x4 matrix);//vr
 
 
         /*
@@ -1095,8 +1490,7 @@ namespace UnityEngine
         */
 
 
-
-        public void SetStereoViewMatrix(StereoscopicEye eye, Matrix4x4 matrix);
+        public void SetStereoViewMatrix(StereoscopicEye eye, Matrix4x4 matrix);// vr
 
 
         /*
@@ -1118,108 +1512,180 @@ namespace UnityEngine
         public void SetTargetBuffers(RenderBuffer colorBuffer, RenderBuffer depthBuffer);
 
 
-
+        /*
+            Submit a number of Camera.RenderRequests.
+            This function will only work properly when using a srp.
+        */
         public void SubmitRenderRequests(List<RenderRequest> renderRequests);
 
 
-        public bool TryGetCullingParameters(bool stereoAware, out ScriptableCullingParameters cullingParameters);
+        /*
+            Get culling parameters for a camera.
+
+            参数:
+            cullingParameters:
+                Resultant culling parameters.  输出端;
+               
+
+            stereoAware:
+                Generate single-pass stereo aware culling parameters.
+
+                Both left and right stereo eyes are considered in the generated culling parameters 
+                when stereoAware is true and single-pass stereo is enabled.
+
+            返回值:
+                bool Flag indicating whether culling parameters are valid.
+                Returns false if camera is invalid to render 
+                (empty viewport rectangle, invalid clip plane setup etc.).
+        */
         public bool TryGetCullingParameters(out ScriptableCullingParameters cullingParameters);
+        public bool TryGetCullingParameters(bool stereoAware, out ScriptableCullingParameters cullingParameters);
         
 
 
-        //
-        // 摘要:
-        //     Returns a ray going from camera through a viewport point.
-        //
+        /*
+            摘要:
+            Returns a ray going from camera through a viewport point.
+        
+            Resulting ray is in world space, starting on the near plane of the camera 
+            and going through position's (x,y) coordinates on the viewport (position.z is ignored).
+
+            Viewport coordinates are normalized and relative to the camera. 
+            -- The bottom-left of the camera is (0,0); 
+            -- the top-right is (1,1).
+
         // 参数:
         //   eye:
         //     Optional argument that can be used to specify which eye transform to use. Default
         //     is Mono.
         //
         //   pos:
+                pos-Viewport, 
+        */
         public Ray ViewportPointToRay(Vector3 pos);
-        public Ray ViewportPointToRay(Vector3 pos, MonoOrStereoscopicEye eye);
+        public Ray ViewportPointToRay(Vector3 pos, MonoOrStereoscopicEye eye);//vr
 
 
-        //
-        // 摘要:
-        //     Transforms position from viewport space into screen space.
-        //
+        /*
+            摘要:
+            Transforms position from viewport-space into screen-space.
+        
+            Viewport space is normalized and relative to the camera. 
+            -- The bottom-left of the camera is (0,0); 
+            -- the top-right is (1,1). 
+            -- The z position is in world units from the camera.
+
+            Screenspace is defined in pixels. 
+            -- The bottom-left of the screen is (0,0); 
+            -- the right-top is (pixelWidth,pixelHeight). 
+            -- The z position is in world units from the camera.
+
         // 参数:
-        //   position:
+        //   position: pos-Viewport
+        */
         public Vector3 ViewportToScreenPoint(Vector3 position);
 
 
-        //
-        // 摘要:
-        //     Transforms position from viewport space into world space.
-        //
+        /*
+            摘要:
+            Transforms position from viewport space into world space.
+        
+            Viewport space is normalized and relative to the camera. 
+            -- The bottom-left of the viewport is (0,0); 
+            -- the top-right is (1,1). 
+            -- The z position is in world units from the camera.
+
+            Note that "Camera.ViewportToWorldPoint" transforms an x-y screen position into a x-y-z position in 3D space.
+
+            Provide the function with a vector where the x-y components are the screen coordinates 
+            and the z component is the distance of the resulting plane from the camera.
+
         // 参数:
         //   position:
         //     The 3d vector in Viewport space.
         //
         // 返回结果:
         //     The 3d vector in World space.
+        */
         public Vector3 ViewportToWorldPoint(Vector3 position);
-        public Vector3 ViewportToWorldPoint(Vector3 position, MonoOrStereoscopicEye eye);
+        public Vector3 ViewportToWorldPoint(Vector3 position, MonoOrStereoscopicEye eye);//vr
         
 
-        //
-        // 摘要:
-        //     Transforms position from world space into screen space.
-        //
+        /*
+            摘要:
+            Transforms position from world space into screen space.
+        
+            Screenspace is defined in pixels. 
+            -- The bottom-left of the screen is (0,0); 
+            -- the right-top is (pixelWidth,pixelHeight). 
+            -- The z position is in world units from the camera.
+
         // 参数:
         //   eye:
         //     Optional argument that can be used to specify which eye transform to use. Default
         //     is Mono.
         //
         //   position:
+        */
         public Vector3 WorldToScreenPoint(Vector3 position);
-        public Vector3 WorldToScreenPoint(Vector3 position, MonoOrStereoscopicEye eye);
+        public Vector3 WorldToScreenPoint(Vector3 position, MonoOrStereoscopicEye eye);//vr
 
         
-        //
-        // 摘要:
-        //     Transforms position from world space into viewport space.
-        //
+        /*
+            摘要:
+            Transforms position from world space into viewport space.
+        
+            Viewport space is normalized and relative to the camera. 
+            -- The bottom-left of the camera is (0,0); 
+            -- the top-right is (1,1). 
+            -- The z position is in world units from the camera.
+
         // 参数:
         //   eye:
         //     Optional argument that can be used to specify which eye transform to use. Default
         //     is Mono.
         //
         //   position:
-        public Vector3 WorldToViewportPoint(Vector3 position, MonoOrStereoscopicEye eye);
+        */
         public Vector3 WorldToViewportPoint(Vector3 position);
+        public Vector3 WorldToViewportPoint(Vector3 position, MonoOrStereoscopicEye eye);//vr
 
-        //
-        // 摘要:
-        //     Enum used to specify how the sensor gate (sensor frame) defined by Camera.sensorSize
-        //     fits into the resolution gate (render frame).
+
+
+        /*
+            摘要:
+            Enum used to specify how the sensor gate (sensor frame) defined by Camera.sensorSize
+            fits into the resolution gate (render frame).
+
+            定义了 sensor gate 是如何适配到 resolution gate 的;
+        */
         public enum GateFitMode
         {
-            //
-            // 摘要:
-            //     Stretch the sensor gate to fit exactly into the resolution gate.
+            
+            //  Stretch the sensor gate to fit exactly into the resolution gate.
+            //  拉伸 resolution gate, 让它的长宽完全等于 resolution gate 的长宽;
             None = 0,
-            //
-            // 摘要:
-            //     Fit the resolution gate vertically within the sensor gate.
+            
+            //  Fit the resolution gate "vertically" within the sensor gate.
+            //  猜测: 让 resolution gate 的 高度 等同于 sensor gate 的;
             Vertical = 1,
-            //
-            // 摘要:
-            //     Fit the resolution gate horizontally within the sensor gate.
+            
+            //  Fit the resolution gate "horizontally" within the sensor gate.
+            //  猜测: 让 resolution gate 的 宽度 等同于 sensor gate 的;
             Horizontal = 2,
-            //
-            // 摘要:
-            //     Automatically selects a horizontal or vertical fit so that the sensor gate fits
-            //     completely inside the resolution gate.
+            
+            //  Automatically selects a horizontal or vertical fit so that the "sensor gate" fits
+            //  completely inside the resolution gate.
+            //  resolution gate 完全位于 sensor gate 体内, 且尺寸最大;
             Fill = 3,
-            //
-            // 摘要:
-            //     Automatically selects a horizontal or vertical fit so that the render frame fits
-            //     completely inside the resolution gate.
+            
+            //  Automatically selects a horizontal or vertical fit so that the "render frame" fits
+            //  completely inside the resolution gate.
+            //  没看懂... 
             Overscan = 4
         }
+
+
 
 
         //
@@ -1242,7 +1708,7 @@ namespace UnityEngine
         //
         // 摘要:
         //     Enum used to specify either the left or the right eye of a stereoscopic camera.
-        public enum StereoscopicEye
+        public enum StereoscopicEye//vr
         {
             //
             // 摘要:
@@ -1265,7 +1731,7 @@ namespace UnityEngine
         //     passed into a function. The default value is Camera.MonoOrStereoscopicEye.Left,
         //     so Camera.MonoOrStereoscopicEye.Left may be returned by some methods or properties
         //     when called outside of rendering if stereoscopic rendering is enabled.
-        public enum MonoOrStereoscopicEye
+        public enum MonoOrStereoscopicEye//vr
         {
             //
             // 摘要:
@@ -1280,156 +1746,207 @@ namespace UnityEngine
             //     Camera eye corresponding to non-stereoscopic rendering.
             Mono = 2
         }
-        //
-        // 摘要:
-        //     Modes available for submitting when making a render request.
+
+
+
+        /*
+            Modes available for submitting when making a render request.
+        */
         public enum RenderRequestMode
         {
-            //
-            // 摘要:
+            
             //     Default value for a request.
+            // Outputs a buffer that has no defined value.
             None = 0,
-            //
-            // 摘要:
+            
             //     The render request outputs an object InstanceID buffer.
+            //  Outputs a buffer that maps the the UnityEngine.Object.GetInstanceID() at each pixel.
             ObjectId = 1,
-            //
-            // 摘要:
+            
             //     The render request outputs a depth value.
+            //  Outputs a buffer that maps the the depth value at each pixel. 
+            //  The buffer will be generated from the camera used in the request.
             Depth = 2,
-            //
-            // 摘要:
-            //     The render request outputs the interpolated vertex normal.
+
+            /*
+                The render request outputs the interpolated vertex normal.
+
+                It outputs a buffer that maps the the vertex normalWS (不是法线贴图)) at each pixel. 
+                The normal is stored as an rgb value, packed to 0...1 range. 
+                Alpha is undefined. 
+                It can be unpacked using normal = packedNormal * 2.0F - 1.0F. 
+                The buffer will be generated from the camera used in the request.
+            */
             VertexNormal = 3,
-            //
-            // 摘要:
-            //     The render request outputs a world position buffer.
+
+            /*
+                The render request outputs a world position buffer.
+
+                Outputs a buffer that maps the the WorldPosition (RGB) at each pixel. 
+                    Alpha=1 means the position is valid. 
+                    Alpha=0 means it is invalid. 
+                    
+                GraphicsFormat.R32G32B32A32_SFloat is recommended as the render texture format.
+            */
             WorldPosition = 4,
-            //
-            // 摘要:
-            //     The render request outputs an entity id.
+
+            /*
+                The render request outputs an entity id.
+
+                Outputs a buffer that maps the the "DOTS entity ID" at each pixel. 
+                The buffer will be generated from the camera used in the request.
+            */
             EntityId = 5,
-            //
-            // 摘要:
-            //     The render request outputs the materials albedo / base color.
+
+            /*
+                The render request outputs the materials albedo / base color.
+
+                Outputs a buffer that maps the "albedo / base RGB color" at each pixel. 
+                Alpha is undefined. 
+                该值将与 metallic workflow 中的 PBR Base Color 匹配，与 material or shader 无关。
+                The buffer will be generated from the camera used in the request.
+            */
             BaseColor = 6,
-            //
-            // 摘要:
-            //     The render request returns the materials specular color buffer.
+
+            /*
+                The render request returns the materials specular color buffer.
+
+                Outputs a buffer that maps the specular RGB color at each pixel. Alpha is undefined. 
+                该值将与 specular workflow 中的 PBR Base Color 匹配，与 material or shader 无关。
+                The buffer will be generated from the camera used in the request.
+            */
             SpecularColor = 7,
-            //
-            // 摘要:
-            //     The render outputs the materials metal value.
+
+            /*
+                The render outputs the materials metal value.
+
+                Outputs a buffer that maps the materials metallic value to a grayscale RGB value at each pixel. 
+                Alpha is undefined. 
+                该值将与 metallic workflow 中的 PBR Base Color 匹配，与 material or shader 无关。
+                The buffer will be generated from the camera used in the request.
+            */
             Metallic = 8,
-            //
-            // 摘要:
-            //     The render request outputs the materials emission value.
+
+            /*
+                The render request outputs the materials emission value.
+
+                Outputs a buffer that maps the materials RGB emission color at each pixel. 
+                Alpha is undefined. 
+                The buffer will be generated from the camera used in the request.
+            */
             Emission = 9,
-            //
-            // 摘要:
-            //     The render request outputs the per pixel normal.
+
+            /*
+                The render request outputs the per pixel normal.
+
+                Outputs a buffer that maps the the normalWS (including normal map) at each pixel. 
+                The normal is stored as an rgb value, packed to 0...1 range. 
+                It can be unpacked using normal = packedNormal * 2.0F - 1.0F. 
+                Alpha is undefined. 
+                The buffer will be generated from the camera used in the request.
+            */
             Normal = 10,
-            //
-            // 摘要:
-            //     The render request returns the materials smoothness buffer.
+
+            /*
+                The render request returns the materials smoothness buffer.
+
+                Outputs a buffer that maps the material smoothness value of the material 
+                to a grayscale RGB value at each pixel. Alpha is undefined. 
+                The buffer will be generated from the camera used in the request.
+            */
             Smoothness = 11,
-            //
-            // 摘要:
-            //     The render request returns the material ambient occlusion buffer.
+
+            /*
+                The render request returns the material ambient occlusion buffer.
+
+                Outputs a buffer that maps the ambient occlusion value of the material 
+                to a grayscale RGB value at each pixel. Alpha is undefined. 
+                The buffer will be generated from the camera used in the request.
+            */
             Occlusion = 12,
-            //
-            // 摘要:
-            //     The render request outputs the materials diffuse color.
+
+            /*
+                The render request outputs the materials diffuse color.
+
+                Outputs a buffer that maps the diffuse RGB color at each pixel. Alpha is undefined. 
+                该值将与 specular workflow 中的 PBR Diffuse Color 匹配，与 material or shader 无关。
+                The buffer will be generated from the camera used in the request.
+            */
             DiffuseColor = 13
         }
-        //
-        // 摘要:
-        //     Defines in which space render requests will be be outputted.
+
+        /*
+            Defines in which space render requests will be be outputted.
+            Default is ScreenSpace, but it is also possible to output in UV space.
+        */
         public enum RenderRequestOutputSpace
         {
-            //
-            // 摘要:
             //     RenderRequests will be rendered in screenspace from the perspective of the camera.
             ScreenSpace = -1,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 0 space of the rendered mesh.
             UV0 = 0,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 1 space of the rendered mesh.
             UV1 = 1,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 2 space of the rendered mesh.
             UV2 = 2,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 3 space of the rendered mesh.
             UV3 = 3,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 4 space of the rendered mesh.
             UV4 = 4,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 5 space of the rendered mesh.
             UV5 = 5,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 6 space of the rendered mesh.
             UV6 = 6,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 7 space of the rendered mesh.
             UV7 = 7,
-            //
-            // 摘要:
             //     RenderRequests will be outputted in UV 8 space of the rendered mesh.
             UV8 = 8
         }
 
-        //
-        // 摘要:
+
         //     Wrapper for gate fit parameters
         public struct GateFitParameters
         {
             public GateFitParameters(GateFitMode mode, float aspect);
 
-            //
-            // 摘要:
-            //     GateFitMode to use. See Camera.GateFitMode.
+            //     GateFitMode to use
             public GateFitMode mode { readonly get; set; }
-            //
-            // 摘要:
-            //     Aspect ratio of the resolution gate.
+        
+            //     Aspect ratio (横纵比,w/h) of the resolution gate.
             public float aspect { readonly get; set; }
         }
-        //
-        // 摘要:
-        //     A request that can be used for making specific rendering requests.
+
+
+
+        /*
+            A request that can be used for making specific rendering requests.
+
+            You can use a RenderRequest and Camera.ProcessRenderRequests() 
+            to request a specific set of RenderRexture resuls. 
+            
+            This is useful for custom scene tooling and baking.
+        */
         public struct RenderRequest
         {
             public RenderRequest(RenderRequestMode mode, RenderTexture rt);
             public RenderRequest(RenderRequestMode mode, RenderRequestOutputSpace space, RenderTexture rt);
 
-            //
-            // 摘要:
-            //     Is this request properly formed.
+            //     Is this request properly formed. 此请求的格式是否正确。
             public bool isValid { get; }
-            //
-            // 摘要:
+            
             //     The type of request.
             public RenderRequestMode mode { get; }
-            //
-            // 摘要:
+            
             //     The result of the request.
+            // When the request is submitted this render texture will have the reult.
             public RenderTexture result { get; }
-            //
-            // 摘要:
+
             //     Defines in which space render requests will be be outputted.
+            //  Default is ScreenSpace, but it is also possible to output in UV space.
             public RenderRequestOutputSpace outputSpace { get; }
         }
+
+
 
         
         // 摘要:
