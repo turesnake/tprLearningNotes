@@ -48,9 +48,11 @@ namespace UnityEngine
     {
 
         /*
-        // 摘要:
-        //     Creates a new RenderTexture object.
-        //
+            摘要:
+            Creates a new RenderTexture object.
+        
+
+
         // 参数:
         //   width:
         //     Texture width in pixels.
@@ -67,7 +69,7 @@ namespace UnityEngine
         //
         //   readWrite:
         //     How or if color space conversions should be done on texture read/write.
-        //
+        
         //   desc:
         //     Create the RenderTexture with the settings in the RenderTextureDescriptor.
         //
@@ -76,16 +78,16 @@ namespace UnityEngine
         */
         public RenderTexture(RenderTexture textureToCopy);
         public RenderTexture(RenderTextureDescriptor desc);
-        [ExcludeFromDocs]
-        public RenderTexture(int width, int height, int depth);
         public RenderTexture(int width, int height, int depth, GraphicsFormat format);
-        [ExcludeFromDocs]
-        public RenderTexture(int width, int height, int depth, RenderTextureFormat format);
         public RenderTexture(int width, int height, int depth, DefaultFormat format);
-        [ExcludeFromDocs]
-        public RenderTexture(int width, int height, int depth, RenderTextureFormat format, int mipCount);
         public RenderTexture(int width, int height, int depth, [Internal.DefaultValue("RenderTextureFormat.Default")] RenderTextureFormat format, [Internal.DefaultValue("RenderTextureReadWrite.Default")] RenderTextureReadWrite readWrite);
         public RenderTexture(int width, int height, int depth, GraphicsFormat format, int mipCount);
+
+        [ExcludeFromDocs]public RenderTexture(int width, int height, int depth);
+        [ExcludeFromDocs]public RenderTexture(int width, int height, int depth, RenderTextureFormat format);
+        [ExcludeFromDocs]public RenderTexture(int width, int height, int depth, RenderTextureFormat format, int mipCount);
+
+
 
         [RequiredByNativeCodeAttribute]
         protected internal RenderTexture();
@@ -166,8 +168,25 @@ namespace UnityEngine
         public bool useMipMap { get; set; }
 
         
-        // 摘要:
-        //     Does this render texture use sRGB read/write conversions? (Read Only).
+        /*
+            Does this render texture use "sRGB read/write conversions"? (Read Only).
+
+            猜测:
+                true - 表示开启了 "sRGB read/write conversions" 功能;
+
+            如果当前程序选择了 线性颜色空间, 且此值为 true, 那么:
+            -- fs输出的数据(linear) 将会执行 linear->sRGB 转换后, 再写入 render texture
+                render texture 中存储的数据通常为 sRGB 形式;
+
+            -- 如果想从 render texture 中获取数据(采样), rt 也会先自动执行 sRGB->linear 转换;
+                然后这个 linear数据 再去被采样;
+                毕竟代码端 工作在 linear 空间; 
+            
+            本变量是只读的, 它的值就是 构造函数中参数 "readWrite" 的值;
+            tpr:
+                我们注意到, "RenderTexture.GetTemporary()" 也有相同的参数;
+                也能设置此功能;
+        */
         [NativePropertyAttribute("SRGBReadWrite")]
         public bool sRGB { get; }
 
@@ -341,10 +360,10 @@ namespace UnityEngine
         //
         //   format:
         //     Render texture format.
-        //
+        
         //   readWrite:
         //     Color space conversion mode.
-        //
+
         //   antiAliasing:
         //     Number of antialiasing samples to store in the texture. Valid values are 1, 2,
         //     4, and 8. Throws an exception if any other value is passed.
@@ -359,32 +378,20 @@ namespace UnityEngine
         //
         //   useDynamicScale:
         */
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing, RenderTextureMemoryless memorylessMode);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing, RenderTextureMemoryless memorylessMode);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing, RenderTextureMemoryless memorylessMode, VRTextureUsage vrUsage);
-        public static RenderTexture GetTemporary(int width, int height, [Internal.DefaultValue("0")] int depthBuffer, [Internal.DefaultValue("RenderTextureFormat.Default")] RenderTextureFormat format, [Internal.DefaultValue("RenderTextureReadWrite.Default")] RenderTextureReadWrite readWrite, [Internal.DefaultValue("1")] int antiAliasing, [Internal.DefaultValue("RenderTextureMemoryless.None")] RenderTextureMemoryless memorylessMode, [Internal.DefaultValue("VRTextureUsage.None")] VRTextureUsage vrUsage, [Internal.DefaultValue("false")] bool useDynamicScale);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing);
         public static RenderTexture GetTemporary(RenderTextureDescriptor desc);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing, RenderTextureMemoryless memorylessMode, VRTextureUsage vrUsage);
-        [ExcludeFromDocs]
-        public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, [Internal.DefaultValue("1")] int antiAliasing, [Internal.DefaultValue("RenderTextureMemoryless.None")] RenderTextureMemoryless memorylessMode, [Internal.DefaultValue("VRTextureUsage.None")] VRTextureUsage vrUsage, [Internal.DefaultValue("false")] bool useDynamicScale);
+        public static RenderTexture GetTemporary(int width, int height, [Internal.DefaultValue("0")] int depthBuffer, [Internal.DefaultValue("RenderTextureFormat.Default")] RenderTextureFormat format, [Internal.DefaultValue("RenderTextureReadWrite.Default")] RenderTextureReadWrite readWrite, [Internal.DefaultValue("1")] int antiAliasing, [Internal.DefaultValue("RenderTextureMemoryless.None")] RenderTextureMemoryless memorylessMode, [Internal.DefaultValue("VRTextureUsage.None")] VRTextureUsage vrUsage, [Internal.DefaultValue("false")] bool useDynamicScale);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing, RenderTextureMemoryless memorylessMode);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing, RenderTextureMemoryless memorylessMode);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, RenderTextureFormat format, RenderTextureReadWrite readWrite, int antiAliasing, RenderTextureMemoryless memorylessMode, VRTextureUsage vrUsage);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, int antiAliasing, RenderTextureMemoryless memorylessMode, VRTextureUsage vrUsage);
+        [ExcludeFromDocs]public static RenderTexture GetTemporary(int width, int height, int depthBuffer, GraphicsFormat format, [Internal.DefaultValue("1")] int antiAliasing, [Internal.DefaultValue("RenderTextureMemoryless.None")] RenderTextureMemoryless memorylessMode, [Internal.DefaultValue("VRTextureUsage.None")] VRTextureUsage vrUsage, [Internal.DefaultValue("false")] bool useDynamicScale);
         
 
         /*

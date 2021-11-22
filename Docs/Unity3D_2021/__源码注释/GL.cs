@@ -41,10 +41,40 @@ namespace UnityEngine
 
         public GL();
 
-        //
-        // 摘要:
-        //     Controls whether Linear-to-sRGB color conversion is performed while rendering.
+
+        /*
+            Controls whether "Linear-to-sRGB color conversion" is performed while rendering.
+
+            只有当设置为 线性颜色空间时, 本变量才起作用;
+
+            Typically when linear color space is used, non-HDR render textures are treated as sRGB data (i.e. "regular colors"), 
+            and fragment shaders outputs are treated as linear color values. 
+            So by default the fragment shader color value is converted into sRGB.
+            --
+            通常, 当设置为 线性颜色空间时, 类型为 non-HDR 的 render texture 会被认为是 sRGB 数据, (比如 "regular colors"), 
+            而 frag shader 的输出值, 则是 线性颜色值,
+            所以默认情况下, frag shader 的 color value 会被转换为 sRGB;
+            猜测:
+                render texture 是 fs 的写入目的地, fs端输出的是 线性数据 (因为程序选用了 线性颜色空间)
+                但 render texture 能容纳的数据确实 sRGB 数据,
+                所以需要把 fs输出的数据, linear->sRGB 转换一下;
+
+            但是, 如果你知道你的 fs 的输出数据就已经是 sRGB 模式了, 不再需要这道 linear->sRGB 转换了,
+            你可使用本变量来 暂时关闭 这个 转换;
+
+            注意:
+            不是所有平台都支持本变量的功能 (关闭 linear->sRGB 转换功能);
+            ( 通常, 移动端的 "tile based" GPU 不支持 )
+            所有这被认为是 不得已而为之的 功能;
+
+            最好的办法是: 在创建 render texture 时, 就设置为 linear 空间,
+            然后就不需要 linear->sRGB 转换 了;
+        */
         public static bool sRGBWrite { get; set; }
+
+
+
+
         //
         // 摘要:
         //     Should rendering be done in wireframe?

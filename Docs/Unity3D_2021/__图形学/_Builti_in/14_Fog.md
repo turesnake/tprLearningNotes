@@ -48,13 +48,7 @@ fog 的参数在 inspector: Lighting - Environment - Other Settings - Fog 区域
     而不是 frag 到 camera 的距离;
 
 
-# ------------------------------:
-# Graphics.Blit(...)
-    复制数据,
 
-void Graphics.Blit( Texture source, RenderTexture dest );
-void Blit(Texture source, RenderTexture dest, Material mat);
-... 更多版本 ...
 
 
 

@@ -339,8 +339,8 @@ namespace UnityEngine
         [FreeFunctionAttribute("Texture2DScripting::PackTextures", HasExplicitThis = true)]
         public Rect[] PackTextures(Texture2D[] textures, int padding, int maximumAtlasSize, bool makeNoLongerReadable);
         public Rect[] PackTextures(Texture2D[] textures, int padding);
-        [ExcludeFromDocs]
-        public void ReadPixels(Rect source, int destX, int destY);
+        
+        [ExcludeFromDocs]public void ReadPixels(Rect source, int destX, int destY);
         //
         // 摘要:
         //     Read pixels from screen into the saved texture data.

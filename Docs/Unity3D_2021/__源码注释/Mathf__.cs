@@ -605,11 +605,9 @@ namespace UnityEngine
             返回值:
                 本帧计算出来的, [current, target] 间的某个值, 表示本帧应该运动到的 pos;
         */
-        [ExcludeFromDocs]
-        public static float SmoothDamp(float current, float target, ref float currentVelocity, float smoothTime, float maxSpeed);
-        [ExcludeFromDocs]
-        public static float SmoothDamp(float current, float target, ref float currentVelocity, float smoothTime);
         public static float SmoothDamp(float current, float target, ref float currentVelocity, float smoothTime, [DefaultValue("Mathf.Infinity")] float maxSpeed, [DefaultValue("Time.deltaTime")] float deltaTime);
+        [ExcludeFromDocs]public static float SmoothDamp(float current, float target, ref float currentVelocity, float smoothTime, float maxSpeed);
+        [ExcludeFromDocs]public static float SmoothDamp(float current, float target, ref float currentVelocity, float smoothTime);
         
         /*
             Gradually changes an angle given in degrees towards a desired goal angle over time.
@@ -618,11 +616,9 @@ namespace UnityEngine
             猜测能正确地搞定 0-360 过度线;
             所以, 参数 current, target, 应该都是 角度值;
         */
-        [ExcludeFromDocs]
-        public static float SmoothDampAngle(float current, float target, ref float currentVelocity, float smoothTime, float maxSpeed);
-        [ExcludeFromDocs]
-        public static float SmoothDampAngle(float current, float target, ref float currentVelocity, float smoothTime);
         public static float SmoothDampAngle(float current, float target, ref float currentVelocity, float smoothTime, [DefaultValue("Mathf.Infinity")] float maxSpeed, [DefaultValue("Time.deltaTime")] float deltaTime);
+        [ExcludeFromDocs]public static float SmoothDampAngle(float current, float target, ref float currentVelocity, float smoothTime, float maxSpeed);
+        [ExcludeFromDocs]public static float SmoothDampAngle(float current, float target, ref float currentVelocity, float smoothTime);
         
         
         /*

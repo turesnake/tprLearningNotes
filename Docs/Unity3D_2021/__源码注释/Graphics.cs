@@ -92,15 +92,59 @@ namespace UnityEngine
         /*
             摘要:
             Copies source texture into destination render texture with a shader.
-        
 
+            Blit 将参数 dest 设置为 render target, 将参数 "source" 设置为 material 的 "_MainTex" property;
+            然后 draws a full-screen quad.
 
+            ====================
+            若向想 screen backbuffer 写入数据:
+            -- built-in 管线:
+                必须确保参数 dest 为 null; 且主camera (Camera.main) 的 "camera.targetTexture" 变量也是 null;
+                因为当 本函数的参数 dest 为 null 时, unity 会去自动使用 "Camera.main.targetTexture" 当作目标地址;
+
+            -- srp 管线:
+                必须在: "RenderPipelineManager.endFrameRendering" 或 "RenderPipelineManager.endContextRendering"
+                这两个回调函数的实现体内, 调用本函数;
+
+            ====================
+            If you want to use a depth or stencil buffer that is part of the "source" (Render)texture
+            --
+            如果 参数 "source" 是个 render texture, 而你想使用它的 depth / stencil buffer:
+                那么你不能直接使用本函数来达到目的, 而应该手动调用一组函数来模拟 Blit 的功能:
+                -1- "Graphics.SetRenderTarget" with "destination color buffer" and "source depth buffer"
+                    调用 "Graphics.SetRenderTarget()", 参数为 dest color buffer 和 src depth buffer;
+                    (为什么这么设置 ? )
+                
+                -2- 调用 "GL.LoadOrtho()" 设置 正交透视模式
+
+                -3- 调用 "Material.SetPass()" 设置 material pass
+
+                -4- 调用 "GL.Begin()" 绘制一个 quad;
+
+            =====================
+            在 线性颜色空间, 设置正确的 sRGB<->Linear 转换 state 是很重要的;
+
+            上一个渲染过程所配置的 state 很可能不是你现在想要的;
+            你应该在调用 Blit() 或任何手动渲染工作之前, 设置 "GL.sRGBWrite" 
+
+            =====================
+            如果将参数 dest 和 source 设置为同一个 render texture, 将导致未定义行为;
+
+                正确的选择是使用一个 自定义 render texture, 它带有 double buffering,
+                ( CustomRenderTexture 这个 class 可以实现 )
+                或者使用两个 render textures 来手动实现 double buffering 功能;
+            
+            =======
+            本函数改写了变量: "RenderTexture.active";
+            如果你希望它不被改写, 你应该在调用本函数之前手动 暂存它, 并在调用后设置回去;
+            
         // 参数:
         //   source:
         //     Source texture.
         //
         //   dest:
         //     The destination RenderTexture. Set this to null to blit directly to screen. 
+                当 dest 为 null 时, unity 会去自动使用 "Camera.main.targetTexture" 当作目标地址;
         //
         //   mat:
         //     Material to use. Material's shader could do some post-processing effect, for example.
@@ -843,8 +887,9 @@ namespace UnityEngine
         //
         //   setup:
         //     Full render target setup information.
-        public static void SetRenderTarget(RenderBuffer[] colorBuffers, RenderBuffer depthBuffer);
         public static void SetRenderTarget(RenderTargetSetup setup);
+        public static void SetRenderTarget(RenderBuffer[] colorBuffers, RenderBuffer depthBuffer);
+        
         public static void SetRenderTarget(
             RenderBuffer colorBuffer, 
             RenderBuffer depthBuffer, 
