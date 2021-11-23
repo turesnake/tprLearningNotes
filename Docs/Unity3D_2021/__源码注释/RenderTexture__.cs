@@ -50,8 +50,6 @@ namespace UnityEngine
         /*
             摘要:
             Creates a new RenderTexture object.
-        
-
 
         // 参数:
         //   width:
@@ -69,6 +67,19 @@ namespace UnityEngine
         //
         //   readWrite:
         //     How or if color space conversions should be done on texture read/write.
+
+                在 Linear 工作流中, 如果想用本 render texture 存储 线性数据, (比如 非颜色值, 或 hdr颜色)
+                可在此变量中选用: RenderTextureReadWrite.Linear;
+                    此时, "RenderTexture.sRGB" 值为 false; (表示不执行任何 sRGB<->linear 转换)
+
+                此变量默认为 "Default", 
+                    在 linear 工作量中, 此模式默认 render texture 是 sRGB 空间的;
+                    此时, "RenderTexture.sRGB" 值为 true; (表示执行 sRGB<->linear 转换)
+
+                在 gamma 工作量中, render texture 是 gamma 空间, 光照计算也是 gamma 空间,
+                    不需要任何 sRGB<->linear 转换,
+                    此时, 本变量默认值 "Default", 意思是 不转换 (详细解释看这个 enum 翻译文件)
+                    且, "RenderTexture.sRGB" 为 false;
         
         //   desc:
         //     Create the RenderTexture with the settings in the RenderTextureDescriptor.
@@ -363,6 +374,19 @@ namespace UnityEngine
         
         //   readWrite:
         //     Color space conversion mode.
+
+                在 Linear 工作流中, 如果想用本 render texture 存储 线性数据, (比如 非颜色值, 或 hdr颜色)
+                可在此变量中选用: RenderTextureReadWrite.Linear;
+                    此时, "RenderTexture.sRGB" 值为 false; (表示不执行任何 sRGB<->linear 转换)
+
+                此变量默认为 "Default", 
+                    在 linear 工作量中, 此模式默认 render texture 是 sRGB 空间的;
+                    此时, "RenderTexture.sRGB" 值为 true; (表示执行 sRGB<->linear 转换)
+
+                在 gamma 工作量中, render texture 是 gamma 空间, 光照计算也是 gamma 空间,
+                    不需要任何 sRGB<->linear 转换,
+                    此时, 本变量默认值 "Default", 意思是 不转换 (详细解释看这个 enum 翻译文件)
+                    且, "RenderTexture.sRGB" 为 false;
 
         //   antiAliasing:
         //     Number of antialiasing samples to store in the texture. Valid values are 1, 2,

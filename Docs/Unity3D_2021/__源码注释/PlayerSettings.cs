@@ -475,7 +475,6 @@ namespace UnityEditor
 
         /*
             Set the rendering color space for the current project.
-
             面板设置: inspector - settings - Player - color space
         */
         public static ColorSpace colorSpace { get; set; }
