@@ -178,10 +178,23 @@ namespace UnityEngine
         public static void Blit(Texture source, Material mat, [Internal.DefaultValue("-1")] int pass);
 
 
-        //
-        // 摘要:
-        //     Copies source texture into destination, for multi-tap shader.
-        //
+        /*
+            摘要:
+            Copies source texture into destination, for "multi-tap shader".
+
+            主要用来实现某些 post-processing 效果, 如:
+            高斯模糊, iterative Cone blurring (迭代锥体模糊), 它们会在 参数 source texture 
+            上的不同位置执行 多次采样;
+
+            本函数
+            将参数 dest 设置为 active render texture,
+            将参数 source 设置为 material 的 "_MainTex" property,
+            然后绘制一个 全屏 quad;
+
+            quad 的每个顶点, 被设置了数个 texture coords, 由参数 offsets 来设置 偏移的像素值;
+
+            本函数和 "Graphics.Blit()" 拥有相同的限制;
+
         // 参数:
         //   source:
         //     Source texture.
@@ -195,26 +208,48 @@ namespace UnityEngine
         //
         //   offsets:
         //     Variable number of filtering offsets. Offsets are given in pixels.
-        //
+                可变数量的过滤偏移, 以像素为单位
+
         //   destDepthSlice:
         //     The texture array destination slice to blit to.
+        */
         public static void BlitMultiTap(Texture source, RenderTexture dest, Material mat, params Vector2[] offsets);
         public static void BlitMultiTap(Texture source, RenderTexture dest, Material mat, int destDepthSlice, params Vector2[] offsets);
         
+
         
-        //
-        // 摘要:
-        //     Clear random write targets for level pixel shaders.
+        /*
+            摘要:
+            Clear "random write targets" for "Shader Model 4.5 的 frag shader"
+
+            This function clears any "random write targets" 
+            that were previously set with "Graphics.SetRandomWriteTarget()";
+        */
         [StaticAccessorAttribute("GetGfxDevice()", Bindings.StaticAccessorType.Dot)]
         public static void ClearRandomWriteTargets();
 
 
-        //
-        // 摘要:
-        //     This function provides an efficient way to convert between textures of different
-        //     formats and dimensions. The destination texture format should be uncompressed
-        //     and correspond to a supported RenderTextureFormat.
-        //
+        /*
+            摘要:
+            This function provides an efficient way to convert between textures of different
+            formats and dimensions. 
+            
+            参数 dst texture 的 format 必须是 未压缩的, 且是一种被支持的 "RenderTextureFormat";
+            
+            此函数只操作 gpu-side 的数据; 使用 "Texture2D.ReadPixels()" to get the pixs from GPU to CPU.
+
+            此函数当前支持 2d, cubemap 为 参数 src 的类型;
+            支持 2D, cubemap, 2D array and cubemap array textures 为参数 dst 类型;
+
+            本函数不支持从 cubemap 向 Texture2D 的转换;
+            它也不支持 render texture, 对于这种情况, 应该改用 "Graphics.Blit()";
+
+            由于 api 的限制, 本函数不支持 dx9, 或 Mac+OpenGL;
+
+            有些平台不支持 某一种 texture 之间的转换; 这是因为本函数内部基于 "Graphics.CopyTexture()" 提供的功能,
+            调用 "SystemInfo.copyTextureSupport" 来检查 当前平台是否支持 你想要的 类型间转换;
+            参考: "Graphics.CopyTexture()" 和 "CopyTextureSupport" (enum class)
+
         // 参数:
         //   src:
         //     Source texture.
@@ -230,14 +265,55 @@ namespace UnityEngine
         //
         // 返回结果:
         //     True if the call succeeded.
+        */
         public static bool ConvertTexture(Texture src, int srcElement, Texture dst, int dstElement);
         public static bool ConvertTexture(Texture src, Texture dst);
 
 
-        //
-        // 摘要:
-        //     Copy texture contents.
-        //
+
+        /*
+            摘要:
+            Copy texture contents.
+            copying pixel data from one texture into another efficiently. 
+
+            可以是复制整个 texture, 也可以复制 cubemap, texture array 的一层, 
+            也可以是复制一层中的 一个区域 (定义区域的起始坐标和长宽)
+
+            注意:
+            这个数据复制, 仅在 GPU 端执行;
+
+            这个复制是不存在任何缩放的, src 的复制区, 和 dst 的接收区, 必须是一模一样大的;
+
+            texture format 必须是兼容的;
+            (比如 "TextureFormat.ARGB32" 和 "RenderTextureFormat.ARGB32" 两者是兼容的 )
+            Exact rules for which formats are compatible vary a bit between graphics APIs;
+            相同的通用类型, 一定是兼容的;
+            再有的平台,比如 d3d11, 你甚至可以在两个 拥有相同 bit width 的 format 之间复制;
+
+            对于那个支持 部分区域复制的 重载版本, "Compressed texture formats" 拥有额外的限制;
+            比如:
+                PVRTC formats are not supported since they are not block-based 
+                (对于这些类型, 你只能复制一整个 texture, 或一整个 mip lvl)
+
+                For block-based formats (e.g. DXT, BCn, ETC), 
+                区域size 和 coords 必须是 "compression block size"(4 pixels for DXT) 的整数倍
+
+
+            如果 src 和 dst texture 都被标记了 "readable"
+            (即, 数据副本 存在于系统内存中，用于在 CPU 上读/写)
+            本函数可以复制它们;
+
+            有些平台可能只包含 复制功能的一部分:
+            ( 比如, 不支持从 render texture 复制到 regular texture )
+
+            查看 "CopyTextureSupport" (enum class)
+            使用 "SystemInfo.copyTextureSupport" 去检查;
+
+            在调用本函数之后调用: "Texture2D.Apply()", "Texture2DArray.Apply()" or "Texture3D.Apply()" 
+            将导致未定义行为; 
+            这是因为本函数仅仅操作于 gpu 端的数据, 
+            而上面的 "Apply" 函数会将数据从 cpu 传递到 gpu;
+
         // 参数:
         //   src:
         //     Source texture.
@@ -276,23 +352,25 @@ namespace UnityEngine
         //
         //   dstY:
         //     Y coordinate of where to copy region in destination texture (bottom is zero).
+        */
         public static void CopyTexture(Texture src, int srcElement, int srcMip, int srcX, int srcY, int srcWidth, int srcHeight, Texture dst, int dstElement, int dstMip, int dstX, int dstY);
         public static void CopyTexture(Texture src, int srcElement, int srcMip, Texture dst, int dstElement, int dstMip);
         public static void CopyTexture(Texture src, int srcElement, Texture dst, int dstElement);
         public static void CopyTexture(Texture src, Texture dst);
 
 
-        //
-        // 摘要:
-        //     Shortcut for calling Graphics.CreateGraphicsFence with GraphicsFenceType.AsyncQueueSynchronization
-        //     as the first parameter.
-        //
+        /*
+            摘要:
+            Shortcut for calling "Graphics.CreateGraphicsFence()" 
+            with "GraphicsFenceType.AsyncQueueSynchronization" as the first parameter.
+        
         // 参数:
         //   stage:
         //     The synchronization stage. See Graphics.CreateGraphicsFence.
         //
         // 返回结果:
         //     Returns a new GraphicsFence.
+        */
         public static GraphicsFence CreateAsyncGraphicsFence([Internal.DefaultValue("SynchronisationStage.PixelProcessing")] SynchronisationStage stage);
         public static GraphicsFence CreateAsyncGraphicsFence();
 
@@ -313,7 +391,47 @@ namespace UnityEngine
         */
 
         
-        public static GraphicsFence CreateGraphicsFence(GraphicsFenceType fenceType, [Internal.DefaultValue("SynchronisationStage.PixelProcessing")] SynchronisationStageFlags stage);
+        /*
+            Creates a GraphicsFence which will be passed after the last:
+                Blit, Clear, Draw, Dispatch or Texture Copy command 
+            prior to this call has been completed on the GPU.
+            --
+            创建一个 GraphicsFence，它将在 GPU 上完成此调用之前的最后一个: 
+            Blit、Clear、Draw、Dispatch 或 Texture Copy 命令之后传递。
+
+            这包括在创建 fence 之前的, 那些来自 CommandBuffer 的立即执行的指令;
+
+            有些平台无法区分 vs的结束 和 fs的结束, 在这样的平台上, fence 总是会在 fs结束之后被传入,
+            同时彻底忽视 参数 stage 的影响;
+            
+            This function can still be called on platforms that do not support GPUFences 
+            though the resulting fence will have no function 
+            and will do nothing if waited on (see Graphics.WaitOnAsyncGraphicsFence 
+            and CommandBuffer.WaitOnAsyncGraphicsFence).
+            --
+            如果一个平台不支持 GPUFences, 本函数还是可以被调用, 尽管返回的 fence 没有任何功能,
+            同时如果调用 "Graphics.WaitOnAsyncGraphicsFence()" 和 "CommandBuffer.WaitOnAsyncGraphicsFence"
+            也不会做任何事情;
+
+            参数:
+            fenceType:
+                The type of GraphicsFence to create. 
+                Currently the only supported value is "GraphicsFenceType.AsyncQueueSynchronization"
+
+            stage:
+                在有些平台, 在一个 drawcall 的 vs结束点 和 fs开始点之间, 存在明显的时间间隙;
+                
+                This parameter allows for the fence to be passed after either the vertex 
+                or pixel processing for the proceeding draw has completed. 
+                If a compute shader dispatch was the last task submitted then this parameter is ignored.
+                --
+                本参数允许在 "vs完成了之后" 或 "fs完成了之后" 这两种时间点上 传入 fence;
+                如果要执行的最后一个任务是 compute shader dispatch, 那么本参数将被忽略; 
+        */
+        public static GraphicsFence CreateGraphicsFence(
+            GraphicsFenceType fenceType, 
+            [Internal.DefaultValue("SynchronisationStage.PixelProcessing")] SynchronisationStageFlags stage
+        );
         
         
         /*
@@ -337,10 +455,34 @@ namespace UnityEngine
        
        
         
-        //
-        // 摘要:
-        //     Draw a mesh.
-        //
+        /*
+            摘要:
+            Draw a mesh.
+
+            本函数在一帧内绘制 mesh, 这个 mesh 能收到 lights 的影响, 可以投射阴影, 接收阴影,
+            可以受到 Projectors 的影响(一个几乎废弃的功能);
+            就好像这个 mesh 是某个 go 的一部分;
+
+            这个 mesh 可以被所有 camera 绘制, 或某些特定的 camera;
+
+            本函数适用于:
+                你想要绘制大量 meshes, 但又不想承担 创建和管理 GameObj 实例 的成本;
+
+            注意, 本函数不会立即绘制 mesh, 它仅仅是将 mesh submit 到 渲染队列中去;
+            当常规的 渲染过程开始执行时, 这个 mesh 就会被 渲染;
+            如果你向立即渲染一个 mesh, 应该调用 "Graphics.DrawMeshNow()";
+
+            因为本函数不会立即渲染 mesh, 在两次本函数调用的中间间隙, 修改 material properties,
+            最终会让 前后两次 mesh 绘制出相同的效果;
+
+            此时, 你应该改用 参数 properties ("MaterialPropertyBlock") 来营造差异;
+
+            注意:
+            调用本函数 将在 "mesh 在等待被渲染期间" 在内部创建一些资源;
+            这些资源会被立即分配, 
+            -- 若将 mesh 分配给所有 cameras, 那么这个中间资源将在本帧的结束时才被释放;
+            -- 若将 mesh 分配给某个特定的 camera, 那么这个中间资源将在 目标 camera 渲染结束后 被释放;
+            
         // 参数:
         //   mesh:
         //     The Mesh to draw.
@@ -358,7 +500,7 @@ namespace UnityEngine
         //     Material to use.
         //
         //   layer:
-        //     to use.
+        //     "Layer" to use.  猜测是 mesh 的
         //
         //   camera:
         //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
@@ -370,7 +512,7 @@ namespace UnityEngine
         //
         //   properties:
         //     Additional material properties to apply onto material just before this mesh will
-        //     be drawn. See MaterialPropertyBlock.
+        //     be drawn. See "MaterialPropertyBlock".
         //
         //   castShadows:
         //     Determines whether the mesh can cast shadows.
@@ -382,13 +524,14 @@ namespace UnityEngine
         //     Should the mesh use light probes?
         //
         //   probeAnchor:
-        //     If used, the mesh will use this Transform's position to sample light probes and
+        //     If used light probes, the mesh will use this Transform's position to sample light probes and
         //     find the matching reflection probe.
         //
         //   lightProbeUsage:
         //     LightProbeUsage for the mesh.
         //
         //   lightProbeProxyVolume:
+        */
         public static void DrawMesh(Mesh mesh, Matrix4x4 matrix, Material material, int layer, Camera camera, int submeshIndex, MaterialPropertyBlock properties, ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("null")] Transform probeAnchor, [Internal.DefaultValue("true")] bool useLightProbes);
         
         public static void DrawMesh(Mesh mesh, Matrix4x4 matrix, Material material, int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("0")] int submeshIndex, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("true")] bool castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("true")] bool useLightProbes);
@@ -420,10 +563,44 @@ namespace UnityEngine
 
 
         
-        //
-        // 摘要:
-        //     Draws the same mesh multiple times using GPU instancing.
-        //
+        /*
+            摘要:
+            Draws the same mesh multiple times using "GPU instancing".
+        
+            和 "Graphics.DrawMesh()" 类似, 本函数在一帧之内将一个 mesh 绘制很多次, 
+            而不需要为这些 mesh 创建 go 实例;
+
+            本函数和 GPU Instancing 技术有关;
+
+            Unity culls and sorts instanced Meshes as a group. 
+
+            它创建一个 AABB 盒, 包含所有的 meshes, 计算这个 aabb 盒的 center point,
+            然后使用这个信息来 cull 和 sort 这些 mesh instances;
+
+            注意:
+            在对 "combined instances "执行完上述的 culling 和 sorting 操作后, 
+            unity 不再对 "单个 mesh instance" 执行 view frustum or baked occluder culling;
+
+            它也不会对 "单个 mesh instance" 执行排序 for transparency or depth efficiency.
+
+            每个 instance 的 转换矩阵 应该收集放入 参数 matrices 中;
+            你可以指定 instance 的数量, 或者, 它通常是 参数 matrices 中元素的个数;
+
+            至于其它 逐-instance 数据, 如果 shader 对此有需求, 应该通过参数 properties 提供,
+
+            若想使用 light probe, 通过 MaterialPropertyBlock 提供 light probe data
+            and specify lightProbeUsage with LightProbeUsage.CustomProvided. 
+            查看: "LightProbes.CalculateInterpolatedLightAndOcclusionProbes()"
+
+            注意, 
+                最多只能绘制 1023 个 instances;
+
+            如果参数 material 没有开启 "Material.enableInstancing", 或者当前api 不支持 GPU Instancing,
+            将抛出异常;
+            可查看: "SystemInfo.supportsInstancing";
+
+            catlike 教程中使用过此函数;
+
         // 参数:
         //   mesh:
         //     The Mesh to draw.
@@ -439,7 +616,7 @@ namespace UnityEngine
         //     The array of object transformation matrices.
         //
         //   count:
-        //     The number of instances to be drawn.
+        //     The number of instances to be drawn.  要绘制的实例的数量 
         //
         //   properties:
         //     Additional material properties to apply. See MaterialPropertyBlock.
@@ -451,7 +628,7 @@ namespace UnityEngine
         //     Determines whether the Meshes should receive shadows.
         //
         //   layer:
-        //     to use.
+        //     Layer to use.
         //
         //   camera:
         //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
@@ -461,6 +638,7 @@ namespace UnityEngine
         //     LightProbeUsage for the instances.
         //
         //   lightProbeProxyVolume:
+        */
         public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, Matrix4x4[] matrices, [Internal.DefaultValue("matrices.Length")] int count, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
         public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, List<Matrix4x4> matrices, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
         
@@ -482,10 +660,32 @@ namespace UnityEngine
             
 
         
-        //
-        // 摘要:
-        //     Draws the same mesh multiple times using GPU instancing.
-        //
+        /*
+            摘要:
+            Draws the same mesh multiple times using GPU instancing.
+        
+            和 "Graphics.DrawMeshInstanced()" 类似, 不同点在于, 本函数中, 
+            绘制多少个 instances 的数据, 来自于参数 bufferWithArgs;
+
+            tpr:
+                改用 ComputeBuffer/GraphicsBuffer 来存储 各个 instance 的绘制信息;
+
+            Meshes are not further culled by the view frustum or baked occluders, 
+            nor sorted for transparency or z efficiency.
+
+            参数 "bufferWithArgs", has to have five integer numbers at given argsOffset offset: 
+            -- index count per instance, 
+            -- instance count, 
+            -- start index location, 
+            -- base vertex location, 
+            -- start instance location.
+
+            只有当 mesh 体内的 submeshes 拥有不同的 拓扑结构时, (比如, 三角形 和 直线)
+            unity 才会用到 参数 submeshIndex;
+            否则, all the information about which submesh to draw comes from the 参数 "bufferWithArgs";
+
+            文档给出了 示范代码;
+
         // 参数:
         //   mesh:
         //     The Mesh to draw.
@@ -499,14 +699,14 @@ namespace UnityEngine
         //
         //   bounds:
         //     The bounding volume surrounding the instances you intend to draw.
-        //
+        
         //   bufferWithArgs:
         //     The GPU buffer containing the arguments for how many instances of this mesh to
         //     draw.
-        //
+        
         //   argsOffset:
         //     The byte offset into the buffer, where the draw arguments start.
-        //
+        
         //   properties:
         //     Additional material properties to apply. See MaterialPropertyBlock.
         //
@@ -517,7 +717,7 @@ namespace UnityEngine
         //     Determines whether the mesh can receive shadows.
         //
         //   layer:
-        //     to use.
+        //     Layer to use.
         //
         //   camera:
         //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
@@ -527,8 +727,7 @@ namespace UnityEngine
         //     LightProbeUsage for the instances.
         //
         //   lightProbeProxyVolume:
-        
-
+        */
         public static void DrawMeshInstancedIndirect(Mesh mesh, int submeshIndex, Material material, Bounds bounds, ComputeBuffer bufferWithArgs, [Internal.DefaultValue("0")] int argsOffset, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
 
         public static void DrawMeshInstancedIndirect(Mesh mesh, int submeshIndex, Material material, Bounds bounds, GraphicsBuffer bufferWithArgs, [Internal.DefaultValue("0")] int argsOffset, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
@@ -538,12 +737,20 @@ namespace UnityEngine
             
 
         
-        //
-        // 摘要:
-        //     Draws the same mesh multiple times using GPU instancing. This is similar to Graphics.DrawMeshInstancedIndirect,
-        //     except that when the instance count is known from script, it can be supplied
-        //     directly using this method, rather than via a ComputeBuffer.
-        //
+        /*
+            摘要:
+            Draws the same mesh multiple times using GPU instancing. 
+            
+            本函数和 "Graphics.DrawMeshInstancedIndirect()" 相似, 
+            只不过 instance 的数量 可以直接通过 参数 count 提供, 而不需要通过 ComputeBuffer;
+
+            若想使用 light probe, 通过 MaterialPropertyBlock 提供 light probe data
+            and specify lightProbeUsage with LightProbeUsage.CustomProvided. 
+            查看: "LightProbes.CalculateInterpolatedLightAndOcclusionProbes()"
+
+            catlike 数个教程中都是使用过此函数
+
+
         // 参数:
         //   mesh:
         //     The Mesh to draw.
@@ -581,12 +788,26 @@ namespace UnityEngine
         //     LightProbeUsage for the instances.
         //
         //   lightProbeProxyVolume:
-        public static void DrawMeshInstancedProcedural(Mesh mesh, int submeshIndex, Material material, Bounds bounds, int count, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0, Camera camera = null, LightProbeUsage lightProbeUsage = LightProbeUsage.BlendProbes, LightProbeProxyVolume lightProbeProxyVolume = null);
+        */
+        public static void DrawMeshInstancedProcedural(
+            Mesh mesh, int submeshIndex, Material material, Bounds bounds, int count, 
+            MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, 
+            bool receiveShadows = true, int layer = 0, Camera camera = null, 
+            LightProbeUsage lightProbeUsage = LightProbeUsage.BlendProbes, LightProbeProxyVolume lightProbeProxyVolume = null
+        );
         
-        //
-        // 摘要:
-        //     Draw a mesh immediately.
-        //
+
+
+        /*
+            摘要:
+            Draw a mesh immediately.
+            
+            Currently set shader and material (see "Material.SetPass()") will be used.
+
+            The mesh will be just drawn once, 
+            此mesh 不会执行 逐像素-光照计算, 不投射阴影, 不接收阴影, 
+            如果需要上述内容, 应该改用 "Graphics.DrawMesh()";
+            
         // 参数:
         //   mesh:
         //     The Mesh to draw.
@@ -603,6 +824,7 @@ namespace UnityEngine
         //
         //   materialIndex:
         //     Subset of the mesh to draw.
+        */
         public static void DrawMeshNow(Mesh mesh, Matrix4x4 matrix);
         public static void DrawMeshNow(Mesh mesh, Vector3 position, Quaternion rotation);
         public static void DrawMeshNow(Mesh mesh, Matrix4x4 matrix, int materialIndex);
@@ -837,19 +1059,44 @@ namespace UnityEngine
         public static void ExecuteCommandBufferAsync([NotNullAttribute("ArgumentNullException")] CommandBuffer buffer, ComputeQueueType queueType);
         
         
-        //
-        // 摘要:
-        //     Set random write target for level pixel shaders.
-        //
+        /*
+            摘要:
+            Set "random write target" for "Shader Model 4.5 的 frag-shaders";
+        
+            Shader Model 4.5 及以上版本的 frag shader 可以向某些 texture/buffer 的任意地址 写入数据;
+            在 d3d11 中被称为 "unordered access views" (UAV);
+
+            "random write targets" 的设置 和 "multiple render targets" 的设置是相似的;
+
+            要么使用一个 启用了 "enableRandomWrite" flag 的 RenderTexture 来当作 target,
+            要么使用一个 ComputeBuffer 来当作 target,
+
+            在不同平台上, UAV indexing 存在微小不同;
+
+            On DX11 the first valid "UAV index" is the number of active render targets. 
+            所以,在 "single render target" 的大部分情景中, the UAV indexing will start from 1. 
+            那些使用 "automatically translated HLSL shaders" 的平台也会符合此规则; 
+
+            但是, 手写的 GLSL shader, 它们的 UAV indexes will match the bindings.
+            On PS4 the indexing starts always from 1 to match the most common case.
+
+            When setting a ComputeBuffer, the preserveCounterValue parameter 指示了:
+            是否保留 counter 值不变, 还是将它重置为 0 (这是默认行为)
+
+            这些 targets 保持 set, 直到你手动调用 "Graphics.ClearRandomWriteTargets()"
+            在你的渲染完成后, 最好及时调用这个 clear 函数;
+            如果你漏掉了这一步, 会出现 渲染错误, 一些 built-in unity pass 会崩溃;
+
         // 参数:
         //   index:
-        //     Index of the random write target in the shader.
+        //     Index of the "random write target" in the shader.
         //
         //   uav:
-        //     Buffer or texture to set as the write target.
+        //     Buffer or texture to set as the "write target"."
         //
         //   preserveCounterValue:
         //     Whether to leave the append/consume counter value unchanged.
+        */
         public static void SetRandomWriteTarget(int index, GraphicsBuffer uav, [Internal.DefaultValue("false")] bool preserveCounterValue);
         public static void SetRandomWriteTarget(int index, RenderTexture uav);
         public static void SetRandomWriteTarget(int index, ComputeBuffer uav, [Internal.DefaultValue("false")] bool preserveCounterValue);
@@ -859,10 +1106,22 @@ namespace UnityEngine
 
 
         
-        //
-        // 摘要:
-        //     Sets current render target.
-        //
+        /*
+            摘要:
+            Sets current render target.
+        
+            本函数设置了, 接下来的渲染将要被写入 "哪一个 render texture" 或 "那一对 render buffer 组合";
+
+            带有参数 "colorBuffers" 的那个重载, 可以让 frag-shader 向 "Multiple Render Targets" 写入数据
+
+            调用只有一个 rendertarget 参数的重载版本, is the same as setting "RenderTexture.active" property.
+
+            注意:
+            当启用了 linear 工作流, 设置正确的 sRGB<->Linear 转换是很有必要的 (针对 render texture)
+            Depending on what was rendered previously, the current state might not be the one you expect. 
+            You should consider setting "GL.sRGBWrite()" as you need it before doing SetRenderTarget 
+            or any other manual rendering.
+
         // 参数:
         //   rt:
         //     RenderTexture to set as active render target.
@@ -887,6 +1146,7 @@ namespace UnityEngine
         //
         //   setup:
         //     Full render target setup information.
+        */
         public static void SetRenderTarget(RenderTargetSetup setup);
         public static void SetRenderTarget(RenderBuffer[] colorBuffers, RenderBuffer depthBuffer);
         
@@ -901,7 +1161,6 @@ namespace UnityEngine
             [Internal.DefaultValue("0")] int mipLevel, 
             [Internal.DefaultValue("CubemapFace.Unknown")] CubemapFace face, 
             [Internal.DefaultValue("0")] int depthSlice);
-
 
             [ExcludeFromDocs] public static void SetRenderTarget(RenderBuffer colorBuffer, RenderBuffer depthBuffer, int mipLevel, CubemapFace face);
             [ExcludeFromDocs] public static void SetRenderTarget(RenderBuffer colorBuffer, RenderBuffer depthBuffer);
