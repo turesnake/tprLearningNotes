@@ -290,13 +290,37 @@ namespace UnityEngine.Rendering
         /*
         // 摘要:
         //     This functionality is deprecated, and should no longer be used. Please use CommandBuffer.CreateGraphicsFence.
-        //
-        // 参数:
-        //   stage:
         [Obsolete("CommandBuffer.CreateGPUFence has been deprecated. Use CreateGraphicsFence instead (UnityUpgradable) -> CreateAsyncGraphicsFence(*)", false)]
         public GPUFence CreateGPUFence(SynchronisationStage stage);
         [Obsolete("CommandBuffer.CreateGPUFence has been deprecated. Use CreateGraphicsFence instead (UnityUpgradable) -> CreateAsyncGraphicsFence()", false)]
         public GPUFence CreateGPUFence();
+        */
+
+        /*  
+            创建一个 "GraphicsFence", 它将会在:
+                在先于本次函数调用的: Blit, Clear, Draw, Dispatch or "Texture Copy" command 执行完毕后(在 gpu端),
+            被 "passed";
+            ( GraphicsFence 是一个 时间节点, "被 passed" 就是: 运行到这个时间节点了 )
+
+            这些指令包含: 在本 GraphicsFence 创建之前就存在的, 位于本 commandbuffer 或别的 commandbuffer 的
+            需要立即执行的 指令;
+
+            有些平台无法区分 vs的结束点 和 fs的结束点, 在这样的平台上, 参数 stage 将失效, fence 的时间点被强制
+            定在 fs结束点;
+
+            对于那些不支持 "GraphicsFences" 功能的平台, 本函数也能被调用, 尽管这样做得到的 fence 不起任何作用,
+            而且若对这个 fence 调用 "Graphics.WaitOnAsyncGraphicsFence()" 或 "CommandBuffer.WaitOnAsyncGraphicsFence()",
+            也不会其任何作用;
+
+            参数:
+            fenceType:
+                The type of GraphicsFence to create. 
+                Currently the only supported value is "GraphicsFenceType.AsyncQueueSynchronization".
+
+            stage:
+                在有些平台, 在单个 draw call 的 vs的结束点 和 fs开始点 之间存在一段明显的间隙;
+                可用本参数来设置 GraphicsFence 的时间节点, 要么在 vs的结束点, 要么在 fs的结束点;    
+                If a "compute shader dispatch" was the last task submitted then this parameter is ignored.
         */
         public GraphicsFence CreateGraphicsFence(GraphicsFenceType fenceType, SynchronisationStageFlags stage);
 

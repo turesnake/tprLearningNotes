@@ -396,22 +396,19 @@ namespace UnityEngine
                 Blit, Clear, Draw, Dispatch or Texture Copy command 
             prior to this call has been completed on the GPU.
             --
-            创建一个 GraphicsFence，它将在 GPU 上完成此调用之前的最后一个: 
-            Blit、Clear、Draw、Dispatch 或 Texture Copy 命令之后传递。
+            创建一个 "GraphicsFence", 它将会在:
+                在先于本次函数调用的: Blit, Clear, Draw, Dispatch or "Texture Copy" command 执行完毕后(在 gpu端),
+            被 "passed";
+            ( GraphicsFence 是一个 时间节点, "被 passed" 就是: 运行到这个时间节点了 )
 
-            这包括在创建 fence 之前的, 那些来自 CommandBuffer 的立即执行的指令;
+            这些指令包含: 在本 GraphicsFence 创建之前就存在的, 位于本 commandbuffer 的需要立即执行的 指令;
 
-            有些平台无法区分 vs的结束 和 fs的结束, 在这样的平台上, fence 总是会在 fs结束之后被传入,
-            同时彻底忽视 参数 stage 的影响;
+            有些平台无法区分 vs的结束点 和 fs的结束点, 在这样的平台上, 参数 stage 将失效, fence 的时间点被强制
+            定在 fs结束点;
             
-            This function can still be called on platforms that do not support GPUFences 
-            though the resulting fence will have no function 
-            and will do nothing if waited on (see Graphics.WaitOnAsyncGraphicsFence 
-            and CommandBuffer.WaitOnAsyncGraphicsFence).
-            --
-            如果一个平台不支持 GPUFences, 本函数还是可以被调用, 尽管返回的 fence 没有任何功能,
-            同时如果调用 "Graphics.WaitOnAsyncGraphicsFence()" 和 "CommandBuffer.WaitOnAsyncGraphicsFence"
-            也不会做任何事情;
+            对于那些不支持 "GraphicsFences" 功能的平台, 本函数也能被调用, 尽管这样做得到的 fence 不起任何作用,
+            而且若对这个 fence 调用 "Graphics.WaitOnAsyncGraphicsFence()" 或 "CommandBuffer.WaitOnAsyncGraphicsFence()",
+            也不会其任何作用;
 
             参数:
             fenceType:
@@ -419,14 +416,9 @@ namespace UnityEngine
                 Currently the only supported value is "GraphicsFenceType.AsyncQueueSynchronization"
 
             stage:
-                在有些平台, 在一个 drawcall 的 vs结束点 和 fs开始点之间, 存在明显的时间间隙;
-                
-                This parameter allows for the fence to be passed after either the vertex 
-                or pixel processing for the proceeding draw has completed. 
-                If a compute shader dispatch was the last task submitted then this parameter is ignored.
-                --
-                本参数允许在 "vs完成了之后" 或 "fs完成了之后" 这两种时间点上 传入 fence;
-                如果要执行的最后一个任务是 compute shader dispatch, 那么本参数将被忽略; 
+                在有些平台, 在单个 draw call 的 vs的结束点 和 fs开始点 之间存在一段明显的间隙;
+                可用本参数来设置 GraphicsFence 的时间节点, 要么在 vs的结束点, 要么在 fs的结束点;    
+                If a "compute shader dispatch" was the last task submitted then this parameter is ignored.
         */
         public static GraphicsFence CreateGraphicsFence(
             GraphicsFenceType fenceType, 
@@ -831,10 +823,16 @@ namespace UnityEngine
         public static void DrawMeshNow(Mesh mesh, Vector3 position, Quaternion rotation, int materialIndex);
 
 
-        //
-        // 摘要:
-        //     Draws procedural geometry on the GPU.
-        //
+        /*
+            摘要:
+            Draws procedural geometry on the GPU.
+            do a draw call on the GPU, without any vertex or index buffers. 
+
+            This is mainly useful on "Shader Model 4.5 level hardware" 
+            where shaders can read arbitrary data from ComputeBuffer buffers.
+
+            "CommandBuffer.DrawProcedural()" 和本函数相似;
+
         // 参数:
         //   material:
         //     Material to use.
@@ -849,10 +847,10 @@ namespace UnityEngine
         //     Index buffer used to submit vertices to the GPU.
         //
         //   instanceCount:
-        //     Instance count to render.
+        //     Instance count to render.  实例数量
         //
         //   indexCount:
-        //     Index count to render.
+        //     Index count to render. 
         //
         //   camera:
         //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
@@ -869,10 +867,13 @@ namespace UnityEngine
         //     Determines whether the mesh can receive shadows.
         //
         //   layer:
-        //     to use.
+        //     Layer to use.
+        */
         public static void DrawProcedural(Material material, Bounds bounds, MeshTopology topology, GraphicsBuffer indexBuffer, int indexCount, int instanceCount = 1, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);
         public static void DrawProcedural(Material material, Bounds bounds, MeshTopology topology, int vertexCount, int instanceCount = 1, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);
         
+
+
         /*
         [EditorBrowsable(EditorBrowsableState.Never)]
         [ExcludeFromDocs]
@@ -880,10 +881,32 @@ namespace UnityEngine
         public static void DrawProcedural(MeshTopology topology, int vertexCount, int instanceCount = 1);
         */
         
-        //
-        // 摘要:
-        //     Draws procedural geometry on the GPU.
-        //
+
+        /*
+            摘要:
+            Draws procedural geometry on the GPU.
+            does a draw call on the GPU, without any vertex or index buffers. 
+            
+            The amount of geometry to draw is read from a ComputeBuffer. 
+
+            主要用途为: generating an "arbitrary amount of data" from a ComputeShader and then rendering that, 
+            without requiring a readback to the CPU.
+
+            主用于 "Shader Model 4.5 level hardware" where shaders can read arbitrary data from ComputeBuffer buffers.
+
+            参数 "bufferWithArgs", 需要拥有 four integer numbers at given argsOffset offset: 
+                -- vertex count per instance, 
+                -- instance count, 
+                -- start vertex location, 
+                -- start instance location. 
+                
+            This maps to Direct3D11 "DrawInstancedIndirect()" and equivalent functions on other graphics APIs. 
+            
+            在早于 4.2的 Opengl 版本, 和所有 OpenGL ES 的支持 "indirect draw" 的版本,
+            the last argument is reserved and therefore must be zero.
+
+            本函数和 "CommandBuffer.DrawProceduralIndirect.()" 类似;
+
         // 参数:
         //   material:
         //     Material to use.
@@ -919,6 +942,7 @@ namespace UnityEngine
         //
         //   layer:
         //     to use.
+        */
         public static void DrawProceduralIndirect(Material material, Bounds bounds, MeshTopology topology, GraphicsBuffer indexBuffer, ComputeBuffer bufferWithArgs, int argsOffset = 0, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);
         public static void DrawProceduralIndirect(Material material, Bounds bounds, MeshTopology topology, ComputeBuffer bufferWithArgs, int argsOffset = 0, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);
         
@@ -929,10 +953,39 @@ namespace UnityEngine
         public static void DrawProceduralIndirect(MeshTopology topology, ComputeBuffer bufferWithArgs, int argsOffset = 0);
         */
         
-        //
-        // 摘要:
-        //     Draws procedural geometry on the GPU.
-        //
+
+
+        /*
+            摘要:
+            Draws procedural geometry on the GPU.
+
+            does a draw call on the GPU, without any vertex or index buffers. 
+            The amount of geometry to draw is read from a ComputeBuffer. 
+
+            主要用途为 generating an arbitrary amount of data from a ComputeShader and then rendering that, 
+            without requiring a readback to the CPU.
+
+            主用于 "Shader Model 4.5 level hardware" 
+            where shaders can read arbitrary data from ComputeBuffer buffers.
+
+            参数 "bufferWithArgs", 必须拥有 four integer numbers at given argsOffset offset: 
+                -- vertex count per instance, 
+                -- instance count, 
+                -- start vertex location, 
+                -- start instance location. 
+    
+            This maps to Direct3D11 "DrawInstancedIndirect" 
+            and equivalent functions on other graphics APIs. 
+    
+            在早于 4.2的 Opengl 版本, 和所有 OpenGL ES 的支持 "indirect draw" 的版本,
+            the last argument is reserved and therefore must be zero.
+
+            注意:
+            本函数立即执行, 类似 "Graphics.DrawMeshNow()", 
+            It uses the currently set "render target", transformation matrices and shader pass.
+
+            类似的函数有 "CommandBuffer.DrawProceduralIndirect()"
+
         // 参数:
         //   topology:
         //     Topology of the procedural geometry.
@@ -945,17 +998,28 @@ namespace UnityEngine
         //
         //   argsOffset:
         //     Byte offset where in the buffer the draw arguments are.
+        */
         public static void DrawProceduralIndirectNow(MeshTopology topology, GraphicsBuffer bufferWithArgs, int argsOffset = 0);
-        public static void DrawProceduralIndirectNow(MeshTopology topology, GraphicsBuffer indexBuffer, ComputeBuffer bufferWithArgs, int argsOffset = 0);
         public static void DrawProceduralIndirectNow(MeshTopology topology, ComputeBuffer bufferWithArgs, int argsOffset = 0);
-
+        public static void DrawProceduralIndirectNow(MeshTopology topology, GraphicsBuffer indexBuffer, ComputeBuffer bufferWithArgs, int argsOffset = 0);
         public static void DrawProceduralIndirectNow(MeshTopology topology, GraphicsBuffer indexBuffer, GraphicsBuffer bufferWithArgs, int argsOffset = 0);
         
         
-        //
-        // 摘要:
-        //     Draws procedural geometry on the GPU.
-        //
+        /*
+            摘要:
+            Draws procedural geometry on the GPU.
+        
+            does a draw call on the GPU, without any vertex or index buffers. 
+
+            主用于 on Shader Model 4.5 level hardware 
+            where shaders can read arbitrary data from ComputeBuffer buffers.
+
+            注意:
+            本函数立即执行渲染, similar to "Graphics.DrawMeshNow()". 
+            It uses the currently set render target, transformation matrices and shader pass.
+
+            类似函数有 "CommandBuffer.DrawProcedural()"
+
         // 参数:
         //   topology:
         //     Topology of the procedural geometry.
@@ -971,16 +1035,28 @@ namespace UnityEngine
 
         //   vertexCount:
         //     Vertex count to render.
-
+        */
         public static void DrawProceduralNow(MeshTopology topology, GraphicsBuffer indexBuffer, int indexCount, int instanceCount = 1);
         public static void DrawProceduralNow(MeshTopology topology, int vertexCount, int instanceCount = 1);
 
 
         
-        //
-        // 摘要:
-        //     Draw a texture in screen coordinates.
-        //
+        /*
+            摘要:
+            Draw a texture in screen coordinates.
+
+            如果你想从 OnGUI 回调函数体内调用本函数, 你只能在 "EventType.Repaint" 发生时才能做;
+            检测方式:
+
+                if (Event.current.type.Equals(EventType.Repaint))
+                {
+                    Graphics.DrawTexture(new Rect(10, 10, 100, 100), aTexture);
+                }
+        
+            It's probably better to use "GUI.DrawTexture()" for GUI code.
+
+            建议查看 原文档中的示例代码;
+
         // 参数:
         //   screenRect:
         //     Rectangle on the screen to use for the texture. In pixel coordinates with (0,0)
@@ -1006,9 +1082,9 @@ namespace UnityEngine
         //     Number of pixels from the bottom that are not affected by scale.
         //
         //   color:
-        //     Color that modulates the output. The neutral value is (0.5, 0.5, 0.5, 0.5). Set
-        //     as vertex color for the shader.
-        //
+        //     Color that modulates(调节) the output. 
+                The neutral value is (0.5, 0.5, 0.5, 0.5). Set as vertex color for the shader.
+        
         //   mat:
         //     Custom Material that can be used to draw the texture. If null is passed, a default
         //     material with the Internal-GUITexture.shader is used.
@@ -1016,6 +1092,7 @@ namespace UnityEngine
         //   pass:
         //     If -1 (default), draws all passes in the material. Otherwise, draws given pass
         //     only.
+        */
         public static void DrawTexture(Rect screenRect, Texture texture, int leftBorder, int rightBorder, int topBorder, int bottomBorder, [Internal.DefaultValue("null")] Material mat, [Internal.DefaultValue("-1")] int pass);
         public static void DrawTexture(Rect screenRect, Texture texture, [Internal.DefaultValue("null")] Material mat, [Internal.DefaultValue("-1")] int pass);
         public static void DrawTexture(Rect screenRect, Texture texture, Rect sourceRect, int leftBorder, int rightBorder, int topBorder, int bottomBorder, [Internal.DefaultValue("null")] Material mat, [Internal.DefaultValue("-1")] int pass);
@@ -1032,22 +1109,32 @@ namespace UnityEngine
             [ExcludeFromDocs]public static void DrawTexture(Rect screenRect, Texture texture, Rect sourceRect, int leftBorder, int rightBorder, int topBorder, int bottomBorder, Color color, Material mat);
             
         
-        //
-        // 摘要:
-        //     Execute a command buffer.
-        //
+        /*
+            摘要:
+            Execute a command buffer.
+            All commands in the buffer will be executed immediately.
+        
         // 参数:
         //   buffer:
         //     The buffer to execute.
+        */
         [NativeMethodAttribute(Name = "GraphicsScripting::ExecuteCommandBuffer", IsFreeFunction = true, ThrowsException = true)]
         public static void ExecuteCommandBuffer([NotNullAttribute("ArgumentNullException")] CommandBuffer buffer);
 
 
-        //
-        // 摘要:
-        //     Executes a command buffer on an async compute queue with the queue selected based
-        //     on the ComputeQueueType parameter passed.
-        //
+        /*
+            摘要:
+            Executes a command buffer on an async compute queue 
+            with the queue selected based on the "ComputeQueueType" parameter passed.
+
+            要求 command buffer 内的所有 commands, 它们的类型都要支持 async compute queues;
+            如果其中有一个 command 不符合要求, editor 就会报错;
+
+            异步执行所允许的 "CommandBuffer" class 的函数们, 被罗列在 原生文档中,在此略
+
+            command buffer 中的所有 commands, 被保证一定会在 same queue 中被执行;
+            如果目标平台不支持 async compute queues, then the work is dispatched on the graphics queue.
+
         // 参数:
         //   buffer:
         //     The CommandBuffer to be executed.
@@ -1055,6 +1142,7 @@ namespace UnityEngine
         //   queueType:
         //     Describes the desired async compute queue the supplied CommandBuffer should be
         //     executed on.
+        */
         [NativeMethodAttribute(Name = "GraphicsScripting::ExecuteCommandBufferAsync", IsFreeFunction = true, ThrowsException = true)]
         public static void ExecuteCommandBufferAsync([NotNullAttribute("ArgumentNullException")] CommandBuffer buffer, ComputeQueueType queueType);
         
@@ -1149,7 +1237,6 @@ namespace UnityEngine
         */
         public static void SetRenderTarget(RenderTargetSetup setup);
         public static void SetRenderTarget(RenderBuffer[] colorBuffers, RenderBuffer depthBuffer);
-        
         public static void SetRenderTarget(
             RenderBuffer colorBuffer, 
             RenderBuffer depthBuffer, 
@@ -1172,22 +1259,34 @@ namespace UnityEngine
         
         
         
-        //
-        // 摘要:
-        //     Instructs the GPU's processing of the graphics queue to wait until the given
-        //     GraphicsFence is passed.
-        //
-        // 参数:
-        //   fence:
-        //     The GraphicsFence that the GPU will be instructed to wait upon before proceeding
-        //     with its processing of the graphics queue.
-        //
-        //   stage:
-        //     On some platforms there is a significant gap between the vertex processing completing
-        //     and the pixel processing begining for a given draw call. This parameter allows
-        //     for requested wait to be before the next items vertex or pixel processing begins.
-        //     If a compute shader dispatch is the next item to be submitted then this parameter
-        //     is ignored.
+        /*
+            摘要:
+            本函数要求 "graphics queue" 的 gpu端运算 进入待机状态, 直到参数 fence 被 passed 为止
+            ( GraphicsFence 是个时间节点, "被 passed" 就是指: 到达这个时间节点了 )
+
+
+            有的平台无法区别 vs的开始点 和 fs的开始点, 在这样的平台, fence 始终被设置在 下一个 vs开始点;
+            此时, 参数 stage 不起任何作用;
+
+            参数 fence 在被创建时, 必须指定为: "GraphicsFenceType.AsyncQueueSynchronization";
+
+            不支持 GraphicsFences 功能的平台, 本函数可以被调用, 不过不起任何作用;
+            查看: "SystemInfo.supportsGraphicsFence";
+
+            用户使用本函数, 可能会制造出 "GPU deadlocks" (死锁), 所以在调用本函数之前, 要确保
+            参数 fence 是有效的, 它的 时间节点一定能被 passed 才行;
+
+            本函数在 cpu端一经调用立即返回, 而在 gpu端, 运算进程则会暂定下来, 直到 fence passed;
+
+            参数:
+            fence:
+                在继续处理 graphics queue 之前，GPU 将被要求等待的 GraphicsFence 被passed;
+            
+            stage:
+                在有些平台, 在单个 draw call 的 vs的结束点 和 fs开始点 之间存在一段明显的间隙;
+                可用本参数来设置 GraphicsFence 的时间节点, 要么在 vs的开始点, 要么在 fs的开始点;    
+                If a compute shader dispatch is the next item to be submitted then this parameter is ignored.
+        */
         public static void WaitOnAsyncGraphicsFence(GraphicsFence fence);
         public static void WaitOnAsyncGraphicsFence(
             GraphicsFence fence, 
