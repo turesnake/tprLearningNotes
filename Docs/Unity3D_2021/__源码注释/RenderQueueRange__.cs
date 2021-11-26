@@ -18,7 +18,7 @@ namespace UnityEngine.Rendering
             还能使用 static 预定义实例:  all, opaque, transparent 来快速得到 目标区间;
 
     */
-    public struct RenderQueueRange : IEquatable<RenderQueueRange>
+    public struct RenderQueueRange : IEquatable<RenderQueueRange>//RenderQueueRange__
     {
         
         // 摘要:

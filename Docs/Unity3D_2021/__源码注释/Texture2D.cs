@@ -16,7 +16,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Graphics/Texture2D.h")]
     [NativeHeaderAttribute("Runtime/Graphics/GeneratedTextures.h")]
     [UsedByNativeCodeAttribute]
-    public sealed class Texture2D : Texture
+    public sealed class Texture2D : Texture//Texture2D__RR
     {
         //
         // 摘要:

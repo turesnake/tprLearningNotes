@@ -47,7 +47,7 @@ namespace UnityEngine.Rendering
     */
     [NativeHeaderAttribute("Runtime/Graphics/GPUFence.h")]
     [UsedByNativeCodeAttribute]
-    public struct GraphicsFence
+    public struct GraphicsFence//GraphicsFence__
     {
         /*
             摘要:

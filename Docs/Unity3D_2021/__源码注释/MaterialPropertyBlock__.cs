@@ -26,7 +26,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Shaders/ComputeShader.h")]
     [NativeHeaderAttribute("Runtime/Graphics/ShaderScriptBindings.h")]
     [NativeHeaderAttribute("Runtime/Math/SphericalHarmonicsL2.h")]
-    public sealed class MaterialPropertyBlock
+    public sealed class MaterialPropertyBlock//MaterialPropertyBlock__
     {
         public MaterialPropertyBlock();
         ~MaterialPropertyBlock();

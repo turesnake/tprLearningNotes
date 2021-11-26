@@ -29,7 +29,7 @@ namespace UnityEngine.Rendering
         (这反而更像是本类的 原始用途)
 
     */
-    public struct ShaderTagId : IEquatable<ShaderTagId>
+    public struct ShaderTagId : IEquatable<ShaderTagId>//ShaderTagId__
     {
         
 

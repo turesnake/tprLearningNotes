@@ -15,7 +15,7 @@ namespace UnityEngine.Rendering
 
         使用本 enum, 可以从一个 render texture 中选择一种数据, 以便一个函数去访问这种数据;
     */
-    public enum RenderTextureSubElement
+    public enum RenderTextureSubElement//RenderTextureSubElement__
     {
         
         // 摘要:

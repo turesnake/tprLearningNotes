@@ -9,7 +9,7 @@ namespace UnityEngine.Rendering
         The type of the GraphicsFence. 
         Currently the only supported fence type is "AsyncQueueSynchronization".
     */
-    public enum GraphicsFenceType
+    public enum GraphicsFenceType//GraphicsFenceType__
     {
         /*
             The GraphicsFence can be used to synchronise between different GPU queues, 

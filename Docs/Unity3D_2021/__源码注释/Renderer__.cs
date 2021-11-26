@@ -27,7 +27,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Graphics/Renderer.h")]
     [RequireComponent(typeof(Transform))]
     [UsedByNativeCodeAttribute]
-    public class Renderer : Component
+    public class Renderer : Component//Renderer__
     {
 
         public Renderer();

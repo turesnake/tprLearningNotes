@@ -17,7 +17,7 @@ namespace UnityEngine
         使用这种 topology 去创建 mesh, 并用它进行渲染 通常是最有效的方法。
 
     */
-    public enum MeshTopology
+    public enum MeshTopology//MeshTopology__
     {
       
         //     Mesh is made from triangles.

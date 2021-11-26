@@ -11,7 +11,7 @@ namespace UnityEditor.Rendering
     //
     // 摘要:
     //     A struct that represents graphics settings for a given build target and.
-    public struct TierSettings
+    public struct TierSettings//TierSettings__RR
     {
         //
         // 摘要:

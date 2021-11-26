@@ -25,7 +25,7 @@ namespace UnityEngine.Rendering
         改写 "Camera.opaqueSortMode" 可以覆写上述默认功能, 
         比如, 如果你觉得在你的程序中, cpu算力 更为宝贵, 那么你可以彻底关闭 distance-based sorting;
     */
-    public enum OpaqueSortMode
+    public enum OpaqueSortMode//OpaqueSortMode__
     {
         
         /*

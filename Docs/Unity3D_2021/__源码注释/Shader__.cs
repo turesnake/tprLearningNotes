@@ -27,7 +27,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Shaders/ShaderNameRegistry.h")]
     [NativeHeaderAttribute("Runtime/Shaders/ComputeShader.h")]
     [NativeHeaderAttribute("Runtime/Graphics/ShaderScriptBindings.h")]
-    public sealed class Shader : Object
+    public sealed class Shader : Object//Shader__
     {
 
         /*

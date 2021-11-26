@@ -41,7 +41,7 @@ namespace UnityEngine
 
             所有的 "HDR" (floating point) formats, 还有 Depth 类型, Shadowmap 类型, 都属于上述这种类型;
     */
-    public enum RenderTextureReadWrite
+    public enum RenderTextureReadWrite//RenderTextureReadWrite__
     {
 
 

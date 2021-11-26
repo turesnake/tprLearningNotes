@@ -5,11 +5,6 @@
 
 
 # Render Texture
-    在运行时动态创建和填充的 texture
-    可以作为 render 的 target 来使用
-    可以指挥一个 camera，将渲染的内容，写入这个 rt
-    然后在后续流程中，像使用常规 texture 一样去使用这个 rt
-    ---
     可以在 Asserts 面板手动创建一个实例：
         Create - Render Texture 
 
@@ -48,7 +43,7 @@
     that all share the same properties.
 
 
-# ScriptableRenderer 
+# ScriptableRenderer
     implements a rendering strategy. 
     It describes how culling and lighting works and the effects supported.
 

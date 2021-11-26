@@ -40,7 +40,7 @@ namespace UnityEngine.Rendering
     [NativeHeaderAttribute("Runtime/Shaders/RayTracingShader.h")]
     [NativeTypeAttribute("Runtime/Graphics/CommandBuffer/RenderingCommandBuffer.h")]
     [UsedByNativeCodeAttribute]
-    public class CommandBuffer : IDisposable
+    public class CommandBuffer : IDisposable//CommandBuffer__
     {
         
         // 摘要:

@@ -8,7 +8,7 @@ namespace UnityEngine.Rendering
     //
     // 摘要:
     //     An asset that produces a specific IRenderPipeline.
-    public abstract class RenderPipelineAsset : ScriptableObject
+    public abstract class RenderPipelineAsset : ScriptableObject//RenderPipelineAsset__RR
     {
         protected RenderPipelineAsset();
 

@@ -11,7 +11,7 @@ namespace UnityEngine
     // 摘要:
     //     Set of flags that control the state of a newly-created RenderTexture.
     [Flags]
-    public enum RenderTextureCreationFlags
+    public enum RenderTextureCreationFlags//RenderTextureCreationFlags__
     {
         
         // 摘要:

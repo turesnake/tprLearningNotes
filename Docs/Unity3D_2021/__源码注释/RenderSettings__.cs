@@ -17,7 +17,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Graphics/QualitySettingsTypes.h")]
     [NativeHeaderAttribute("Runtime/Graphics/GraphicsScriptBindings.h")]
     [StaticAccessorAttribute("GetRenderSettings()", Bindings.StaticAccessorType.Dot)]
-    public sealed class RenderSettings : Object
+    public sealed class RenderSettings : Object//RenderSettings__
     {
 
         /*

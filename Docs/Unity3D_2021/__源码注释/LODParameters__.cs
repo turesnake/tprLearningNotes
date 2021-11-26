@@ -12,7 +12,7 @@ namespace UnityEngine.Rendering
 
         暂未看出它的用途,,,
     */
-    public struct LODParameters : IEquatable<LODParameters>
+    public struct LODParameters : IEquatable<LODParameters>//LODParameters__
     {
         
         // 摘要:

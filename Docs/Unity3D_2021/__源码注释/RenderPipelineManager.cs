@@ -10,7 +10,7 @@ namespace UnityEngine.Rendering
     //
     // 摘要:
     //     Render Pipeline manager.
-    public static class RenderPipelineManager
+    public static class RenderPipelineManager//RenderPipelineManager__RR
     {
         //
         // 摘要:

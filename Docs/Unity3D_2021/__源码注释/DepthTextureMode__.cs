@@ -14,7 +14,7 @@ namespace UnityEngine
         请在笔记中查看: "Cameras and depth textures"
     */
     [Flags]
-    public enum DepthTextureMode
+    public enum DepthTextureMode//DepthTextureMode__
     {
 
 

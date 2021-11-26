@@ -14,7 +14,7 @@ namespace UnityEngine
 
         不要去使用 默认构造函数，因为它不会使用 推荐值 去初始化某些 flags;
     */
-    public struct RenderTextureDescriptor
+    public struct RenderTextureDescriptor//RenderTextureDescriptor__
     {
         /*
             摘要:

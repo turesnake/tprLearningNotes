@@ -14,7 +14,7 @@ namespace UnityEngine
     */
     [NativeHeaderAttribute("Runtime/Graphics/LightmapData.h")]
     [UsedByNativeCodeAttribute]
-    public sealed class LightmapData
+    public sealed class LightmapData//LightmapData__
     {
         public LightmapData();
 

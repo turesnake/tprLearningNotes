@@ -7,7 +7,7 @@ namespace UnityEngine.Rendering
     //
     // 摘要:
     //     An enum that represents.
-    public enum GraphicsTier
+    public enum GraphicsTier//GraphicsTier__RR
     {
         //
         // 摘要:

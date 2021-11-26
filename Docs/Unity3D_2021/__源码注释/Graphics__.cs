@@ -24,7 +24,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Graphics/GraphicsScriptBindings.h")]
     [NativeHeaderAttribute("Runtime/Shaders/ComputeShader.h")]
     [NativeHeaderAttribute("Runtime/Camera/LightProbeProxyVolume.h")]
-    public class Graphics
+    public class Graphics//Graphics__
     {
         public Graphics();
 

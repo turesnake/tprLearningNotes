@@ -18,7 +18,7 @@ namespace UnityEngine
     //     A class that allows you to create or modify meshes.
     [NativeHeaderAttribute("Runtime/Graphics/Mesh/MeshScriptBindings.h")]
     [RequiredByNativeCodeAttribute]
-    public sealed class Mesh : Object
+    public sealed class Mesh : Object//Mesh__RR
     {
         //
         // 摘要:

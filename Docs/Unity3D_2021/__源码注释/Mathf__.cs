@@ -15,7 +15,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Math/ColorSpaceConversion.h")]
     [NativeHeaderAttribute("Runtime/Math/FloatConversion.h")]
     [NativeHeaderAttribute("Runtime/Math/PerlinNoise.h")]
-    public struct Mathf
+    public struct Mathf//Mathf__
     {
         
         // 摘要:

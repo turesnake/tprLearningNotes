@@ -35,7 +35,7 @@ namespace UnityEngine.Rendering
             这样, 覆写才会发生;
 
     */
-    public struct RenderStateBlock : IEquatable<RenderStateBlock>
+    public struct RenderStateBlock : IEquatable<RenderStateBlock>//RenderStateBlock__
     {
         /*
             摘要:

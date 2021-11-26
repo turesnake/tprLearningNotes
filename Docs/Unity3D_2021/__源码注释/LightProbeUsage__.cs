@@ -10,7 +10,7 @@ namespace UnityEngine.Rendering
 
         插值类型;
     */
-    public enum LightProbeUsage
+    public enum LightProbeUsage//LightProbeUsage__
     {
         
         // 摘要:

@@ -27,7 +27,7 @@ namespace UnityEngine
         要么表示它的 depth buffer;
     */
     [NativeHeaderAttribute("Runtime/Graphics/GraphicsScriptBindings.h")]
-    public struct RenderBuffer
+    public struct RenderBuffer//RenderBuffer__
     {
 
         /*

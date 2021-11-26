@@ -7,7 +7,7 @@ namespace UnityEngine.Rendering
     
     // 摘要:
     //     Used by CommandBuffer.SetShadowSamplingMode.
-    public enum ShadowSamplingMode
+    public enum ShadowSamplingMode//ShadowSamplingMode__
     {
         
         // 摘要:

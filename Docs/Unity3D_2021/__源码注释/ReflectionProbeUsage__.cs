@@ -8,7 +8,7 @@ namespace UnityEngine.Rendering
         摘要:
         Reflection Probe usage.
     */
-    public enum ReflectionProbeUsage
+    public enum ReflectionProbeUsage//ReflectionProbeUsage__
     {
         
         // 摘要:

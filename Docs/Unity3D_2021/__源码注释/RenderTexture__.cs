@@ -44,7 +44,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Camera/Camera.h")]
     [NativeHeaderAttribute("Runtime/Graphics/GraphicsScriptBindings.h")]
     [UsedByNativeCodeAttribute]
-    public class RenderTexture : Texture
+    public class RenderTexture : Texture//RenderTexture__
     {
 
         /*

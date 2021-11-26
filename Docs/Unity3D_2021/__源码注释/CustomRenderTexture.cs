@@ -13,7 +13,7 @@ namespace UnityEngine
     //     directly to the Texture using a Shader.
     [NativeHeaderAttribute("Runtime/Graphics/CustomRenderTexture.h")]
     [UsedByNativeCodeAttribute]
-    public sealed class CustomRenderTexture : RenderTexture
+    public sealed class CustomRenderTexture : RenderTexture//CustomRenderTexture__RR
     {
         //
         // 摘要:

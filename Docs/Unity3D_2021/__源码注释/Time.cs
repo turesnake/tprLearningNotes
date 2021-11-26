@@ -10,7 +10,7 @@ namespace UnityEngine
     //     Provides an interface to get time information from Unity.
     [NativeHeaderAttribute("Runtime/Input/TimeManager.h")]
     [StaticAccessorAttribute("GetTimeManager()", Bindings.StaticAccessorType.Dot)]
-    public class Time
+    public class Time//Time__RR
     {
         public Time();
 

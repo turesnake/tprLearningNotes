@@ -14,7 +14,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Graphics/Texture.h")]
     [NativeHeaderAttribute("Runtime/Streaming/TextureStreamingManager.h")]
     [UsedByNativeCodeAttribute]
-    public class Texture : Object
+    public class Texture : Object//Texture__RR
     {
         //
         // 摘要:

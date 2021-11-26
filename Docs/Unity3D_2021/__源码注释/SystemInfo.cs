@@ -17,7 +17,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Input/GetInput.h")]
     [NativeHeaderAttribute("Runtime/Graphics/Mesh/MeshScriptBindings.h")]
     [NativeHeaderAttribute("Runtime/Graphics/GraphicsFormatUtility.bindings.h")]
-    public sealed class SystemInfo
+    public sealed class SystemInfo//SystemInfo__RR
     {
         //
         // 摘要:
@@ -449,10 +449,15 @@ namespace UnityEngine
         // 摘要:
         //     The graphics API type used by the graphics device (Read Only).
         public static GraphicsDeviceType graphicsDeviceType { get; }
-        //
-        // 摘要:
-        //     Returns true if the texture UV coordinate convention for this platform has Y
-        //     starting at the top of the image.
+
+
+
+        /*
+            如果当前平台的 texture 约定, y轴的0点 是在上方, (从上向下), 
+            那么本函数返回 true;
+
+            This matches the "UNITY_UV_STARTS_AT_TOP" macro in shaders.
+        */
         public static bool graphicsUVStartsAtTop { get; }
 
 

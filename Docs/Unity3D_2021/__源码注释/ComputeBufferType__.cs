@@ -13,7 +13,7 @@ namespace UnityEngine
         这些 flag 是可以相互组合的, 参考下方的 "Constant" flag 中的描述;
     */
     [Flags]
-    public enum ComputeBufferType
+    public enum ComputeBufferType//ComputeBufferType__
     {
         
         /*

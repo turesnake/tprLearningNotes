@@ -9,7 +9,7 @@ namespace UnityEngine
 
         具体介绍查看 catlike rendering 教程
     */
-    public enum FogMode
+    public enum FogMode//FogMode__
     {
         /*
             Linear fog.

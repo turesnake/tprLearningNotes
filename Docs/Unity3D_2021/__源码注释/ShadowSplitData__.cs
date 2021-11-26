@@ -32,7 +32,8 @@ namespace UnityEngine.Rendering
                 此时可用本类中的 cull sphere 相关的成员;
     */
     [UsedByNativeCodeAttribute]
-    public struct ShadowSplitData : IEquatable<ShadowSplitData>
+    public struct ShadowSplitData /*ShadowSplitData__*/
+        : IEquatable<ShadowSplitData>
     {
         
         // 摘要:

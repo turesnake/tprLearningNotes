@@ -22,7 +22,7 @@ namespace UnityEngine.Rendering
 
     */
     [Flags]
-    public enum ShaderPropertyFlags
+    public enum ShaderPropertyFlags//ShaderPropertyFlags__
     {
         
         // 摘要:

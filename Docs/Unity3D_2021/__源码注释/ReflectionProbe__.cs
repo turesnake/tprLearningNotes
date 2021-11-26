@@ -19,7 +19,7 @@ namespace UnityEngine
 
     */
     [NativeHeaderAttribute("Runtime/Camera/ReflectionProbes.h")]
-    public sealed class ReflectionProbe : Behaviour
+    public sealed class ReflectionProbe : Behaviour//ReflectionProbe__
     {
 
 

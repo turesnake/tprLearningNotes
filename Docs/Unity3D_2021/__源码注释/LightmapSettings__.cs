@@ -15,7 +15,7 @@ namespace UnityEngine
     */
     [NativeHeaderAttribute("Runtime/Graphics/LightmapSettings.h")]
     [StaticAccessorAttribute("GetLightmapSettings()")]
-    public sealed class LightmapSettings : Object
+    public sealed class LightmapSettings : Object//LightmapSettings__
     {
         
 

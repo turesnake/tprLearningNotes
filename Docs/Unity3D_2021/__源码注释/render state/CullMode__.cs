@@ -9,7 +9,7 @@ namespace UnityEngine.Rendering
     // 摘要:
     //     Backface culling mode.
     [NativeHeaderAttribute("Runtime/GfxDevice/GfxDeviceTypes.h")]
-    public enum CullMode
+    public enum CullMode//CullMode__
     {
         
         // 摘要:

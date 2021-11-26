@@ -17,7 +17,8 @@ namespace UnityEngine.Rendering
             这样在 shader 端就不需要写了;
 
     */
-    public struct RenderTargetBlendState : IEquatable<RenderTargetBlendState>
+    public struct RenderTargetBlendState /*RenderTargetBlendState__*/
+        : IEquatable<RenderTargetBlendState>
     {
         /*
             构造函数,  就是用来配置 本类中的那个 成员的;

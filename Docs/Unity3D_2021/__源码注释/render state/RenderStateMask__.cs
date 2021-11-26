@@ -13,7 +13,7 @@ namespace UnityEngine.Rendering
         各个 flags 可以组合起来使用
     */
     [Flags]
-    public enum RenderStateMask
+    public enum RenderStateMask//RenderStateMask__
     {
         
         // 摘要:

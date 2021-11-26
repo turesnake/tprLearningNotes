@@ -7,7 +7,7 @@
 urp 允许用户 向 渲染流程 插入一些 “render pass 和相关配置”。
 以此来影响 渲染效果
 
-Use this scriptable renderer feature to inject render passes into the renderer.
+Use this "scriptable renderer feature" to inject "render passes" into the renderer.
 
 这些操作是围绕 render texture 展开的
 

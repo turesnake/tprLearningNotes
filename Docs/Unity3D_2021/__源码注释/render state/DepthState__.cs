@@ -19,7 +19,7 @@ namespace UnityEngine.Rendering
         
 
     */
-    public struct DepthState : IEquatable<DepthState>
+    public struct DepthState : IEquatable<DepthState>//DepthState__
     {
         
         public DepthState(

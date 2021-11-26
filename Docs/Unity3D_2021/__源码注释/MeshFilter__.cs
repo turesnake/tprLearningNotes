@@ -10,7 +10,7 @@ namespace UnityEngine
     //     A class to access the Mesh of the.
     [NativeHeaderAttribute("Runtime/Graphics/Mesh/MeshFilter.h")]
     [RequireComponent(typeof(Transform))]
-    public sealed class MeshFilter : Component
+    public sealed class MeshFilter : Component//MeshFilter__
     {
         public MeshFilter();
 

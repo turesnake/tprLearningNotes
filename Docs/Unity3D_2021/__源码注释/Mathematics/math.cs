@@ -5,7 +5,7 @@
 
 namespace Unity.Mathematics
 {
-    public static class math
+    public static class math//math__RR
     {
         public const double E_DBL = 2.7182818284590451;
         public const float NAN = float.NaN;

@@ -29,7 +29,7 @@ namespace UnityEngine.Rendering
 
     */
     [NativeHeaderAttribute("Runtime/GfxDevice/GfxDeviceTypes.h")]
-    public enum BlendOp
+    public enum BlendOp//BlendOp__RR
     {
         
         // 摘要:

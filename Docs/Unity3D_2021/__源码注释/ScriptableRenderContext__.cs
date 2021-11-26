@@ -39,7 +39,8 @@ namespace UnityEngine.Rendering
     [NativeHeaderAttribute("Modules/UI/Canvas.h")]
     [NativeHeaderAttribute("Modules/UI/CanvasManager.h")]
     [NativeTypeAttribute("Runtime/Graphics/ScriptableRenderLoop/ScriptableRenderContext.h")]
-    public struct ScriptableRenderContext : IEquatable<ScriptableRenderContext>
+    public struct ScriptableRenderContext /*ScriptableRenderContext__*/
+        : IEquatable<ScriptableRenderContext>
     {
 
         // 摘要:

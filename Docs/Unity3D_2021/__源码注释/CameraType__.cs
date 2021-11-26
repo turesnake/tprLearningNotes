@@ -15,7 +15,7 @@ namespace UnityEngine
         
     */
     [Flags]
-    public enum CameraType
+    public enum CameraType//CameraType__
     {
         
         // 摘要:

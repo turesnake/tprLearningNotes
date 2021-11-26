@@ -15,7 +15,7 @@ namespace UnityEngine.Rendering
         由此可观察 built-in 管线的 渲染流程
 
     */
-    public enum CameraEvent
+    public enum CameraEvent//CameraEvent__RR
     {
         //
         // 摘要:

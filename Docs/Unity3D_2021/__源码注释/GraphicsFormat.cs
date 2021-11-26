@@ -37,7 +37,7 @@ namespace UnityEngine.Experimental.Rendering
 
 
     */
-    public enum GraphicsFormat
+    public enum GraphicsFormat//GraphicsFormat__RR
     {
         
         //     The format is not specified.  未指定格式。

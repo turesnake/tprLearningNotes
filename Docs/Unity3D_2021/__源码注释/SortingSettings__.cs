@@ -12,7 +12,8 @@ namespace UnityEngine.Rendering
 
         按描述, 只与 "物体排序" 相关;
     */
-    public struct SortingSettings : IEquatable<SortingSettings>
+    public struct SortingSettings /*SortingSettings__*/
+        : IEquatable<SortingSettings>
     {
         
 

@@ -17,7 +17,7 @@ namespace UnityEngine.Rendering
             -- ScriptableRenderContext.ExecuteCommandBufferAsync()
         将 command buffer 发送到这个 queue;
     */
-    public enum ComputeQueueType
+    public enum ComputeQueueType//ComputeQueueType__
     {
         /*
             This queue type would be the choice for compute tasks "supporting or as optimisations

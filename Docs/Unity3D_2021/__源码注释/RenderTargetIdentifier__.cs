@@ -19,7 +19,8 @@ namespace UnityEngine.Rendering
         并且自带一组 隐式类型转换符, 以节省打字
 
     */
-    public struct RenderTargetIdentifier : IEquatable<RenderTargetIdentifier>
+    public struct RenderTargetIdentifier /*RenderTargetIdentifier__*/
+        : IEquatable<RenderTargetIdentifier>
     {
         /*
             摘要:

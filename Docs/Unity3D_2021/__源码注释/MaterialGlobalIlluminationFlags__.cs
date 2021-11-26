@@ -10,7 +10,7 @@ namespace UnityEngine
     // 摘要:
     //     How the material interacts with lightmaps and lightprobes.
     [Flags]
-    public enum MaterialGlobalIlluminationFlags
+    public enum MaterialGlobalIlluminationFlags//MaterialGlobalIlluminationFlags__
     {
         
         // 摘要:

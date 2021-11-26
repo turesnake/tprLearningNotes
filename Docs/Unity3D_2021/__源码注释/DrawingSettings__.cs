@@ -16,7 +16,7 @@ namespace UnityEngine.Rendering
         -- which shader passes to use (shaderPassName).
 
     */
-    public struct DrawingSettings : IEquatable<DrawingSettings>
+    public struct DrawingSettings : IEquatable<DrawingSettings>//DrawingSettings__
     {
         
         // 摘要:

@@ -39,7 +39,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Graphics/RenderTexture.h")]
     [RequireComponent(typeof(Transform))]
     [UsedByNativeCodeAttribute]
-    public sealed class Camera : Behaviour
+    public sealed class Camera : Behaviour//Camera__
     {
 
         /*

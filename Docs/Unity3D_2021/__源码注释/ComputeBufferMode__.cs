@@ -13,7 +13,7 @@ namespace UnityEngine
         以便 unity 直到 where and how 存储 buffer 数据;
     */
     [NativeTypeAttribute("Runtime/GfxDevice/GfxDeviceTypes.h")]
-    public enum ComputeBufferMode
+    public enum ComputeBufferMode//ComputeBufferMode__
     {
 
         /*

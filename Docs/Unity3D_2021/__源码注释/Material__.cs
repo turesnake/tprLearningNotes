@@ -22,7 +22,7 @@ namespace UnityEngine
     */
     [NativeHeaderAttribute("Runtime/Graphics/ShaderScriptBindings.h")]
     [NativeHeaderAttribute("Runtime/Shaders/Material.h")]
-    public class Material : Object
+    public class Material : Object//Material__
     {
 
         /*

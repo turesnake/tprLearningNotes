@@ -15,7 +15,7 @@ namespace UnityEngine.Rendering
         比如, 一旦先前所有的 drawcalls 都完成了它们的 vs 部分, 同时 先前所有的 computer-shader dispatches 也完成了,
         那么一个创建时设置为 "VertexProcessing" | "ComputeProcessing" 的 GraphicsFence 就完成了;
     */
-    public enum SynchronisationStageFlags
+    public enum SynchronisationStageFlags//SynchronisationStageFlags__
     {
         /*
             All aspects of vertex processing in the GPU.

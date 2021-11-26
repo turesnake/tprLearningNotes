@@ -23,7 +23,7 @@ namespace UnityEditor
     [NativeHeaderAttribute("Runtime/Misc/PlayerSettingsSplashScreen.h")]
     [NativeHeaderAttribute("Runtime/Misc/PlayerSettings.h")]
     [StaticAccessorAttribute("GetPlayerSettings()")]
-    public sealed class PlayerSettings : UnityEngine.Object
+    public sealed class PlayerSettings : UnityEngine.Object//PlayerSettings__RR
     {
         //
         // 摘要:

@@ -28,7 +28,7 @@ namespace UnityEngine
 
     */
     [NativeHeaderAttribute("Runtime/Export/Graphics/Graphics.bindings.h")]
-    public sealed class LightProbes : Object
+    public sealed class LightProbes : Object//LightProbes__
     {
         
 

@@ -46,7 +46,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/GfxDevice/GfxDevice.h")]
     [NativeHeaderAttribute("Runtime/Graphics/GraphicsScriptBindings.h")]
     [StaticAccessorAttribute("GetGfxDevice()", Bindings.StaticAccessorType.Dot)]
-    public sealed class GL
+    public sealed class GL//GL__
     {
 
         /*
@@ -279,6 +279,8 @@ namespace UnityEngine
         
             在 unity 中, 投影矩阵遵从 opengl 习俗;
             但在有些平台上, 投影矩阵 会做微小调整, 以适应 原生 API 需求;
+            tpr:
+                比如 "y-flip" 和 "reverse z";
 
             使用本函数来计算 "最终的投影矩阵" 的样子;
             得到的值会和 shader 代码中的 "UNITY_MATRIX_P" 矩阵 一样;

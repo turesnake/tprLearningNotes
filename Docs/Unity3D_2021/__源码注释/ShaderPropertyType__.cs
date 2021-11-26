@@ -11,7 +11,7 @@ namespace UnityEngine.Rendering
 
         
     */
-    public enum ShaderPropertyType
+    public enum ShaderPropertyType//ShaderPropertyType__
     {
         //
         // 摘要:

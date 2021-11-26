@@ -26,7 +26,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Shaders/ComputeShader.h")]
     [NativeHeaderAttribute("Runtime/Export/Graphics/GraphicsBuffer.bindings.h")]
     [UsedByNativeCodeAttribute]
-    public sealed class GraphicsBuffer : IDisposable
+    public sealed class GraphicsBuffer : IDisposable//GraphicsBuffer__
     {
 
         /*

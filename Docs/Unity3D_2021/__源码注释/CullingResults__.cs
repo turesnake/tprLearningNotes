@@ -32,7 +32,7 @@ namespace UnityEngine.Rendering
     [NativeHeaderAttribute("Runtime/Export/RenderPipeline/ScriptableRenderPipeline.bindings.h")]
     [NativeHeaderAttribute("Runtime/Scripting/ScriptingCommonStructDefinitions.h")]
     [NativeHeaderAttribute("Runtime/Graphics/ScriptableRenderLoop/ScriptableCulling.h")]
-    public struct CullingResults : IEquatable<CullingResults>
+    public struct CullingResults : IEquatable<CullingResults>//CullingResults__
     {
         
         /*

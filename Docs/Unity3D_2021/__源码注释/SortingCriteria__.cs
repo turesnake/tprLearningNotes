@@ -16,7 +16,7 @@ namespace UnityEngine.Rendering
 
     */
     [Flags]
-    public enum SortingCriteria
+    public enum SortingCriteria//SortingCriteria__
     {
         
         // 摘要:
@@ -86,7 +86,7 @@ namespace UnityEngine.Rendering
             摘要:
             Sorts objects by renderer priority.
 
-            Renderer.rendererPriority (变量) 
+            "Renderer.rendererPriority" (变量) 
                 inspector 中没发现有,
                 小值优先级高, 先渲染, 大值后渲染;
         */

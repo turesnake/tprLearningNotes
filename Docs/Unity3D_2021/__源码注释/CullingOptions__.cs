@@ -35,7 +35,7 @@ namespace UnityEngine.Rendering
             ShadowCasters 
     */
     [Flags]
-    public enum CullingOptions
+    public enum CullingOptions//CullingOptions__
     {
         
         // 摘要:

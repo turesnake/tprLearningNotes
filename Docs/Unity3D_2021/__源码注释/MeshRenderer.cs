@@ -9,7 +9,7 @@ namespace UnityEngine
     // 摘要:
     //     Renders meshes inserted by the MeshFilter or TextMesh.
     [NativeHeaderAttribute("Runtime/Graphics/Mesh/MeshRenderer.h")]
-    public class MeshRenderer : Renderer
+    public class MeshRenderer : Renderer//MeshRenderer__RR
     {
         public MeshRenderer();
 

@@ -21,7 +21,7 @@ namespace UnityEngine.Rendering
 
     */
     [Flags]
-    public enum PerObjectData
+    public enum PerObjectData//PerObjectData__
     {
         /*
             摘要:

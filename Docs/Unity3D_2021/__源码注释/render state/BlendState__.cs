@@ -13,7 +13,7 @@ namespace UnityEngine.Rendering
         最多可以存储 8 个 render target 的 blend states
 
     */
-    public struct BlendState : IEquatable<BlendState>
+    public struct BlendState : IEquatable<BlendState>//BlendState__
     {
         //
         // 摘要:

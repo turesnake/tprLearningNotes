@@ -8,7 +8,7 @@ namespace UnityEngine
         摘要:
         The type of motion vectors that should be generated.
     */
-    public enum MotionVectorGenerationMode
+    public enum MotionVectorGenerationMode//MotionVectorGenerationMode__
     {
         
         // 摘要:

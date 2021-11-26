@@ -9,7 +9,7 @@ namespace UnityEngine
 
         前向渲染, 延迟渲染 之类的
     */
-    public enum RenderingPath
+    public enum RenderingPath//RenderingPath__
     {
         
         //   Use Player Settings.

@@ -10,7 +10,7 @@ namespace UnityEngine.Rendering
 
         本物体设置的, 自己是如何贡献给 shader caster 的
     */
-    public enum ShadowCastingMode
+    public enum ShadowCastingMode//ShadowCastingMode__
     {
         /*
             摘要:

@@ -15,7 +15,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Transform/ScriptBindings/TransformScriptBindings.h")]
     [NativeHeaderAttribute("Configuration/UnityConfigure.h")]
     [RequiredByNativeCodeAttribute]
-    public class Transform : Component, IEnumerable
+    public class Transform : Component, IEnumerable//Transform__RR
     {
         protected Transform();
 

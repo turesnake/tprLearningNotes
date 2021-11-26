@@ -15,7 +15,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Export/Graphics/Light.bindings.h")]
     [RequireComponent(typeof(Transform))]
     [RequireComponent(typeof(Transform))]
-    public sealed class Light : Behaviour
+    public sealed class Light : Behaviour//Light__RR
     {
         public Light();
 

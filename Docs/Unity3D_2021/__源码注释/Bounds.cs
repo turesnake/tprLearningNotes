@@ -16,7 +16,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Geometry/AABB.h")]
     [NativeTypeAttribute(Header = "Runtime/Geometry/AABB.h")]
     [RequiredByNativeCodeAttribute(Optional = true, GenerateProxy = true)]
-    public struct Bounds : IEquatable<Bounds>, IFormattable
+    public struct Bounds : IEquatable<Bounds>, IFormattable//Bounds__
     {
         //
         // 摘要:

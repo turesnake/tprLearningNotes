@@ -14,7 +14,7 @@ namespace UnityEngine.Rendering
 
     */
     [NativeHeaderAttribute("Runtime/GfxDevice/GfxDeviceTypes.h")]
-    public enum BlendMode
+    public enum BlendMode//BlendMode__
     {
         
         // 摘要:

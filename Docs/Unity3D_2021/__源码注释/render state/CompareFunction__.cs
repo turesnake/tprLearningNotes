@@ -9,7 +9,7 @@ namespace UnityEngine.Rendering
     // 摘要:
     //     Depth or stencil comparison function.
     [NativeHeaderAttribute("Runtime/GfxDevice/GfxDeviceTypes.h")]
-    public enum CompareFunction
+    public enum CompareFunction//CompareFunction__
     {
         
         // 摘要:

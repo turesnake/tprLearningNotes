@@ -26,7 +26,8 @@ namespace UnityEngine.Rendering
 
     */
     [UsedByNativeCodeAttribute]
-    public struct ScriptableCullingParameters : IEquatable<ScriptableCullingParameters>
+    public struct ScriptableCullingParameters /*ScriptableCullingParameters__*/
+        : IEquatable<ScriptableCullingParameters>
     {
         
         // 摘要:

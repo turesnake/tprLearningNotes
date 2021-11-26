@@ -12,7 +12,7 @@ namespace UnityEngine.SceneManagement
         Run-time data structure for *.unity file.
     */
     [NativeHeaderAttribute("Runtime/Export/SceneManager/Scene.bindings.h")]
-    public struct Scene
+    public struct Scene//Scene__
     {
         public int handle { get; }
 

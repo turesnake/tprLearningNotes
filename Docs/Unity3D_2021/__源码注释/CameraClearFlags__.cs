@@ -9,7 +9,7 @@ namespace UnityEngine
         摘要:
         Values for Camera.clearFlags, determining what to clear when rendering a Camera.
     */
-    public enum CameraClearFlags
+    public enum CameraClearFlags//CameraClearFlags__
     {
         
         /*

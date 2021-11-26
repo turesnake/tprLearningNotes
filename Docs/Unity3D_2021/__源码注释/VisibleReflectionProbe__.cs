@@ -18,7 +18,8 @@ namespace UnityEngine.Rendering
 
     */
     [UsedByNativeCodeAttribute]
-    public struct VisibleReflectionProbe : IEquatable<VisibleReflectionProbe>
+    public struct VisibleReflectionProbe /*VisibleReflectionProbe__*/
+        : IEquatable<VisibleReflectionProbe>
     {
         
         /*

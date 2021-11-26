@@ -10,7 +10,7 @@ namespace UnityEngine.Rendering
         ReflectionProbeBlendInfo contains information required for blending probes.
     */
     [UsedByNativeCodeAttribute]
-    public struct ReflectionProbeBlendInfo
+    public struct ReflectionProbeBlendInfo//ReflectionProbeBlendInfo__
     {
         
         // 摘要:

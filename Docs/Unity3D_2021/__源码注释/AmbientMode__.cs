@@ -17,7 +17,7 @@ namespace UnityEngine.Rendering
         只有一个颜色;
 
     */
-    public enum AmbientMode
+    public enum AmbientMode//AmbientMode__
     {
         
         //     Skybox-based or custom ambient lighting.

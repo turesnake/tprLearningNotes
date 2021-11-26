@@ -35,7 +35,7 @@ namespace UnityEngine
     [NativeHeaderAttribute("Runtime/Shaders/ComputeShader.h")]
     [NativeHeaderAttribute("Runtime/Export/Shaders/ComputeShader.bindings.h")]
     [UsedByNativeCodeAttribute]
-    public sealed class ComputeBuffer : IDisposable
+    public sealed class ComputeBuffer : IDisposable//ComputeBuffer__
     {
 
 

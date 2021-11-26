@@ -7,7 +7,7 @@ namespace UnityEngine
     //
     // 摘要:
     //     Format of a RenderTexture.
-    public enum RenderTextureFormat
+    public enum RenderTextureFormat//RenderTextureFormat__RR
     {
         //
         // 摘要:

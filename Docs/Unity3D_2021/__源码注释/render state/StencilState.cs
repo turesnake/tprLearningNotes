@@ -9,7 +9,7 @@ namespace UnityEngine.Rendering
     //
     // 摘要:
     //     Values for the stencil state.
-    public struct StencilState : IEquatable<StencilState>
+    public struct StencilState : IEquatable<StencilState>//StencilState__
     {
         //
         // 摘要:

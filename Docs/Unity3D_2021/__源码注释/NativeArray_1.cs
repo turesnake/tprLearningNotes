@@ -38,7 +38,9 @@ namespace Unity.Collections
     [NativeContainerSupportsDeallocateOnJobCompletion]
     [NativeContainerSupportsDeferredConvertListToArray]
     [NativeContainerSupportsMinMaxWriteRestriction]
-    public struct NativeArray<T> : IDisposable, IEnumerable<T>, IEnumerable, IEquatable<NativeArray<T>> where T : struct
+    public struct NativeArray<T> /* NativeArray__RR */
+        : IDisposable, IEnumerable<T>, IEnumerable, IEquatable<NativeArray<T>> 
+        where T : struct
     {
         public NativeArray(T[] array, Allocator allocator);
         public NativeArray(NativeArray<T> array, Allocator allocator);

@@ -16,7 +16,8 @@ namespace UnityEngine.Rendering
     [DefaultMember("Item")]
     [NativeHeaderAttribute("Runtime/Export/Math/SphericalHarmonicsL2.bindings.h")]
     [UsedByNativeCodeAttribute]
-    public struct SphericalHarmonicsL2 : IEquatable<SphericalHarmonicsL2>
+    public struct SphericalHarmonicsL2 /*SphericalHarmonicsL2__*/
+        : IEquatable<SphericalHarmonicsL2>
     {
 
 

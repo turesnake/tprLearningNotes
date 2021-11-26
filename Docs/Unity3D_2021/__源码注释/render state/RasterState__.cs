@@ -20,7 +20,7 @@ namespace UnityEngine.Rendering
             -- Offset
 
     */
-    public struct RasterState : IEquatable<RasterState>
+    public struct RasterState : IEquatable<RasterState>//RasterState__
     {
         //
         // 摘要:

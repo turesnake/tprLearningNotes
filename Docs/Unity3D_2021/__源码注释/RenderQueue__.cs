@@ -18,7 +18,7 @@ namespace UnityEngine.Rendering
         -- subshader tags.
         都是同一个概念;
     */
-    public enum RenderQueue
+    public enum RenderQueue//RenderQueue__
     {
         
         // 摘要:

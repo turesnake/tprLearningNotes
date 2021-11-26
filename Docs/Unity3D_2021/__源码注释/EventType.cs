@@ -26,7 +26,7 @@ namespace UnityEngine
             }
 
     */
-    public enum EventType
+    public enum EventType//EventType__RR
     {
         
         //     Mouse button was pressed.
