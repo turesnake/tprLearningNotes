@@ -13,10 +13,7 @@ Use this "scriptable renderer feature" to inject "render passes" into the render
 
 
 
-# ----------------------------------------------#
-#          Render Objects     
-# ----------------------------------------------#
-urp 提供的一种 半成品，可以用来方便地实现一个 简易的 feature
+
 
 
 
