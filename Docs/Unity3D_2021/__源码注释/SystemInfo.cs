@@ -88,10 +88,14 @@ namespace UnityEngine
         //     Returns true when the platform supports different blend modes when rendering
         //     to multiple render targets, or false otherwise.
         public static bool supportsSeparatedRenderTargetsBlend { get; }
-        //
-        // 摘要:
-        //     How many simultaneous render targets (MRTs) are supported? (Read Only)
+
+
+        /*
+            How many simultaneous(同时的) render targets (MRTs) are supported? (Read Only)
+        */
         public static int supportedRenderTargetCount { get; }
+
+
         //
         // 摘要:
         //     Are sparse textures supported? (Read Only)

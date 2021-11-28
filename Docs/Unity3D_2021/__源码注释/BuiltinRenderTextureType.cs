@@ -42,7 +42,7 @@ namespace UnityEngine.Rendering
             摘要:
             Target texture of currently rendering camera.
 
-            This is the render target where the current camera would be ultimately rendering into. 
+            This is the render target where the current camera would be ultimately最终 rendering into. 
  
             此项和 上一项: "Currently active render target" 可能是不同的:
             ( 比如在渲染一个光源的 shadowmap 时, 或在一个 CommandBuffer.Blit 之后 )

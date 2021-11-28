@@ -88,7 +88,7 @@ namespace UnityEngine.Rendering
                 Material to use.
             pass:
                 Shader pass to use (default is -1, meaning "all passes").
-
+            
             scale:
             offset:
                 Scale / offset applied to the source texture coordinate.
