@@ -320,6 +320,9 @@ namespace UnityEngine
 
             如果你在此手动改写此值, 新的值会始终存在, 直到调用 camera.ResetAspect();
             这个函数会把 本值再次 等同于 screen's aspect ratio;
+
+            tpr:
+                当设置了 "Camera.rect", "Camera.pixelRect", 本值也会发生改变;
         */
         public float aspect { get; set; }
 
@@ -458,7 +461,7 @@ namespace UnityEngine
             ---
             是否应该将 camera 的渲染对象 强制转换为 render texture;
 
-            若设为 true, camera 的渲染物 已经会被送入 render texture, 而不会直接送入 backbuffer. 
+            若设为 true, camera 的渲染物 一定会被送入 render texture, 而不会直接送入 backbuffer. 
 
             如果你没有 image effects, 但又想用 command buffer 来作用于 current render target,
             此时就能启用此变量;
@@ -511,6 +514,8 @@ namespace UnityEngine
             (或者别的原因 导致 用户定义的模式 无法被执行)
             那么就算设置那个值, 本变量仍然不会同步到 目标值上去, 依然维持当前正在用的 模式;
             这个值可能和 用户定义的 "Camera.renderingPath" 不同,
+
+            enum: 前向渲染, 延迟渲染 那些
         */
         public RenderingPath actualRenderingPath { get; }
 
@@ -520,6 +525,8 @@ namespace UnityEngine
 
             用户可以设置这个值, 但不一定能设置成功, 所以, 我们在设置后, 可以去访问上面的
             "Camera.actualRenderingPath" 来查看是否设置成功
+
+            enum: 前向渲染, 延迟渲染 那些
         */
         public RenderingPath renderingPath { get; set; }
 
@@ -540,9 +547,18 @@ namespace UnityEngine
 
 
         /*
-            How wide is the camera in pixels (not accounting for dynamic resolution scaling) (Read Only).
+            How wide/height is the camera in pixels (不考虑 dynamic resolution 的缩放) (Read Only).
+            当 改写了 "Camera.rect", "Camera.pixelRect", 这两个值也会发生改变
         */
         public int pixelWidth { get; }
+        public int pixelHeight { get; }
+
+        /*
+            the  w/h of the camera in pixels (考虑了 dynamic resolution 的缩放) (Read Only).
+            当 改写了 "Camera.rect", "Camera.pixelRect", 这两个值也会发生改变
+        */
+        public int scaledPixelHeight { get; }
+        public int scaledPixelWidth { get; }
 
 
         /*
@@ -556,6 +572,31 @@ namespace UnityEngine
         */
         [NativePropertyAttribute("NormalizedViewportRect")]
         public Rect rect { get; set; }
+
+        /*
+            Where on the screen is the camera rendered in pixel coordinates.
+
+            camera 的渲染区, 在屏幕上占据的区域, 以像素为单位;
+
+            如果一个项目, 屏幕长宽设置为: 1920,1080;
+            且 camera 覆盖整个屏幕, 那么本变量的值为: (x:0.00, y:0.00, width:1920.00, height:1080.00)
+
+            猜测:
+                当设置了 render target, 那么本值就会作用于 这个 render target 之上;
+
+            ======
+            当这个值 zw分量的比例发生改变, 画面并不会被拉伸;
+            事实上, zw分量只是简单设置了 camera 事业的 w/h 值, camera 视线则在 这个矩形区域的中心位置;
+            具体渲染的画面视野, 则是受到 w分量, 也就是 高度值的影响,
+            当这个值变大, 渲染区的绘制物就会变大;
+            ------
+            tpr:
+                由参数设置的区域, 会被 screen-size 所 clamp, 最后得到的区域, 始终不会越界;
+                如果参数设置的区域 完全在屏幕外边, 那么这个 camera 一个像素都不会渲染;
+        */
+        [NativePropertyAttribute("ScreenViewportRect")]
+        public Rect pixelRect { get; set; }
+
 
 
         /*
@@ -597,31 +638,24 @@ namespace UnityEngine
         //     called outside of a rendering callback and stereo is enabled, it will return
         //     the default eye which is Camera.MonoOrStereoscopicEye.Left.
         public MonoOrStereoscopicEye stereoActiveEye { get; }//vr
-        
         // 摘要:
         //     Defines which eye of a VR display the Camera renders into.
         public StereoTargetEyeMask stereoTargetEye { get; set; }//vr
-        
         // 摘要:
         //     Determines whether the stereo view matrices are suitable to allow for a single
         //     pass cull.
         public bool areVRStereoViewMatricesWithinSingleCullTolerance { get; }//vr
-        
         // 摘要:
         //     Distance to a point where virtual eyes converge.
         public float stereoConvergence { get; set; }//vr
-        
         // 摘要:
         //     The distance between the virtual eyes. Use this to query or set the current eye
         //     separation. Note that most VR devices provide this value, in which case setting
         //     the value will have no effect.
         public float stereoSeparation { get; set; }//vr
-        
         // 摘要:
         //     Stereoscopic rendering.
         public bool stereoEnabled { get; }//vr
-
-
 
 
         /*
@@ -734,33 +768,20 @@ namespace UnityEngine
         /*
             Destination render texture.
 
-            Usually cameras render directly to screen, 也可用本变量指定一个 rt;
+            Usually cameras render directly to screen, 也可用本变量指定一个 render target;
             当本值为 null, camera renders to screen.
 
-            当设置了此值, the camera always renders into the whole texture; 
-            effectively "Camera.rect" and "Camera.pixelRect" are ignored.
 
-            还能让 camera 渲染进特定的 RenderBuffers, 或一次渲染进 multiple textures;
-            使用: Camera.SetTargetBuffers()
+            当设置了此值, camera 总是会将内容渲染到 render target(texture) 整个区域上;
+            此时, "Camera.rect", "Camera.pixelRect" 将被自动忽略;
+ 
+            还能让 camera 渲染到 特定的 RenderBuffers 上, 或一次渲染进 multiple textures;
+            通过: "Camera.SetTargetBuffers()"
         */
         public RenderTexture targetTexture { get; set; }
 
 
-        /*
-            the  w/h of the camera in pixels (考入了 dynamic resolution 的缩放) (Read Only).
-        */
-        public int scaledPixelHeight { get; }
-        public int scaledPixelWidth { get; }
-
-
-
-        /*
-            How tall is the camera in pixels (不考虑 dynamic resolution 的缩放) (Read Only).
-            Use this to return the "height of the Camera viewport" is in pixels
-        */
-        public int pixelHeight { get; }
-
-
+    
         /*
             The vertical field-of-view (of the Camera, in degrees);
 
@@ -774,16 +795,8 @@ namespace UnityEngine
         [NativePropertyAttribute("VerticalFieldOfView")]
         public float fieldOfView { get; set; }
 
-        /*
-            Where on the screen is the camera rendered in pixel coordinates.
 
-            camera 的渲染区, 在屏幕上占据的区域, 不过是以 像素为单位的;
-
-            如果一个项目, 屏幕长宽设置为: 1920,1080;
-            且 camera 覆盖整个屏幕, 那么本变量的值为: (x:0.00, y:0.00, width:1920.00, height:1080.00)
-        */
-        [NativePropertyAttribute("ScreenViewportRect")]
-        public Rect pixelRect { get; set; }
+        
 
 
 
@@ -1021,8 +1034,6 @@ namespace UnityEngine
                 输出端
                 Output array for the frustum corner vectors. Cannot be null and length must be >= 4.
                 out rays;
-
-
         */
         public void CalculateFrustumCorners(Rect viewport, float z, MonoOrStereoscopicEye eye, Vector3[] outCorners);
 
@@ -1135,7 +1146,6 @@ namespace UnityEngine
         public float GetScreenWidth();
         */
 
-
         public Matrix4x4 GetStereoNonJitteredProjectionMatrix(StereoscopicEye eye);// vr
 
 
@@ -1144,7 +1154,6 @@ namespace UnityEngine
         [Obsolete("Camera.GetStereoProjectionMatrices has been deprecated. Use GetStereoProjectionMatrix(StereoscopicEye eye) instead.", false)]
         public Matrix4x4[] GetStereoProjectionMatrices();
         */
-
 
         [FreeFunctionAttribute("CameraScripting::GetStereoProjectionMatrix", HasExplicitThis = true)]
         public Matrix4x4 GetStereoProjectionMatrix(StereoscopicEye eye);// vr

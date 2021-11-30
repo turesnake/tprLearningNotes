@@ -1778,7 +1778,7 @@ namespace UnityEngine.Rendering
             摘要:
             Add a "set active render target" command.
 
-            可通过数种方式来获得一个 rt:
+            可通过数种方式来获得一个 render texture:
             -- a RenderTexture object
             -- a temporary render texture created with CommandBuffer.GetTemporaryRT()
             -- one of built-in temporary textures (BuiltinRenderTextureType)
@@ -1912,14 +1912,32 @@ namespace UnityEngine.Rendering
 
 
         /*
-            摘要:
             Add a command to set the rendering viewport.
-            默认情况下, 当 render target 被更改后, viewport 会被自动设置为 覆盖整个 rt;
-            此时就需要用本函数来 人为改成想要的 区域;
+            By default after render target changes the viewport is set to encompass the whole render target. 
+            This command can be used to limit further rendering to the specified pixel rectangle.
+            --
+
+            默认时, 当设置了新的 render target, viewport 会被自动设置为 "覆盖整个 render target";
+            此时, camera 默认写入整张 render target; 
+            ( 既不关系 camera 本身的 pixelRect 值为多少, 也不关心最终的 backbuffer 有多大 )
+
+            然后我们可以使用本函数, 让 camera 只在 render target 的一个小区域上绘制内容;
+
+            猜测:
+                当一个 render texture/texture 被设置为 render target, 这个 texture 的尺寸是不会改变的;
+
+                如果最终的 backbuffer 尺寸很小, 而我们希望 本 camera 渲染的尺寸 和 backbuffer 相同;
+                那么就可用本函数, 直接设置一个 ( 0, 0, backbuffer.w, backbuffer.h ) 的区域;
+                camera 把内容画进这个区域中, render target(texture) 的剩余区域则空置;
+                ---
+                最后, 可以使用 Blit() 函数, 把这个区域的数据, 复制到 backbuffer 中即可;
             
             参数:
             pixelRect:
                 Viewport rectangle in pixel coordinates.
+                zyzw 分量 都是以像素为单位的;
+                猜测:
+                    这个值会被 render target 的区域 clamp, 最终得到的区域, 不会超越 render target 边界;
         */
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::SetViewport", HasExplicitThis = true, ThrowsException = true)]
         public void SetViewport(Rect pixelRect);
