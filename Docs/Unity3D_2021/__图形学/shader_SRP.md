@@ -476,11 +476,10 @@ posHCS.y *= _ProjectionParams.x;
 编写代码:
 
     // 这个值要作为参数 传递给 frag shader
-    // 之所以把大头工作放在 vert shader 中做, 也许是为了利用 从三角形到frags 的插值运算, 
-    // 建设这部分计算 (瞎猜的)
+    // 之所以把大头工作放在 vert shader 中做, 也许是为了利用 vs->fs 插值运算来建设这部分计算 (我猜)
     float4 posNDC = float4(
-        posHCS.x * 0.5,
-        posHCS.y * 0.5 * _ProjectionParams.x,
+        posHCS.x * 0.5 + posHCS.w * 0.5,
+        posHCS.y * 0.5 * _ProjectionParams.x + posHCS.w * 0.5,
         posHCS.z,
         posHCS.w
     );
@@ -492,7 +491,7 @@ posHCS.y *= _ProjectionParams.x;
 
 
 # == 现成 API ==
--- ComputeScreenPos()
+-- ComputeScreenPos()   srp 中废弃了
 -- GetVertexPositionInputs().positionNDC
 -- ComputeNormalizedDeviceCoordinatesWithZ()
 

@@ -194,12 +194,89 @@ However, when you use the RTHandle system," the actual resolution of the RTHandl
 #   Using RTHandles in shaders
 # ------------------------------------- #
 
+当你以常规方式, 在 shader 中对 full-screen render texture 进行采样时, uv值的跨度为 [0,1]; 在 RTHandle 中并非总是如此; 
+
+The current rendering might only occur in a partial viewport. To take this into account, you must apply a scale to UVs when you sample RTHandles that use a scale. 
+
+... 为了考虑这一点, 当你在对 scale 的 RTHandle 进行采样时, 就必须把 scale 值考虑进 uv 值的计算中去; 
+
+所有需要在 shader 中考虑的信息, 都被放在 "RTHandleProperties" struct 中, 关于它的描述 翻译到了 对应源码中;
+
+
+后面有一部分看的是不是太明白... 
+
+
+# ------------------------------------- #
+#   Custom SRP specific information
+# ------------------------------------- #
+默认情况下, srp 不提供 shader 常量;
+因此, 当你将 RTHandle 和 srp 一起使用时, 你必须自己向 shader 提供这些常量;
 
 
 
+# ------------------------------------- #
+#   Camera specific RTHandles
+# ------------------------------------- #
 
+rendering loop 使用的大部分 render textures 可以被所有 camera 共享;
+如果它们的内容不需要从 一帧 传入下一帧, 这没问题; 然而, 有些 render texture 需要自己的内容持续存在; 比如 TAA 所需要的 color buffer; 这意味着, 这个 RTHandle 和这个 camera 绑定在一起了, 不能被别的 camera 共享;
+(因为它里面的内容需要持续存在, 且只和这个 camera 相关)
 
+大多数情况下，这也意味着这些 RTHandle 必须至少是双缓冲的(written to during the current frame, read from during the previous frame); 为了定位这个问题, 系统包含了 "BufferedRTHandleSystem";
 
+一个 "BufferedRTHandleSystem" 是一个 "RTHandleSystem", that can multi-buffer RTHandles;
+
+其原理是通过唯一的 ID 来标识 buffer, 并提供 API 来分配同一 buffr 的多个实例, then retrieve them from previous frames (然后从之前的帧中检索它们);
+
+这些叫 "history buffers"; 通常, 你必须为每个 camera 分配一个 "BufferedRTHandleSystem"; Each one owns their Camera-specific RTHandles.
+
+不是所有的 camera 都需要 "history buffers"; 比如, 如果一个 camera 不需要 TAA, 他就不需要分配 "BufferedRTHandleSystem"; 以此节省内存; 
+
+另一个后果是, the system only allocates "history buffers" at the resolution of the Camera that the buffers are for.
+(系统仅以 camera的分辨率 来分配 "history buffer");
+
+如果 第一个 camera 为 1920x1080, 第二个 camera 为 256x256, 那么 第二个 camera 只能分配到一个 256x256 的 "history buffers", 而不会像那些 通用的 RTHandle 一样,  以 max 只 1920x1080 为基准去计算自己的尺寸;
+
+使用如下代码创建一个 "BufferedRTHandleSystem" 实例:
+# ==:
+    BufferedRTHandleSystem m_HistoryRTSystem = new BufferedRTHandleSystem();
+# -- code-end
+
+使用上面的 实例, 来分配一个专用的 RTHandle:
+# ==:
+    public void AllocBuffer(
+        int bufferId, 
+        Func<RTHandleSystem, int, RTHandle> allocator, 
+        int bufferCount
+    );
+# --code-end
+
+参数 bufferId 是个唯一值 系统用来识别一个 buffer;
+参数 allocator 是你提供的一个函数, 来分配 RTHandles, 
+    (all instances are not allocated upfront)
+参数 bufferCount 是需要的实例的个数;
+
+从那里，您可以通过其 ID 和 instance index 检索每个 RTHandle，如下所示：
+# ==:
+    public RTHandle GetFrameRT(int bufferId, int frameIndex);
+# --code-end
+
+参数 frameIndex 值位于区间 [0, buffer数码-1];
+    0 总是表示 the current frame buffer,
+    1 表示 上一帧的  frame buffer,
+    2 表示 上上一帧...
+
+To release a buffered RTHandle, call the Release function on the BufferedRTHandleSystem, passing in the ID of the buffer to release:
+# ==:
+    public void ReleaseBuffer(int bufferId);
+# --code-end
+
+In the same way that you provide the reference size for regular RTHandleSystems, you must do this for each instance of BufferedRTHandleSystem.
+# ==:
+    public void SwapAndSetReferenceSize(int width, int height, MSAASamples msaaSamples);
+# --code-end
+
+... 未完 ... 
 
 
 
