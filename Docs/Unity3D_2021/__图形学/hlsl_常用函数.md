@@ -238,6 +238,120 @@ int sign(x)
 
 
 
+# --------------------------- #
+#    函数   Load
+# --------------------------- #
+https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-to-load?redirectedfrom=MSDN
+# ------
+Load() 和 Sample() 相似, 不过没有 samplestate 和 filter, 就是单纯访问一个 texel 中的数据;
+
+# ------
+    ret texture.Load(
+        typeX Location,
+        [typeX SampleIndex, ]  可选
+        [typeX Offset ]        可选
+    );
+
+类型 typeX 可以为i:  int, int2, int3 or int4;
+
+必须是一个 texture 对象来调用, (但不能是 TextureCube or TextureCubeArray);
+
+参数:
+-- Location:
+    texture coord, 不是传统 uv 值[0,1], 而是基于像素的 [0,w], [0,h]
+    基于 texture obj 的类型不同, 本参数的 类型也不同;
+
+    the last component specifies the mipmap level. 
+    但是在 urp 使用中, 发现也可以完全不写这个 mip 分量;
+
+    比如: 如果要采样一个 2D texture, 本参数的前两个分量存储 coords 信息, 
+    第三个分量存储 mipmap lvl 信息;
+
+    如果这个参数的任何一个分量月结了, Load() 返回一个向量, 它的每个分量都为0;
+
+
+-- SampleIndex:
+    An sampling index.
+    仅被用于 multi-sample textures.
+    ---
+    tpr:
+        如果要多次采样,比如采样4次, 那么此参数传入的就是 {0,1,2,3} 这种 idx 值;
+        也许 系统内部根据这个 idx 的值, 会按照一定规律自动微调 coords 信息, 从而采样出周边 texel 的值;
+
+
+
+
+-- Offset:
+    An offset applied to the texture coordinates before sampling. 
+    基于 texture obj 的类型不同, 本参数的 类型也不同;
+    需要是 static 值 ???
+    ---
+    如果对 multi-sample textures 使用了本参数, 那么也必须使用参数 SampleIndex;
+
+
+
+具体调用: texture.Load( unCoord2, sampleIndex );
+
+
+
+
+# --------------------------------------- #
+#    类型   Texture2DMS<Entry, samples>
+# --------------------------------------- #
+https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/sm5-object-texture2dms
+(但是这个文档提供的信息很有限;)
+
+首先, 这是一个类型, 类似 c++ 中的 class, 它只能调用它能调用的成员函数;
+比起 Texture2D, 本类型主要用于 "支持 MSAA 的 texture";
+
+不能对 Texture2DMS 类型的对象调用任何 "Sample" 系列的函数, 因为 msaa texture 不支持滤波, 或任何 常规 texture 支持的操作;
+只能对本类对象调用 "Load()", 一次获得一个 subsample, 在调用此函数期间, 需要传入 参数 texture coords (不是uv, 是像素为单位的), 和 参数 sampleIndex, 来指示自己这次调用, 获得那个 idx 的 subsample 值;
+
+
+# ----- 声明: -----
+例如:
+    Texture2DMS<float, 8> textureA;
+
+元素类型为 float, MSAA lvl 为 8, (每像素采样8次)
+
+# ------ 采样: ------
+Texture2DMS::Load( int2 unCoord2, int sampleIndex );
+
+本函数的行为和上面的 "Load" 中描述的几乎一致;
+区别就是:
+-- 参数 unCoord2 只要两个分量, 不需要传入额外的 mip lvl 信息;
+-- sampleIndex 区间 [0,7]; (如果使用上方的声明);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

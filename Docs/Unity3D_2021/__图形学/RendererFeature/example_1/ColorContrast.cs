@@ -50,20 +50,38 @@ public class ColorContrast : ScriptableRendererFeature
             this.dst = dest;
         }
 
-        // This method is called before executing the render pass.
-        // It can be used to configure render targets and their clear state. Also to create temporary render target textures.
-        // When empty this render pass will render to the active camera render target.
-        // You should never call CommandBuffer.SetRenderTarget. Instead call <c>ConfigureTarget</c> and <c>ConfigureClear</c>.
-        // The render pipeline will ensure target setup and clearing happens in a performant manner.
+
+        /*
+            在正式渲染一个 camera 之前, 本函数会被 renderer 调用 (比如 Forward Renderer);
+            (另一说是) 在执行 render pass 之前, 本函数会被调用;
+
+            可以在本函数中实现:
+                -- configure render targets and their clear state
+                -- create temporary render target textures
+
+            如果本函数为空, 这个 render pass 会被渲染进 "active camera render target";
+
+            永远不要调用 "CommandBuffer.SetRenderTarget()", 
+            而要改用 "ScriptableRenderPass" 内的 "ConfigureTarget()", "ConfigureClear()" 函数;
+            管线能保证高效地 "setup target" 和 "clear target";
+        */
+        /// <param name="cmd">CommandBuffer to enqueue rendering commands. This will be executed by the pipeline;
+        ///                     将需要的 渲染指令 安排进 render queue; 
+        /// </param>
+        /// <param name="renderingData">Current rendering state information</param>
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
             this.src = this.srcRenderer.cameraColorTarget;
         }
 
-        // Here you can implement the rendering logic.
-        // Use <c>ScriptableRenderContext</c> to issue drawing commands or execute command buffers
-        // https://docs.unity3d.com/ScriptReference/Rendering.ScriptableRenderContext.html
-        // You don't have to call ScriptableRenderContext.submit, the render pipeline will call it at specific points in the pipeline.
+        
+        /*
+            可在本函数体内编写: 渲染逻辑本身, 也就是 用户希望本 render pass 要做的那些工作;
+            使用参数 context 来发送 绘制指令, 执行 commandbuffers;
+            不需要在本函数实现体内 调用 "ScriptableRenderContext.submit()", 渲染管线会在何时的时间点自动调用它;
+        */
+        /// <param name="context"> Use this render context to issue(发射) any draw commands during execution</param>
+        /// <param name="renderingData">Current rendering state information</param>
         public override void Execute( ScriptableRenderContext context, ref RenderingData renderingData )
         {
             CommandBuffer cmd = CommandBufferPool.Get( "Feature_4_Pass" );
@@ -95,7 +113,12 @@ public class ColorContrast : ScriptableRendererFeature
         }
 
 
-        // Cleanup any allocated resources that were created during the execution of this render pass.
+        /*
+            在完成渲染 camera 时, 本函数会被调用, 
+            可在此函数体内释放本 render pass 新建的所有资源;
+            本函数会清理 camera stack 中的所有 cameras;
+        */
+        /// <param name="cmd">Use this CommandBuffer to cleanup any generated data</param>
         public override void OnCameraCleanup( CommandBuffer cmd )
         {   
             // 释放 tmprt

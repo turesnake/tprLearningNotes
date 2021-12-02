@@ -1399,7 +1399,6 @@ namespace UnityEngine.Rendering
         public void SetGlobalMatrix(int nameID, Matrix4x4 value);
 
 
-        
 
         // 摘要:
         //     Add a "set global shader matrix array property" command.

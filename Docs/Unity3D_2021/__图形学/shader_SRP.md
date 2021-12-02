@@ -467,6 +467,9 @@ posHCS.y *= _ProjectionParams.x;
     y*0.5 + 0.5,
 
 即可得到 屏幕空间坐标: posSS
+完整的过程也可表达为:
+    (posHCS.xy/posHCS.w) * 0.5 + 0.5;
+
 
 # == 实践 ==
 具体该怎么算非常灵活, 实践证明不管是在 vert shader 中,还是在 frag shader 中计算,都可行.
@@ -896,8 +899,65 @@ CGPROGRAM 和 HLSLPROGRAM 作用域的核心区别是 它们默认包含的 文�
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
-#         
+#  c# 源码中的宏:
+#       ENABLE_VR
+#       ENABLE_VR_MODULE
+#       ENABLE_XR_MODULE
 # ---------------------------------------------- #
+
+# ENABLE_VR:
+    "if the platform supports VR", 引擎的 c++ 代码中会设置此宏;
+    and cannot be changed unless you edit and recompile source code.
+    ---
+    这意味着, 设置了此宏, 并不意味着 程序是个 vr 程序... 
+
+
+# ENABLE_VR_MODULE
+    Unity sets this define if your Project includes the built-in VR module "com.unity.modules.vr";
+    即, 只有安装了对应的 package, 此宏才会被设置;
+
+
+# ENABLE_XR_MODULE
+    Unity sets this define if your Project includes the built-in XR module "com.unity.modules.xr";
+    即, 只有安装了对应的 package, 此宏才会被设置;
+
+
+# 在一个 普通 win10 非xr项目中:
+    ENABLE_VR 通常为 true;
+    ENABLE_VR_MODULE, ENABLE_XR_MODULE 通常为 false
+
+    所以:
+        #if ENABLE_VR && ENABLE_VR_MODULE
+        #if ENABLE_VR && ENABLE_XR_MODULE
+    
+    此时都为 false
+
+
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#       _USE_DRAW_PROCEDURAL    (shader keyword)
+#       UseDrawProcedural       (string)
+# ---------------------------------------------- #
+    "should be true when rendering for XR"
+
+在 BeginXRRendering(), EndXRRendering() 见到这个 keyword 被设置;
+确实与 xr, vr 相关;
+
+可以尝试把它 相关的代码都 注释掉
+
+
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#      "_ScaleBias"       (shader float4)
+#       scaleBias         (vector4)
+#       "_ScaleBiasRt"    (shader float4)
+#       scaleBiasRt       (vector4)
+# ---------------------------------------------- #
+这是 urp 自己写入的值, 最好的办法: 针对每个具体的 pass, 去查看 c# 端写入了什么数据;
+
+
+x 分量 表示用户是否需要手动实现 uv "y-flip" 操作:
+
+    output.positionCS.y *= _ScaleBiasRt.x;
+
 
 
 

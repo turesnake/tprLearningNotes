@@ -1300,7 +1300,8 @@ BlendOp <operation>
 
 # channels:
 -- 0
-    允许写入 RGBA 所有通道
+    RGBA 所有通道 都不写入 !!!
+    (文档写的是错的)
 
 -- R/G/B/A/
     标出了哪个通道,就能写入哪个通道

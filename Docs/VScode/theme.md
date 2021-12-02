@@ -123,7 +123,7 @@ http://tmtheme-editor.herokuapp.com/#!/editor/theme/Monokai
 	"punctuation.terminator" // 结尾符号 ;
 
 
-	"storage.modifier" // 类似 "public", "static", "ref" 这样的修饰符
+	"storage.modifier" //修饰符: public internal private static const override readonly sealed
 
 
 

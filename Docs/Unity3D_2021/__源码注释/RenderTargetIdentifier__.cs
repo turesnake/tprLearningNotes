@@ -26,14 +26,15 @@ namespace UnityEngine.Rendering
             摘要:
             All depth-slices of the render resource are bound for rendering. 
             For textures which are neither array nor 3D, the default slice is bound.
-
-            为了渲染, render resource 的所有 depth-slices 都被绑定了;
-            如果目标 texture 既不是 array, 也不是 3d, 则绑定 default slice;
-
-            没看懂
+            --
+            这只是一个 常数, 它的意思是:
+            -1-
+                如果 texture 是 array, 3D cubemap, 那么 "depthSlice = -1" 就意味着:
+                    All depth-slices of the render resource are bound for rendering. 
+            -2-
+                如果 texture 不是 array, 3D cubemap, 那么系统将使用 "default slice" 去写入 depth 数据; 
         */
         public const int AllDepthSlices = -1;
-
 
 
         /*
@@ -56,8 +57,9 @@ namespace UnityEngine.Rendering
                这只是一个 enum 值
             
             name:
-            nameID:
                 Temporary render texture name.
+            nameID:
+                调用: Shader.PropertyToID("_AAA_Tex"); 获得的, 
     
             tex:
                 RenderTexture or Texture object to use.
@@ -71,11 +73,11 @@ namespace UnityEngine.Rendering
             
             depthSlice:
                 Depth slice of the Array RenderTexture to use. 
-
-                上文中的本类常数: RenderTargetIdentifier.AllDepthSlices, 
-                表明了: all slices should be bound for rendering;
-
-                此参数默认值为 0;
+                The symbolic constant "RenderTargetIdentifier.AllDepthSlices" indicates that 
+                all slices should be bound for rendering. The default value is 0.
+                ---
+                此值默认写 0, 表示使用第一层 去 存储 depth 数据;
+                如果设置为 -1, 那么将执行上文 "RenderTargetIdentifier.AllDepthSlices" 所表达的意思;(去查看它)
             
             renderTargetIdentifier:
                 An existing render target identifier.
@@ -85,6 +87,7 @@ namespace UnityEngine.Rendering
         public RenderTargetIdentifier(Texture tex);
         public RenderTargetIdentifier(int nameID);
         public RenderTargetIdentifier(Texture tex, int mipLevel = 0, CubemapFace cubeFace = CubemapFace.Unknown, int depthSlice = 0);
+
         public RenderTargetIdentifier(RenderTargetIdentifier renderTargetIdentifier, int mipLevel, CubemapFace cubeFace = CubemapFace.Unknown, int depthSlice = 0);
         public RenderTargetIdentifier(RenderBuffer buf, int mipLevel = 0, CubemapFace cubeFace = CubemapFace.Unknown, int depthSlice = 0);
         public RenderTargetIdentifier(string name, int mipLevel = 0, CubemapFace cubeFace = CubemapFace.Unknown, int depthSlice = 0);

@@ -11,6 +11,8 @@ namespace UnityEngine
         摘要:
         This struct contains all the information required to create a RenderTexture.
         It can be copied, cached, and reused to easily create RenderTextures that all share the same properties. 
+        --
+        此 struct 包含用来创建 RenderTexture 所需的一切信息。
 
         不要去使用 默认构造函数，因为它不会使用 推荐值 去初始化某些 flags;
     */
@@ -158,7 +160,8 @@ namespace UnityEngine
         
 
         // 摘要:
-        //     The multisample antialiasing level for the RenderTexture. See Also: RenderTexture.antiAliasing.
+        //     The multisample antialiasing level for the RenderTexture. See Also: "RenderTexture.antiAliasing".
+        //  猜测: 单像素采样的次数: 1,2,4,8 这种
         public int msaaSamples { readonly get; set; }
         
         /*
