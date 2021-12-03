@@ -1883,6 +1883,7 @@ namespace UnityEngine
             */
             DiffuseColor = 13
         }
+        
 
         /*
             Defines in which space render requests will be be outputted.

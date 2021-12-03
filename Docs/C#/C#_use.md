@@ -444,6 +444,49 @@ using System;
 
 
 
+# ---------------------------------------------- #
+#   c#8.0   using var
+# ---------------------------------------------- #
+using 常被用来保障非托管资源的释放:
+# ==:
+	void Foo(){
+		using (var a = ...)
+		{
+			// do something a...
+
+			using (var b = ...)
+			{
+				// do something b...
+
+				using (var c = ...)
+				{
+					// do something c...
+
+				}// c 资源被释放
+			}// b 资源被释放
+		}// a 资源被释放
+	}
+# --code-end
+
+但是如果想上图这样嵌套多个资源, 容易让代码缩进太过厉害;
+
+c#8.0 中引入了新的用法, 支持没有 {} 的写法, 上面的代码可变成:
+# ==:
+	void Foo(){
+		using var a = ...;
+			// do something a...
+
+		using var b = ...;
+			// do something b...
+
+
+		using var c = ...;
+			// do something c...
+	}
+	// 资源 c,b,a, 被释放
+# --code-end
+代码变得工整很多
+
 
 
 
