@@ -960,7 +960,30 @@ x 分量 表示用户是否需要手动实现 uv "y-flip" 操作:
 
 
 
+# ----------------------------------------------#
+#  系统自己定义的 keyword:  UNITY_USE_NATIVE_HDR
+# ----------------------------------------------#
+此 keyword 仅在 urp 被使用过一次, hdrp 中未出现;
 
+Reflection Probes (as lightmaps) 可以被编码为:
+    -- "native HDR texture", (16bit per channel or BC6H)
+    -- RGBM
+    -- dLDR
+
+如果 "UNITY_USE_NATIVE_HDR" 被定义:
+    说明 texture 中的数据没有被 编码, 
+    (猜测:  虽然 BC6H 会引发压缩, 但这个压缩解压过程仅在 texture 读写时发生, 在 shader 中, 
+            texel 中每个通道的值都是 16-bits float, 它们没有被编码;
+    )
+    此时, 我们可以直接使用 texel 中的值( 每通道都是 16-bits float 值 ), 不需要执行 decoding 解码工作;
+
+否则, 如果 "UNITY_USE_NATIVE_HDR" 未被定义:
+    需要对 texel 中的数据进行解码, 比如调用 "DecodeHDREnvironment()" 函数;
+    具体解码细节, 因 "encoding type (RGBM/dLDR)" 和 "colorspace" 而异;
+
+
+至于数据是如何编码的, 则基于 平台 和 project settings: Player -> Other Settings -> "Lightmap Encoding"
+移动平台默认会编码为 dLDR, 除非你覆写 Texture Compression setting;
 
 
 

@@ -723,7 +723,7 @@ namespace UnityEngine
             传递给 shader 的 投影矩阵, 可能会基于平台或其它 state 而发生修改;
              
             If you need to calculate projection matrix for shader use from camera's projection, 
-            use GL.GetGPUProjectionMatrix();
+            use "GL.GetGPUProjectionMatrix()" ;
         */
         public Matrix4x4 projectionMatrix { get; set; }
 
@@ -770,7 +770,6 @@ namespace UnityEngine
 
             Usually cameras render directly to screen, 也可用本变量指定一个 render target;
             当本值为 null, camera renders to screen.
-
 
             当设置了此值, camera 总是会将内容渲染到 render target(texture) 整个区域上;
             此时, "Camera.rect", "Camera.pixelRect" 将被自动忽略;
@@ -1534,7 +1533,6 @@ namespace UnityEngine
             参数:
             cullingParameters:
                 Resultant culling parameters.  输出端;
-               
 
             stereoAware:
                 Generate single-pass stereo aware culling parameters.

@@ -87,7 +87,6 @@ namespace UnityEngine
             "Skybox ambient lighting mode" 使用本 球谐探针 来计算 ambient. 
             你也可以自定义一个 球谐探针, 放入本变量;
 
-
             GI 系统会烘焙 ambient probe, 但是那些使用了 lightprobe 或 lightmap 的物体不会用到本探针的数据;
             只有当上述两种 gi 技术无法使用, 或无法发挥作用时, 本探针的数据 才会被拿去照亮 物体;
 
@@ -139,7 +138,6 @@ namespace UnityEngine
 
         /*
             Ambient lighting coming from below. 来自下方的环境照明。
-
             "Trilight ambient lighing mode" uses this color to affect 朝下的 object parts.
         */
         public static Color ambientGroundColor { get; set; }
@@ -152,7 +150,7 @@ namespace UnityEngine
             In "Flat ambient lighting mode", equator color is just the single ambient color, 
             and has the same value as "RenderSettings.ambientLight";
         */
-        public static Color ambientEquatorColor { get; set; }
+        public static Color ambientEquatorColor { get; set; }//赤道
 
         
         //     Ambient lighting coming from above.

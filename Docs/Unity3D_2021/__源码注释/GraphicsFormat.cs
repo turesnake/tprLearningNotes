@@ -580,6 +580,7 @@ namespace UnityEngine.Experimental.Rendering
         //     block encodes a 4×4 rectangle of signed normalized RG texel data with the first
         //     64 bits encoding red values followed by 64 bits encoding green values.
         RG_BC5_SNorm = 105,
+
         //
         // 摘要:
         //     A three-component, block-compressed format where each 128-bit compressed texel

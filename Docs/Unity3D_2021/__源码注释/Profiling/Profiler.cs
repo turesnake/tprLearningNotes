@@ -145,6 +145,8 @@ namespace UnityEngine.Profiling
         //     The name of the file containing the frame data, including extension.
         [Conditional("UNITY_EDITOR")]
         public static void AddFramesFromFile(string file);
+
+
         //
         // 摘要:
         //     Begin profiling a piece of code with a custom label.
@@ -155,20 +157,10 @@ namespace UnityEngine.Profiling
         //
         //   targetObject:
         //     An object that provides context to the sample,.
-        [Conditional("ENABLE_PROFILER")]
-        public static void BeginSample(string name, Object targetObject);
-        //
-        // 摘要:
-        //     Begin profiling a piece of code with a custom label.
-        //
-        // 参数:
-        //   name:
-        //     A string to identify the sample in the Profiler window.
-        //
-        //   targetObject:
-        //     An object that provides context to the sample,.
-        [Conditional("ENABLE_PROFILER")]
-        public static void BeginSample(string name);
+        [Conditional("ENABLE_PROFILER")]public static void BeginSample(string name, Object targetObject);
+        [Conditional("ENABLE_PROFILER")]public static void BeginSample(string name);
+
+
         //
         // 摘要:
         //     Enables profiling on the thread from which you call this method.

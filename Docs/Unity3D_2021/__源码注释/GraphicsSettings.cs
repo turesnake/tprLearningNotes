@@ -37,6 +37,7 @@ namespace UnityEngine.Rendering
         */
         public static RenderPipelineAsset renderPipelineAsset { get; set; }
 
+
         /*
             The current active "RenderPipelineAsset" taking into consideration the default and any active override.
             The current RenderPipelineAsset that is used to render Scene, View and Preview Cameras.

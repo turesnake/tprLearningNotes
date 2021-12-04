@@ -219,7 +219,11 @@
 
 它将为这个 shader 创造两种 variants, 分别支持 Specular setup 和 Metallic setup
 
-
+# shader_feature_local_fragment
+	是在 shader_feature 的基础上, 添加了 "_local" 和 "_fragment";
+	前者表示 局部 keyword,
+	后者表示 这个 局部keyword 仅在 fragment-shader 中起效;
+		类似的后缀有: _vertex, _fragment, _hull, _domain, _geometry, or _raytracing
 
 
 # ----------------------------------------------#
@@ -313,6 +317,12 @@ ray marching -- 光线步进
     ScriptableRendererFeature
     ---
     更复杂，更高级的 控制方式
+
+
+
+
+
+
 
 
 

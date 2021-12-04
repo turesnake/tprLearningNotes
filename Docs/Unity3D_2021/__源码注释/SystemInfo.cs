@@ -436,10 +436,14 @@ namespace UnityEngine
         */
 
 
-        //
-        // 摘要:
-        //     True if the GPU supports hidden surface removal.
+        /*
+            True if the GPU supports "hidden surface removal". (隐藏面去除)
+            --
+            有些 gpu 在渲染 不透明物体时, 支持 "hidden surface removal" 功能;
+            在这样的 gpu 上运行的程序, 就不必对 不透明物体 执行 "front-to-back" 排序工作了, 以提供性能;
+        */
         public static bool hasHiddenSurfaceRemovalOnGPU { get; }
+
         //
         // 摘要:
         //     Returns true when the GPU has native support for indexing uniform arrays in fragment

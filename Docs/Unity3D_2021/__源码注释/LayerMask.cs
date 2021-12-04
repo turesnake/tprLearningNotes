@@ -8,8 +8,6 @@ namespace UnityEngine
     /*
         Specifies Layers to use in a Physics.Raycast.
 
-
-
         
     */
     [NativeClassAttribute("BitField", "struct BitField;")]
