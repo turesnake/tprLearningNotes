@@ -38,7 +38,6 @@ namespace UnityEngine.Rendering
     public enum CullingOptions//CullingOptions__
     {
         
-        // 摘要:
         //     Unset all CullingOptions flags. 关闭本enum 中所有 flags
         None = 0, // 默认关闭
         
@@ -81,11 +80,16 @@ namespace UnityEngine.Rendering
             摘要:
             When set, Unity does not perform per-object culling.
 
+            By default, when using a srp, Unity performs "per-object culling" for Lights and Reflection Probes. 
             在使用 srp 时, unity 默认会对 light 和 反射探针 执行 per-obj cull;
             这意味着 Unity 在执行 culling 操作时将 "可见光 和 反射探针" 与 "可见的物体" 在其影响区域中配对。
 
-            若不执行 逐物体 culling, 其实也是针对 光 和 弹射探针, 
-            如果你的 srp 中不适用 "逐物体-光", 可以开启本 flag, 以节省 cpu 端性能开销;
+            When this flag is set, Unity does not perform per-object culling of Lights or Reflection Probes. 
+            If you are creating a custom srp that does not use per-object lighting, 
+            set this flag to avoid wasted CPU operations.
+
+            如果将本值 开启, unity 就对 光 和 反射探针 执行 "逐物体 culling";
+            如果你的 srp 中不使用 "逐物体-光照", 可以开启本 flag, 以节省 cpu 端性能开销;
             ---
 
             简而言之, 大部分情况下, 都建议关闭本 flag;

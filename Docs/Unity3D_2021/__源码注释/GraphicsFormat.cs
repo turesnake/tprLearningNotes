@@ -127,10 +127,11 @@ namespace UnityEngine.Experimental.Rendering
         //     in byte 0, an 8-bit G component in byte 1, an 8-bit B component in byte 2, and
         //     an 8-bit A component in byte 3.
         R8G8B8A8_UInt = 16,
-        //
-        // 摘要:
+
+        
         //     A one-component, 8-bit signed integer format that has a single 8-bit R component.
         R8_SInt = 17,
+
         //
         // 摘要:
         //     A two-component, 16-bit signed integer format that has an 8-bit R component in

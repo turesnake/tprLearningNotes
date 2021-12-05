@@ -149,11 +149,24 @@ namespace UnityEngine
         //     Determines how many compute buffers Unity supports simultaneously in a hull shader
         //     for reading. (Read Only)
         public static int maxComputeBufferInputsHull { get; }
-        //
-        // 摘要:
-        //     This property is true if the graphics API of the target build platform takes
-        //     RenderBufferStoreAction.StoreAndResolve into account, false if otherwise.
+
+
+        /*
+            如果目标 build 平台的 图形api 支持 "RenderBufferStoreAction.StoreAndResolve" 功能,
+            本变量返回 true;
+
+            若为 false, "RenderBufferStoreAction.StoreAndResolve" 将会退化为 "RenderBufferStoreAction.Resolve";
+
+            Use this property to ensure that any "multisampled render target" content is stored 
+            and can be loaded correctly by any following "RenderBufferLoadAction.Load" load action.
+            ---
+            使用本变量来保证, "multisampled render target" 的数据能被存储, 
+            同时在下一次 render target load 阶段(也是激活阶段), 这份旧数据能被有效地 load 到(读取到);
+            (这个 loaded render target 需要设置为 "RenderBufferLoadAction.Load" )
+        */
         public static bool supportsStoreAndResolveAction { get; }
+
+
         //
         // 摘要:
         //     Boolean that indicates whether Multiview is supported (true if supported, false
@@ -496,32 +509,59 @@ namespace UnityEngine
 
         [FreeFunctionAttribute("ScriptingGraphicsCaps::GetCompatibleFormat")]
         public static GraphicsFormat GetCompatibleFormat(GraphicsFormat format, FormatUsage usage);
-        //
-        // 摘要:
-        //     Returns the platform-specific GraphicsFormat that is associated with the DefaultFormat.
-        //
-        // 参数:
-        //   format:
-        //     The DefaultFormat format to look up.
+
+
+        /*
+            Returns the platform-specific GraphicsFormat that is associated with the DefaultFormat.
+
+            传入的参数只是笼统的 LDR, HDR; 
+            比如传入 HDR, 本函数就返回 当前平台为 HDR 分配的具体 数据类型;
+
+        */
+        /// <param name="format">The DefaultFormat format to look up
+        ///                         enum: LDR, HDR
+        /// </param>
         [FreeFunctionAttribute("ScriptingGraphicsCaps::GetGraphicsFormat")]
         public static GraphicsFormat GetGraphicsFormat(DefaultFormat format);
-        //
-        // 摘要:
-        //     Checks if the target platform supports the MSAA samples count in the RenderTextureDescriptor
-        //     argument.
-        //
-        // 参数:
-        //   desc:
-        //     The RenderTextureDescriptor to check.
-        //
-        // 返回结果:
-        //     If the target platform supports the given MSAA samples count of RenderTextureDescriptor,
-        //     returns the given MSAA samples count. Otherwise returns a lower fallback MSAA
-        //     samples count value that the target platform supports.
+
+
+        
+        /*
+            Checks if the target platform supports the MSAA samples count in the RenderTextureDescriptor argument.
+
+            If the target platform supports the given MSAA samples count of RenderTextureDescriptor,
+            returns the given MSAA samples count. Otherwise returns a lower fallback MSAA
+            samples count value that the target platform supports.
+            --
+            参数 desc 中记录了需要的 msaa 采样次数值, 本函数检测当前平台是否支持这个 采样次数;
+            -- 如果支持这个次数, 那就返回这个次数值;
+            -- 如果不支持, 那就返回一个 fallback 值; (当前平台支持的最大 msaa 采样次数值)
+        */
+        /// <param name="desc"></param>
+        /// <returns></returns>
         [FreeFunctionAttribute("ScriptingGraphicsCaps::GetRenderTextureSupportedMSAASampleCount")]
         public static int GetRenderTextureSupportedMSAASampleCount(RenderTextureDescriptor desc);
+
+
+
+        /*
+            Verifies that the specified graphics format is supported for the specified usage.
+            If a specific usage is not supported by a format, the operation will fail.
+            ---
+            查询在当前平台中, 参数format 是否支持 "参数usage 所指示的操作", 如果支持,就返回 true;
+            "GraphicsFormat" 表示 texture/render texture 的某种实际存储格式;
+            在不同平台上, 每一种格式, 都支持一系列操作; (但又不去全支持)
+            ---
+            urp 中的 "RenderingUtils.SupportsGraphicsFormat()" 是对本函数的封装;
+        */
+        /// <param name="format">The GraphicsFormat format to look up.</param>
+        /// <param name="usage">The FormatUsage usage to look up.</param>
+        /// <returns>Returns true if the format is supported for the specific usage.</returns>
         [FreeFunctionAttribute("ScriptingGraphicsCaps::IsFormatSupported")]
         public static bool IsFormatSupported(GraphicsFormat format, FormatUsage usage);
+
+
+
         //
         // 摘要:
         //     Is blending supported on render texture format?
@@ -544,17 +584,15 @@ namespace UnityEngine
         // 返回结果:
         //     True if the format can be used for random access writes.
         public static bool SupportsRandomWriteOnRenderTextureFormat(RenderTextureFormat format);
-        //
-        // 摘要:
-        //     Is render texture format supported?
-        //
-        // 参数:
-        //   format:
-        //     The format to look up.
-        //
-        // 返回结果:
-        //     True if the format is supported.
+
+ 
+        /*
+            Is render texture format supported?
+        */
+        /// <param name="format">The format to look up</param>
+        /// <returns>True if the format is supported.</returns>
         public static bool SupportsRenderTextureFormat(RenderTextureFormat format);
+
         //
         // 摘要:
         //     Is texture format supported on this device?

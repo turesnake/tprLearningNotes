@@ -265,11 +265,14 @@ namespace UnityEditor
         [Obsolete("strippingLevel is deprecated, Use PlayerSettings.GetManagedStrippingLevel()/PlayerSettings.SetManagedStrippingLevel() instead. StripByteCode and UseMicroMSCorlib are no longer supported.")]
         [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
         public static StrippingLevel strippingLevel { get; set; }
-        //
-        // 摘要:
-        //     When enabled, preserves the alpha value in the framebuffer to support rendering
-        //     over native UI on Android.
+
+
+        /*
+            When enabled, preserves the alpha value in the framebuffer to support rendering over native UI on Android.
+        */
         public static bool preserveFramebufferAlpha { get; set; }
+
+
         //
         // 摘要:
         //     Should unused Mesh components be excluded from game build?

@@ -101,8 +101,22 @@ namespace UnityEngine
 
         /*
             The light used by the "procedural skybox".
+            ---
+            tpr 测试可得:
+                --  如果用户没有设置本值, 且当前场景中存在 平行光:
+                    unity 会自动找到系统中最亮的平行光, 绑定到这里; 
+                    (这个工作不是由 srp/urp/hdrp 的管线代码实现的, 是早在管线代码之前就完成的)
+                
+                --  如果用户没有设置本值, 且当前场景中 不存在平行光:
+                    本值为 null
 
-            如果本值没有被设置, 将自动使用场景中最亮的 平行光;
+                --  如果用户将某个 light 对象绑定给本值了:
+                    那么本值就是这个 绑定的 light 对象, 
+                    哪怕它并不是 平行光, 哪怕这个 light 是 disable 的, 都会指向它;
+
+            -----
+            在 urp 中, 如果本值为 null 或 非平行光, 或者非 enable, 
+            这些情况都会被管线代码检测出来, 然后管线会自己去寻找最亮的 平行光;
         */
         public static Light sun { get; set; }
 

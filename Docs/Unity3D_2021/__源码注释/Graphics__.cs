@@ -50,11 +50,17 @@ namespace UnityEngine
         //     The minimum OpenGL ES version. The value is specified in PlayerSettings.
         public static OpenGLESVersion minOpenGLESVersion { get; }
 
+
         /*
             是否保留 framebuffer 的 alpha 通道信息 (readonly).
         
             当 player settings 中的 "rendering over native UI" 被启用, 此值为 true;
-            查看: PlayerSettings.preserveFramebufferAlpha.
+            查看: PlayerSettings.preserveFramebufferAlpha:
+                When enabled, preserves the alpha value in the framebuffer 
+                to support rendering over native UI on Android.
+            ---
+            在 urp 中, 根据本变量, 来选择 texture/render texture 的 GraphicsFormat 类型,
+            比如是否携带 alpha 通道;
         */
         public static bool preserveFramebufferAlpha { get; }
 

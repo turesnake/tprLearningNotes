@@ -26,7 +26,7 @@ namespace UnityEngine.Rendering
 
     */
     [UsedByNativeCodeAttribute]
-    public struct ScriptableCullingParameters /*ScriptableCullingParameters__*/
+    public struct ScriptableCullingParameters //ScriptableCullingParameters__
         : IEquatable<ScriptableCullingParameters>
     {
         
@@ -128,7 +128,7 @@ namespace UnityEngine.Rendering
 
         /*
             摘要:
-            Flags to configure a culling operation in the Scriptable Render Pipeline.
+            Flags to configure a culling operation in the srp
             此 enum 的具体信息 参考另一个 文件;
             ---
             catlike 中会手动改写此 配置;
@@ -211,6 +211,8 @@ namespace UnityEngine.Rendering
 
             当为其设置了上限, 总是优先安排 平行光,  
             然后根据 离相机的距离 逐个添加剩余的 光源
+
+            urp 中, 等于 add光个数+1 (main light)
         */
         public int maximumVisibleLights { get; set; }
 

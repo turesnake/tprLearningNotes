@@ -23,10 +23,8 @@ namespace UnityEngine
             Create a RenderTextureDescriptor with default values, or a certain width, height, and format.
 
             参数:
-            width:
-                Width of the RenderTexture in pixels.
-            height:
-                Height of the RenderTexture in pixels.
+            width/height:
+                Width/height of the RenderTexture in pixels.
             
             colorFormat:
                 The color format for the RenderTexture.
@@ -134,6 +132,7 @@ namespace UnityEngine
         
         // 摘要:
         //     The color format for the RenderTexture.
+        //  存储 color 数据的 texture 使用的 format
         public GraphicsFormat graphicsFormat { get; set; }
 
         /*
@@ -174,6 +173,7 @@ namespace UnityEngine
         
         // 摘要:
         //     This flag causes the render texture uses sRGB read/write conversions.
+        // 若为 true, 那么不管 render texture 内部数据format 是 ldr 还是 hdr, 它的对外读写口都一定是 linear 格式的;
         public bool sRGB { get; set; }
 
         
