@@ -79,7 +79,6 @@ namespace UnityEngine.Rendering
         public bool Equals(RenderStateBlock other);
         public override bool Equals(object obj);
         public override int GetHashCode();
-
         public static bool operator ==(RenderStateBlock left, RenderStateBlock right);
         public static bool operator !=(RenderStateBlock left, RenderStateBlock right);
     }

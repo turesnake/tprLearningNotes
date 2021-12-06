@@ -12,7 +12,7 @@ namespace UnityEngine.Rendering
 
         按描述, 只与 "物体排序" 相关;
     */
-    public struct SortingSettings /*SortingSettings__*/
+    public struct SortingSettings //SortingSettings__
         : IEquatable<SortingSettings>
     {
         
@@ -65,6 +65,8 @@ namespace UnityEngine.Rendering
             此值默认为 None; (不对物体执行任何形式的 排序 )
 
             catlike srp 中显式地改写过此值;
+
+            enum: "None, SortingLayer, RenderQueue... CommonOpaque, CommonTransparent";
         */
         public SortingCriteria criteria { get; set; }
         

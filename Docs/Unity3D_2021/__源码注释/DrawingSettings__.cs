@@ -14,12 +14,11 @@ namespace UnityEngine.Rendering
         描述了:
         -- how to sort visible objects (sortingSettings)
         -- which shader passes to use (shaderPassName).
-
     */
     public struct DrawingSettings : IEquatable<DrawingSettings>//DrawingSettings__
     {
         
-        // 摘要:
+        
         //     The maxiumum number of passes that can be rendered in 1 DrawRenderers call.
         public static readonly int maxShaderPasses;
 
@@ -114,9 +113,10 @@ namespace UnityEngine.Rendering
         public ShaderTagId GetShaderPassName(int index);
 
         
-        // 摘要:
-        //     Set the shader passes that this draw call can render.
-        //
+        /*
+            Set the shader passes that this draw call can render.
+            可以反复调用, 设置很多个
+        */
         // 参数:
         //   index:
         //     Index of the shader pass to use.

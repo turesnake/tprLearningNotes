@@ -334,7 +334,7 @@ URP Manual: URP ShaderLab Pass tags
 # - UniversalForwardOnly
     此 pass 渲染几何体，计算所有光源的贡献，和 UniversalForward 类似。
     区别在于，本 tag 可被用于 Deferred 渲染。
-    当在 Deferred 渲染中，必须对某个物体做 Forward悬案时，使用本 pass。
+    当在 Deferred 渲染中，必须对某个物体做 Forward渲染时，使用本 pass。
     比如 清漆材质物体，只能用 Forward渲染路径 来渲染。
 
     如果一个 shader，必须同时执行 Forward / Deferred 渲染路径，要实现两个 pass

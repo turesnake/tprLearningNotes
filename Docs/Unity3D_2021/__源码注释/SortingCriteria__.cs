@@ -14,6 +14,8 @@ namespace UnityEngine.Rendering
 
         有几个 flag 是基础的, 还有几个是用基础 flag 组合起来的;
 
+            enum: "None, SortingLayer, RenderQueue... CommonOpaque, CommonTransparent";
+
     */
     [Flags]
     public enum SortingCriteria//SortingCriteria__

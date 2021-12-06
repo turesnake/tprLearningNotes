@@ -34,7 +34,7 @@ namespace UnityEngine.Rendering
                 若为 0, 则设置为 false;
         */
         public FilteringSettings(
-            // 这个 renderQueueRange 的初始化 看起来很混乱, 测试表明如果 调用者不输入此参数,
+            // 这个 renderQueueRange 的语句 看起来很混乱, 测试表明如果 调用者不输入此参数,
             // renderQueueRange 将会是 null, 而不是 all;
             // 此时, range 为 [0,0]
             [DefaultValue("RenderQueueRange.all")] RenderQueueRange? renderQueueRange = null, 
@@ -45,7 +45,6 @@ namespace UnityEngine.Rendering
 
 
         /*
-            摘要:
             Creates a FilteringSettings struct that contains default values for all properties.
             With these default values, Unity does not perform any filtering.
 
@@ -63,19 +62,18 @@ namespace UnityEngine.Rendering
         public RenderQueueRange renderQueueRange { get; set; }
 
         /*
-            摘要:
             Unity renders objects whose GameObject.layer value is enabled in this bit mask.
             如果一个物体的 GameObject.layer 和这个 变量 AND 计算后不为 0, 这个物体会被渲染;
+            (当然还要经受住 其它方式的过滤 )
         */
         public int layerMask { get; set; }
 
 
         /*
-            摘要:
             Unity renders objects whose "Renderer.renderingLayerMask"(变量) value is enabled in this bit mask.
 
             Renderer.renderingLayerMask (一个变量):
-                在 srp管线种, 不光有 物体的 GameObject.layer, 
+                在 srp管线中, 不光有 物体的 GameObject.layer, 
                 还可以为物体额外设置一个 rendering-specific layer mask;
 
                 毕竟通用的那个 GameObject.layer 包含的 功能太多了;

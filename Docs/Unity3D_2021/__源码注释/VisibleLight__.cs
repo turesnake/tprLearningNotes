@@ -15,7 +15,6 @@ namespace UnityEngine.Rendering
         and a VisibleLight.light reference to the Light component itself.
 
 
-
     */
     [UsedByNativeCodeAttribute]
     public struct VisibleLight //VisibleLight__
@@ -37,6 +36,7 @@ namespace UnityEngine.Rendering
         
         //  Light color multiplied by intensity.
         //  light color 乘以 intensity
+        //  按照 urp 的说明, 此color 已经位于正确的 颜色空间
         public Color finalColor { get; set; }
 
        

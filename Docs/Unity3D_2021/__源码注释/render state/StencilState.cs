@@ -95,10 +95,10 @@ namespace UnityEngine.Rendering
             StencilOp zFailOperationBack
         );
 
-        //
-        // 摘要:
+        
         //     Default values for the stencil state.
         public static StencilState defaultValue { get; }
+        
         //
         // 摘要:
         //     Controls whether the stencil buffer is enabled.

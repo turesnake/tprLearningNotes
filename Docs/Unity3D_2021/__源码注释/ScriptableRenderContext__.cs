@@ -22,7 +22,7 @@ namespace UnityEngine.Rendering
 
         在一个 RenderPipeline.Render() callback 函数内, 针对每个 camera, 可先后执行
         -- culls objects that the render pipeline doesn't need to render (see CullingResults)
-        -- 调用数次 ScriptableRenderContext.DrawRenderers() 以及 ScriptableRenderContext.ExecuteCommandBuffer(),
+        -- 调用数次 ScriptableRenderContext.DrawRenderers() 以及 "ScriptableRenderContext.ExecuteCommandBuffer()",
             用来: 
             set up global Shader properties
             change render targets
