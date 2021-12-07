@@ -23,7 +23,7 @@ namespace UnityEngine.Rendering
         猜测:
             存在两种分法:
             -- 
-                用面去两个 split 之间的边界;
+                用面去表达 两个 split 之间的边界;
                 此时可用本类中的 cull plane 相关的成员;
 
             --
@@ -32,7 +32,7 @@ namespace UnityEngine.Rendering
                 此时可用本类中的 cull sphere 相关的成员;
     */
     [UsedByNativeCodeAttribute]
-    public struct ShadowSplitData /*ShadowSplitData__*/
+    public struct ShadowSplitData //ShadowSplitData__
         : IEquatable<ShadowSplitData>
     {
         
@@ -47,8 +47,7 @@ namespace UnityEngine.Rendering
 
         
         /*
-            摘要:
-            vector4 的前三个分量 记录 cull sphere 的 center posWS, 分量w 记录 球的半径; 
+            xyz: sphere posWS;  w: sphere radius
         */ 
         public Vector4 cullingSphere { get; set; }
 

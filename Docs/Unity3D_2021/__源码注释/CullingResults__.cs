@@ -151,6 +151,25 @@ namespace UnityEngine.Rendering
             如果渲染管线 排序or改写了 VisibleLight list 的排序,
             那么对于正确使用 "逐对象-光" list 来说, 一个 "idx 重映射表" 就很有必要;
 
+            ------------------------------------------
+            假设 visibleLights 里一共有 7 个光源, main light 在 [2] 号位(起始为0), 
+            那么 IndexMap 中原始数据为:
+                { 0, 1, 2(m), 3, 4, 5, 6 }
+
+            如果我们不修改这个 IndexMap, 那么 visibleLights 中所有 light 的信息都会被传入 shader 中;
+            如果 IndexMap 中某个元素被设置为 -1, 那么 unity 就会跳过这个位置的 光源, 
+
+            比如 urp 中常见的作法: "仅保留 合格的 add lights":
+                -- main light 将被剔除,
+                -- 超出上限的 add light 也将被剔除 (这些光往往在 visibleLights 的尾部)
+
+            这些被提出的光, 其在 IndexMap 中的对应位置都会写上 -1,
+            那些排在 main light 后面的 add light, 它们的 idx 值需要减一; 
+
+            现在假设 案例中只支持 4 个 add lights, 那么 IndexMap 将被修改成:
+                { 0, 1, -1(m), 2, 3, -1, -1 }
+
+            相应的, unity 最终也只会向 shader 传入 4 个 add lights 的光源信息;
         */
         public NativeArray<int> GetLightIndexMap(Allocator allocator);
 
@@ -188,8 +207,11 @@ namespace UnityEngine.Rendering
 
             If an element of the array is set to -1, the light corresponding to that element will be disabled.
             idx 标记为 -1 的光, 意味着它不需要被处理
+
+            参考上面 "GetLightIndexMap()" 中的详细解释;
         */
         public void SetLightIndexMap(NativeArray<int> lightIndexMap);
+
         // 功能同上
         public void SetReflectionProbeIndexMap(NativeArray<int> lightIndexMap);
 
