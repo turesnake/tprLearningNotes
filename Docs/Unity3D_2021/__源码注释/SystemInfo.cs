@@ -593,6 +593,7 @@ namespace UnityEngine
         /// <returns>True if the format is supported.</returns>
         public static bool SupportsRenderTextureFormat(RenderTextureFormat format);
 
+
         //
         // 摘要:
         //     Is texture format supported on this device?

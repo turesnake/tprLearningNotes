@@ -89,8 +89,33 @@ namespace UnityEngine.Rendering
         public int reflectionProbeIndexCount { get; }
 
 
+        /*
+            shadowmap 工作原理:
+                为一个 平行光 生成一个 "clip-space cube", 使这个 cube 沿平行光方向分布, 且覆盖 "camera 能看到的 frustum",
+                在这个 "clip-space cube" 内捕获下来的 depth 值, 就会被记录到 shadowmap 中;
 
-        // 计算 三种光的 ShadowMatrices 和 CullingPrimitives
+            在 shader 中, camera 视角, 我们希望拿着任意一点的 posWS, 都能寻找到与之对应的 shadowmap 上的某个点(uv);
+            此时就需要一个转换矩阵: posWS -> posSTS (shadow texture/tile space)
+
+            本函数完成了最初的工作: 它帮我们计算好原始的 viewMatrix, projMatrix;
+            在此基础上, 我们还需要:
+                -1- 为部分平台支持 reverse-z 功能
+                -2- 需要将 HCS 的 [-1,1] 映射为 uv 的 [0,1]
+                -3- 如果支持 cascade, 则要将每一片 shadow tile, 从 "布满整个 map" 缩小偏移到 "tile 所在的具体区域"
+
+            以上这组工作, 
+                在 catilike srp 中, 由 "ConvertToAtlasMatrix()" 完成;
+                在 urp 中, 由 "GetShadowTransform()" + "ApplySliceTransform()" 完成;
+
+            最后, 我们得到一个 "_MainLightWorldToShadow" 矩阵 (urp),
+            在 shader 中, 使用这个矩阵, 就能找到一个 posWS 的 shadowmap 的 uv值;
+            ---------------------
+
+            除此之外, 本函数还计算了 shadowSplitData 信息;
+            
+            返回值:
+                If false, the shadow map for this cascade does not need to be rendered this frame.
+        */
         public bool ComputeDirectionalShadowMatricesAndCullingPrimitives(
             int activeLightIndex, 
             int splitIndex, 
@@ -102,6 +127,7 @@ namespace UnityEngine.Rendering
             out Matrix4x4 projMatrix, 
             out ShadowSplitData shadowSplitData
         );
+        // point光 版本
         public bool ComputePointShadowMatricesAndCullingPrimitives(
             int activeLightIndex, 
             CubemapFace cubemapFace, 
@@ -110,6 +136,7 @@ namespace UnityEngine.Rendering
             out Matrix4x4 projMatrix, 
             out ShadowSplitData shadowSplitData
         );
+        // spot 光版本
         public bool ComputeSpotShadowMatricesAndCullingPrimitives(
             int activeLightIndex, 
             out Matrix4x4 viewMatrix, 

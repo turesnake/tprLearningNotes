@@ -330,6 +330,7 @@ namespace UnityEngine.Rendering
         //     Add a command to disable the hardware scissor rectangle.
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::DisableScissorRect", HasExplicitThis = true, ThrowsException = true)]
         public void DisableScissorRect();
+
         
         // 摘要:
         //     Adds a command to disable global shader keyword.
@@ -1408,6 +1409,7 @@ namespace UnityEngine.Rendering
         [FreeFunctionAttribute("RenderingCommandBuffer_Bindings::SetGlobalMatrixArray", HasExplicitThis = true, ThrowsException = true)]
         public void SetGlobalMatrixArray(int nameID, Matrix4x4[] values);
         public void SetGlobalMatrixArray(int nameID, List<Matrix4x4> values);
+
         
         // 摘要:
         //     Add a "set global shader texture property" command, referencing a RenderTexture.
@@ -1415,6 +1417,7 @@ namespace UnityEngine.Rendering
         public void SetGlobalTexture(string name, RenderTargetIdentifier value, RenderTextureSubElement element);
         public void SetGlobalTexture(int nameID, RenderTargetIdentifier value);
         public void SetGlobalTexture(string name, RenderTargetIdentifier value);
+        
         
 
         // 摘要:

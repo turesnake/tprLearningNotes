@@ -109,10 +109,15 @@ namespace UnityEngine
         public static int masterTextureLimit { get; set; }
         [NativePropertyAttribute("AnisoLimit")]
         public static AnisotropicFiltering anisotropicFiltering { get; set; }
-        //
-        // 摘要:
-        //     Texture U coordinate wrapping mode.
+
+        /*
+            Texture U coordinate wrapping mode.
+
+            enum: Repeat, Clamp, Mirror, MirrorOnce;
+        */
         public TextureWrapMode wrapModeU { get; set; }
+
+
         //
         // 摘要:
         //     How many mipmap levels are in this Texture (Read Only).
@@ -168,9 +173,12 @@ namespace UnityEngine
         // 摘要:
         //     The hash value of the Texture.
         public Hash128 imageContentsHash { get; set; }
-        //
-        // 摘要:
-        //     Filtering mode of the Texture.
+
+        /*
+            Filtering mode of the Texture.
+
+            enum: Point, Bilinear, Trilinear;
+        */
         public FilterMode filterMode { get; set; }
 
         //

@@ -39,10 +39,21 @@ namespace UnityEngine
         // 摘要:
         //     Color render texture format, 16 bit floating point per channel.
         ARGBHalf = 2,
-        //
-        // 摘要:
-        //     A native shadowmap render texture format.
+
+
+        /*
+            A native shadowmap render texture format.
+
+            This represents a format for which the GPU can automatically do shadowmap comparisons(比较) for. 
+            Unity uses this format internally for shadows, when supported. 
+            Note that some platforms or GPUs do not support Shadowmap format, 
+            in which case shadows end up using "RenderTextureFormat.Depth" format.
+
+            Note that not all graphics cards support shadowmaps. 
+            Use "SystemInfo.SupportsRenderTextureFormat()" to check for support.
+        */
         Shadowmap = 3,
+
         //
         // 摘要:
         //     Color render texture format.

@@ -15,7 +15,7 @@ namespace UnityEngine.Rendering
 
     */
     [UsedByNativeCodeAttribute]
-    public struct ShadowDrawingSettings /*ShadowDrawingSettings__*/
+    public struct ShadowDrawingSettings //ShadowDrawingSettings__
         : IEquatable<ShadowDrawingSettings>
     {
 

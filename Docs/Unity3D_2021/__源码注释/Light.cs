@@ -61,20 +61,30 @@ namespace UnityEngine
         // 摘要:
         //     How this light casts shadows
         public LightShadows shadows { get; set; }
-        //
-        // 摘要:
-        //     Strength of light's shadows.
+
+        /*
+            Strength of light's shadows.
+
+            阴影的强度, [0,1], 为 0 时阴影完全消失, 为 1 时阴影最强烈;
+        */
         public float shadowStrength { get; set; }
-        //
-        // 摘要:
+
+
+        
         //     The resolution of the shadow map.
+        //  enum: FromQualitySettings, Low, Medium, High, VeryHigh;
         public LightShadowResolution shadowResolution { get; set; }
+
+
+        /*
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Shadow softness is removed in Unity 5.0+", true)]
         public float shadowSoftness { get; set; }
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Shadow softness is removed in Unity 5.0+", true)]
         public float shadowSoftnessFade { get; set; }
+        */
+
         //
         // 摘要:
         //     Per-light, per-layer shadow culling distances. Directional lights only.
@@ -91,9 +101,13 @@ namespace UnityEngine
         // 摘要:
         //     How to render the light.
         public LightRenderMode renderMode { get; set; }
+
+        /*
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("warning bakedIndex has been removed please use bakingOutput.isBaked instead.", true)]
         public int bakedIndex { get; set; }
+        */
+
         //
         // 摘要:
         //     The size of the area light (Editor only).
@@ -107,6 +121,9 @@ namespace UnityEngine
         // 摘要:
         //     Number of command buffers set up on this light (Read Only).
         public int commandBufferCount { get; }
+
+
+        /*
         [Obsolete("light.shadowConstantBias was removed, use light.shadowBias", true)]
         public float shadowConstantBias { get; set; }
         [Obsolete("light.shadowObjectSizeBias was removed, use light.shadowBias", true)]
@@ -115,6 +132,8 @@ namespace UnityEngine
         public bool attenuate { get; set; }
         [Obsolete("Light.lightmappingMode has been deprecated. Use Light.lightmapBakeType instead (UnityUpgradable) -> lightmapBakeType", true)]
         public LightmappingMode lightmappingMode { get; set; }
+        */
+
         //
         // 摘要:
         //     The range of the light.
@@ -123,8 +142,12 @@ namespace UnityEngine
         // 摘要:
         //     Projection matrix used to override the regular light matrix during shadow culling.
         public Matrix4x4 shadowMatrixOverride { get; set; }
+
+        /*
         [Obsolete("Light.alreadyLightmapped is no longer supported. Use Light.bakingOutput instead. Allowing to describe mixed light on top of realtime and baked ones.", false)]
         public bool alreadyLightmapped { get; set; }
+        */
+
         //
         // 摘要:
         //     Near plane value to use for shadow frustums.
@@ -140,12 +163,15 @@ namespace UnityEngine
         //     use this property; the built-in renderer does not support it.
         [NativePropertyAttribute("LightShape")]
         public LightShape shape { get; set; }
-        //
-        // 摘要:
+
+
+        /*
         //     Is the light contribution already stored in lightmaps and/or lightprobes (Read
         //     Only). Obsolete; replaced by Light-lightmapBakeType.
         [Obsolete("Light.isBaked is no longer supported. Use Light.bakingOutput.isBaked (and other members of Light.bakingOutput) instead.", false)]
         public bool isBaked { get; }
+        */
+
         //
         // 摘要:
         //     The angle of the light's spotlight inner cone in degrees.
@@ -190,10 +216,25 @@ namespace UnityEngine
         //     Whether to cull shadows for this Light when the Light is outside of the view
         //     frustum.
         public bool useViewFrustumForShadowCasterCull { get; set; }
-        //
-        // 摘要:
-        //     The custom resolution of the shadow map.
+
+
+        /*
+            The custom resolution of the shadow map.
+
+            By default, shadow map resolution is computed from its importance on screen. 
+            Setting this property to a value greater than zero will override that behavior. 
+            Please note that the shadow map resolution will still be rounded to the nearest power of two 
+            and capped by(受限于) memory and hardware limits. 
+            Note that this property is supported only in the Built-in Render Pipeline. 
+            It is not supported in the High Definition Render Pipeline (HDRP) or in the Universal Render Pipeline (URP).
+            ---
+
+            不支持 urp, hdrp;
+        */
         public int shadowCustomResolution { get; set; }
+
+
+
         //
         // 摘要:
         //     Shadow mapping constant bias.

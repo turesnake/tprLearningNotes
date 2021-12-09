@@ -131,24 +131,22 @@ namespace UnityEngine.Rendering
         //     Mode used for built-in shader.
         [NativeNameAttribute("GetShaderModeScript")]
         public static BuiltinShaderMode GetShaderMode(BuiltinShaderType type);
-        //
-        // 摘要:
-        //     Returns true if shader define was set when compiling shaders for a given GraphicsTier.
-        //     Graphics Tiers are only available in the Built-in Render Pipeline.
-        //
-        // 参数:
-        //   defineHash:
+
+        
+
+
+        /*
+            Returns true if shader define was set when compiling shaders for current GraphicsTier.
+            "Graphics Tiers" are only available in the "Built-in Render Pipeline".
+            ---
+            在为 当前 GraphicsTier 编译 shaders 时, 参数 defineHash 是否被当作 keyword 定义;
+
+            urp 中见到调用 带有参数 tier 的重载版本, 这说明 urp 中也是支持 "Graphics Tiers" 的?
+        */
         public static bool HasShaderDefine(BuiltinShaderDefine defineHash);
-        //
-        // 摘要:
-        //     Returns true if shader define was set when compiling shaders for current GraphicsTier.
-        //     Graphics Tiers are only available in the Built-in Render Pipeline.
-        //
-        // 参数:
-        //   tier:
-        //
-        //   defineHash:
         public static bool HasShaderDefine(GraphicsTier tier, BuiltinShaderDefine defineHash);
+
+
         //
         // 摘要:
         //     Set custom shader to use instead of a built-in shader.
