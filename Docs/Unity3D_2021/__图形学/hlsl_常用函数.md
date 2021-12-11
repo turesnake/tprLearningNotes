@@ -84,6 +84,9 @@ Returns 1 / sqrt(x)
 ret rcp (x);
 
 - hlsl
+    Calculates a fast, approximate, per-component reciprocal.
+    计算一个 快速的近似的 逐分量的 倒数;
+
 
 
 # ------------------ #

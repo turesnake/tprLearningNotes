@@ -9,7 +9,7 @@ namespace UnityEngine.Rendering
 {
     /*
         摘要:
-        A struct that represents filtering settings for ScriptableRenderContext.DrawRenderers()
+        A struct that represents filtering settings for "ScriptableRenderContext.DrawRenderers()"
 
         本类描述了, 如何过滤 DrawRenderers() 获得的那组 物体, 只有其中的一部分 最终会被执行渲染;
     */
@@ -34,13 +34,12 @@ namespace UnityEngine.Rendering
                 若为 0, 则设置为 false;
         */
         public FilteringSettings(
-            // 这个 renderQueueRange 的语句 看起来很混乱, 测试表明如果 调用者不输入此参数,
-            // renderQueueRange 将会是 null, 而不是 all;
+            // 这个 renderQueueRange 的语句 看起来很混乱, 测试表明如果 调用者不输入此参数, 此值将会是 null, 而不是 all;
             // 此时, range 为 [0,0]
             [DefaultValue("RenderQueueRange.all")] RenderQueueRange? renderQueueRange = null, 
             int layerMask = -1, 
-            uint renderingLayerMask = uint.MaxValue, 
-            int excludeMotionVectorObjects = 0
+            uint renderingLayerMask = uint.MaxValue, // 默认 支持所有 layer
+            int excludeMotionVectorObjects = 0       // 默认不开启
         );
 
 

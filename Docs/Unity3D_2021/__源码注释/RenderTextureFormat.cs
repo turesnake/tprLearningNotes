@@ -90,10 +90,12 @@ namespace UnityEngine
         // 摘要:
         //     Color render texture format, 32 bit floating point per channel.
         ARGBFloat = 11,
-        //
-        // 摘要:
+        
         //     Two color (RG) render texture format, 32 bit floating point per channel.
+        // {R:16bits, G:16bits}
         RGFloat = 12,
+
+
         //
         // 摘要:
         //     Two color (RG) render texture format, 16 bit floating point per channel.

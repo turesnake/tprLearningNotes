@@ -48,6 +48,11 @@ public class ColorContrast : ScriptableRendererFeature
         {
             this.srcRenderer = srcRenderer_;
             this.dst = dest;
+
+            // ---------- 此处代码和本 render pass 的主题无关:
+            // 调用此函数,表面本 render pass 需要在  normal texture 数据当作自己的 input 值;
+            // urp 在得知此要求后, 会预先在 prepass 阶段执行 DepthNormalOnlyPass;
+            ConfigureInput( ScriptableRenderPassInput.Normal );
         }
 
 

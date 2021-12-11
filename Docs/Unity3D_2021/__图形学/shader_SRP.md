@@ -748,10 +748,12 @@ UNITY_ACCESS_INSTANCED_PROP( UnityPerMaterial, _BaseColor )
 
 catlike 中说, 这其中包含一些我们不再需要的转换信息, 
 
-其 w分量 与物体 transform 的scale有关。如果有 奇数个负数的 scale，则 w 为-1，否则为 1。
+其 w分量 与物体 transform 的scale值有关。如果有 奇数个负数的 scale，则 w 为-1，否则为 1。
 
 (即，在scale为负数的时候，物体的纹理可能会被翻转，导致TBN空间不对)
 (这句话也可能描述得不对)
+
+如果此值为 -1, 你需要将 binormal 翻转;
 
 
 

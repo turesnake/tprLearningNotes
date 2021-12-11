@@ -62,6 +62,8 @@ namespace UnityEngine.Rendering
         /*
             摘要:
             What kind of per-object data to setup during rendering.
+
+            渲染时要 setup 哪些 "逐物体" 数据;
             具体信息见 此enum 翻译文件
         */
         public PerObjectData perObjectData { get; set; }
