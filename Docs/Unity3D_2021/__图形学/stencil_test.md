@@ -9,6 +9,34 @@ stencil buffer 为 framebuffer 中得每个像素, 存储一个 8-bit 值.
 
 stencil buffer 中的初始值位 0;
 
+# -------------------------- 一些额外信息:
+    The Z-buffer and stencil buffer often share the same area in the RAM of the graphics hardware.
+    --
+    depth buffer 和 stencil buffer 在显存中往往放在同一个区域, 
+    (比如放在不同的通道里: depth 占用 24-bits, stencil 占用 8-bits 这种)
+
+    depth buffer 和 stencil buffer, 还有 color buffer 都是 framebuffer 的一部分;
+    (当然, 它们也能放入一张 render texture 中)
+
+
+# -- stencil test 的执行位置:
+    -1-: 
+        fs
+    -2-: 
+        alpha test;
+            就是那个在 cutout 模式中, 调用 clip(...) 实现的功能;
+            按理说这个步骤是写在 fs 中的, 在有些描述中,  alpha test 就是属于 fs 体内;
+    -3-: 
+        stencil test:
+    -4-:
+        depth test:
+    -5-:
+        alpha blend:
+
+
+
+# --------------------------- 额外信息完;
+
 
 如果 stencil test 通过了(成功了), gpu 再执行 depth test. 
 如果 stencil test 没通过, 这个像素得剩余计算都会被跳过 (放弃执行)

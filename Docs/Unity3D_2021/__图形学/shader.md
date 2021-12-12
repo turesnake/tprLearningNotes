@@ -683,7 +683,103 @@ unity源码给出的方案是: 用 max/min 来代替:
 
 
 
+# ---------------------------------------------- #
+# 技术说明:
+#   Early Z
+#   Early-Z
+# ---------------------------------------------- #
 
+在常规的渲染流程中: vs - 光栅化 - fs - 逐像素处理,
+常见的 z-test (深度测试) 发生在 "逐像素处理" 阶段, 此时 fs 已经运算完毕了;
+这造成了 fs 运算的巨大浪费;
+
+"Early Z" 技术就是一个解决方案: 它被放置在 fs 的前方, 工作内容和 z-test 几乎一样;
+之前的 z-test 也被称为 "late-z"; ("late z")
+
+# 缺点:
+-1-:
+    一旦进行了手动写入深度值、或者开启 alpha test, 或者执行了 "丢弃像素" 等操作，
+    那么 gpu 就会关闭 early-z 直到下次 clear z-buffer 后才会重新开启
+    （不过现在的 gpu 也在逐渐优化，使其更智能开关 early-z ）
+
+    之所以 gpu 会选择关闭 early-z 是因为上述那些操作可能会在 fs 与 late-z 阶段之间修改
+    depth buffer 中的 depth，导致提前的 early-z 的结果并不正确。
+    我们也可以在 fs 中使用 layout(early_fragment_tests) 来强制打开 early-z;
+
+-2-:
+    early-z 的优化效果并不稳定，最理想条件下所有绘制顺序都是由近及远，此时 early-z 可以完全避免过度绘制。
+    但在相反的状态下，则会起不到任何效果。所以有些时候为了完全发挥 early-z 的功效，我们会在每帧绘制时
+    对场景的物体按照到摄像机的距离由远及近进行排序。这个操作会在 cpu 端进行，当场景复杂到一定程度，
+    频繁的排序将会占用 cpu 的大量计算资源。
+
+
+
+# ---------------------------------------------- #
+#   z-culling
+# ---------------------------------------------- #
+
+
+
+# ---------------------------------------------- #
+#  Immediate Mode Rendering   [IMR]
+# ------
+#   Tile-Based Rendering   [TBR]
+#   (tile base)   
+#   Tiled-Based
+# ------
+#   Tile-Based Deferred Rendering [TBDR]
+# ---------------------------------------------- #
+查看:
+https://zhuanlan.zhihu.com/p/393712805
+https://www.zhihu.com/question/49141824
+
+笔记中查找图片: "TBR pipeline"
+
+tbr 是主流架构吗?
+
+
+# Immediate Mode Rendering   [IMR]
+早期桌面级显卡使用的渲染方式; 也叫 "Full Screen"; 
+    
+
+# Tile-Based Immediate-Mode
+nvidia 从 Maxwell (GTX 970) and Pascal (GTX 1070) 开始实施的方案;
+使用大块的 tile,
+
+
+# Tile-Based Rendering   [TBR]
+移动端方案, 小块的 tile
+
+
+# -- On-Chip
+#    on chip
+猜测:
+    数据直接存储在 芯片自带的缓存上, 而不是存储在 显卡内存上;
+    进而减少 对显卡的读写;
+
+
+# hidden surface removal [HSR]
+
+
+
+
+# ---------------------------------------------- #
+#  概念详解:
+#   framebuffer   
+#   backbuffer  (back buffer)
+# ---------------------------------------------- #
+
+framebuffer 是内存的一部分; 存储的内容是一帧完整画面的 颜色信息;
+(cpu内存 和 显卡内存 都可以算)
+这个概念非常古老, 可以追溯到 video card 之类的东西;
+而且在那些描述中, framebuffer 的每个 pix 并不存储独立的颜色信息, 而是存储一个 LUT 元素索引值; 非常感人...
+
+
+# backbuffer 是 "双缓冲 framebuffer" 中的第二张 buffer;
+    即, backbuffer 也属于 framebuffer;
+
+
+# depth buffer 和 stencil buffer, 还有 color buffer 都是 framebuffer 的一部分;
 
 
 
