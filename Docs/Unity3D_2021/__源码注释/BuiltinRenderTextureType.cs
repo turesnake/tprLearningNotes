@@ -10,6 +10,8 @@ namespace UnityEngine.Rendering
 
         本 enum 变量 can be used as a RenderTargetIdentifier in some functions of CommandBuffer.
 
+        urp 中也使用此数据
+
     */
     public enum BuiltinRenderTextureType//BuiltinRenderTextureType__RR
     {

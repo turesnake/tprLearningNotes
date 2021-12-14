@@ -158,7 +158,7 @@ namespace UnityEngine
         public int volumeDepth { readonly get; set; }
         
 
-        // 摘要:
+
         //     The multisample antialiasing level for the RenderTexture. See Also: "RenderTexture.antiAliasing".
         //  猜测: 单像素采样的次数: 1,2,4,8 这种
         public int msaaSamples { readonly get; set; }

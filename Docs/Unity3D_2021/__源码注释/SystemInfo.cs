@@ -55,20 +55,40 @@ namespace UnityEngine
         */
 
 
-        //
-        // 摘要:
-        //     This property is true if the current platform uses a reversed depth buffer (where
-        //     values range from 1 at the near plane and 0 at far plane), and false if the depth
-        //     buffer is normal (0 is near, 1 is far). (Read Only)
+        /*
+            This property is true if the current platform uses a reversed depth buffer 
+            (where values range from 1 at the near plane and 0 at far plane), 
+            and false if the depth buffer is normal (0 is near, 1 is far). (Read Only)
+            ---
+            如果当前平台使用 "reversed depth buffer", [1->0]; 本变量为 true;
+        */
         public static bool usesReversedZBuffer { get; }
+
+
         //
         // 摘要:
         //     Returns true if the 'Mirror Once' texture wrap mode is supported. (Read Only)
         public static int supportsTextureWrapMirrorOnce { get; }
-        //
-        // 摘要:
-        //     Returns true if multisampled textures are resolved automatically
+
+
+        /*
+            Returns true if multisampled textures are resolved automatically
+
+            Some platforms support multisampling without using an intermediate multisampled texture that needs to be explicitly resolved. 
+            Such platforms automatically resolve the multisampling which provides a performance gain by saving bandwidth. 
+            See Also: "CommandBuffer.Blit".
+            ---
+
+            如果 multisampled textures 能被自动解析, 返回 true;
+
+            有的平台能自动解析 MSAA, 它不需要用户手动分配一张 "intermediate multisampled texture", 然后手动解析之;
+            这种平台能提高对 带宽的利用;
+
+            urp 中提到 Metal/iOS 就属于这样的平台;
+        */
         public static bool supportsMultisampleAutoResolve { get; }
+
+
         //
         // 摘要:
         //     Boolean that indicates whether multisampled texture arrays are supported (true

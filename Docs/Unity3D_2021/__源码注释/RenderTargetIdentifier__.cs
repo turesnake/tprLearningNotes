@@ -9,6 +9,8 @@ namespace UnityEngine.Rendering
     /*
         摘要:
         Identifies a RenderTexture for a Rendering.CommandBuffer.
+        ---
+        render texture 的一个 id;
 
         Render textures can be identified in a number of ways, 比如:
         -- a RenderTexture object,
