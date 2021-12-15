@@ -179,10 +179,31 @@ namespace System
         public EventInfo GetEvent(string name);
         public abstract EventInfo[] GetEvents(BindingFlags bindingAttr);
         public virtual EventInfo[] GetEvents();
+
+        // 得到本类型的 目标 field 的信息;
+        // 参数 name 为 目标field 的名字
         public FieldInfo GetField(string name);
+
         public abstract FieldInfo GetField(string name, BindingFlags bindingAttr);
+
+        /*
+            Gets the fields of the current Type.
+            Returns all the public fields of the current Type.
+            ---
+
+            如果 type 没有 public fields, 就返回 An empty array;
+            返回元素的顺序 没有规则;
+
+        */
         public FieldInfo[] GetFields();
+
+        /*
+            When overridden in a derived class, searches for the fields defined for the current Type, 
+            using the specified binding constraints.
+        */
         public abstract FieldInfo[] GetFields(BindingFlags bindingAttr);
+
+
         public virtual Type[] GetGenericArguments();
         public virtual Type[] GetGenericParameterConstraints();
 
@@ -262,8 +283,17 @@ namespace System
         public virtual bool IsEnumDefined(object value);
         public virtual bool IsEquivalentTo(Type other);
         public virtual bool IsInstanceOfType(object o);
-        [ComVisible(true)]
-        public virtual bool IsSubclassOf(Type c);
+
+        /*
+            Determines whether the "current Type" derives from the 参数Type c.
+            ---
+            必须是派生类才返回 true, 如果 "current Type" 和 Type c 是同类型, 也返回 false;
+
+            参数c为 null 将抛出异常;
+        */
+        [ComVisible(true)]public virtual bool IsSubclassOf(Type c);
+
+
         public virtual Type MakeArrayType(int rank);
         public virtual Type MakeArrayType();
         public virtual Type MakeByRefType();

@@ -19,7 +19,8 @@ namespace UnityEngine
     [NativeClassAttribute(null)]
     [NativeHeaderAttribute("Runtime/Mono/MonoBehaviour.h")]
     [RequiredByNativeCodeAttribute]
-    public class ScriptableObject : Object
+    public class ScriptableObject//ScriptableObject__RR
+        : Object
     {
         public ScriptableObject();
 
@@ -32,7 +33,6 @@ namespace UnityEngine
             To easily create a ScriptableObject instance 
             that is bound to a .asset file via the Editor user interface, 
             consider using "CreateAssetMenuAttribute" (class)
-
 
         // 参数:
         //   className:
