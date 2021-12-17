@@ -435,21 +435,27 @@ namespace UnityEngine.Rendering
         /*
             摘要:
                 Schedules the setup of Camera specific global Shader variables.
-                将 camera 的 specific global shader variables (如 unity_MatrixVP 等信息) 传递给 context
+                将 camera 的 specific global shader variables (如 unity_MatrixVP 等信息) 传递给 shader
                 ---
                 因为 camera 内部只有一个顶点, 所以猜测省略了 OS->WS 这层转换;
                 直接使用 unity_MatrixVP 矩阵就能得到 camera 在 CS 中的状态;
                 所以, 此矩阵包含了 camera 的 坐标, 朝向, 视锥体 等信息
+                -----
+
+                urp 注释中提到:
+                    -- 设置shader 的 "unity_CameraWorldClipPlanes[6]" 数据
+                    -- 处理 _ProjectionParams.x
+                    -- 当自己被调用时, 还会存储 时间信息;
+
+                据说此函数将从 urp 中移除;
 
             参数:
             camera:
                 Camera to setup shader variables for.
             stereoSetup:
-                Set up the stereo shader variables and state.
-                不是 vr 直接使用第二种函数重载
+                Set up the stereo shader variables and state.不是 vr 直接使用第二种函数重载
             eye:
-                The current eye to be rendered.
-                仅用于 vr
+                The current eye to be rendered. 仅用于 vr
         */
         public void SetupCameraProperties(Camera camera, bool stereoSetup, int eye);
         public void SetupCameraProperties(Camera camera, bool stereoSetup = false);

@@ -282,9 +282,9 @@ namespace UnityEngine
         public int cullingMask { get; set; }
 
 
+
         /*
             How the camera clears the background.
-
             enum:
                 -- Skybox
                 -- Color

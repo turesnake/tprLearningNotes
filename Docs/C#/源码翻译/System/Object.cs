@@ -49,8 +49,12 @@ namespace System
 
         public virtual bool Equals(Object obj);
         public virtual int GetHashCode();
-        [SecuritySafeCritical]
-        public Type GetType();
+
+        // Gets the Type of the current instance.
+        //如果调用者为 null, 会报错;
+        [SecuritySafeCritical]public Type GetType();
+
+
         public virtual string ToString();
         [SecuritySafeCritical]
         protected Object MemberwiseClone();

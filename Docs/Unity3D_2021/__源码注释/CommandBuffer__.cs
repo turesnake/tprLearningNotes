@@ -1950,7 +1950,7 @@ namespace UnityEngine.Rendering
             Add a command to set the view and projection matrices.
 
             截至 2021.1 版本, 此函数仅兼容 built-in 管线, 不兼容 srp三管线;
-
+            但是很奇怪, urp 调用了此函数...
 
             和 SetViewMatrix() 类似, 如果 view matrix 是自己实现的, 需要注意 z轴反转问题;
             

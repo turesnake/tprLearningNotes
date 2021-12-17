@@ -84,7 +84,13 @@ namespace System.Collections.Generic
         public int LastIndexOf(T item, int index, int count);
 
         public bool Remove(T item);
+
+        // Removes all the elements that match the conditions defined by the specified predicate.
+        // return:
+        //      The number of elements removed from the List
         public int RemoveAll(Predicate<T> match);
+
+
         public void RemoveAt(int index);
         public void RemoveRange(int index, int count);
 

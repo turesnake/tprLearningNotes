@@ -140,7 +140,7 @@ _ZBufferParams:
     w = 1/far
 - 这是大多数平台 的 主要格式
 
-# if SystemInfo.usesReversedZBu ffer = false:
+# if SystemInfo.usesReversedZBuffer = false:
 _ZBufferParams:
     x = 1 - (far/near)
     y = far/near 
@@ -153,8 +153,8 @@ _ZBufferParams:
     LinearEyeDepth()
     Linear01Depth()
 发现了有趣的现象：
-    不管 usesReversedZBuffer 是否为 true
-    这两个函数 都能稳定地返回 相同的值。
+    不管 SystemInfo.usesReversedZBuffer 是否为 true
+    这两个函数 都能稳定地工作, 调用方将无法察觉到这层差异;
 
 
 

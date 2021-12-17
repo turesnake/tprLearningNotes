@@ -103,9 +103,7 @@ namespace UnityEngine.Rendering
 
             srp 中, 此值默认开启;
 
-            若在 built-in 管线中, 如果 QualitySettings.shadows 被设置为 ShadowQuality.Disable,
-            此值会被关闭, 否则, 此值保持开启;
-
+            built-in 管线中, 如果 QualitySettings.shadows 被设置为 ShadowQuality.Disable, 此值会被关闭, 否则, 此值保持开启;
             注意, 在 built-in 管线中, 手动修改此值 不起作用;
         */
         ShadowCasters = 64 // 默认开启

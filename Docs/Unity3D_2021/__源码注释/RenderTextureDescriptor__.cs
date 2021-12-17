@@ -123,10 +123,10 @@ namespace UnityEngine
         public RenderTextureFormat colorFormat { get; set; }
 
         
-        // 摘要:
-        //     If true and 本类的 msaaSamples is greater than 1, the render texture will not be resolved
-        //     by default. Use this if the render texture needs to be bound as a multisampled
-        //     texture in a shader.
+        /*
+            If true and 本类的 msaaSamples is greater than 1, the render texture will not be resolved by default. 
+            Use this if the render texture needs to be bound as a multisampled texture in a shader.
+        */
         public bool bindMS { get; set; }
 
         
@@ -158,9 +158,13 @@ namespace UnityEngine
         public int volumeDepth { readonly get; set; }
         
 
+        /*
+            The multisample antialiasing level for the RenderTexture. See Also: "RenderTexture.antiAliasing".
+            猜测: 单像素采样的次数: 1,2,4,8 这种;
 
-        //     The multisample antialiasing level for the RenderTexture. See Also: "RenderTexture.antiAliasing".
-        //  猜测: 单像素采样的次数: 1,2,4,8 这种
+            在 urp 中, 此值是被 SystemInfo.GetRenderTextureSupportedMSAASampleCount() 检测过的值
+            (平台支持的 采样数)
+        */
         public int msaaSamples { readonly get; set; }
         
         /*
