@@ -8,13 +8,17 @@ using UnityEngine.Rendering.Universal;
 
 // 使用方式:
 // 将 ColorContrast.shader 绑定到一个 mat 上
-// 并将此 mat，绑定到 本 feature 实例中
-// 这样，我们就能使用这个 shader 
+// 并将此 mat，绑定到 本 feature 实例中, 这样，我们就能使用这个 shader 
 // ---
-// 注意，这组 shader，mat 不应该用在别的任何地方
-// 比如把它绑定到一个 go 上，这样做是无效的
+// 注意，这组 shader，mat 不应该用在别的任何地方, 比如把它绑定到一个 go 上，这样做是无效的
 //（我们创建这组 mat，shader 的目的只是用它来处理数据，）
 //（而不是用它来 渲染go）
+
+// 最后, 去 ForwardRenderer inspector 中添加本 feature;
+
+// 疑惑:
+//  在 ForwardRenderer 中创建一个 render pass, 是不是会作用于每一个 camera 上 ???
+//  目前检测看, 是这样的.....
 
 
 public class ColorContrast : ScriptableRendererFeature
@@ -165,11 +169,38 @@ public class ColorContrast : ScriptableRendererFeature
         }
     }
 
+    /*
+        ---------------------------------------------------------- +++
+        Here you can inject one or multiple render passes in the renderer.
+        This method is called when setting up the renderer once per-camera.
+        ---
+        在派生类的实现体中:
+            可将 数个 "ScriptableRenderPass" 注入到本 feature 中;
+            代码:
+                renderer.EnqueuePass( m_pass );
+                此处
+                "renderer" 就是本函数提供的的参数;
+                m_pass 就是一个 "ScriptableRenderPass" 或其继承者的 实例;
 
-    // Here you can inject one or multiple render passes in the renderer.
-    // This method is called when setting up the renderer once per-camera.
+        参数:
+        renderer:
+            如 "ForwardRenderer"
+        renderingData:
+            Rendering state. Use this to setup render passes.
+    */
     public override void AddRenderPasses( ScriptableRenderer renderer, ref RenderingData renderingData )
-    {                
+    {           
+
+        /*       
+            tpr:
+                只有 stack 中的最后一个 camera 可以执行此 render pass
+                若不做此限制, 那么这个 render pass 会作用于 参数 renderer 体内的每一个 camera 上;
+                (其它更多 筛选 camera 的方法 还有待探索..)
+        */
+        if( !renderingData.cameraData.resolveFinalTarget  ){
+            return;
+        }
+             
         m_ScriptablePass.Setup( ref renderer, RenderTargetHandle.CameraTarget );
         renderer.EnqueuePass(m_ScriptablePass);
     }
