@@ -16,7 +16,6 @@ namespace UnityEngine
 
 
         /*
-            摘要:
             A depth render texture format.
 
             此 format 被用来将 "高精度 depth 值" 渲染进 render texture 中;

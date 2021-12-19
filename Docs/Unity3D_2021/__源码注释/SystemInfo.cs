@@ -310,10 +310,17 @@ namespace UnityEngine
         //     Determines how many compute buffers Unity supports simultaneously in a compute
         //     shader for reading. (Read Only)
         public static int maxComputeBufferInputsCompute { get; }
-        //
-        // 摘要:
-        //     Support for various Graphics.CopyTexture cases (Read Only).
+
+        /*
+            Support for various "Graphics.CopyTexture()" cases (Read Only).
+
+            Most modern platforms and graphics APIs support quite flexible texture copy 
+            (e.g. copy from a RenderTexture into a Cubemap face). 
+            However some older systems might not support certain parts of texture copy functionality. 
+            "CopyTextureSupport" flags indicate this.
+        */
         public static CopyTextureSupport copyTextureSupport { get; }
+
         //
         // 摘要:
         //     Are Cubemap Array textures supported? (Read Only)
