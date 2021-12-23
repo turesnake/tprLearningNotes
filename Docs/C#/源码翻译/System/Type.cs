@@ -90,7 +90,13 @@ namespace System
 
         public TypeAttributes Attributes { get; }
         public abstract string AssemblyQualifiedName { get; }
+
+        
+        // whether the Type is abstract and must be overridden.
+        // 是否为 抽象类
         public bool IsAbstract { get; }
+
+
         public bool IsImport { get; }
         public bool IsMarshalByRef { get; }
         public bool IsLayoutSequential { get; }
@@ -250,6 +256,8 @@ namespace System
         public virtual MemberInfo[] GetMember(string name, BindingFlags bindingAttr);
         public MemberInfo[] GetMembers();
         public abstract MemberInfo[] GetMembers(BindingFlags bindingAttr);
+
+
         public MethodInfo GetMethod(string name);
         public MethodInfo GetMethod(string name, Type[] types, ParameterModifier[] modifiers);
         public MethodInfo GetMethod(string name, Type[] types);
@@ -258,6 +266,8 @@ namespace System
         public MethodInfo GetMethod(string name, BindingFlags bindingAttr);
         public abstract MethodInfo[] GetMethods(BindingFlags bindingAttr);
         public MethodInfo[] GetMethods();
+
+        
         public abstract Type GetNestedType(string name, BindingFlags bindingAttr);
         public Type GetNestedType(string name);
         public abstract Type[] GetNestedTypes(BindingFlags bindingAttr);

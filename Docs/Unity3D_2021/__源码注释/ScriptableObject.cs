@@ -7,8 +7,7 @@ using System;
 namespace UnityEngine
 {
     /*
-        A class you can derive from if you want to create objects that don't need to
-        be attached to game objects.
+        A class you can derive from if you want to create objects that don't need to be attached to game objects.
 
 
 

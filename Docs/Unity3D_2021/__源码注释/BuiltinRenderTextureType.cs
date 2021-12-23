@@ -36,7 +36,9 @@ namespace UnityEngine.Rendering
 
             During command buffer execution, this identifies the render target that is active "right now". 
             During command buffer execution, the active render target might be changed by:
-            CommandBuffer.SetRenderTarget or CommandBuffer.Blit commands.
+            "CommandBuffer.SetRenderTarget()" or "CommandBuffer.Blit()" commands.
+            ---
+            其中, 执行完 cmd.Blit() 之后, 其参数 dest 会被自动绑定为 本处的  CurrentActive;
         */
         CurrentActive = 1,
 

@@ -1456,14 +1456,24 @@ namespace UnityEngine
         public void SetVertices(List<Vector3> inVertices);
 
 
-        //
-        // 摘要:
-        //     Upload previously done Mesh modifications to the graphics API.
-        //
+        /*
+            Upload previously done Mesh modifications to the graphics API.
+
+            When creating or modifying a Mesh from code (using "vertices", "normals", "triangles" etc. properties), 
+            the Mesh data is internally marked as "modified" and is sent to the graphics API next time the Mesh is rendered.
+
+            Call "UploadMeshData" to immediately send the modified data to the graphics API, to avoid a possible problem later. 
+            Passing true in a "markNoLongerReadable" argument makes Mesh data not be readable from the script anymore, 
+            and frees up system memory copy of the data.
+
+
         // 参数:
-        //   markNoLongerReadable:
-        //     Frees up system memory copy of mesh data when set to true.
+            markNoLongerReadable:
+                Frees up system memory copy of mesh data when set to true.
+                若参数传入 true, 就意味着脚本端未来再也无法 读取本 mesh 数据了, 这样就不需要将 mesh 数据时刻存储在 内存中了
+        */
         public void UploadMeshData(bool markNoLongerReadable);
+
 
         //
         // 摘要:

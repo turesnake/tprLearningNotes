@@ -13,7 +13,8 @@ namespace UnityEngine.Rendering
 
         本类描述了, 如何过滤 DrawRenderers() 获得的那组 物体, 只有其中的一部分 最终会被执行渲染;
     */
-    public struct FilteringSettings : IEquatable<FilteringSettings>//FilteringSettings__
+    public struct FilteringSettings //FilteringSettings__
+        : IEquatable<FilteringSettings>
     {
 
         /*

@@ -77,11 +77,23 @@ namespace UnityEngine.Rendering
                 Add a "blit into a render texture" command.
                 ---
                 安排一个指令: 将 src 中的数据 复制到 dest 中; 
-                在复制中途, 可使用 material - shader - pass 中的代码 来 "处理" 原始数据
-            
+                在复制中途, 可使用 material - shader - pass 中的代码 来 "处理" 原始数据;
+
+                Note that Blit changes the currently active render target. 
+                After Blit executes, "dest" becomes the active render target.
+
+                Often the previous content of the Blit "dest" does not need to be preserved. 
+                In this case, it is recommended to activate the dest render target explicitly 
+                with the appropriate "load" and "store" actions using "SetRenderTarget()". 
+                The Blit "dest" should then be set to "BuiltinRenderTextureType.CurrentActive".
+                ---            
             参数:
             source:
                 Source texture or render target to blit from.
+                在一些实现中, 发现能将 本参数设为 null;
+                猜测:
+                    不依赖此处的 src数据, 仅仅用 参数 mat 中的 shader pass 去生成数据,最终存储到 dest 中;
+
             dest:
                 Destination to blit into.
             mat:
@@ -98,6 +110,7 @@ namespace UnityEngine.Rendering
             sourceDepthSlice:
                 The texture array source slice to perform the blit from.
                 如果 source 是一个 texture array, 用此 idx 选择倒是针对哪一层
+
             destDepthSlice:
                 The texture array destination slice to perform the blit to.
                 如果 dest 是一个 texture array, 用此 idx 选择倒是针对哪一层
@@ -400,7 +413,10 @@ namespace UnityEngine.Rendering
                 Add a "draw mesh" command.
             参数:
             mesh:          Mesh to draw.
-            matrix:        Transformation matrix to use.
+            matrix:        Transformation matrix to use. 
+                            猜测, 此矩阵为 OS->WS 矩阵;
+                            毕竟后续的 view-spcae, clip-space, 都和 camera 数据相关, 和本处的 mesh 无关;
+
             material:      Material to use.
             submeshIndex:  Which subset of the mesh to render.
             shaderPass:    Which pass of the shader to use (default is -1, which renders all passes).

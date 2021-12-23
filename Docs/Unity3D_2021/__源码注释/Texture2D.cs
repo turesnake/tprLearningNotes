@@ -18,6 +18,7 @@ namespace UnityEngine
     [UsedByNativeCodeAttribute]
     public sealed class Texture2D : Texture//Texture2D__RR
     {
+
         //
         // 摘要:
         //     Create a new empty texture.
@@ -38,7 +39,7 @@ namespace UnityEngine
         //
         //   textureFormat:
         //
-        //   mipChain:
+        //   mipChain: 是否携带 mipmap
         public Texture2D(int width, int height, TextureFormat textureFormat, bool mipChain);
         public Texture2D(int width, int height, GraphicsFormat format, TextureCreationFlags flags);
         public Texture2D(int width, int height, DefaultFormat format, TextureCreationFlags flags);
@@ -54,11 +55,13 @@ namespace UnityEngine
         //
         //   textureFormat:
         //
-        //   mipChain:
+        //   mipChain: 是否携带 mipmap
         //
-        //   linear:
+        //   linear:  in either the linear or sRGB color space.
         public Texture2D(int width, int height, [DefaultValue("TextureFormat.RGBA32")] TextureFormat textureFormat, [DefaultValue("true")] bool mipChain, [DefaultValue("false")] bool linear);
         public Texture2D(int width, int height, [DefaultValue("TextureFormat.RGBA32")] TextureFormat textureFormat, [DefaultValue("-1")] int mipCount, [DefaultValue("false")] bool linear);
+
+
 
         //
         // 摘要:
@@ -91,6 +94,9 @@ namespace UnityEngine
         //     Gets a small Texture with all gray pixels.
         [StaticAccessorAttribute("builtintex", Bindings.StaticAccessorType.DoubleColon)]
         public static Texture2D grayTexture { get; }
+
+
+
         //
         // 摘要:
         //     Returns true if the Read/Write Enabled checkbox was checked when the texture
@@ -177,19 +183,41 @@ namespace UnityEngine
         //   mipChain:
         public static Texture2D CreateExternalTexture(int width, int height, TextureFormat format, bool mipChain, bool linear, IntPtr nativeTex);
         public static bool GenerateAtlas(Vector2[] sizes, int padding, int atlasSize, List<Rect> results);
-        public void Apply();
-        public void Apply(bool updateMipmaps);
-        //
-        // 摘要:
-        //     Actually apply all previous SetPixel and SetPixels changes.
-        //
+
+        
+
+        /*
+            Actually apply all previous SetPixel and SetPixels changes.
+        
+            If 参数 updateMipmaps is true, the mipmap levels are recalculated as well, using the base level as a source. 
+            Usually you want to use true in all cases except when you've modified the mip levels yourself using SetPixels. 
+            By default updateMipmaps is set to true.
+
+            If makeNoLongerReadable is true, texture will be marked as no longer readable and memory will be freed after uploading to GPU. 
+            By default makeNoLongerReadable is set to false.
+
+            Apply is a potentially expensive operation, so you'll want to change as many pixels as possible between Apply calls.
+
+            Alternatively, if you don't need to access the pixels on the CPU, 
+            you could use "Graphics.CopyTexture()" for fast GPU-side texture data copies. 
+            
+            Note that calling Apply may undo the results of previous calls to "Graphics.CopyTexture()".
+
+            The texture has to have Is Readable flag set in the import settings.
+
         // 参数:
         //   updateMipmaps:
         //     When set to true, mipmap levels are recalculated.
         //
         //   makeNoLongerReadable:
         //     When set to true, system memory copy of a texture is released.
+        */
+        public void Apply();
+        public void Apply(bool updateMipmaps);
         public void Apply([DefaultValue("true")] bool updateMipmaps, [DefaultValue("false")] bool makeNoLongerReadable);
+
+
+
         //
         // 摘要:
         //     Resets the minimumMipmapLevel field.
