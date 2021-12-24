@@ -758,7 +758,7 @@ namespace UnityEngine
             寻找一个用 propertyIndex 指定的 "texture stack" 的 name值; 
 
             "texture stack" 
-                似乎和 Virtual Texture 技术相关, vt是用来优化 "开发大世界 地面 texture 加载" 的技术;
+                似乎和 Virtual Texture (Virtual Texturing) 技术相关, vt是用来优化 "开发大世界 地面 texture 加载" 的技术;
                 ---
                 在此先浅显地将其理解为 一个可以容纳 textures 的 stack;
 
