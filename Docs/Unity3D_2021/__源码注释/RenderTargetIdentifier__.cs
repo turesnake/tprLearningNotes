@@ -7,11 +7,10 @@ using System;
 namespace UnityEngine.Rendering
 {
     /*
-        摘要:
-        Identifies a RenderTexture for a Rendering.CommandBuffer.
-        ---
         render texture 的一个 id;
 
+        Identifies a RenderTexture for a Rendering.CommandBuffer.
+        ---
         Render textures can be identified in a number of ways, 比如:
         -- a RenderTexture object,
         -- one of built-in render textures (BuiltinRenderTextureType), 
@@ -40,8 +39,8 @@ namespace UnityEngine.Rendering
 
 
         /*
-            摘要:
-            Creates a render target identifier.   构造函数
+            构造函数:
+            Creates a render target identifier.
 
             RenderTargetIdentifier can be implicitly created from:
             -- a RenderTexture reference, 

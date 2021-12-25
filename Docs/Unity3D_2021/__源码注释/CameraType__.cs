@@ -12,7 +12,8 @@ namespace UnityEngine
         Describes different types of camera.
 
         The Unity Editor sets the type of a camera based on what it is used for. 
-        
+
+        enum: Game, SceneView, Preview, VR, Reflection
     */
     [Flags]
     public enum CameraType//CameraType__
