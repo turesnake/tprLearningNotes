@@ -723,8 +723,6 @@ UNITY_ACCESS_INSTANCED_PROP( UnityPerMaterial, _BaseColor )
 
 
 
-
-
 # 为什么有时候看不到 GPU Instancing 被使用 ?
 通常, SRP Batcher 的优先级要高于 GPU Instancing, 如果管线已经支持 SRP Batcher, 
 我们可能压根就观测不到 GPU Instancing 的启用.

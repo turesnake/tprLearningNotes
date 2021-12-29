@@ -52,7 +52,7 @@
 
 在视频中, 这个过程被称为 "针对阴影的 cull", 但是显然很含糊.
 
-unity 会为每一个 能产生阴影的 光源, 分配一个 job 不执行此工作.
+unity 会为每一个 能产生阴影的 光源, 分配一个 job 去执行此工作.
 
 # -- Shadows.CullShadowCastersDirectionalDetail
 如果把所有 renderer inspector 的 cast shadows 选项设置为: Off,
@@ -65,9 +65,13 @@ unity 会为每一个 能产生阴影的 光源, 分配一个 job 不执行此�
 
 cpu 内存中的 renderer 数据是 分散存储的, 不利于快速访问. 拿着上文已经整理好的 IndexList,
 把记录在这个 IndexList 中的 renderer 数据, 每一个都复制到一个 RenderNode 的数据结构中.
-这是一个 扁平化的, 值类型的数据结构.
-
+这是一个 扁平化的, 值类型的数据结构. 其实还包括 renderer 中的内部组件(引用) 的数据, 都会被提取出来, 展平,
+放入 RenderNode;
 RenderNode 中所有数据都在内存上 连续存储
+
+RenderNode 的目的在于, 我们只要拿着一个 RenderNode 实例,就能获得所有想要的数据, 以此来绘制这个 renderer;
+
+--------
 
 由 RenderNodes 组成的队列, 就叫 RenderNodeQueue. 这个 queue 是线程安全的, 可被拿来做 多线程渲染.
 

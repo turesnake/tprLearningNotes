@@ -80,6 +80,7 @@ srp 渲染工作采用 延时执行。
 
 # ================================================================ #
 #        Scriptable Render Pipeline (SRP) Batcher
+#        SRP Batcher
 # ================================================================ #
 srp batcher 是一个 rendering loop。如果一个场景中，存在很多 mat，它们使用了相同的 shader variant，
 srp batcher 可以加速这个场景的 cpu 渲染。
@@ -106,6 +107,7 @@ srp batcher 几乎支持所有平台。（图标显示，2019.2 开始各平台�
 （注意，在 XR 中，you can only use the SRP Batcher with the SinglePassInstanced mode ）
 
 
+
 # How the SRP Batcher works
 在 unity 中，你能在一帧的任何时间，修改任何 mat 的任何属性。然而，这样做存在一些缺点。
 举例：当 DrawCall 在新的调用中开始使用一个 新的 mat 时，需要做很多额外的工作。
@@ -116,7 +118,8 @@ srp batcher 几乎支持所有平台。（图标显示，2019.2 开始各平台�
 
 SRP Batcher 通过 批处理 “Bind 和 Draw commands序列” 来降低 GPU的设置开销。
 
-![SRP Batch 流程图](SRP_Batch_流程图.png)
+[SRP_Batch_流程图]  (见笔记中大图 "SRP Batcher_0.jpg")
+
 简述：
     == 对于传统 Batch 来说，每个周期：==
         -- 收集 系统内存 中的所有 内置数据，填入 Object CBUFFER
@@ -157,10 +160,10 @@ SRP Batcher 通过 批处理 “Bind 和 Draw commands序列” 来降低 GPU的
 SRP 天生聚集了 paradigms（范例），比如：GPU data persistency（持久性）
 
 SRP Batcher 能让 material 数据 长期存在于 GPU 内存中。如果一个 material 的内容没有发生变动，SRP Batcher
-就不需要重新设置并将新版本上传到 GPU。相反，SRP 使用一个 专用代码路径，将 unity引擎中的 roperties 
+就不需要重新设置并将新版本上传到 GPU。相反，SRP 使用一个 专用代码路径，将 unity引擎中的 properties 
 快速上传到 GPU 的一个大型 buffer 中，如图：
 
-![SRP Batch 图2](SRP_Batch_图2.png)
+[SRP_Batch_图2]    (见笔记中大图 "SRP Batcher_0.jpg")
 简述：
     它将所有 obj 的 Unity Engine properties 集中存储在一个 大的 GPU buffer 中 (就是那些 矩阵信息)
     而 material 数据 则被单独储存在 GPU 的 material CBUFFER 中，已应付 随时修改。这些 CBUFFER 是长期存在的
@@ -178,7 +181,7 @@ unity 也能正常完成渲染。这些不兼容的，将使用 standard SRP cod
 -- 物体必须有一个 mesh，或 skinned mesh。它不能是粒子。
 -- 使用的 shader 必须和 SRP Batcher 相互兼容。hdrp/urp 中的 Lit/Unlit shader 都符合此要求
     （这些 shader 的 粒子版除外）
--- 被渲染的 obj，必须使用 MaterialPropertyBlocks
+-- 被渲染的 obj，必须不能使用 MaterialPropertyBlocks
 
 
 如果一个 shader 要想兼容 SRP Batcher，必须：

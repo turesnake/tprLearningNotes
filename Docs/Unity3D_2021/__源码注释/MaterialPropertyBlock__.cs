@@ -21,6 +21,8 @@ namespace UnityEngine
         被传入  Graphics.DrawMesh or Renderer.SetPropertyBlock 的本 class 实例 将被执行值复制,
         所以, 推荐的用法是, 创建一个  MaterialPropertyBlock 实例(比如是 static 的), 然后反复使用它. 
 
+        使用 MaterialPropertyBlock 的物体, 无法被 SRP Batcher 批处理;
+
     */
     [NativeHeaderAttribute("Runtime/Shaders/ShaderPropertySheet.h")]
     [NativeHeaderAttribute("Runtime/Shaders/ComputeShader.h")]
