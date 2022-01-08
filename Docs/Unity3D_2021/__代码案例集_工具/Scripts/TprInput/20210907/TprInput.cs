@@ -22,7 +22,7 @@ using UnityEngine;
 
     目前为止，暂时还不会引发欧拉角的问题
 */
-public class TprInput_B : MonoBehaviour
+public class TprInput : MonoBehaviour
 {
     
     Transform  cameraTransform;

@@ -21,7 +21,7 @@
 然后把之前为 active 的 组件全部恢复为 active,
 
 -2-
-当一个组件执行了自己的 MonoBehaviour.Awake(); 只会, 也会立即执行 OnEnable();
+当一个组件执行了自己的 MonoBehaviour.Awake(); 之后, 也会立即执行 OnEnable();
 除非这个组件被存储为 disabled 状态, 
 
 
