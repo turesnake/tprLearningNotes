@@ -1,0 +1,241 @@
+{
+    "workbench.colorTheme": "Dracula Soft",
+    
+    // 先这么用着吧, 没能改完善;
+    
+    "workbench.colorCustomizations": {
+        
+
+        // ================================ 顶部区域 ============================================= //
+
+        // ----- 标题栏 (最顶部, "文件","编辑" 那一行) -----:
+        "titleBar.activeBackground":"#262729c4",
+        "titleBar.activeForeground":"#a1a1a1",//文字颜色
+
+        "menu.background":"#333538fb",// 点击 "文件" 弹出的菜单的底色
+
+
+        // ----- 活动选项卡 (顶部) -----:
+        "tab.inactiveForeground":"#dfdfdf",// 普通选项卡 文字颜色
+        "tab.inactiveBackground":"#262729c4",
+
+        "tab.hoverBackground":"#21242b",// 鼠标悬停卡 背景色
+
+        "tab.activeForeground":"#ffe261",//被选中的选项卡 文字颜色
+        "tab.activeBackground":"#191a1b",//被选中的选项卡 背景色
+
+        "tab.border":"#555555",// 两个选项卡之间的 分界线的颜色
+
+
+        // ----- 路径导航栏 (顶部) -----:
+        "breadcrumb.foreground":"#868686",//路径文字颜色
+        "breadcrumb.background":"#191b1f",//路径背景颜色
+
+
+        // ================================ 底部区域 ============================================= //
+
+        // ----- 状态栏 (最底部) -----:
+        "statusBar.background":"#1c1d20c4",
+        "statusBar.foreground":"#a1a1a1",
+
+
+        // ================================ 左侧区域 ============================================= //
+
+        // ----- 活动栏 (最左侧, 几个图标) -----:
+        "activityBar.background":"#232427",//活动栏背景色
+
+
+        // ----- 侧边栏 (左侧, 放文件的区域) -----:
+        "sideBar.background":"#1c1d20",//背景颜色
+        "sideBar.foreground":"#b1b1b1",//文字颜色
+
+        
+
+        "list.hoverBackground":"#525252",// 鼠标悬停的那一行的背景色
+
+        "list.activeSelectionForeground":"#ffffff",// 鼠标点选行(文件)的字体颜色
+        "list.activeSelectionBackground":"#525252",// 鼠标点选行(文件)的背景色
+
+        "list.errorForeground":"#ff4444",// 如果某个文件中存在错误, 这个文件文字, 以及顶部选项卡文字 的颜色
+        
+
+        // ================================ 代码编辑器区域 ============================================= //
+
+        // ----- 代码编辑器 -----:
+        //"editor.background": "#262729de",// 编辑区背景色
+        //"editor.background": "#272a33",// 编辑区背景色
+        "editor.foreground":"#e9e9e9",// 编辑区 普通文字 前景色, 最好设置
+        //"editor.background": "#303235"// 编辑区背景色
+
+        
+        "editorLineNumber.foreground":"#929292",//行号(左侧)颜色
+        "editorOverviewRuler.background":"#1b1c1dc4",//右侧滚动条背景色
+
+        // ----- 编辑器内查找 -----:
+        "editor.selectionBackground":"#0047a5",//鼠标拖动选择文字的底色
+
+        //"editor.selectionForeground":"#ff0000",
+
+        "editor.selectionHighlightBackground":"#0047a5",//"与所选内容具有相同内容的区域" 的背景色
+        "editor.selectionHighlightBorder":"#bdff22",//"与所选内容具有相同内容的区域" 的边框色
+
+        "editor.findMatchHighlightBackground":"#025a31",//查找到的文字区域的底色
+        "editor.findMatchHighlightBorder":"#ffd000",//查找到的文字区域 边框色
+
+
+
+        // ----- 右侧小视图 (缩略图) -----:
+        "minimap.background":"#202224ef",
+
+
+        // ----- 搜索文件内查找 -----:
+        "searchEditor.findMatchBackground":"#025a31",//在搜索文件中, 匹配文字的底色
+
+
+        // ----- 缩进参考线 -----:
+        "editorIndentGuide.activeBackground":"#4c8691ab",// 当前所在代码块的 参考线颜色
+        //"editorIndentGuide.background":"#ff0000",// 默认缩进线颜色 (不设置)
+        //"tree.indentGuidesStroke":"#ff0000",//左侧文件区, 内的缩进线颜色 (不设置)
+
+        // ----- 选中的括号 (大中小括号都算) -----:
+        "editorBracketMatch.background":"#a82b15",//括号底色
+        //"editorBracketMatch.border":"#ffee00",// 括号边框
+
+
+        
+        // ----- 错误,警告 -----:
+        "editorError.foreground":"#ff3d3d", //语法错误代码波浪线颜色
+        "editorWarning.foreground":"#ffee00", // 有警告的代码波浪线颜色
+
+        "editorOverviewRuler.errorForeground":"#ff3d3d",//语法错误代码在滚动条高亮显示
+        "editorOverviewRuler.warningForeground":"#e48c00",//有警告的代码在滚动条高亮显示
+
+
+        // ----- 滚动条 (最右侧) ----- :
+        "scrollbarSlider.activeBackground":"#b4b4b4", // 滚动条被点击时的颜色
+
+        //"editorOverviewRuler.selectionHighlightForeground":"#ff0000",
+        //"editorOverviewRuler.findMatchForeground":"#fd00a9",
+        
+        
+        
+    },
+    
+    
+    
+    "editor.tokenColorCustomizations": {
+        
+        // 配色原则:
+        // 注释类型的尽可能偏向 黄,
+        // 正文部分尽可能偏向 绿-青-紫
+
+        "comments": "#838a48", // 注释 黄2
+        
+        //"keywords": "#80f6ff", // 关键字
+	    //"variables": "#e9e9e9", // 变量名
+	    //"strings": "#72ade4", // 字符串
+	    //"functions": "#b2f11c", // 函数名
+	    //"numbers": "#6cc0a4", // 数字
+        //"types": "#f1d950",
+        
+    
+        "textMateRules": [
+            
+            {
+                "scope": [
+                    // <param name="XXX"> 中的 "param" 
+                    "entity.name.tag"
+                ],
+                "settings": {
+                    "foreground": "#8d6700",
+                    "fontStyle": "italic"
+                }
+            },
+
+            {
+                "scope": [
+                    // <param name="XXX"> 中的 "name"
+                    "entity.other.attribute-name"
+                ],
+                "settings": {
+                    "foreground": "#cfbf29",
+                }
+            },
+
+            {
+                "scope": [
+                    // 借用[dracula]: "Function parameters":
+                    "entity.name.variable.parameter",
+                    "meta.at-rule.function variable",
+                    "meta.at-rule.mixin variable",
+                    "meta.function.arguments variable.other.php",
+                    "meta.selectionset.graphql meta.arguments.graphql variable.arguments.graphql",
+                    "variable.parameter"
+                ],
+                "settings": {
+                    "foreground": "#a19cee",
+                }
+            },
+
+            {
+                "scope": [
+                    // 借用[dracula]: 模板参数类型 T
+                    "entity.name.type.type-parameter",
+                    "meta.indexer.mappedtype.declaration entity.name.type",
+                    "meta.type.parameters entity.name.type"
+                ],
+                "settings": {
+                    "foreground": "#a19cee",
+                }
+            },
+
+            {
+                "scope": [
+                    // string
+                    "string",
+                    // string 两侧的双引号
+                    "punctuation.definition.string.begin",
+                    "punctuation.definition.string.end"
+                ],
+                "settings": {
+                    "foreground": "#dee492",
+                    //"fontStyle": "bold"
+                }
+            },
+
+        
+            {
+                "scope": [
+                    // 修饰符: public internal private static const override readonly sealed
+                    "storage.modifier"
+                ],
+                "settings": {
+                    "foreground": "#c148d1",
+                    //"fontStyle": "bold"
+                }
+            },
+
+            
+            
+
+        ],
+        
+
+    },
+    
+
+
+    "editor.minimap.enabled": false,
+    "git.ignoreMissingGitWarning": true,
+    "editor.codeLensFontSize": 2,
+    "extensions.ignoreRecommendations": true,
+    "workbench.startupEditor": "none",
+    "security.workspace.trust.untrustedFiles": "open" // 关闭 右侧缩略图
+    
+    
+    
+    
+    
+    
+    
+}

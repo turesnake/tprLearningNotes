@@ -52,7 +52,11 @@ namespace UnityEditor
         //     option was always enabled. Therefore enabling the option gives the same behaviour
         //     as pre-5.3 animation import.
         public bool resampleCurves { get; set; }
+
+        /*
         [Obsolete("use resampleCurves instead.")]public bool resampleRotations { get; set; }
+        */
+
         //
         // 摘要:
         //     Is Bake Inverse Kinematics (IK) supported by this importer.
@@ -135,22 +139,21 @@ namespace UnityEditor
         public bool useSRGBMaterialColor { get; set; }
 
 
-        //
-        // 摘要:
-        //     Generate a list of all default animation clip based on TakeInfo.
+        /*
+            Generate a list of all default animation clip based on "TakeInfo".
+
+        */
         public ModelImporterClipAnimation[] defaultClipAnimations { get; }
 
 
+        /*
+            Animation clips to split animation into.
 
-
-
-
-        //
-        // 摘要:
-        //     Animation clips to split animation into. See Also: ModelImporterClipAnimation.
+            When you import a file for the first time clipAnimations will be always empty. 
+            If you need to populate(填入) clipAnimations before the first import 
+            you can use an "AssetPostprocessor" and override "AssetPostprocessor.OnPreprocessAnimation()".
+        */
         public ModelImporterClipAnimation[] clipAnimations { get; set; }
-
-
 
         
 

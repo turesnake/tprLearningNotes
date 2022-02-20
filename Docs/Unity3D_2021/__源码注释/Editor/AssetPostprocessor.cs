@@ -60,26 +60,35 @@ namespace UnityEditor
         // 摘要:
         //     The path name of the asset being imported.
         public string assetPath { get; set; }
+
         //
         // 摘要:
         //     The import context.
         public AssetImportContext context { get; }
+
         //
         // 摘要:
         //     Reference to the asset importer.
         public AssetImporter assetImporter { get; }
+
+
+        /*
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("To set or get the preview, call EditorUtility.SetAssetPreview or AssetPreview.GetAssetPreview instead", true)]
         public Texture2D preview { get; set; }
+        */
+
 
         //
         // 摘要:
         //     Override the order in which importers are processed.
         public virtual int GetPostprocessOrder();
+
         //
         // 摘要:
         //     Returns the version of the asset postprocessor.
         public virtual uint GetVersion();
+
         //
         // 摘要:
         //     Logs an import error message to the console.
@@ -90,6 +99,7 @@ namespace UnityEditor
         //   context:
         [ExcludeFromDocs]
         public void LogError(string warning);
+
         //
         // 摘要:
         //     Logs an import error message to the console.
@@ -99,6 +109,7 @@ namespace UnityEditor
         //
         //   context:
         public void LogError(string warning, [UnityEngine.Internal.DefaultValue("null")] UnityEngine.Object context);
+        
         //
         // 摘要:
         //     Logs an import warning to the console.

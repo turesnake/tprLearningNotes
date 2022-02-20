@@ -92,7 +92,8 @@ http://tmtheme-editor.herokuapp.com/#!/editor/theme/Monokai
 暂时选择 theme:
 	Community Material Theme High Contrast
 
-然后点击 vscode 左下角齿轮, 选择 "设置", 再点击右上角的 打开设置,
+然后点击 vscode 左下角齿轮, 选择 "设置", 再点击右上角的一个图标 "打开设置",
+(图标: 一张纸, 有个回车箭头)
 分别编写:
 	"workbench.colorCustomizations":{},
 	"editor.tokenColorCustomizations":{}
