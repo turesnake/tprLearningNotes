@@ -84,8 +84,45 @@ https://www.youtube.com/watch?v=6ogqHJJR_5M&list=PLeUKbKrkDo85p1VDOFu-2oVLkv3j-P
 # 通过此方案, 模型绑定的 uv 能一并传入 unity 中;
 
 
+
+# ------------------------------------- #
 # 如果带有动画:
 https://www.bilibili.com/video/BV1va4y1p7Cm?spm_id_from=333.999.0.0
+
+-7-
+    unity:
+    maya 会把动画一并发送给 unity, 文件类型为 Animation Clip,
+    我们还需为它添加一个 avatar:
+        先选中 导入的 prefab 文件, 在 inspector 中, 选择 Rig,
+        在 Avatar Definition 中点击 "Create from this model",
+        (若模型文件很大, 还需启用 "Optimize Game Objects", 这是一个优化动画的功能)
+        最后点击 "apply";
+    就能看到 prefab 文件内新增了一个 avatar 文件;
+
+-8-
+    若想 Animation Clip 循环播放:
+    选中 clip, inspector 中点击 editor 打开它, 勾选 "Loop Time", 点击 "Apply";
+
+-9-
+    添加 Animator Controller:
+        直接在 prefab 边上创建一个 Animator Controller,
+        (controller 无法创建在 prefab 内部, 但可通过 前缀同名 的方式让两者放在一起)
+    双击打开 controller 界面, 把 prefab 中 maya 传入的 clip 拖到 controller 中去;
+
+-10-
+    绑定 Animator Controller:
+    点击 Hierarchy 中的 prefab 实例, 
+    在 Animator 组件中, 绑定 Controller;
+
+
+# 此时运行游戏, 可看到 动画彻底播放了;
+    
+
+
+
+
+
+
 
 
 
