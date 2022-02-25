@@ -117,7 +117,7 @@ $ git diff HEAD -- filename.txt 查看工作区（working derictory）和版本�
 $ git checkout -- filename.txt 把文件在工作区的修改全部撤销
                                 （用版本区里的版本替换工作区里的版本。）
         1.文件自修改后尚未add到暂存区，此时checkout将会把文件改回版本库一样的状态
-        2.文件以add到暂存区，然后又做了修改，此时checkout将把文件改回暂存区的状态
+        2.文件已经add到暂存区，然后又做了修改，此时checkout将把文件改回暂存区的状态
 总之就是让文件回到最近一次 add 或 commit 时的状态。
 如果没有--标识符，将表示另一个意思：切换到另一个分支。
 

@@ -134,6 +134,8 @@ https://www.bilibili.com/video/BV1va4y1p7Cm?spm_id_from=333.999.0.0
     然后就搞定了 !!!
 
 
+# 这个文件 提供了各种方案:
+https://docs.unity3d.com/2021.2/Documentation/Manual/Splittinganimations.html
 
 
 
