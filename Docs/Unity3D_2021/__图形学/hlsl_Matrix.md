@@ -8,6 +8,8 @@ float4x4
 
 
 MS官网搜索：Per-Component Math Operations
+https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-per-component-math#the-matrix-type
+
 
 # --- 类型书写规则 --
 # float2x1 m;
@@ -23,8 +25,8 @@ MS官网搜索：Per-Component Math Operations
 #                               vec2.xy  // row 2
 #                            ); 
     注意此处的参数，
-    vec1.xy 依次写入 m00, m10
-    vec2.xy 依次写入 m01, m11
+    vec1.xy 依次写入 m00, m01
+    vec2.xy 依次写入 m10, m11
     这个顺序是 反直觉的 （通常来讲，我们希望输入的向量被布置为 竖向量...）
     他可能会影响后续的 mul() 中，矩阵参数 和 向量参数 的前后顺序
 
