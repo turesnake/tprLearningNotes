@@ -34,5 +34,8 @@ VSCode - setting - text editor - files - exclude - add pattern
 然后点击确定, 就可以了;
 
 
+# -------------------------:
+#   多行代码 统一取消缩进
 
+选择多行代码, shift + tab;
 
