@@ -534,6 +534,10 @@ float3 normalVal = SampleSceneNormals(uv);
 #
     这组概念 仅能在 frag shader 中使用。
 
+
+# 注意!!! ddx(uv2) 返回的也是一个 float2 值;
+
+
 # ddx,ddy 原理
     在 texture 采样流程中，gpu需要知道，当前位置，纹素 和 像素 之间的比例关系。这个比例有时存在形变，
     比如一个 像素，它所覆盖的 可能是一个 梯形 的 纹理区域。gpu 通常使用 "偏导数xy" 来记录这个概念，比如
@@ -584,10 +588,6 @@ float3 normalVal = SampleSceneNormals(uv);
     用处：暂不明...
 
     x 就是个任意参数;
-
-
-
-
 
 
 
@@ -984,6 +984,21 @@ Reflection Probes (as lightmaps) 可以被编码为:
 
 至于数据是如何编码的, 则基于 平台 和 project settings: Player -> Other Settings -> "Lightmap Encoding"
 移动平台默认会编码为 dLDR, 除非你覆写 Texture Compression setting;
+
+
+
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#    #pragma fragmentoption ARB_precision_hit_fastest
+# ---------------------------------------------- #
+
+在编写 Unity Shader时， 可以通过 fragmentoption 来对片段着色器进行配置，
+从而指定当前着色器的精度:
+
+#pragma fragmentoption ARB_precision_hit_fastest -- 标记当前片段着色器为最快的
+
+#pragma fragmentoption ARB_precision_hint_nicest -- 标记片段着色器为效果最好的
+
+(一个片段着色器只能标记一个，如果两个都标记则会编译失败)
 
 
 
