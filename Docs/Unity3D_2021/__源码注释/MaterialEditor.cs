@@ -256,8 +256,12 @@ namespace UnityEditor
         //
         //   prop:
         public Color ColorProperty(MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use ColorProperty with MaterialProperty instead.")]
         public Color ColorProperty(string propertyName, string label);
+        */
+        
         //
         // 摘要:
         //     Default handling of preview area for materials.
@@ -670,8 +674,10 @@ namespace UnityEditor
         public void ShaderProperty(MaterialProperty prop, GUIContent label, int labelIndent);
         public void ShaderProperty(MaterialProperty prop, string label, int labelIndent);
         public void ShaderProperty(MaterialProperty prop, GUIContent label);
+
         [Obsolete("Use ShaderProperty that takes MaterialProperty parameter instead.")]
         public void ShaderProperty(Shader shader, int propertyIndex);
+
         //
         // 摘要:
         //     Handes UI for one shader property.
