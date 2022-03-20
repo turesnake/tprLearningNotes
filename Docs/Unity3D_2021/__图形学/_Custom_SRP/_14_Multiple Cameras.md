@@ -52,8 +52,8 @@
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
 #                旧方案:  Culling Masks
 #                          cullingmask
-#                新方案:  Rendering layer Mask
-#                          RenderinglayerMask
+#                新方案:  Rendering Layer Mask
+#                          RenderingLayerMask
 # ---------------------------------------------------------------- #
 
 # +++++++++++++++++++++++++++++++++++ 
