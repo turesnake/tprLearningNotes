@@ -105,7 +105,16 @@ https://zhuanlan.zhihu.com/p/459863566
 
 
 
+# -------------------------- #
+#      Fork  账户设置
+# -------------------------- #
+"File" - "Accounts", 点击 左下角 "+" 号, 
+选择 "Gitlab Server", 
 
+在 "Server" 上输入: http://fantang.f3322.net:8888/
+在 Person Access Token 上输入: -P-ACMUW-wzLiHvs8RVY
+
+即可成功设置账户;
 
 
 

@@ -93,6 +93,8 @@ https://services.gradle.org/distributions/
 Player settings - other settings - Identification - "Minimum API Level"
 设置为 "安卓 11"
 
+还有下一行的 "target API Levle", 也一样是 "安卓11"
+
 # 配置证书:
 在 player settings - "publishing settings" 中, 
 点击 "keystore manager" 按钮, 打开配置面板:
@@ -106,6 +108,7 @@ Player settings - other settings - Identification - "Minimum API Level"
     password: 123tpr
 
     然后点击 "add key" 按钮;
+
 
 # 每次开启项目, 然后要打包时, 都需要到此界面 填写密码
 
@@ -156,6 +159,34 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 让 unity 自己再新建一个
 
 
+
+
+# ================================================== #
+#         真机  profiler 测试
+# ================================================== #
+
+# -1- 首先, 查找 vivo 手机 ip 地址:
+    设置 - 系统管理 - 关于手机 - 状态信息 - ip地址;
+
+    比如得到: 192.168.3.19
+
+# -2- 确保电脑安装和配置好 adb
+
+
+# -3- 终端/cmd 输入:
+    adb tcpip 5555
+        ---
+        让 adb 监听端口 5555
+
+    adb connect 192.168.3.19
+        ---
+        正式连接手机
+
+# -4- 确保电脑上只打开一个 unity editor, 进入 profiler
+    左上角 监听目标 一栏 选择 安卓设备的;
+
+# 手机上运行游戏, 然后 editor 中开启 profiler 记录按钮, 
+    可以查看下是否能录取到 帧数据;
 
 
 
