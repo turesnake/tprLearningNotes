@@ -32,12 +32,17 @@ namespace UnityEditor
         // 返回结果:
         //     If the group is visible or not.
         public static bool BeginFadeGroup(float value);
+
         public static bool BeginFoldoutHeaderGroup(bool foldout, string content, [DefaultValue("EditorStyles.foldoutHeader")] GUIStyle style = null, Action<Rect> menuAction = null, GUIStyle menuIcon = null);
         public static bool BeginFoldoutHeaderGroup(bool foldout, GUIContent content, [DefaultValue("EditorStyles.foldoutHeader")] GUIStyle style = null, Action<Rect> menuAction = null, GUIStyle menuIcon = null);
-        //
-        // 摘要:
-        //     Begin a horizontal group and get its rect back.
-        //
+        
+        
+
+        /*
+            Begin a horizontal group and get its rect back.
+            画一个 横着的 长长的框, 里面可以装点元素, 但是似乎这些元素都在同一行上...
+            推荐看官方 api 代码示范
+        
         // 参数:
         //   style:
         //     Optional GUIStyle.
@@ -47,21 +52,11 @@ namespace UnityEditor
         //     values passed in here will override settings defined by the style.<br> See Also:
         //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
         //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        */
         public static Rect BeginHorizontal(params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Begin a horizontal group and get its rect back.
-        //
-        // 参数:
-        //   style:
-        //     Optional GUIStyle.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
         public static Rect BeginHorizontal(GUIStyle style, params GUILayoutOption[] options);
+
+
         //
         // 摘要:
         //     Begin an automatically laid out scrollview.
@@ -393,10 +388,12 @@ namespace UnityEditor
         // 返回结果:
         //     The value entered by the user.
         public static BoundsInt BoundsIntField(BoundsInt value, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for selecting a Color.
-        //
+
+
+        /*
+            Make a field for selecting a Color.
+            画一个 色轮, 可以取色;
+
         // 参数:
         //   label:
         //     Optional label to display in front of the field.
@@ -426,75 +423,12 @@ namespace UnityEditor
         //
         // 返回结果:
         //     The color selected by the user.
+        */
         public static Color ColorField(Color value, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for selecting a Color.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The color to edit.
-        //
-        //   showEyedropper:
-        //     If true, the color picker should show the eyedropper control. If false, don't
-        //     show it.
-        //
-        //   showAlpha:
-        //     If true, allow the user to set an alpha value for the color. If false, hide the
-        //     alpha component.
-        //
-        //   hdr:
-        //     If true, treat the color as an HDR value. If false, treat it as a standard LDR
-        //     value.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        //   hdrConfig:
-        //
-        // 返回结果:
-        //     The color selected by the user.
         public static Color ColorField(string label, Color value, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for selecting a Color.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The color to edit.
-        //
-        //   showEyedropper:
-        //     If true, the color picker should show the eyedropper control. If false, don't
-        //     show it.
-        //
-        //   showAlpha:
-        //     If true, allow the user to set an alpha value for the color. If false, hide the
-        //     alpha component.
-        //
-        //   hdr:
-        //     If true, treat the color as an HDR value. If false, treat it as a standard LDR
-        //     value.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        //   hdrConfig:
-        //
-        // 返回结果:
-        //     The color selected by the user.
         public static Color ColorField(GUIContent label, Color value, params GUILayoutOption[] options);
+        public static Color ColorField(GUIContent label, Color value, bool showEyedropper, bool showAlpha, bool hdr, params GUILayoutOption[] options);
+
         
         
         /*
@@ -503,44 +437,12 @@ namespace UnityEditor
         */
 
 
-        //
-        // 摘要:
-        //     Make a field for selecting a Color.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The color to edit.
-        //
-        //   showEyedropper:
-        //     If true, the color picker should show the eyedropper control. If false, don't
-        //     show it.
-        //
-        //   showAlpha:
-        //     If true, allow the user to set an alpha value for the color. If false, hide the
-        //     alpha component.
-        //
-        //   hdr:
-        //     If true, treat the color as an HDR value. If false, treat it as a standard LDR
-        //     value.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        //   hdrConfig:
-        //
-        // 返回结果:
-        //     The color selected by the user.
-        public static Color ColorField(GUIContent label, Color value, bool showEyedropper, bool showAlpha, bool hdr, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
+
+        
+        /*
+            Make a field for editing an AnimationCurve.
+            画一个 曲线调节窗口
+        
         // 参数:
         //   property:
         //     The curve to edit.
@@ -560,187 +462,17 @@ namespace UnityEditor
         //   label:
         //     Optional label to display in front of the field. Pass [[GUIContent.none] to hide
         //     the label.
+        */
         public static void CurveField(SerializedProperty property, Color color, Rect ranges, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
-        // 参数:
-        //   property:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        //   label:
-        //     Optional label to display in front of the field. Pass [[GUIContent.none] to hide
-        //     the label.
         public static void CurveField(SerializedProperty property, Color color, Rect ranges, GUIContent label, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        // 返回结果:
-        //     The curve edited by the user.
         public static AnimationCurve CurveField(GUIContent label, AnimationCurve value, Color color, Rect ranges, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        // 返回结果:
-        //     The curve edited by the user.
         public static AnimationCurve CurveField(string label, AnimationCurve value, Color color, Rect ranges, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        // 返回结果:
-        //     The curve edited by the user.
         public static AnimationCurve CurveField(GUIContent label, AnimationCurve value, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        // 返回结果:
-        //     The curve edited by the user.
         public static AnimationCurve CurveField(AnimationCurve value, Color color, Rect ranges, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        // 返回结果:
-        //     The curve edited by the user.
         public static AnimationCurve CurveField(string label, AnimationCurve value, params GUILayoutOption[] options);
-        //
-        // 摘要:
-        //     Make a field for editing an AnimationCurve.
-        //
-        // 参数:
-        //   label:
-        //     Optional label to display in front of the field.
-        //
-        //   value:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        // 返回结果:
-        //     The curve edited by the user.
         public static AnimationCurve CurveField(AnimationCurve value, params GUILayoutOption[] options);
+
+
         //
         // 摘要:
         //     Make a delayed text field for entering doubles.
@@ -3808,6 +3540,8 @@ namespace UnityEditor
         // 返回结果:
         //     The value modified by the user.
         public static int MaskField(GUIContent label, int mask, string[] displayedOptions, GUIStyle style, params GUILayoutOption[] options);
+
+
         //
         // 摘要:
         //     Make a field for masks.
@@ -3835,11 +3569,21 @@ namespace UnityEditor
         // 返回结果:
         //     The value modified by the user.
         public static int MaskField(int mask, string[] displayedOptions, params GUILayoutOption[] options);
+
+
+        /*
+            制作一个 区域滑动块, 可以控制块的 最小值(左) 和 最大值(右)
+        */
         public static void MinMaxSlider(GUIContent label, ref float minValue, ref float maxValue, float minLimit, float maxLimit, params GUILayoutOption[] options);
         public static void MinMaxSlider(ref float minValue, ref float maxValue, float minLimit, float maxLimit, params GUILayoutOption[] options);
         public static void MinMaxSlider(string label, ref float minValue, ref float maxValue, float minLimit, float maxLimit, params GUILayoutOption[] options);
+
+
+        /*
         [Obsolete("Check the docs for the usage of the new parameter 'allowSceneObjects'.")]
         public static UnityEngine.Object ObjectField(GUIContent label, UnityEngine.Object obj, Type objType, params GUILayoutOption[] options);
+        */
+
         //
         // 摘要:
         //     Make a field to receive any object type.

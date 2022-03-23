@@ -256,8 +256,12 @@ namespace UnityEditor
         //
         //   prop:
         public Color ColorProperty(MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use ColorProperty with MaterialProperty instead.")]
         public Color ColorProperty(string propertyName, string label);
+        */
+
         //
         // 摘要:
         //     Default handling of preview area for materials.
@@ -293,15 +297,19 @@ namespace UnityEditor
         //
         //   position:
         public void DefaultShaderProperty(Rect position, MaterialProperty prop, string label);
-        //
-        // 摘要:
+
+        /*
         //     Display UI for editing a material's Double Sided Global Illumination setting.
         //     Returns true if the UI is indeed displayed i.e. the material supports the Double
         //     Sided Global Illumination setting. +See Also: Material.doubleSidedGI.
-        //
+
+                显示 material inspector 中的 "Double Sided Global Illumination" 一栏;
+        
         // 返回结果:
         //     True if the UI is displayed, false otherwise.
+        */
         public bool DoubleSidedGIField();
+
         //
         // 摘要:
         //     This function will draw the UI for controlling whether emission is enabled or
@@ -310,6 +318,7 @@ namespace UnityEditor
         // 返回结果:
         //     Returns true if enabled, or false if disabled or mixed due to multi-editing.
         public bool EmissionEnabledProperty();
+        
         //
         // 摘要:
         //     Display UI for editing material's render queue setting.
@@ -321,6 +330,7 @@ namespace UnityEditor
         // 参数:
         //   r:
         public void EnableInstancingField(Rect r);
+
         //
         // 摘要:
         //     Ends a Property wrapper started with BeginAnimatedCheck.
@@ -337,8 +347,12 @@ namespace UnityEditor
         //
         //   position:
         public float FloatProperty(MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use FloatProperty with MaterialProperty instead.")]
         public float FloatProperty(string propertyName, string label);
+        */ 
+
         //
         // 摘要:
         //     Draw a property field for a float shader property.
@@ -351,10 +365,14 @@ namespace UnityEditor
         //
         //   position:
         public float FloatProperty(Rect position, MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use GetMaterialProperty instead.")]
         public Color GetColor(string propertyName, out bool hasMixedValue);
         [Obsolete("Use GetMaterialProperty instead.")]
         public float GetFloat(string propertyName, out bool hasMixedValue);
+        */ 
+
         //
         // 摘要:
         //     Calculate height needed for the property.
@@ -373,10 +391,14 @@ namespace UnityEditor
         //
         //   label:
         public float GetPropertyHeight(MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use GetMaterialProperty instead.")]
         public Texture GetTexture(string propertyName, out bool hasMixedValue);
         [Obsolete("Use MaterialProperty instead.")]
         public Vector2 GetTextureOffset(string propertyName, out bool hasMixedValueX, out bool hasMixedValueY);
+        */ 
+
         //
         // 摘要:
         //     Returns the free rect below the label and before the large thumb object field.
@@ -386,10 +408,14 @@ namespace UnityEditor
         //   position:
         //     The total rect of the texture property.
         public Rect GetTexturePropertyCustomArea(Rect position);
+
+        /*
         [Obsolete("Use MaterialProperty instead.")]
         public Vector2 GetTextureScale(string propertyName, out bool hasMixedValueX, out bool hasMixedValueY);
         [Obsolete("Use GetMaterialProperty instead.")]
         public Vector4 GetVector(string propertyName, out bool hasMixedValue);
+        */ 
+
         //
         // 摘要:
         //     Can this component be Previewed in its current state?
@@ -555,8 +581,12 @@ namespace UnityEditor
         //   position:
         //     Position and size of the range slider control.
         public float RangeProperty(MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use RangeProperty with MaterialProperty instead.")]
         public float RangeProperty(string propertyName, string label, float v2, float v3);
+        */ 
+
         //
         // 摘要:
         //     Call this when you change a material property. It will add an undo for the action.
@@ -565,34 +595,40 @@ namespace UnityEditor
         //   label:
         //     Undo Label.
         public void RegisterPropertyChangeUndo(string label);
-        //
-        // 摘要:
-        //     Display UI for editing material's render queue setting.
-        //
+
+        /*
+            Display UI for editing material's render queue setting.
+            显示 material inspector 中的 ""Render Queue" 一栏;
+
         // 参数:
         //   r:
+        */
         public void RenderQueueField();
-        //
-        // 摘要:
-        //     Display UI for editing material's render queue setting.
-        //
-        // 参数:
-        //   r:
         public void RenderQueueField(Rect r);
+
+
         public sealed override Texture2D RenderStaticPreview(string assetPath, UnityEngine.Object[] subAssets, int width, int height);
         //
         // 摘要:
         //     Does this edit require to be repainted constantly in its current state?
         public override bool RequiresConstantRepaint();
+
+        /*
         [Obsolete("Use MaterialProperty instead.")]
         public void SetColor(string propertyName, Color value);
+        */ 
+
         //
         // 摘要:
         //     Set EditorGUIUtility.fieldWidth and labelWidth to the default values that PropertiesGUI
         //     uses.
         public void SetDefaultGUIWidths();
+
+        /*
         [Obsolete("Use MaterialProperty instead.")]
         public void SetFloat(string propertyName, float value);
+        */ 
+
         //
         // 摘要:
         //     Set the shader of the material.
@@ -619,70 +655,47 @@ namespace UnityEditor
         //
         //   newShader:
         public void SetShader(Shader shader);
+
+        /*
         [Obsolete("Use MaterialProperty instead.")]
         public void SetTexture(string propertyName, Texture value);
-        //
-        // 摘要:
-        //     Set the offset of a given texture property.
-        //
-        // 参数:
-        //   propertyName:
-        //     Name of the texture property that you wish to modify the offset of.
-        //
-        //   value:
-        //     Scale to set.
-        //
-        //   coord:
-        //     Set the x or y component of the offset (0 for x, 1 for y).
+        */ 
+
+       
+        /*
         [Obsolete("Use MaterialProperty instead.")]
         public void SetTextureOffset(string propertyName, Vector2 value, int coord);
-        //
-        // 摘要:
-        //     Set the scale of a given texture property.
-        //
-        // 参数:
-        //   propertyName:
-        //     Name of the texture property that you wish to modify the scale of.
-        //
-        //   value:
-        //     Scale to set.
-        //
-        //   coord:
-        //     Set the x or y component of the scale (0 for x, 1 for y).
+        */ 
+        
+        /*
         [Obsolete("Use MaterialProperty instead.")]
         public void SetTextureScale(string propertyName, Vector2 value, int coord);
         [Obsolete("Use MaterialProperty instead.")]
         public void SetVector(string propertyName, Vector4 value);
+        */ 
+
+        /*
+             Handes UI for one shader property.
+        */
         public void ShaderProperty(Rect position, MaterialProperty prop, string label, int labelIndent);
         public void ShaderProperty(Rect position, MaterialProperty prop, GUIContent label, int labelIndent);
         public void ShaderProperty(Rect position, MaterialProperty prop, GUIContent label);
-        //
-        // 摘要:
-        //     Handes UI for one shader property.
-        //
-        // 参数:
-        //   prop:
-        //
-        //   label:
-        //
-        //   position:
+        
         public void ShaderProperty(Rect position, MaterialProperty prop, string label);
         public void ShaderProperty(MaterialProperty prop, GUIContent label, int labelIndent);
         public void ShaderProperty(MaterialProperty prop, string label, int labelIndent);
         public void ShaderProperty(MaterialProperty prop, GUIContent label);
+        public void ShaderProperty(MaterialProperty prop, string label);
+
+
+
+        /*
         [Obsolete("Use ShaderProperty that takes MaterialProperty parameter instead.")]
         public void ShaderProperty(Shader shader, int propertyIndex);
-        //
-        // 摘要:
-        //     Handes UI for one shader property.
-        //
-        // 参数:
-        //   prop:
-        //
-        //   label:
-        //
-        //   position:
-        public void ShaderProperty(MaterialProperty prop, string label);
+        */ 
+
+       
+        
         //
         // 摘要:
         //     Checks if particular property has incorrect type of texture specified by the
@@ -761,8 +774,12 @@ namespace UnityEditor
         //
         //   tooltip:
         public Texture TextureProperty(MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use TextureProperty with MaterialProperty instead.")]
         public Texture TextureProperty(string propertyName, string label, ShaderUtil.ShaderPropertyTexDim texDim, bool scaleOffset);
+        */ 
+
         //
         // 摘要:
         //     Draw a property field for a texture shader property.
@@ -780,8 +797,12 @@ namespace UnityEditor
         //
         //   tooltip:
         public Texture TextureProperty(MaterialProperty prop, string label, bool scaleOffset);
+
+        /*
         [Obsolete("Use TextureProperty with MaterialProperty instead.")]
         public Texture TextureProperty(string propertyName, string label, ShaderUtil.ShaderPropertyTexDim texDim);
+        */ 
+
         //
         // 摘要:
         //     Draw a property field for a texture shader property that only takes up a single
@@ -884,6 +905,7 @@ namespace UnityEditor
         // 返回结果:
         //     Returns the Rect used.
         public Rect TexturePropertyTwoLines(GUIContent label, MaterialProperty textureProp, MaterialProperty extraProperty1, GUIContent label2, MaterialProperty extraProperty2);
+        
         //
         // 摘要:
         //     Method for showing a texture property control with a HDR color field and its
@@ -906,8 +928,11 @@ namespace UnityEditor
         //
         // 返回结果:
         //     Return the Rect used.
+        /*
         [Obsolete("Use TexturePropertyWithHDRColor(GUIContent label, MaterialProperty textureProp, MaterialProperty colorProperty, bool showAlpha)")]
         public Rect TexturePropertyWithHDRColor(GUIContent label, MaterialProperty textureProp, MaterialProperty colorProperty, ColorPickerHDRConfig hdrConfig, bool showAlpha);
+        */ 
+
         //
         // 摘要:
         //     Method for showing a texture property control with a HDR color field and its
@@ -987,8 +1012,12 @@ namespace UnityEditor
         //
         //   position:
         public Vector4 VectorProperty(Rect position, MaterialProperty prop, string label);
+
+        /*
         [Obsolete("Use VectorProperty with MaterialProperty instead.")]
         public Vector4 VectorProperty(string propertyName, string label);
+        */ 
+
         protected override void OnHeaderGUI();
         //
         // 摘要:

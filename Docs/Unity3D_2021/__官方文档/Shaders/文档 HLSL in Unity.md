@@ -1509,7 +1509,7 @@ hlsl 内建的 向量/矩阵类型.
 sampler2D _MainTex;
 samplerCUBE _Cubemap;
 
-在移动平台, 将默认使用 "低精度 samppler". 比如, 此时从 texture 访问到的值可能是 低精度数据. 
+在移动平台, 将默认使用 "低精度 sampler". 比如, 此时从 texture 访问到的值可能是 低精度数据. 
 如果你知道,你的 texture 内存储了 HDR值, 你可能会希望使用 half precision sampler:
 # --
 sampler2D_half _MainTex;

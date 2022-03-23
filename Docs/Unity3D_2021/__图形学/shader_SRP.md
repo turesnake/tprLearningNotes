@@ -458,6 +458,7 @@ posHCS.y *= _ProjectionParams.x;
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
 #        如何获得像素的 posSS 屏幕空间坐标
+#        positionSS
 # ---------------------------------------------- #
 
 # == 理论 ==
@@ -466,7 +467,7 @@ posHCS.y *= _ProjectionParams.x;
     x*0.5 + 0.5,
     y*0.5 + 0.5,
 
-即可得到 屏幕空间坐标: posSS
+即可得到 屏幕空间坐标: posSS  positionSS
 完整的过程也可表达为:
     (posHCS.xy/posHCS.w) * 0.5 + 0.5;
 
@@ -994,7 +995,7 @@ Reflection Probes (as lightmaps) 可以被编码为:
 在编写 Unity Shader时， 可以通过 fragmentoption 来对片段着色器进行配置，
 从而指定当前着色器的精度:
 
-#pragma fragmentoption ARB_precision_hit_fastest -- 标记当前片段着色器为最快的
+#pragma fragmentoption ARB_precision_hint_fastest -- 标记当前片段着色器为最快的
 
 #pragma fragmentoption ARB_precision_hint_nicest -- 标记片段着色器为效果最好的
 
