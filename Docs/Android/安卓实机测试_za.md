@@ -182,8 +182,11 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
         ---
         正式连接手机
 
+        mi11 的则是: adb connect 192.168.2.9
+
+
 # -4- 确保电脑上只打开一个 unity editor, 进入 profiler
-    左上角 监听目标 一栏 选择 安卓设备的;
+    左上角 play mode 一栏 选择 安卓设备的;
 
 # 手机上运行游戏, 然后 editor 中开启 profiler 记录按钮, 
     可以查看下是否能录取到 帧数据;
@@ -191,7 +194,16 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 
 
 
+# ------------------------ #
+#   安卓机器锁帧 如何解除
+# ------------------------ #
+# vivo IQOO:
+进入 打电话功能, 输入 "*#558#", 会自动跳转到一个界面, 
+选择 "品质验证测试" - "品质测试" - "LCM类测试" - "LCM帧率切换" - 选择 120hz, 然后点击执行
 
+就行了;
+
+(每次测试前都要这么搞一遍...)
 
 
 

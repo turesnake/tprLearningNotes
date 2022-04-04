@@ -30,9 +30,12 @@ namespace UnityEngine
         //     The dimensions of the Bounds.
         public Bounds(Vector3 center, Vector3 size);
 
-        //
-        // 摘要:
-        //     The extents of the Bounding Box. This is always half of the size of the Bounds.
+
+        /*
+            The extents of the Bounding Box. This is always half of the size of the Bounds.
+            注意, 当物体(比如一个 cube) 斜着摆入 坐标系时, 它的碰撞体会变大, (毕竟要包围住整个 cube)
+            此时 extents 值也会变大;
+        */
         public Vector3 extents { get; set; }
         //
         // 摘要:

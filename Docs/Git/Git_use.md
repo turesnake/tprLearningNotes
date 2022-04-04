@@ -138,6 +138,18 @@ $ git reset HEAD filename.txt 可以把暂存区的修改撤销掉（unstage）.
     然后用： $ git reset --hard commit_id 来跳回某个版本号的状态。
 
 
+=====================================|
+        git cherry-pick
+-------------------------------------|
+http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
+
+将分支a 上的一次提交, 复制一份移植到 分支b 上去;
+
+
+
+
+
+
 
 # ================================================================
                       如何 访问 github
