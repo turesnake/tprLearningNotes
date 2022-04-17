@@ -375,7 +375,7 @@ unity 整体遵循 OpenGL风格, 所以在处于 D3D类平台时, 会做一些�
     针对 普通 texture, unity 会直接翻转这个 texture 的 uv.v 轴坐标系. ( 0,1 之间的翻转)
     可通过宏: UNITY_UV_STARTS_AT_TOP 来查找之.
 
--- 针对 render target 这种 texture, unity 无法对齐进行翻转, 
+-- 针对 render target 这种 texture, unity 无法对其进行翻转, 
 
     unity 选择 翻转 投影矩阵 ( posVS -> posHCS ) 的 y轴 (朝向的翻转,从向上变成向下)
 
@@ -395,6 +395,8 @@ unity 整体遵循 OpenGL风格, 所以在处于 D3D类平台时, 会做一些�
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
 #        vert shader 生成的 posHCS 到底存了啥    
+#   posHSC        pos HSC
+#   positionHCS   position HCS
 # ---------------------------------------------- #
 
 # -1-
