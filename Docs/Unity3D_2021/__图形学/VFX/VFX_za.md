@@ -55,4 +55,19 @@ https://www.youtube.com/watch?v=ZokxsnfIZF0
 
 
 
+# ---------------------------------------------- #
+#       subgraph
+# ---------------------------------------------- #
+有点类似一个 函数;
+
+https://docs.unity3d.com/Packages/com.unity.visualeffectgraph@12.1/manual/Subgraph.html
+
+
+
+
+
+
+
+
+
 

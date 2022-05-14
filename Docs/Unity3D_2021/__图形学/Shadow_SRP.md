@@ -29,6 +29,8 @@
     -----
     但是支持 额外的 Spot light shadow
 
+    urp 11 开始, 支持 点光源的 shadow;
+
 
 # in HDRP
     仅支持 一个 dirLight cascade shadow

@@ -462,6 +462,8 @@ namespace UnityEngine
         // 摘要:
         //     Is sampling raw depth from shadowmaps supported? (Read Only)
         public static bool supportsRawShadowDepthSampling { get; }
+
+        
         //
         // 摘要:
         //     Are built-in shadows supported? (Read Only)

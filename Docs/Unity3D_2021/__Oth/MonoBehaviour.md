@@ -136,7 +136,9 @@ When scripts are reloaded after compilation has finished, OnDisable will be call
 followed by an OnEnable after the script has been loaded.
 
 
-# -- OnValidate()
+# ----------------------------------------------#
+#               OnValidate()
+# ----------------------------------------------#
     此函数的位置 不明...
 
     只在 editor 模式中有意义的函数, 当一个 脚本被 loaded, 或当一个变量在 inspector 中被修改时,
@@ -152,6 +154,10 @@ followed by an OnEnable after the script has been loaded.
 
 		不该在此处 执行 camera rendering 操作. 而是应该 add a listener to EditorApplication.update; 
 		and perform the rendering during the next Editor Update call.
+
+
+#    不要在 Awake Start 等运行时函数中调用此函数;
+    打包的时候 会报错;
 
 
 # ----------------------------------------------#

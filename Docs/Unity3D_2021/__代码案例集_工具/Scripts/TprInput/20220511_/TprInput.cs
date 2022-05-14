@@ -21,15 +21,16 @@ using UnityEngine;
     目前的实现 比较直观. 
 
     目前为止，暂时还不会引发欧拉角的问题
+
+    ----- 20220511 更新 -----
+    现在直接将本脚本挂载到任意一个 camera 上即可运行;
+    若挂载到 非 camera go 上, 则需要手动绑定一下 目标 camera;
 */
 public class TprInput : MonoBehaviour
 {
-    
-    Transform cameraTransform;
-
+    [SerializeField] Transform cameraTransform;
     Transform  anchorTransform;
 
-    
     const float pitchDegree  = 100f;// 俯仰 基础速率
     const float yawDegree    = 60f;// 偏航 基础速率
     const float moveSpeed    = 6f;// 位移 基础速率
@@ -44,13 +45,26 @@ public class TprInput : MonoBehaviour
     [SerializeField, Range(0.1f, 4f)] 
         float rotateRaio = 1.0f; // 旋转速率 倍率修正
 
+    bool isError = false;
+
 
     void Start()
     {
         Debug.Log( "tprInput: Start" );
 
+        isError = false;
         // === camera === //
-        cameraTransform = GameObject.Find("Main Camera").transform;
+        if ( cameraTransform == null ) 
+        {
+            bool idFind = transform.TryGetComponent<Camera>( out var tgtCam );
+            if( idFind == false ){
+                Debug.LogWarning("TprInput: 需要绑定 cameraTransform, 或把本文件直接绑定到目标 camera 上去");
+                isError = true;
+                return;
+            }
+            // 说明本脚本当前挂载的 go, 就是一个 camera go;
+            cameraTransform = transform;
+        }
 
         // === Anchor === //
         GameObject anchorGo = new GameObject( "tprInputAnchor" );
@@ -61,6 +75,11 @@ public class TprInput : MonoBehaviour
 
     // 目前仅支持 键盘输入
     void Update(){
+
+        if( isError ){
+            Debug.LogWarning("TprInput: 需要绑定 cameraTransform, 或把本文件直接绑定到目标 camera 上去");
+            return;
+        }
 
         //===== 与 MH 同原理的 位移系统 =====//
         // camera 以 anchor 为锚点旋转 

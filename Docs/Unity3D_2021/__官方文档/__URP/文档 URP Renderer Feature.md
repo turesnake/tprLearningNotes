@@ -42,7 +42,7 @@ edit the name of the feature.
 # LightMode Tags (一组 strings)
 # 在文档中叫此变量: Pass Names
 # 猜测是发生了改动
-如果一个 shader 的一个 pass 拥有 pass tag: "LightMode";
+如果一个 shader 的一个 pass 拥有 pass tag: ;
 本 Renderer Feature 只渲染 那些 "LightMode" 的值于 此处的 "LightMode Tags" 中的成员 相同的 passes
 
 

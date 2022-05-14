@@ -249,6 +249,8 @@ namespace UnityEngine
         //   parent:
         [FreeFunctionAttribute("Internal_IsChildOrSameTransform", HasExplicitThis = true)]
         public bool IsChildOf([NotNullAttribute("ArgumentNullException")] Transform parent);
+
+        
         //
         // 摘要:
         //     Rotates the transform so the forward vector points at target's current position.
@@ -293,6 +295,8 @@ namespace UnityEngine
         //   worldUp:
         //     Vector specifying the upward direction.
         public void LookAt(Transform target);
+
+
         //
         // 摘要:
         //     The implementation of this method applies a rotation of zAngle degrees around

@@ -116,6 +116,16 @@ Lerp is shorthand for linear interpolation
 
 
 # ------------------ #
+#  atan2
+ret atan2(y, x); 
+
+返回值: [-0.5pi, 0.5pi]
+
+
+
+
+
+# ------------------ #
 #   reflect
 ret reflect(i, n);
 
@@ -188,6 +198,16 @@ min( NaN, NaN )     -> NaN;
     若两参数都为 NaN, 则返回 NaN
 
 
+# ------------------ #
+#   fmod
+ret fmod(x, y);
+Returns the floating-point remainder of x/y.
+取模;
+
+!!!!!!!!!! 注意 !!!!!!!!!!!!
+若想使用 uv.xy 来实现网格, 不要用此函数, 或者 % 符号,改用:
+
+    frac(uv.xy*10);
 
 
 # ------------------ #

@@ -94,7 +94,7 @@ namespace UnityEngine.Rendering
                 为一个 平行光 生成一个 "clip-space cube", 使这个 cube 沿平行光方向分布, 且覆盖 "camera 能看到的 frustum",
                 在这个 "clip-space cube" 内捕获下来的 depth 值, 就会被记录到 shadowmap 中;
 
-            在 shader 中, camera 视角, 我们希望拿着任意一点的 posWS, 都能寻找到与之对应的 shadowmap 上的某个点(uv);
+            在后面的绘制阴影的 shader 中, camera 视角, 我们希望拿着任意一点的 posWS, 都能寻找到与之对应的 shadowmap 上的某个点(uv);
             此时就需要一个转换矩阵: posWS -> posSTS (shadow texture/tile space)
 
             本函数完成了最初的工作: 它帮我们计算好原始的 viewMatrix, projMatrix;
