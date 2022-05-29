@@ -342,7 +342,7 @@ namespace UnityEngine
             Allocate a temporary render texture.
 
             如果你为了某些临时计算, 想要一个快速的 Render Texture 时, 此函数对此需求做了优化;
-            事后可调用 RenderTexture.ReleaseTemporary() 来释放之; 以便未来可以服用此 rt;
+            事后可调用 RenderTexture.ReleaseTemporary() 来释放之; 以便未来可以复用此 rt;
 
             在内部, unity 维护了一个 temporary render textures 的池子, 所以, 一个 GetTemporary() 调用
             很可能会返回一个 已经新建且被复用过的 rt (只要它的 size, format 是符合需求的)

@@ -27,6 +27,8 @@ namespace System.Collections.Generic
         public int Capacity { get; set; }
 
         public void Add(T item);
+
+        // 可用 AddRange 来在 list 尾后添加一组元素, 参数可以为 array;
         public void AddRange(IEnumerable<T> collection);
 
         /*

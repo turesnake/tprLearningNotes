@@ -74,6 +74,17 @@ https://zhuanlan.zhihu.com/p/459863566
             https://stackoverflow.com/questions/4858047/gitignore-and-the-following-untracked-working-tree-files-would-be-overwritten
             https://stackoverflow.com/questions/17404316/the-following-untracked-working-tree-files-would-be-overwritten-by-merge-but-i/52255219#52255219
 
+        处理2:
+            https://stackoverflow.com/questions/17404316/the-following-untracked-working-tree-files-would-be-overwritten-by-merge-but-i
+
+
+        处理3:
+            更简单的思路是: 因为这些文件是 git 的 untracked 的, 可以直接使用 cmd 的 del 指令来删除;
+            比如 
+                del C:\Users\canglanxing\Desktop\aa\01.txt
+            注意, 这个指令可以跨磁盘删文件, 比如, 在 c 盘可以直接删除 D盘文件:
+                del D:\01001.txt
+
 
 -3-
     进入 local changes 面板, 找到自己修改的部分,

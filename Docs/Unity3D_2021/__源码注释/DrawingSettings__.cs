@@ -117,7 +117,9 @@ namespace UnityEngine.Rendering
         
         /*
             Set the shader passes that this draw call can render.
-            可以反复调用, 设置很多个
+            可以反复调用, 设置很多个;
+
+            实践表明, 这些被传入的 pass 会按照 idx 顺序依次执行;
         */
         // 参数:
         //   index:
