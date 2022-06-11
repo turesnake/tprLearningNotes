@@ -1467,6 +1467,8 @@ namespace UnityEngine
 
             调用本函数后, camera 会使用替换的 shader 来执行渲染;
 
+            貌似在 urp 不被支持;
+
             Call "Camera.ResetReplacementShader()" to reset it back to normal rendering.
 
         // 参数:

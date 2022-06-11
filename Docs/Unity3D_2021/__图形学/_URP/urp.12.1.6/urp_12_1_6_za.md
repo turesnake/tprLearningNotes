@@ -54,6 +54,14 @@ On Android, iOS, and Apple TV, Unity performs depth priming only in the Forced m
 猜测都和 "集群渲染" 有关;
 就是使用 数台机器来渲染, 大概率和 游戏无关...
 
+好像也不完全是这样....
+https://www.bilibili.com/video/BV1Tr4y1x7To?spm_id_from=333.999.0.0
+5分 30 秒之后, 提到了相关宏: URP_ENABLE_CLUSTERED_UI;
+这个是需要用户在 unity 中手动定义(开启) 的;
+
+
+是一种叫做 forward+ 的技术
+
 
 
 # ---------------------------------- #

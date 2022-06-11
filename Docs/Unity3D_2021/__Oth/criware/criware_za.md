@@ -23,5 +23,30 @@ CriSoundMgr.PlayExternal()
 
 
 
+# ----------------------------------------------#
+#      criware 如何在单场景内播放 视频文件
+# ----------------------------------------------#
+
+新建场景, 按照顺序依次新建如下 gameobj:
+    CriWareLibraryInitializer   
+        -- Library Initializer 组件
+
+    CriWareErrorHandler
+        -- Error handler 组件
+
+    CriManaVP9Initializer
+        -- Cri Mana VP9 Initializer 组件
+
+    Main Camera
+        -- 就是一个默认 camera
+    
+    Xxxxxxxx_mov
+        -- 就是我们要播放的  prefab
+
+
+
+
+
+
 
 

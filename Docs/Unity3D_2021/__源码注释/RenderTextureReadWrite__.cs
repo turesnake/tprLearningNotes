@@ -58,6 +58,14 @@ namespace UnityEngine
             当使用了 gamma 工作量, 此时所有的 render texture 一定都是 sRGB 空间的, 
                 从 sRGB 到 sRGB, 当然不需要任何 转换,
                 (只不过此时 "Linear" 这个名字有点不合适罢了)
+
+
+            案例:
+                如果我们希望新建一个 rt, 向其传入 线性数据, 而不是颜色值, 也就是: 像使用 normal map 那样去使用这个 rt;
+                那么我们应该写:
+                    rt = new RenderTexture( w, h, depth, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear );
+
+                注意这最后的参数, 它是关键 !!!
         */
         Default = 0,
 

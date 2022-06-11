@@ -388,6 +388,11 @@ namespace UnityEngine
         public Component[] GetComponents(Type type);
         public T[] GetComponents<T>();
         public void GetComponents(Type type, List<Component> results);
+
+
+        /*
+            遍历自己的所有 子孙 gos, 也包含 根go 自己; 
+        */
         public void GetComponentsInChildren<T>(List<T> results);
         public T[] GetComponentsInChildren<T>();
         public void GetComponentsInChildren<T>(bool includeInactive, List<T> results);
@@ -415,6 +420,11 @@ namespace UnityEngine
         //     Should Components on inactive GameObjects be included in the found set?
         [ExcludeFromDocs]
         public Component[] GetComponentsInChildren(Type type);
+
+
+
+
+
         public T[] GetComponentsInParent<T>();
         public void GetComponentsInParent<T>(bool includeInactive, List<T> results);
         public T[] GetComponentsInParent<T>(bool includeInactive);

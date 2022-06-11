@@ -105,7 +105,15 @@ namespace System.Collections.Generic
         public void Sort(IComparer<T> comparer);
 
         public T[] ToArray();
+
+        /*
+            假设当前 Capacity 是 8, 实际使用了 5, 调用 TrimExcess() 之后, Capacity 会被改为 5;
+            用它来节省内存占用;
+        */
         public void TrimExcess();
+
+
+
         public bool TrueForAll(Predicate<T> match);
 
         public struct Enumerator 

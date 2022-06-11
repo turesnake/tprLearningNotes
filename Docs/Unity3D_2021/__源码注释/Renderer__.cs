@@ -302,7 +302,7 @@ namespace UnityEngine
             All the shared materials of this object.
 
             返回的 material 是共享的,
-            修改本函数返回的 material, 会直接改写这个 material 本身, 所有使用它的物体都将受到影响;
+            修改 sharedMaterials, 会直接改写这个 material 本身, 所有使用它的物体都将受到影响;
             如果你想要改写 material, 应该改用 Renderer.material;
 
             注意:
@@ -345,7 +345,7 @@ namespace UnityEngine
 
             返回的 "本 renderer metarials array" 中, 第一个绑定的 material 的本体(的引用);
 
-            修改本函数返回的 material, 会直接改写这个 material 本身, 所有使用它的物体都将受到影响;
+            修改 sharedMaterial, 会直接改写这个 material 本身, 所有使用它的物体都将受到影响;
             如果你想要改写 material, 应该改用 Renderer.material;
 
             如果本 renderer 绑定了数个 materials, 则返回第一个绑定的那个;
