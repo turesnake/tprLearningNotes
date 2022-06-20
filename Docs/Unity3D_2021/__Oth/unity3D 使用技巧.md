@@ -304,6 +304,21 @@ Gradient gradient;
 
 
 
+# ---------------------------------------------- #
+#       UNITY_EDITOR
+# ---------------------------------------------- #
+
+说明当前在 unity editor 平台运行, 而不是打包后的 ios, 安卓平台;
+
+而不是之前错误理解的: "在 editor 非 play 状态"...
+
+# 想要在 editor 平台判断 当前是否在运行 play, 可访问 Application.isPlaying 变量;
+	注意, 当在一个 ScriptableObject 实例的 OnEnable() 函数体内访问 Application.isPlaying 时, 将获得 false;
+	具体原因请在全局查找 Application.cs 内的注释;
+
+
+
+
 
 
 

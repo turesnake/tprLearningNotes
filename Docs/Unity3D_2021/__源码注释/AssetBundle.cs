@@ -10,10 +10,19 @@ using UnityEngineInternal;
 
 namespace UnityEngine
 {
-    //
-    // 摘要:
-    //     AssetBundles let you stream additional assets via the UnityWebRequest class and
-    //     instantiate them at runtime. AssetBundles are created via BuildPipeline.BuildAssetBundle.
+    /*
+        AssetBundles let you stream additional assets via the UnityWebRequest class and instantiate them at runtime. 
+        AssetBundles are created via BuildPipeline.BuildAssetBundle. (废弃)
+        ---
+        AssetBundles 允许你通过 UnityWebRequest class 流式地传输 其他资源 (additional assets), 并在运行时实例化它们;
+        通过 BuildPipeline.BuildAssetBundle (已废弃) 来创建 AssetBundles; 
+
+        Note that bundles are not compatible between platforms. A bundle built for any of the standalone platforms can only be loaded on that platform but not others. 
+        Further example, a bundle built for iOS is not compatible with Android and vice versa. One difference is shaders which are different between devices, as are textures.
+
+
+
+    */
     [ExcludeFromPreset]
     [NativeHeaderAttribute("Modules/AssetBundle/Public/AssetBundleLoadFromManagedStreamAsyncOperation.h")]
     [NativeHeaderAttribute("Modules/AssetBundle/Public/AssetBundleLoadAssetOperation.h")]

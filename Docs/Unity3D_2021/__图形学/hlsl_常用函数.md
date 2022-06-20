@@ -209,6 +209,9 @@ Returns the floating-point remainder of x/y.
 
     frac(uv.xy*10);
 
+这是因为: fmod() 确实在实现取模, 但我们的 uv值没有拉伸, 即, 错的不是函数, 是参数;
+
+
 
 # ------------------ #
 #   clamp

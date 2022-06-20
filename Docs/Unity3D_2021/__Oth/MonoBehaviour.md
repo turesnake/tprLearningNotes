@@ -113,14 +113,125 @@
 #           yield WaitForEndOfFrame;
 # ---------------------------------------------- #
 
+# ---------------------------------------------- #
+#           OnApplicationFocus( bool hasFocus )
+# ---------------------------------------------- #
+
+当 app 获得 focus, 或得到 focus 时, 本函数会被调用;
+
+# 参数 hasFocus:
+    得到 focus 时参数为 true, 丢失 focus 时参数为 false;
+
+此函数存在协程版, 此时本函数会在 init 帧被执行两次, 
+第一次是作为一个 early notification;
+第二次则位于 the normal co-routine update step.
+
+# 在安卓
+when the on-screen keyboard(猜测是屏幕上的虚拟键盘) is enabled, 会调用一次 OnApplicationFocus( false );
+当在 keyboard 为 enabled 时 如果你按下 home 键, 此时不会调用 OnApplicationFocus(), 而会调用 OnApplicationPause();
+
+# 注意:
+当 editor 处于 play 模式时, Game 窗口每次获得/丢失 focus, 都会调用本函数;
+如果一个 unity 之外的 app 获得了 focus, and you click a different Editor tab,(然后你点击了 unity 中的另一个 tab)
+那么在这一帧, OnApplicationFocus() 会被调用两次;
+    第一次: 参数为 true, 因为此时 unity 再次获得 focus
+    第二次, 参数为 false, 因为此时 Game 窗口失去了 focus;
+
+
+为了减少  OnApplicationFocus() 被调用的次数, 可使用 unity 推荐的脚本来:
+    public class AppPaused : MonoBehaviour
+    {
+        bool isPaused = false;
+
+        void OnGUI()
+        {
+            if (isPaused)
+                GUI.Label(new Rect(100, 100, 50, 30), "Game paused");
+        }
+
+        void OnApplicationFocus(bool hasFocus)
+        {
+            isPaused = !hasFocus;
+        }
+
+        void OnApplicationPause(bool pauseStatus)
+        {
+            isPaused = pauseStatus;
+        }
+    }
+    ----------
+    跟踪此脚本的 isPaused, 当丢失 focus 时, 它将为 false;
+
+
+
+
 
 # ---------------------------------------------- #
-#           OnApplicationPause()
+#           OnApplicationPause( bool pauseStatus )
 # ---------------------------------------------- #
+当 app 暂停, 或从暂定中恢复时 被调用;
+
+所谓 "暂停" 其实就是 一个窗口态的 app 突然被别的 app 覆盖了(部分或全部)
+此时有点类似丢失 focus, 但是好像不完全一样; (个人猜测)
+
+
+
+# 参数 pauseStatus:
+    表示 app 是否处于 暂停 状态;
+    当 app 开始进入 暂停状态, 此次调用的参数为 true, 表示进入 暂停;
+    当 app 从暂停中恢复, 此次调用的参数为 false, 表示 "不再暂停";
+
+# 在 player settings 的 resolution presentation 面板中, 可选择关闭 
+    "Run in Background" 和
+    "Visible in Background"
+
+本函数可在非 editor 平台的 独立状态游戏中被使用; 此时, app不能是全屏, 需要是窗口模式;
+当这个 app 窗口被部分/全部隐藏,(被另一个app), 此时 本函数就会被调用, 且参数为 true;
+当再次关注这个 app 窗口(它开始位于桌面的最顶层), 本函数会被调用, 且参数为 false;
+
+此函数存在协程版, 此时本函数会在 init 帧被执行两次, 
+第一次是作为一个 early notification;
+第二次则位于 the normal co-routine update step.
+
+# 在安卓
+when the on-screen keyboard(猜测是屏幕上的虚拟键盘) is enabled, 会调用一次 OnApplicationFocus( false );
+当在 keyboard 为 enabled 时 如果你按下 home 键, 此时不会调用 OnApplicationFocus(), 而会调用 OnApplicationPause();
+
+# 注意, 在一个 go 开始运行时, 它的脚本的 OnApplicationPause() 会被调用一次, 
+此时参数为 false; (毕竟此时不在 pause 状态)
+这次调用要晚于 Awake(); 
+
+
 
 # ---------------------------------------------- #
 #           OnApplicationQuit()
 # ---------------------------------------------- #
+在 app 结束之时调用;
+在 editor 模式中, 在 play 模式将要结束时, 此函数被调用;
+
+# ios:
+ios 平台通常只会让 app "suspended"(挂起), 而不是 "quit" (终止);
+可以在为 ios 打包时, 在 player settings 中勾选 "Exit on Suspend"; 此时 app 就会真的 quit, 而不是 suspended; 
+如果你不打算勾选 "Exit on Suspend", 可以改用 "OnApplicationPause()";
+
+# window store app / win phone 8:
+那里不存在 app quit event; 请在 focusStatus 等于 false 时使用 OnApplicationFocus 事件;
+
+# webGL:
+由于 浏览器标签页关闭的方式, 没办法实现 OnApplicationQuit();
+替换方法建议阅读:
+https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
+
+# 注意:
+如果用户在 移动平台 suspended(挂起) 你的 app, 操作系统可能会为了节省资源而将 app quit 掉;
+有些操作系统中, 可能不会调用此函数;
+
+在移动平台上, 为了稳定性 最好不要依赖这个函数;
+作为代替品, 改用 MonoBehaviour.OnApplicationFocus(), 它会在 app 每次丢失 focus 时被调用;
+选择此时去存储数据;
+
+
+
 
 
 # ---------------------------------------------- #

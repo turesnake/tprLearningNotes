@@ -86,11 +86,25 @@ namespace UnityEngine
         // 摘要:
         //     Whether the player currently has focus. Read-only.
         public static bool isFocused { get; }
-        //
-        // 摘要:
-        //     Returns true when called in any kind of built Player, or when called in the Editor
-        //     in Play Mode (Read Only).
+
+        /*
+            Returns true when called in any kind of built Player, or when called in the Editor in Play Mode (Read Only).
+
+            In a built Player, this method will always return true.
+            In the Editor, it will return true if the Editor is in Play Mode.
+
+            Note: In the Editor for ScriptableObject assets, this property will return false in OnEnable. 
+            After reloading the domain, when reloading assemblies, Unity invokes OnEnable on all ScriptableObject instances. 
+            This happens before isPlaying is set to true.
+            ---
+            注意, 如果在一个 ScriptableObject 资源的 OnEnable() 函数内访问本变量, 将获得 false;
+            这是因为, 在 重加载 domain 之后, 在重加载资源集的时候, unity 会调用所有 ScriptableObject 实例的 OnEnable() 函数,
+            但是此时 isPlaying 还没有被设置为 true; 所有会获得 false;
+
+        */
         public static bool isPlaying { get; }
+
+
         //
         // 摘要:
         //     Indicates whether Unity's webplayer security model is enabled.

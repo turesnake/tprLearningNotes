@@ -146,7 +146,18 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 将分支a 上的一次提交, 复制一份移植到 分支b 上去;
 
 
+# fork 工具:
+在 fork 工具上, 先进入 b 分支, 然后选中需要移植的 commit, 右键点击 cherry-pick commit 就行;
 
+面板选项内保持原始配置: 
+    勾选 commit the changes; 
+    不勾选 Append origin to commit message
+
+然后点击 submit 即可;
+
+有时需要连续 移植好几个 commit;
+
+最后记得 push 到总库;
 
 
 
