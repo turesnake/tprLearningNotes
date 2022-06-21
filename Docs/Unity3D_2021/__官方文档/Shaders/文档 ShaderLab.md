@@ -1594,13 +1594,15 @@ depth test 允许 gpu 拥有 "Early-Z" 功能, 以便在 渲染管线的早期�
 # 格式
 ZTest [operation]
 
+    默认值为 LEqual;
+
 # ---------- #
 # 参数 operation 可用值:
 
 # Less
     只有当 几何体深度值 小于 "depth buffer 现有值", 此几何体才会被绘制 (靠近相机)
 # LEqual
-    只有当 几何体深度值 小于等于 "depth buffer 现有值", 此几何体才会被绘制 
+    只有当 几何体深度值 小于等于 "depth buffer 现有值", 此几何体才会被绘制   [默认值]
 # Equal
     只有当 几何体深度值 等于 "depth buffer 现有值", 此几何体才会被绘制 
 # GEqual

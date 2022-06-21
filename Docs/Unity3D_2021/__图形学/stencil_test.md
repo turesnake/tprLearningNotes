@@ -231,6 +231,10 @@ Stencil
     将 stencil buffer 中当前值 -1, 如果这个值已经是 0了, 则维持在 0
 # Invert
     将 stencil buffer 中当前值 的8个bit 全部反转
+
+    注意:
+        不是真的全部翻转, 实际受到 readMask 的影响;
+
     注意:
         当配合 Cull Off 使用时, 
         一个 frag 将被测试两次, 正向面一次, 反向面一次;
