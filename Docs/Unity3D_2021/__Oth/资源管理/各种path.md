@@ -19,6 +19,8 @@
 
 # Application.streamingAssetsPath   // E:/unity_projects/_urp_1/Assets/StreamingAssets
 
+    这个目录是专门用来放置 app 资源的, 比如 ab包, 这些资源将在 build 阶段被一并打进 app 程序中;
+
 
 # Application.temporaryCachePath    // C:/Users/CANGLA~1/AppData/Local/Temp/DefaultCompany/_urp_1
 
@@ -46,6 +48,8 @@
 
 
 # Application.streamingAssetsPath    E:/unity_projects/_urp_1/b_2/urp_1_Data/StreamingAssets
+
+    这个目录是专门用来放置 app 资源的, 比如 ab包, 这些资源将在 build 阶段被一并打进 app 程序中;
 
 
 # Application.temporaryCachePath     C:/Users/CANGLA~1/AppData/Local/Temp/tpr_tpr_test/urp_1

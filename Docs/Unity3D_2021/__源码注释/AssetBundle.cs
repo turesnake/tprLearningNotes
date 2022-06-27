@@ -86,30 +86,36 @@ namespace UnityEngine
         // 返回结果:
         //     Returns IEnumerable<AssetBundle> of all currently loaded Asset Bundles.
         public static IEnumerable<AssetBundle> GetAllLoadedAssetBundles();
+        
+
+
+        /*
+            Synchronously loads an AssetBundle from a file on disk.
+            从 ab包资源文件中, 加载一个 ab包信息(通常是它的head) 到内存中; 完成这步之后, 可从返回的 AssetBundle 实例中加载某个具体的 obj资源 到内存中;
+            
+            参数:
+            path:
+                Path of the file on disk.
+            
+            crc:
+                An optional CRC-32 checksum of the uncompressed content. If this is non-zero,
+                then the content will be compared against the checksum before loading it, and
+                give an error if it does not match.
+                ---
+                若向其写入 0, 则不做 crc 码的判断; 只有写入 非0值, 才会执行判断; 
+            
+            offset:
+                An optional byte offset. This value specifies where to start reading the AssetBundle from.
+            
+            返回结果:
+                Loaded AssetBundle object or null if failed.
+        */
         public static AssetBundle LoadFromFile(string path);
         public static AssetBundle LoadFromFile(string path, uint crc);
-        //
-        // 摘要:
-        //     Synchronously loads an AssetBundle from a file on disk.
-        //
-        // 参数:
-        //   path:
-        //     Path of the file on disk.
-        //
-        //   crc:
-        //     An optional CRC-32 checksum of the uncompressed content. If this is non-zero,
-        //     then the content will be compared against the checksum before loading it, and
-        //     give an error if it does not match.
-        //
-        //   offset:
-        //     An optional byte offset. This value specifies where to start reading the AssetBundle
-        //     from.
-        //
-        // 返回结果:
-        //     Loaded AssetBundle object or null if failed.
         public static AssetBundle LoadFromFile(string path, uint crc, ulong offset);
-        public static AssetBundleCreateRequest LoadFromFileAsync(string path);
-        public static AssetBundleCreateRequest LoadFromFileAsync(string path, uint crc);
+
+
+        
         //
         // 摘要:
         //     Asynchronously loads an AssetBundle from a file on disk.
@@ -130,24 +136,33 @@ namespace UnityEngine
         // 返回结果:
         //     Asynchronous create request for an AssetBundle. Use AssetBundleCreateRequest.assetBundle
         //     property to get an AssetBundle once it is loaded.
+        public static AssetBundleCreateRequest LoadFromFileAsync(string path);
+        public static AssetBundleCreateRequest LoadFromFileAsync(string path, uint crc);
         public static AssetBundleCreateRequest LoadFromFileAsync(string path, uint crc, ulong offset);
+
+
+
+        
+        /*
+            Synchronously create an AssetBundle from a memory region.
+            
+            参数:
+            binary:
+                Array of bytes with the AssetBundle data.
+          
+            crc:
+               An optional CRC-32 checksum of the uncompressed content. If this is non-zero,
+               then the content will be compared against the checksum before loading it, and
+               give an error if it does not match.
+
+
+           返回结果:
+               Loaded AssetBundle object or null if failed.
+        */
         public static AssetBundle LoadFromMemory(byte[] binary);
-        //
-        // 摘要:
-        //     Synchronously create an AssetBundle from a memory region.
-        //
-        // 参数:
-        //   binary:
-        //     Array of bytes with the AssetBundle data.
-        //
-        //   crc:
-        //     An optional CRC-32 checksum of the uncompressed content. If this is non-zero,
-        //     then the content will be compared against the checksum before loading it, and
-        //     give an error if it does not match.
-        //
-        // 返回结果:
-        //     Loaded AssetBundle object or null if failed.
         public static AssetBundle LoadFromMemory(byte[] binary, uint crc);
+
+
         //
         // 摘要:
         //     Asynchronously create an AssetBundle from a memory region.
@@ -166,6 +181,8 @@ namespace UnityEngine
         //     property to get an AssetBundle once it is loaded.
         public static AssetBundleCreateRequest LoadFromMemoryAsync(byte[] binary, uint crc);
         public static AssetBundleCreateRequest LoadFromMemoryAsync(byte[] binary);
+
+
         //
         // 摘要:
         //     Synchronously loads an AssetBundle from a managed Stream.
@@ -187,8 +204,9 @@ namespace UnityEngine
         public static AssetBundle LoadFromStream(Stream stream, uint crc, uint managedReadBufferSize);
         public static AssetBundle LoadFromStream(Stream stream, uint crc);
         public static AssetBundle LoadFromStream(Stream stream);
-        public static AssetBundleCreateRequest LoadFromStreamAsync(Stream stream, uint crc);
-        public static AssetBundleCreateRequest LoadFromStreamAsync(Stream stream);
+        
+
+
         //
         // 摘要:
         //     Asynchronously loads an AssetBundle from a managed Stream.
@@ -208,34 +226,57 @@ namespace UnityEngine
         // 返回结果:
         //     Asynchronous create request for an AssetBundle. Use AssetBundleCreateRequest.assetBundle
         //     property to get an AssetBundle once it is loaded.
+        public static AssetBundleCreateRequest LoadFromStreamAsync(Stream stream, uint crc);
+        public static AssetBundleCreateRequest LoadFromStreamAsync(Stream stream);
         public static AssetBundleCreateRequest LoadFromStreamAsync(Stream stream, uint crc, uint managedReadBufferSize);
-        //
-        // 摘要:
-        //     Asynchronously recompress a downloaded/stored AssetBundle from one BuildCompression
-        //     to another.
-        //
-        // 参数:
-        //   inputPath:
-        //     Path to the AssetBundle to recompress.
-        //
-        //   outputPath:
-        //     Path to the recompressed AssetBundle to be generated. Can be the same as inputPath.
-        //
-        //   method:
-        //     The compression method, level and blocksize to use during recompression. Only
-        //     some BuildCompression types are supported (see note).
-        //
-        //   expectedCRC:
-        //     CRC of the AssetBundle to test against. Testing this requires additional file
-        //     reading and computation. Pass in 0 to skip this check. Unity does not compute
-        //     a CRC when the source and destination BuildCompression are the same, so no CRC
-        //     verification takes place (see note).
-        //
-        //   priority:
-        //     The priority at which the recompression operation should run. This sets thread
-        //     priority during the operation and does not effect the order in which operations
-        //     are performed. Recompression operations run on a background worker thread.
-        public static AssetBundleRecompressOperation RecompressAssetBundleAsync(string inputPath, string outputPath, BuildCompression method, uint expectedCRC = 0, ThreadPriority priority = ThreadPriority.Low);
+
+
+        /*
+            Asynchronously recompress a downloaded/stored AssetBundle from one BuildCompression to another.
+            ---
+            将一个 已经下载好的/存储好的 ab包, 从它的 build 压缩模式, "重压缩" 为另一种 runtime版的 BuildCompression 模式; 异步的;
+
+            Method must be a BuildCompression whose name ends with Runtime, for example LZ4Runtime, otherwise an ArgumentException is thrown. 
+            ---
+            传入的 method 参数 必须为 runtime 版的 BuildCompression 类型, 否则会报错;
+
+            When the destination BuildCompression is the same as the source, this becomes a copy operation internally, 
+            and Unity does not compute a CRC of the uncompressed data. 
+            Passing in a non-zero expectedCRC in this case raises a warning, and no CRC validation takes place.
+            ---
+            如果 重压缩格式 和 ab包原来的压缩格式是相同的, 那么本函数会变成一个 复制操作, 此时去计算 crc 值; 如果此时传入的 expectedCRC 非0, 将报warning;
+        
+        参数:
+          inputPath:
+            Path to the AssetBundle to recompress.
+        
+          outputPath:
+            Path to the recompressed AssetBundle to be generated. Can be the same as inputPath.
+        
+          method:
+            The compression method, level and blocksize to use during recompression. Only
+            some BuildCompression types are supported (see note).
+        
+          expectedCRC:
+            CRC of the AssetBundle to test against. Testing this requires additional file
+            reading and computation. Pass in 0 to skip this check. Unity does not compute
+            a CRC when the source and destination BuildCompression are the same, so no CRC
+            verification takes place (see note).
+            ---
+
+          priority:
+            The priority at which the recompression operation should run. This sets thread
+            priority during the operation and does not effect the order in which operations
+            are performed. Recompression operations run on a background worker thread.
+            ---
+            重压缩 会运行在一个异步的 后台线程上;
+        */
+        public static AssetBundleRecompressOperation RecompressAssetBundleAsync(
+            string inputPath, string outputPath, BuildCompression method, uint expectedCRC = 0, ThreadPriority priority = ThreadPriority.Low
+        );
+        
+        
+        
         //
         // 摘要:
         //     Set the 16-bytes key for AssetBundle Decryption. Set NULL will remove the key
@@ -311,24 +352,23 @@ namespace UnityEngine
         //   type:
         public AssetBundleRequest LoadAllAssetsAsync(Type type);
         public AssetBundleRequest LoadAllAssetsAsync<T>();
-        //
-        // 摘要:
-        //     Loads asset with name of type T from the bundle.
-        //
-        // 参数:
-        //   name:
+
+
+        /*
+            Loads asset with name of type T from the bundle.
+            ---
+            从一个 已经加载到内存中的 ab包中(通常仅加载了其 head 信息), 将目标 obj资源加载到 内存中;
+            如果写入的参数有问题, 没有在 ab包中找到这个 obj资源, 则会报错, 同时返回 null;
+        
+            参数:
+              name:
+        */
         public Object LoadAsset(string name);
         public T LoadAsset<T>(string name) where T : Object;
-        //
-        // 摘要:
-        //     Loads asset with name of a given type from the bundle.
-        //
-        // 参数:
-        //   name:
-        //
-        //   type:
         [TypeInferenceRule(TypeInferenceRules.TypeReferencedBySecondArgument)]
         public Object LoadAsset(string name, Type type);
+
+
         //
         // 摘要:
         //     Asynchronously loads asset with name of a given type from the bundle.

@@ -207,6 +207,11 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 
     比如得到: 192.168.3.19
 
+    黑鲨:
+    192.168.2.110
+    
+    ( 设置 - 我的设备 - 全部参数 - 状态信息 )
+
 # -2- 确保电脑安装和配置好 adb
 
 

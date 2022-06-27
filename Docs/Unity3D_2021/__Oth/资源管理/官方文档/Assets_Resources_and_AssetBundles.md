@@ -1,6 +1,6 @@
-# ================================================================//
+# ================================================================ #
 #              Assets_Resources_and_AssetBundles
-# ================================================================//
+# ================================================================ #
 
 
 大部分源自:
@@ -295,23 +295,211 @@ https://docs.unity3d.com/Manual/AssetBundles-Dependencies.html?_ga=2.91118746.10
 #         4.4.3. AssetBundle manifests
 # ------------------------------------------------- #
 
+当使用 BuildPipeline.BuildAssetBundles() 执行 ab包的打包活动时, unity 会生成一个 记录了 ab包的依赖信息的 .manifests 的文件; 
+
+本质上 .manifests 也是一个 ab包, 和目标 ab 包放置在同路径下, 而且同名; 
+它只包含了一个类型为 "AssetBundleManifest" 的 obj;
+
+这个 .manifests ab包 可以像普通 ab包一样被 loaded, cached 或 unloaded;
+
+"AssetBundleManifest" 包含: 
+
+-- "GetAllAssetBundles()" 
+    to list all AssetBundles built concurrently with the manifest
+    -- 列出和本 .manifests 文件同时构建的所有 ab包;
+        ---
+        没看明白...
+
+
+-- "GetAllDependencies()"
+    获得目标 ab包 的所有依赖的 子ab包 和 孙ab包, 可一直嵌套下去;
+    也就是说, 可以得知这个 ab包依赖的所有 子孙ab包; 全部获得, 不管嵌套得多么复杂 
+
+-- "GetDirectDependencies()"
+    只获得 目标ab包 所依赖的 子级ab包; 
+
+注意, 这些函数都会分配 string arrays, 所有不要在运行时中 性能敏感的时间段使用它们;
+
+
+# ------------------------------------------------- #
+#         4.4.4. Recommendations
+# ------------------------------------------------- #
+
+最好在主场景 或重要场景加载之前, 尽可能多地预先加载资源;
+
+...
+
+
+# ============================================================= #
+#            5.AssetBundle usage patterns
+# ============================================================= #
+
+
+# ------------------------------------------------- #
+#     5.1 Managing loaded Assets
+# ------------------------------------------------- #
+
+当 obj 从当前场景中被移除后, unity 不会主动去卸载它们;
+资源清理 会在特定的时候点被触发, 它也可以被手动触发;
+
+一个 ab包占用的内存往往很小, 比如 几十kb; 但是很多个 ab包占用的内存就会变得很大;
+
+由于大多数项目都支持玩家 重玩某一关卡; 此时就要合理管理何时加载和卸载一个 ab包;
+如果一个 ab包卸载不当, 会导致内存中出现 重复资源;
+
+核心在于 AssetBundle.Unload( bool unloadAllLoadedObjects ) 中的参数;
+--
+    参数为 false:
+    加载到的 内存中的 ab包 会被卸载;
+    但是从这个 ab包中加载出来的那些 objs 资源, 不会被卸载, 它们还可以被继续使用;
+    ---
+    但是这会使得这些被加载出来的 objs 和它们的 ab包 脱绑;
+    如果再次加载这个 ab包, unity 不会在旧的 objs 和 新的 ab包 之间建立联系;
+    如果此时, 调用 AssetBundle.LoadAsset() 从新的 ab包中加载 obj资源, 此时 unity不会意识到 内存中已经存在一份 目标obj 资源了, 而会重新加载一份, 从而造成 资源的重复;
+
+-- 
+    参数为 true:
+    加载到内存中的 ab包, 以及从这个 ab包中加载出来的 objs资源, 都会被卸载掉;
+    使用不当会出问题;
+    ---
+    但是这种使用 比 AssetBundle.Unload( false ) 更安全, 至少不会导致 obj资源的重复导入;
+
+如何保证 obj资源 不被重复加载:
+-1-:
+    在程序生命周期种, 定义合适的 ab卸载时间点;
+    这是最简单的方案;
+
+-2-:
+    手动管理:
+    记录每个 obj资源的 引用计数; 然后仅在一个 ab包的所有 objs 都不被使用时, 才卸载这个 ab包(以及从它加载出来的所有 objs资源)
+
+
+如果必须要使用 AssetBundle.Unload( false ), 那么每个独立的 obj资源, 必须用以下两种方式去卸载:
+-1-:
+    消除一个目标 obj资源的所有 引用, 包括 场景种的引用, 和 代码中的引用; 当这个达成时, 调用: Resources.UnloadUnusedAssets();
+
+-2-:
+    以 non-additively 模式加载一个 scene; 当这个 scene 被卸载时, 它对 obj资源的引用都会被清楚, 然后还会自动调用 Resources.UnloadUnusedAssets();
+
+
+在关卡之前合理地释放资源 和 加载新资源; 这是最简单的方法, 但不见得通用;
+
+最好以 "是否会同时加载卸载" 为条件去将 不同的 objs资源 合成 ab包;
+
+# ---
+如果 ab包已经被卸载了, 但它的某个 obj资源又需要被加载到内存, 此时这个 reload 操作会 fail, 然后这个被 fail 加载出来的 obj, 会在 edior 平台的 hierachy 中以 (Missing) Object 的形式存在;
+
+
+# ------------------------------------------------- #
+#           5.2. Distribution
+# ------------------------------------------------- #
+有两种方式将 项目的 ab包 分发给 客户端:
+-1-
+    跟着程序一起被安装;          (主机常见)
+-2-
+    在安装完程序之后, 在被下载;  (移动端常见)
+
+
+适当的架构允许在安装后 将新的 或 修改的内容 修补到您的项目中，
+而不管 AssetBundle 最初是如何交付的 (同时还是延迟)
+
+请查看: "Patching with AssetBundles" 已翻译;
+
+
+# ------------------------------------------------- #
+#        5.2.1. Shipped with project
+# ------------------------------------------------- #
+将 ab包 和 项目放在一起, 是最简单的方式, 这避免了管理下载的代码;
+常见用法:
+-1-
+    放在一起的 ab包, 可存储到 Streaming Assets 中;
+
+-2-
+    To ship an initial revision of updatable content. This is commonly done to save end-users time after their initial install or to serve as the basis for later patching.
+    ---
+    发布可更新内容的初始修订版。通常这样做是为了节省最终用户在初始安装后的时间，或者作为以后修补的基础。
+    ---
+    此时不该使用 Streaming Assets, 
+    当然, 如果不想写一个 下载和cache系统, 那么:
+    then an initial revision of updatable content can be loaded into the Unity cache from Streaming Assets (See the Cache Priming section, below).
+
+
+# ------------------------------------------------- #
+#        5.2.1.1. Streaming Assets
+# ------------------------------------------------- #
+最简单的 将资源 (包括ab包) 合并进 app安装 的方式, 是将这些资源存入 /Assets/StreamingAssets/  目录;, 然后再执行 项目的 build 工作; 
+
+任何在 StreamingAssets 目录中的数据, 都会在 build 过程中被复制进最终的 app 里;
+
+可使用 Application.streamingAssetsPath 来获得 这个目录的 完整path; 
+然后就能调用 AssetBundle.LoadFromFile() 来加载这些资源;
+
+# 安装平台:
+这些被放在 StreamingAssets 目录中的 资源 将被存入 APK 中, 如果这些资源被压缩了, 则要花更多时间来加载它们; 
+
+存储在 APK 中的文件, 可改用不同的 存储算法; 不同的 unity 版本会使用不同的算法;
+可使用 7-zip 来打开 APK, 来确认文件是否被压缩;
+如果是压缩的, 那么可以肯定 AssetBundle.LoadFromFile() 会执行得比较慢;
+此时可改用 UnityWebRequest.GetAssetBundle();  (这个函数被移除了...)
+
+后面的略...
+
+Alternatively, you can export your Gradle project and add an extension to your AssetBundles at build time. You can then edit the build.gradle file and add that extension to the noCompress section. Once done, you should be able to use AssetBundle.LoadFromFile() without having to pay the decompression performance cost.
+---
+此外, 你可以导出你的 Gradle 项目, 并在 build 阶段添加一个 扩展到你的 ab包中...
+
 待续...
 
+注意:
+在有些平台, 如果app 的 ab包需要在安装之后 再被更新, StreamingAssets 是不可被写入的, 此时要改用  WWW.LoadFromCacheOrDownload, 或写一个自定义的 downloader;
 
 
+# ------------------------------------------------- #
+#          5.2.2. Downloaded post-install
+# ------------------------------------------------- #
+移动平台偏好 在安装之后再去更新 ab包, 
+在很多平台, app 的 二进制文件必须经历一个 昂贵且漫长的 重新认证的过程; 
+所以, 为 post-install 开发一个好的系统至关重要。
 
-    
-
-
-
-
-
-
-
-
+最简单的方式是: 将需要更新的 ab包 放在一个 web服务器上, 然后通过 UnityWebRequest 传递它们; unity 会自动在本地硬盘上 cache 这些下载的 ab包;
 
 
+If the downloaded AssetBundle is LZMA compressed, the AssetBundle will be stored in the cache either as uncompressed or re-compressed as LZ4 (dependent on the Caching.compressionEnabled setting), for faster loading in the future. If the downloaded bundle is LZ4 compressed, the AssetBundle will be stored compressed.
+---
+如果下载的 AssetBundle 是 LZMA 压缩的，则 AssetBundle 将像 LZ4 一样未压缩或重新压缩（取决于 Caching.compressionEnabled 设置）存储在缓存中，以便将来更快地加载。如果下载的包是 LZ4 压缩的，则 AssetBundle 将被压缩存储。
 
+如果 cache 文件满了, unity 会移除 最近加载的 ab包;
+
+推荐使用 UnityWebRequest, 当要求较高时, 可自制一个系统;
+
+...
+
+# ------------------------------------------------- #
+#         5.2.3. Built-in caching
+# ------------------------------------------------- #
+
+...
+
+# ------------------------------------------------- #
+#        5.2.3.1. Cache Priming
+# ------------------------------------------------- #
+
+...
+
+# ------------------------------------------------- #
+#        5.2.4. Custom downloaders
+# ------------------------------------------------- #
+
+# ------------------------------------------------- #
+#        5.2.4.1. Downloading
+# ------------------------------------------------- #
+
+...
+...
+
+# ------------------------------------------------- #
+#       5.3. Asset Assignment Strategies
+# ------------------------------------------------- #
 
 
 

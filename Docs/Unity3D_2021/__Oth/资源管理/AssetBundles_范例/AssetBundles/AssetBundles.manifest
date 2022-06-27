@@ -1,0 +1,15 @@
+ManifestFileVersion: 0
+CRC: 819445021
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: texturesandmaterials
+      Dependencies: {}
+    Info_1:
+      Name: cube
+      Dependencies:
+        Dependency_0: texturesandmaterials
+    Info_2:
+      Name: sphere
+      Dependencies:
+        Dependency_0: texturesandmaterials
