@@ -471,7 +471,7 @@ unity 整体遵循 OpenGL风格, 所以在处于 D3D类平台时, 会做一些�
 # -- 代码示范 -1- :
 # --
 #if UNITY_UV_STARTS_AT_TOP
-    posHCS.y *= -1.0;
+    posHCS.y *= -1.0;    // 如果要处理的是 uv.y, 则应该: uv.y = 1-uv.y;
 #endif
 # ==
 
