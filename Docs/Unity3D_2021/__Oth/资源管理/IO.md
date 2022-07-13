@@ -43,14 +43,26 @@
 
 
 
+#  DirectoryInfo:
+
+    DirectoryInfo di = new DirectoryInfo( path );
+
+记录一个 目录path 的信息, 可用来执行一些检测 或 创建删除工作;
+
+Use for typical operations such as copying, moving, renaming, creating, and deleting directories.
+---
+复制, 移动, 重命名, 新建, 删除 目录;
+
+
+https://docs.microsoft.com/en-us/dotnet/api/system.io.directoryinfo?view=net-6.0
 
 
 
+# ------------------------ #
+#   unity 工程 本身的 path
+# ------------------------ #
+# static string ProjectDirectory = new DirectoryInfo(Application.dataPath).Parent.FullName;
 
-
-
-
-
-
+    Application.dataPath 就是 "Assets" 这个目录, 向上一层, 得到工程的 path;
 
 

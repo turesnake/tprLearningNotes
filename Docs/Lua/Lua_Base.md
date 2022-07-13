@@ -170,6 +170,24 @@ https://wiki.luatos.com/_static/luatos-emulator/lua.html
 
 
 # ----------------------------------------------#
+#         type: userdata 
+# ----------------------------------------------#
+The type userdata is provided to allow arbitrary C data to be stored in Lua variables. This type corresponds to a block of raw memory and has no pre-defined operations in Lua, except assignment and identity test. However, by using metatables, the programmer can define operations for userdata values (see §2.8). Userdata values cannot be created or modified in Lua, only through the C API. This guarantees the integrity of data owned by the host program.
+-------
+
+这个类型是为了让 任意的 c数据 存储在一个 lua 变量中;
+这个类型代表一个 生二进制 数据块, lua 不存在对它的 预定义操作; (但是 lua 可以为它 分配内存, 以及 身份验证)
+但是, 通过使用 metatable, 程序员可定义对 userdata 类型变量的 操作;
+不能在 lua 中创建 和 修改 userdata 变量, 只能通过 c api 来生成和改写;
+这保证了 宿主程序对 这些数据的 完整拥有权;
+
+
+
+
+
+
+
+# ----------------------------------------------#
 #           真 假
 # ----------------------------------------------#
 # 只有 false 和 nil 代表 假, 剩余一切值都为 真 !!!
@@ -199,7 +217,7 @@ false or 13 --> 13
 0     or 13 --> 0
 
 
-# 用法:
+# 用法: (有点类似 三元运算符)
     a = 0
     print( a>1 and "yes" or "no" )
 
@@ -300,6 +318,20 @@ a = "123"
 b = #a      -- 得到数值: 3
 
 # -- "#" 也可用来获取一个 table 的元素个数
+    t = {1,2,3}
+    print( #t )
+
+
+# ----------------------------------------------#
+#     # 和 string.len(s) 的区别
+# ----------------------------------------------#
+当用于 string 时, 两个操作时等价的, 都能得到 string 的字节数;
+
+但是 # 可获得任意 table 的连续元素个数; (若中间有空洞, 则在第一个空洞位置被中断, 只得到前面部分的元素个数)
+
+# 若使用 string.len 去访问一个 普通 table 的元素个数, 将报错;
+
+
 
 
 # ----------------------------------------------#
@@ -335,17 +367,6 @@ e
 
 #   首位界符中的等号数量一定要相符。
 #   并且避免在 字符串中 再出现 相同的 符号
-
-
-# ----------------------------------------------#
-#       string.byte()
-# ----------------------------------------------#
-s = "1234"
-n = string.byte( s, 2 );  -- 获得字符串的第二元素: '2' 的 ascii 码...
-
-
-# lua 的字符串可以安全地存储 二进制流, 这些数据不会被改写
-
 
 
 
@@ -459,7 +480,7 @@ n = string.byte( s, 2 );  -- 获得字符串的第二元素: '2' 的 ascii 码..
 
 
 # ----------------------------------------------#
-#     require
+#      require
 # ----------------------------------------------#
 
 首先创建一个 lua 文件: a/b/ko.lua
@@ -477,6 +498,15 @@ n = string.byte( s, 2 );  -- 获得字符串的第二元素: '2' 的 ascii 码..
 想要多次调用, 改用 dofile, load stream 等函数才行 (拼写可能有问题)
 
 # -- require 会从 package.path 路径内查找 目标文件;
+
+
+require 实际上是调一个个的 loader 去加载，有一个成功就不再往下尝试，全失败则报文件找不到。 
+目前 xLua 除了原生的 loader 外，还添加了从  Resource 加载的 loader，需要注意的是因为 Resource 只支持有限的后缀，
+放 Resources 下的 lua 文件得加上 txt 后缀（见附带的例子）。
+
+建议的加载 Lua 脚本方式是：整个程序就一个 DoString("require 'main'")，然后在 main.lua 加载其它脚本（类似 lua 脚本的命令行执行：lua main.lua）。
+
+有童鞋会问：要是我的Lua文件是下载回来的，或者某个自定义的文件格式里头解压出来，或者需要解密等等，怎么办？问得好，xLua的自定义Loader可以满足这些需求。
 
 
 
@@ -548,7 +578,7 @@ metatable 自己也是一个普通的 table, 但是它可以存放一些类似 �
 #      面向对象
 # ----------------------------------------------#
 
-# 一个语法糖
+# 一个语法糖: " 冒号 : "
     t = {
         a = 0,
         add = function(tab, sum)

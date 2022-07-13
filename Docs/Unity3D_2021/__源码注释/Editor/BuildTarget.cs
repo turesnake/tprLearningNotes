@@ -18,7 +18,7 @@ namespace UnityEditor
         NoTarget = -2,
         //
         // 摘要:
-        //     OBSOLETE: Use iOS. Build an iOS player.
+        //     OBSOLETE(过时的): Use iOS. Build an iOS player.
         iPhone = -1,
         BB10 = -1,
         MetroPlayer = -1,

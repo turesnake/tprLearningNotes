@@ -85,43 +85,60 @@ namespace UnityEditor
         public static bool BuildAssetBundleExplicitAssetNames(UnityEngine.Object[] assets, string[] assetNames, string pathName, out uint crc, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
         
         
-        //
-        // 摘要:
-        //     Build AssetBundles from a building map.
-        //
-        // 参数:
-        //   outputPath:
-        //     Output path for the AssetBundles.
-        //
-        //   builds:
-        //     AssetBundle building map.
-        //
-        //   assetBundleOptions:
-        //     AssetBundle building options.
-        //
-        //   targetPlatform:
-        //     Target build platform.
-        //
-        // 返回结果:
-        //     The manifest listing all AssetBundles included in this build.
+        /*
+            Build AssetBundles from a building map.
+
+            This variant of the function lets you specify the names and contents of the bundles using a "build map" 
+            rather than with the details set in the editor. 
+            The map is simply an array of AssetBundleBuild objects, 
+            each of which contains a bundle name and a list of the names of asset files to be added to the named bundle.
+        
+        参数:
+          outputPath:
+            Output path for the AssetBundles.
+        
+          builds:
+            AssetBundle building map.   --- ab包的名字, 和包含的多个 assets 的 path;
+        
+          assetBundleOptions:
+            AssetBundle building options. -- 压缩格式, 是否强制打包, ab包是否包含某些信息, 等等配置
+        
+          targetPlatform:
+            Target build platform.
+        
+        返回结果:
+            The manifest listing all AssetBundles included in this build.
+        */
         public static AssetBundleManifest BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
         
-        //
-        // 摘要:
-        //     Build all AssetBundles specified in the editor.
-        //
-        // 参数:
-        //   outputPath:
-        //     Output path for the AssetBundles.
-        //
-        //   assetBundleOptions:
-        //     AssetBundle building options.
-        //
-        //   targetPlatform:
-        //     Chosen target build platform.
-        //
-        // 返回结果:
-        //     The manifest listing all AssetBundles included in this build.
+        /*
+            Build all AssetBundles specified in the editor.
+
+            Use this function to build your asset bundles, after you have marked your assets for inclusion in named AssetBundles. 
+            (See the Manual page about building AssetBundles for further details). 
+            This function builds the bundles you have specified in the editor and will return the manifest that includes all of the included assets. 
+            if the build was successful and false otherwise. 
+            
+            Additionally, error messages are shown in the console to explain most common build failures such as incorrect target folder paths.
+        
+        参数:
+          outputPath:
+            Output path for the AssetBundles.
+            is a path to a folder somewhere within the project folder where the built bundles will be saved (eg, "Assets/MyBundleFolder").
+            The folder will not be created automatically and the function will simply fail if it doesn't already exist.
+
+        
+          assetBundleOptions:
+            AssetBundle building options.
+
+        
+          targetPlatform:
+            Chosen target build platform.
+        
+        返回结果:
+            The manifest listing all AssetBundles included in this build.
+            This contains a list of all the assets included in the AssetBundle. Null is returned if any problems occur.
+        */
         public static AssetBundleManifest BuildAssetBundles(string outputPath, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
 
 

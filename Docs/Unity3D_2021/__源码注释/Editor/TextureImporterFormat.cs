@@ -4,9 +4,11 @@
 
 namespace UnityEditor
 {
-    //
-    // 摘要:
-    //     Imported texture format for TextureImporter.
+    /*
+        Imported texture format for TextureImporter.
+
+
+    */
     public enum TextureImporterFormat
     {
         //

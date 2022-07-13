@@ -9,6 +9,21 @@ namespace UnityEngine
 
         Note that not all graphics cards support all texture formats, use "SystemInfo.SupportsTextureFormat()" to check. 
         Also, only the Texture2D class supports texture creation from script with "Crunch compression texture formats".
+
+
+        ----------------------
+        Crunch compression
+        Crunch is a compression format that works on top of DXT or ETC compression, by providing additional variable bit rate compression. 
+        When Unity loads a Crunch-compressed texture, it decompresses the texture to DXT or ETC on the CPU, 
+        and then uploads the DXT or ETC compressed texture data to the GPU.
+
+        Crunch compression helps the texture use the lowest possible amount of disk space, but has no effect on runtime memory usage. 
+        Crunch textures can take a long time to compress, but decompression at runtime is fairly fast. 
+        You can adjust how lossy Crunch compression is, to strike a balance between file size and quality.
+
+        If you are particularly concerned about the size of your build and Crunch is supported on your target platform, 
+        consider adding Crunch compression.
+
     */
     public enum TextureFormat//TextureFormat__RR
     {
