@@ -6,6 +6,12 @@
 - git clone git@github.com:UserName/xxxx.git
     将 远程库 项目 clone 到当前目录（下的子目录）
     此时，cwd 应该是 目标目录的 父目录
+    ---
+    若想指定 克隆的分支, 可写:
+    git clone -b dev git@github.com:UserName/xxxx.git
+    ---
+    这里的 "-b dev" 就制定了 dev 分支;
+    
 
 - git add file
   git add dir/

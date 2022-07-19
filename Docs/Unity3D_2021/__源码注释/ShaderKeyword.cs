@@ -6,9 +6,11 @@ using System;
 
 namespace UnityEngine.Rendering
 {
-    //
-    // 摘要:
-    //     Identifier of a specific code path in a shader.
+    /*
+        Identifier of a specific code path in a shader.
+
+
+    */
     [NativeHeaderAttribute("Runtime/Shaders/ShaderKeywords.h")]
     [NativeHeaderAttribute("Runtime/Graphics/ShaderScriptBindings.h")]
     [UsedByNativeCodeAttribute]
@@ -33,14 +35,15 @@ namespace UnityEngine.Rendering
             参数是 global or local shader keyword;
             如果是 local 的, 就要指定 shader 对象;
         
-        // 参数:
-        //   shader:
-        //     The shader that declares the keyword.
-        //
-        //   keywordName:
-        //     The name of the keyword.
+            参数:
+            shader:
+                The shader that declares the keyword.
+            
+            keywordName:
+                The name of the keyword.
         */
         public ShaderKeyword(Shader shader, string keywordName);
+
         //
         // 摘要:
         //     Initializes a new instance of the ShaderKeyword class from a local shader keyword
@@ -67,6 +70,7 @@ namespace UnityEngine.Rendering
         //   index:
         [FreeFunctionAttribute("ShaderScripting::GetGlobalKeywordName")]
         public static string GetGlobalKeywordName(ShaderKeyword index);
+
         //
         // 摘要:
         //     Returns the type of global keyword: built-in or user defined.
@@ -75,6 +79,7 @@ namespace UnityEngine.Rendering
         //   index:
         [FreeFunctionAttribute("ShaderScripting::GetGlobalKeywordType")]
         public static ShaderKeywordType GetGlobalKeywordType(ShaderKeyword index);
+
         //
         // 摘要:
         //     Returns the string name of the keyword.
@@ -88,6 +93,7 @@ namespace UnityEngine.Rendering
         [FreeFunctionAttribute("ShaderScripting::GetKeywordType")]
         public static ShaderKeywordType GetKeywordType(Shader shader, ShaderKeyword index);
         public static ShaderKeywordType GetKeywordType(ComputeShader shader, ShaderKeyword index);
+
 
         //
         // 摘要:
