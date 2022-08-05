@@ -135,6 +135,7 @@ namespace UnityEngine
 
         // 摘要:
         //     Returns the smallest integer greater to or equal to f.
+        //     大于等于 f 的整数
         public static int CeilToInt(float f);
 
 
@@ -273,8 +274,12 @@ namespace UnityEngine
         */
         public static float Floor(float f);
 
-        // 摘要:
-        //     Returns the largest integer smaller to or equal to f.
+
+        /*
+            Returns the largest integer smaller to or equal to f.
+
+            小于等于 f 的最大整数;
+        */
         public static int FloorToInt(float f);
 
 
@@ -309,6 +314,11 @@ namespace UnityEngine
             实现细节:
             对参数 a, b, value, 都先减去a, 这样就得到: ( 0, b-a, value-a );
             然后根据这三个值来计算 t 值;
+
+            参数 value 位于 区间 [a,b] 上 (也可能超出此区间), 本函数计算 value 在 [a,b] 上的 相对关系值 t:
+            若 value 位于 [0,1], 本函数返回的 t值 位于 [0,1];
+            若 value 小于 0, 本函数返回 0;
+            若 value 大于 1, 本函数返回 1;
 
         // 参数:
         //   a:

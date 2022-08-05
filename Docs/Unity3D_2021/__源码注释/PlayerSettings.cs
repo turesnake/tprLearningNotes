@@ -875,14 +875,26 @@ namespace UnityEditor
         //   additionalCompilerArguments:
         //     An array of the additional compiler arguments.
         public static void SetAdditionalCompilerArgumentsForGroup(BuildTargetGroup targetGroup, string[] additionalCompilerArguments);
-        //
-        // 摘要:
-        //     IL2CPP build arguments.
-        //
-        // 参数:
-        //   additionalArgs:
+
+
+        /*
+            IL2CPP build arguments.
+
+            可在一个 editor 目录下的 cs代码里实现一个 static 函数, (可在 unity 主界面调用的那种), 然后在这个函数内调用本 函数,
+
+            若向本函数的 string 参数传入一个 "" (空string), 则会抹除之前的所有配置;
+
+            参数:
+            additionalArgs:
+
+
+
+        */
         [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
         public static void SetAdditionalIl2CppArgs(string additionalArgs);
+
+
+
         //
         // 摘要:
         //     Sets .NET API compatibility level for specified BuildTargetGroup.

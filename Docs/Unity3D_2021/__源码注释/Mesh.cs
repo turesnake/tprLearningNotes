@@ -250,17 +250,25 @@ namespace UnityEngine
         //     Returns all non-zero bone weights for the Mesh, in vertex index order.
         public NativeArray<BoneWeight1> GetAllBoneWeights();
 
-        //
-        // 摘要:
-        //     Gets the base vertex index of the given sub-mesh.
-        //
-        // 参数:
-        //   submesh:
-        //     The sub-mesh index. See subMeshCount.
-        //
-        // 返回结果:
-        //     The offset applied to all vertex indices of this sub-mesh.
+        
+        /*
+            Gets the base vertex index of the given sub-mesh.
+
+            The base vertex can be used to achieve meshes that are larger than 65535 vertices while using 16 bit index buffers, 
+            as long as each sub-mesh fits within its own 65535 vertex area. Alternatively, 32 bit index buffers can be used via indexFormat.
+            ---
+            只要每个 submesh 使用自己的 65535 个顶点空间, (每个顶点的 index 使用 16-bits 来存储); 然后再搭配使用 GetBaseVertex, 就能仅使用 16-bits 为单位,
+            来存储 远远多于 65535 个的 总顶点数量;
+            
+            参数:
+            submesh:
+                The sub-mesh index. See subMeshCount.
+            
+            返回结果:
+                The offset applied to all vertex indices of this sub-mesh.
+        */
         public uint GetBaseVertex(int submesh);
+
 
         public void GetBindposes(List<Matrix4x4> bindposes);
 
@@ -342,19 +350,22 @@ namespace UnityEngine
 
         //
         // 摘要:
-        //     Gets the index count of the given sub-mesh.
-        //
+        //     Gets the index count of the given sub-mesh.  --  顶点个数
+        //     
         // 参数:
         //   submesh:
         public uint GetIndexCount(int submesh);
 
-        //
-        // 摘要:
-        //     Gets the starting index location within the Mesh's index buffer, for the given
-        //     sub-mesh.
-        //
-        // 参数:
-        //   submesh:
+        /*
+            Gets the starting index location within the Mesh's index buffer, for the given sub-mesh.
+
+            得到 目标submesh的 第一个顶点在 index buffer 中的下标值;
+
+            index buffer: 为每个顶点分配一个元素, 此元素记录 目标顶点在 vertex buffer 中的 首字节下标值; (大概)
+            
+            参数:
+            submesh:
+        */
         public uint GetIndexStart(int submesh);
 
 

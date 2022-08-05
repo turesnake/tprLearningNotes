@@ -94,15 +94,15 @@ namespace UnityEngine
             (或者说, 类型必须开启这两种 flag 之一)
             在别的平台, dst 可以是任何类型;
 
-            参数:
-        //   src:
-        //     Append/consume buffer to copy the counter from.
-        //
-        //   dst:
-        //     A buffer to copy the counter to.
-        //
-        //   dstOffsetBytes:
-        //     Target byte offset in dst.
+        参数:
+          src:
+            Append/consume buffer to copy the counter from.
+        
+          dst:
+            A buffer to copy the counter to.
+        
+          dstOffsetBytes:
+            Target byte offset in dst.
         */
         public static void CopyCount(ComputeBuffer src, ComputeBuffer dst, int dstOffsetBytes);
 

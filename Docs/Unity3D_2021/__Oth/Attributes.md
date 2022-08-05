@@ -1,6 +1,6 @@
-# ================================================================//
+# ================================================================ #
 #                  unity3d  Attributes
-# ================================================================//
+# ================================================================ #
 
 unity 自定义的 Attributes 有两套：
 - API -UnityEngine - Attributes
@@ -122,6 +122,13 @@ unity 仅对 public 成员序列化, 若希望 private 成员被私有化, 就�
 # ExecuteInEditMode
 
 在 editor 模式下 本脚本也能起效;
+
+# ----------------------------------------------#
+# ExecuteAlways
+https://docs.unity3d.com/ScriptReference/ExecuteAlways.html
+
+Makes instances of a script always execute, both as part of Play Mode and when editing.
+
 
 
 

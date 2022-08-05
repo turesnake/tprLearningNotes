@@ -777,6 +777,30 @@ UNITY_ACCESS_INSTANCED_PROP( UnityPerMaterial, _BaseColor )
 
 
 # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
+#     SRP Batcher  和  global property  的兼容问题
+# ---------------------------------------------- #
+
+
+# 什么是 global property ?
+    如果一个 shader property 没有出现在 material Properties{} 中, 
+    而且它在 HLSL 作用域内被声明了,
+    而且它在 vs/fs 代码内被使用了 (重要)
+    --
+    那么这就是一个 shader global property;
+
+# 一个 global property, 不能被放在 UnityPerMaterial cbuffer 中;
+否则, 从 c# 层向它传值时, 可能会发生错误;
+比如在 lod == 200 时, 传值失败;
+
+# gloabl property 是否会影响 srp batcher 合批呢 ?
+    不会 !!!!!
+    可以放心使用 !!!!!
+
+
+
+
+
+# &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& #
 #         unity_WorldTransformParams  是啥
 # ---------------------------------------------- #
 存储在 UnityInput.hlsl 中, (11.0)

@@ -25,7 +25,7 @@ https://www.bilibili.com/video/BV1GY4y1Y7uB?spm_id_from=333.337.search-card.all.
 
 具体步骤为:
 -1-
-    上网站: https://tool.lu/ip,
+    上网站: https://tool.lu/ip
     在 "请输入IP或网站域名" 后面输入: dl.google.com
     然后复制下方的: IP 地址：比如: 220.181.174.225
 
@@ -246,6 +246,24 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 就行了;
 
 (每次测试前都要这么搞一遍...)
+
+
+
+
+# ================================================== #
+#       项目单场景打包, 报错:
+#            vivo 应用程序安装异常 -25
+# ================================================== #
+
+# -25
+INSTALL_FAILED_VERSION_DOWNGRADE   新包具有比目前安装的软件包的较旧版本的代码
+
+
+
+
+
+
+
 
 
 

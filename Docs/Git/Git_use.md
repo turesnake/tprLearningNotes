@@ -52,75 +52,75 @@ git存在三个空间
     2-2.master (当前分支)（一次性提交暂存区里的所有修改。commit）
     2-3.HEAD （指向master的一个指针）
 
-=====================================|
+# =====================================|
                 config
--------------------------------------|
-$ git config --global user.name "tom"  统一名字
-$ git config --global user.email "tom@xxx.com" 统一邮箱。
+# -------------------------------------|
+    $ git config --global user.name "tom"  统一名字
+    $ git config --global user.email "tom@xxx.com" 统一邮箱。
 
 
-=====================================|
+# =====================================|
                 init
--------------------------------------|
-$ git init  把当前目录新建为git管理的仓库
+# -------------------------------------|
+    $ git init  把当前目录新建为git管理的仓库
             如果我们是通过 github 创建项目的，
             那么这条指令 就不常被用到
 
-=====================================|
-                add
--------------------------------------|
-（我们把某文件‘filename1.txt’ 放到上文的仓库文件夹中）
-$ git add filename1.txt 把某文件添加进仓库（把文件添加进暂存区stage）
 
-$ git add /xxx/
+# =====================================
+                add
+# -------------------------------------|
+
+（我们把某文件‘filename1.txt’ 放到上文的仓库文件夹中）
+    $ git add filename1.txt 把某文件添加进仓库（把文件添加进暂存区stage）
+
+    $ git add /xxx/
     添加整个目录的文件
 
-$ git add .
-    添加当前目录下的所有 子目录和文件
-    最实用
+    $ git add .
+        添加当前目录下的所有 子目录和文件
+        最实用
 
-=====================================|
+# =====================================|
                 commit
--------------------------------------|
-$ git commit -m "a test" 把文件提交到仓库（让仓库记住这文件）。
+# -------------------------------------|
+    $ git commit -m "a test" 把文件提交到仓库（让仓库记住这文件）。
                                     把暂存区stage的内容提交到当前分支master
                                     提交的同时附带一个说明
 
 （可以add很多文件，然后统一commit）
 （每次修改都需要 add 和 commit 操作 ）
 
-=====================================|
+# =====================================|
                 status
--------------------------------------|
-$ git status 查看仓库的状态（看看哪些文件被修改了但没提交）
+# -------------------------------------|
+    $ git status 查看仓库的状态（看看哪些文件被修改了但没提交）
 
 
-=====================================|
-                log
--------------------------------------|
-$ git log 查看仓库的更新记录，从最近到最久。
 
-$ git log --pretty=oneline  简洁显示，每次更新的信息被压缩到一行。
-
-$ git log --graph 用图表的形式显示分支历史
+# ===========================================================|
+#                       log
+# -----------------------------------------------------------|
+# 查看另一个文件... 
 
 
-=====================================|
+
+# =====================================|
                 reset
--------------------------------------|
-$ git reset --hard HEAD^ 回退到上一次修改时的状态
+# -------------------------------------|
+    $ git reset --hard HEAD^ 回退到上一次修改时的状态
                         这里的HEAD指向当前版本
                         HEAD^ 指向上一版本
                         HEAD^^指向上上版本
                         HEAD~100指向上100版本
 
-$ git reset --hard 2addecd 回退到版本号（commit id）为2addecd 的那次修改
+    $ git reset --hard 2addecd 回退到版本号（commit id）为2addecd 的那次修改
 
-$ git reflog  显示用户的每次git操作，顺带显示相应的版本号（commit id）
+    $ git reflog  显示用户的每次git操作，顺带显示相应的版本号（commit id）
 
-$ git diff HEAD -- filename.txt 查看工作区（working derictory）和版本库(repository)里面最新版本的区别
+    $ git diff HEAD -- filename.txt 查看工作区（working derictory）和版本库(repository)里面最新版本的区别
 
-$ git checkout -- filename.txt 把文件在工作区的修改全部撤销
+    $ git checkout -- filename.txt 把文件在工作区的修改全部撤销
                                 （用版本区里的版本替换工作区里的版本。）
         1.文件自修改后尚未add到暂存区，此时checkout将会把文件改回版本库一样的状态
         2.文件已经add到暂存区，然后又做了修改，此时checkout将把文件改回暂存区的状态
@@ -128,25 +128,25 @@ $ git checkout -- filename.txt 把文件在工作区的修改全部撤销
 如果没有--标识符，将表示另一个意思：切换到另一个分支。
 
 
-$ git reset HEAD filename.txt 可以把暂存区的修改撤销掉（unstage）.重新放回工作区
-    此时工作区文件的修改还在，版本库里暂存区stage里的暂存没有了。
-    然后可以配合$ git checkout -- filename.txt 的方法来删除工作区的修改。
-当改乱了工作区文件的内容，想直接丢弃工作区里的修改。
-    用： $ git checkout -- filename.txt 用版本区里的版本替换工作区里的版本。
+    $ git reset HEAD filename.txt 可以把暂存区的修改撤销掉（unstage）.重新放回工作区
+        此时工作区文件的修改还在，版本库里暂存区stage里的暂存没有了。
+        然后可以配合$ git checkout -- filename.txt 的方法来删除工作区的修改。
+    当改乱了工作区文件的内容，想直接丢弃工作区里的修改。
+        用： $ git checkout -- filename.txt 用版本区里的版本替换工作区里的版本。
 
-当不但改了工作区，还add到了版本库里的暂存区stage里。分两步：
-    用： $ git reset HEAD filename.txt  将暂存区修改退回工作区
-    用： $ git checkout -- filename.txt 用版本库里的版本替换工作区里的版本。
+    当不但改了工作区，还add到了版本库里的暂存区stage里。分两步：
+        用： $ git reset HEAD filename.txt  将暂存区修改退回工作区
+        用： $ git checkout -- filename.txt 用版本库里的版本替换工作区里的版本。
 
-当把暂存区stage里的修改commit到了版本库分支master。执行版本回退，
-    用： $ git reflog
-    或： $ git log --pretty=oneline 来查看和获取之前历次修改的版本号commit_id
-    然后用： $ git reset --hard commit_id 来跳回某个版本号的状态。
+    当把暂存区stage里的修改commit到了版本库分支master。执行版本回退，
+        用： $ git reflog
+        或： $ git log --pretty=oneline 来查看和获取之前历次修改的版本号commit_id
+        然后用： $ git reset --hard commit_id 来跳回某个版本号的状态。
 
 
-=====================================|
+# =====================================|
         git cherry-pick
--------------------------------------|
+# -------------------------------------|
 http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
 将分支a 上的一次提交, 复制一份移植到 分支b 上去;
@@ -181,44 +181,45 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 # ================================================================
                       如何 访问 github
 # ----------------------------------------------------------------
-$ ssh-keygen
-    然后一路回车
-    新的 钥匙会存储在 /Users/tom/.ssh/id_rsa.pub
+    $ ssh-keygen
 
-    如果电脑尚未创建，需要创建一个。
-    此时需要一个 ssh 密码...
+        然后一路回车
+        新的 钥匙会存储在 /Users/tom/.ssh/id_rsa.pub
 
-    ...
+        如果电脑尚未创建，需要创建一个。
+        此时需要一个 ssh 密码...
 
-    当创建好后，可以 cat /Users/tom/.ssh/id_rsa.pub
-    获得一个:
-        ssh-rsa AAAAB...
         ...
-        ...bW14Lvv tom@XXX.com
-    格式的数据串。
-    -----------
 
-    进入 github 网站 -->
-    个人 Settings -->
-    SSH and GPG keys -->
-    new SSH keys :
-        写好 title
-        将 上文的 key串，复制到 Key 框中
-    Add SSH key
-    成功添加 ssh key
-    -----------
+        当创建好后，可以 cat /Users/tom/.ssh/id_rsa.pub
+        获得一个:
+            ssh-rsa AAAAB...
+            ...
+            ...bW14Lvv tom@XXX.com
+        格式的数据串。
+        -----------
 
-    回到本机 git_repository 目录
-    （或者任何 想要成为 目标项目的 父目录 的 目录）
-    输入：
+        进入 github 网站 -->
+        个人 Settings -->
+        SSH and GPG keys -->
+        new SSH keys :
+            写好 title
+            将 上文的 key串，复制到 Key 框中
+        Add SSH key
+        成功添加 ssh key
+        -----------
 
-$ git clone git@github.com:tom/git_test_2018.git
+        回到本机 git_repository 目录
+        （或者任何 想要成为 目标项目的 父目录 的 目录）
+        输入：
 
-    具体 网址 可以从 github 具体项目的 
-        clone and download
-    中查到
+    $ git clone git@github.com:tom/git_test_2018.git
 
-    这个指令会把 整个项目 下载到当前 目录下。
+        具体 网址 可以从 github 具体项目的 
+            clone and download
+        中查到
+
+        这个指令会把 整个项目 下载到当前 目录下。
 
 
 ================================================================
@@ -226,123 +227,123 @@ $ git clone git@github.com:tom/git_test_2018.git
 当和github远程版本库绑定后。
 以后每次做本地提交commit。可以再输入一句：
 
-=====================================|
+# =====================================|
                 push
--------------------------------------|
-$ git push origin master  
-    
-    把本地master分支的最新修改推送到github。
+# -------------------------------------|
+    $ git push origin master  
+        
+        把本地master分支的最新修改推送到github。
 
 
-=====================================|
+# =====================================|
                 clone
--------------------------------------|
-$ git clone git@github.com:UserName/repositoryname.git
-    将github中的某个远程库 克隆到本地。
+# -------------------------------------|
+    $ git clone git@github.com:UserName/repositoryname.git
+        将github中的某个远程库 克隆到本地。
 
 
-=====================================|
+# =====================================|
                 branch
--------------------------------------|
-$ git branch 查看当前分支
+# -------------------------------------|
+    $ git branch 查看当前分支
 
-$ git branch <name1> 创建名为 name1 的新分支
+    $ git branch <name1> 创建名为 name1 的新分支
 
 
-=====================================|
+# =====================================|
                 checkout
--------------------------------------|
-$ git checkout <name1> 切换到名为 name1 的分支 
+# -------------------------------------|
+    $ git checkout <name1> 切换到名为 name1 的分支 
 
-$ git checkout -b <name> 创建并切换到名为name1 的新分支
+    $ git checkout -b <name> 创建并切换到名为name1 的新分支
 
-$ git checkout -b name2 origin/<name2> 创建远程origin的name2分支到本地
-                                远程版本库已经存在这个名为name2的分支
-                                现在创建一个本地的分支，这个分支是从这个远程分支
-                                分过来的。
+    $ git checkout -b name2 origin/<name2> 创建远程origin的name2分支到本地
+                                    远程版本库已经存在这个名为name2的分支
+                                    现在创建一个本地的分支，这个分支是从这个远程分支
+                                    分过来的。
 
 
-=====================================|
+# =====================================|
                 merge
--------------------------------------|
-$ git merge <name2> 将分支name2 的内容合并到当前分支
-                    默认fast forward模式，master指针将会直接指向name2的位置
-                    这种合并是扁平化的，旧的master位置会成为线轴上的一个点，无分支
-                    在历史中，ff是看不出曾经有过分支的。
-$ git merge --no-ff -m "message" <name4> 将分支name4的内合并到当前分支
-                    不使用fast forward模式，
-                    将会在旧master和name2之外额外新建一个commit点，
-                    然后把合并后的内容放进那个新点，此时的master也指向这个点
-                    非扁平化，历史上的name2和旧master形成两个分支。
+# -------------------------------------|
+    $ git merge <name2> 将分支name2 的内容合并到当前分支
+                        默认fast forward模式，master指针将会直接指向name2的位置
+                        这种合并是扁平化的，旧的master位置会成为线轴上的一个点，无分支
+                        在历史中，ff是看不出曾经有过分支的。
+    $ git merge --no-ff -m "message" <name4> 将分支name4的内合并到当前分支
+                        不使用fast forward模式，
+                        将会在旧master和name2之外额外新建一个commit点，
+                        然后把合并后的内容放进那个新点，此时的master也指向这个点
+                        非扁平化，历史上的name2和旧master形成两个分支。
 
-$ git branch -d <name3> 删除名为name3 的分支
+    $ git branch -d <name3> 删除名为name3 的分支
 
 
-=====================================|
+# =====================================|
                 stash
--------------------------------------|
-临时储藏工作现场：
+# -------------------------------------|
+    临时储藏工作现场：
 
-$ git stash 将目前尚未add 或 commit 的工作现场 储藏起来。
-            等待恢复现场后继续工作。
-            可以多次git stash。会被存进: 
-            stash@{0} 
-            stash@{1} 这类长得像数组的东西里。
+    $ git stash 将目前尚未add 或 commit 的工作现场 储藏起来。
+                等待恢复现场后继续工作。
+                可以多次git stash。会被存进: 
+                stash@{0} 
+                stash@{1} 这类长得像数组的东西里。
 
-恢复方法一：
-$ git stash apply 恢复储藏的工作现场，但是stash内容不删除
-$ git stash drop 删除储藏的工作现场
+    恢复方法一：
+    $ git stash apply 恢复储藏的工作现场，但是stash内容不删除
+    $ git stash drop 删除储藏的工作现场
 
-恢复方法二：
-$ git stash pop 恢复的同时把stash内容删除。
+    恢复方法二：
+    $ git stash pop 恢复的同时把stash内容删除。
 
-当多次git stash时，可以：
-$ git stash apply stash@{0} 来恢复指定的某份储藏
+    当多次git stash时，可以：
+    $ git stash apply stash@{0} 来恢复指定的某份储藏
 
 ------------------------------------------------------------
 
-=====================================|
+# =====================================|
                 remote
--------------------------------------|
-$ git remote 查看远程库的信息
+# -------------------------------------|
+    $ git remote 查看远程库的信息
 
-$ git remote -v 查看远程库的信息，详细模式
+    $ git remote -v 查看远程库的信息，详细模式
 
-$ git branch --set-upstream-to=origin/<name1> name2
-            设置本地分支name2和远程分支origin/<name1> 的链接。
-            可以设置任意一个本地分支和远处分支的链接
+    $ git branch --set-upstream-to=origin/<name1> name2
+                设置本地分支name2和远程分支origin/<name1> 的链接。
+                可以设置任意一个本地分支和远处分支的链接
 
 
-=====================================|
+# =====================================|
                 pull
--------------------------------------|
-$ git pull 把远程库中的内容抓取到本地。
+# -------------------------------------|
+    $ git pull 把远程库中的内容抓取到本地。
 
 
 
 -----------------------------------------------------------
-$ git tag v1.0 给当前的分支（主要是在master上）打一个标签：v1.0
-                标签不是按时间顺序排列的，是按字母顺序排列的
+    $ git tag v1.0 给当前的分支（主要是在master上）打一个标签：v1.0
+                    标签不是按时间顺序排列的，是按字母顺序排列的
 
-$ git tag v0.9 <commit_id>  给历史中的某个分支点打标签。
+    $ git tag v0.9 <commit_id>  给历史中的某个分支点打标签。
 
-$ git tag -a v0.1 -m "a explain" <commit_id>
-                    一种更完整的打标签格式
-                    -a 后面跟标签tag
-                    -m 后面跟说明文本
-                    最后附上具体的分支点id
+    $ git tag -a v0.1 -m "a explain" <commit_id>
+                        一种更完整的打标签格式
+                        -a 后面跟标签tag
+                        -m 后面跟说明文本
+                        最后附上具体的分支点id
 
-$ git tag  查看已有的标签。
+    $ git tag  查看已有的标签。
 
-$ git show v0.9 查看某个标签的信息
+    $ git show v0.9 查看某个标签的信息
 
-$ git push origin v0.9  将某个标签推送到远端
+    $ git push origin v0.9  将某个标签推送到远端
 
-$ git push origin --tags 一次性推送所有微推送到远端的本地标签
+    $ git push origin --tags 一次性推送所有微推送到远端的本地标签
 
-$ git tag -d v0.1 删除某个标签
+    $ git tag -d v0.1 删除某个标签
 
-$ git push origin :refs/tags/v0.9 删除远端的某个标签。
+    $ git push origin :refs/tags/v0.9 删除远端的某个标签。
 
 
 
@@ -398,6 +399,7 @@ $ git push origin :refs/tags/v0.9 删除远端的某个标签。
 想要单独删除某个文件 
 
 -- git rm --cached .DS_Store
+
 
 
 

@@ -599,43 +599,43 @@ namespace UnityEngine
 
             catlike 教程中使用过此函数;
 
-        // 参数:
-        //   mesh:
-        //     The Mesh to draw.
-        //
-        //   submeshIndex:
-        //     Which subset of the mesh to draw. This applies only to meshes that are composed
-        //     of several materials.
-        //
-        //   material:
-        //     Material to use.
-        //
-        //   matrices:
-        //     The array of object transformation matrices.
-        //
-        //   count:
-        //     The number of instances to be drawn.  要绘制的实例的数量 
-        //
-        //   properties:
-        //     Additional material properties to apply. See MaterialPropertyBlock.
-        //
-        //   castShadows:
-        //     Determines whether the Meshes should cast shadows.
-        //
-        //   receiveShadows:
-        //     Determines whether the Meshes should receive shadows.
-        //
-        //   layer:
-        //     Layer to use.
-        //
-        //   camera:
-        //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
-        //     drawn in the given Camera only.
-        //
-        //   lightProbeUsage:
-        //     LightProbeUsage for the instances.
-        //
-        //   lightProbeProxyVolume:
+        参数:
+          mesh:
+            The Mesh to draw.
+        
+          submeshIndex:
+            Which subset of the mesh to draw. This applies only to meshes that are composed
+            of several materials.
+        
+          material:
+            Material to use.
+        
+          matrices:
+            The array of object transformation matrices.
+        
+          count:
+            The number of instances to be drawn.  要绘制的实例的数量 
+        
+          properties:
+            Additional material properties to apply. See MaterialPropertyBlock.
+        
+          castShadows:
+            Determines whether the Meshes should cast shadows.
+        
+          receiveShadows:
+            Determines whether the Meshes should receive shadows.
+        
+          layer:
+            Layer to use.
+        
+          camera:
+            If null (default), the mesh will be drawn in all cameras. Otherwise it will be
+            drawn in the given Camera only.
+        
+          lightProbeUsage:
+            LightProbeUsage for the instances.
+        
+          lightProbeProxyVolume:
         */
         public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, Matrix4x4[] matrices, [Internal.DefaultValue("matrices.Length")] int count, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
         public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, List<Matrix4x4> matrices, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
@@ -684,51 +684,79 @@ namespace UnityEngine
 
             文档给出了 示范代码;
 
-        // 参数:
-        //   mesh:
-        //     The Mesh to draw.
-        //
-        //   submeshIndex:
-        //     Which subset of the mesh to draw. This applies only to meshes that are composed
-        //     of several materials.
-        //
-        //   material:
-        //     Material to use.
-        //
-        //   bounds:
-        //     The bounding volume surrounding the instances you intend to draw.
+        参数:
+          mesh:
+            The Mesh to draw.
         
-        //   bufferWithArgs:
-        //     The GPU buffer containing the arguments for how many instances of this mesh to
-        //     draw.
+          submeshIndex:
+            Which subset of the mesh to draw. This applies only to meshes that are composed
+            of several materials.
         
-        //   argsOffset:
-        //     The byte offset into the buffer, where the draw arguments start.
+          material:
+            Material to use.
         
-        //   properties:
-        //     Additional material properties to apply. See MaterialPropertyBlock.
-        //
-        //   castShadows:
-        //     Determines whether the mesh can cast shadows.
-        //
-        //   receiveShadows:
-        //     Determines whether the mesh can receive shadows.
-        //
-        //   layer:
-        //     Layer to use.
-        //
-        //   camera:
-        //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
-        //     drawn in the given Camera only.
-        //
-        //   lightProbeUsage:
-        //     LightProbeUsage for the instances.
-        //
-        //   lightProbeProxyVolume:
+          bounds:
+            The bounding volume surrounding the instances you intend to draw.
+        
+          bufferWithArgs:
+            The GPU buffer containing the arguments for how many instances of this mesh to
+            draw.
+        
+          argsOffset:
+            The byte offset into the buffer, where the draw arguments start.
+        
+          properties:
+            Additional material properties to apply. See MaterialPropertyBlock.
+        
+          castShadows:
+            Determines whether the mesh can cast shadows.
+        
+          receiveShadows:
+            Determines whether the mesh can receive shadows.
+        
+          layer:
+            Layer to use.
+        
+          camera:
+            If null (default), the mesh will be drawn in all cameras. Otherwise it will be
+            drawn in the given Camera only.
+        
+          lightProbeUsage:
+            LightProbeUsage for the instances.
+        
+          lightProbeProxyVolume:
         */
-        public static void DrawMeshInstancedIndirect(Mesh mesh, int submeshIndex, Material material, Bounds bounds, ComputeBuffer bufferWithArgs, [Internal.DefaultValue("0")] int argsOffset, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
+        public static void DrawMeshInstancedIndirect(
+            Mesh mesh, 
+            int submeshIndex, 
+            Material material, 
+            Bounds bounds, 
+            ComputeBuffer bufferWithArgs, 
+            [Internal.DefaultValue("0")] int argsOffset, 
+            [Internal.DefaultValue("null")] MaterialPropertyBlock properties, 
+            [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, 
+            [Internal.DefaultValue("true")] bool receiveShadows, 
+            [Internal.DefaultValue("0")] int layer, 
+            [Internal.DefaultValue("null")] Camera camera, 
+            [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, 
+            [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume
+        );
 
-        public static void DrawMeshInstancedIndirect(Mesh mesh, int submeshIndex, Material material, Bounds bounds, GraphicsBuffer bufferWithArgs, [Internal.DefaultValue("0")] int argsOffset, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
+        public static void DrawMeshInstancedIndirect(
+            Mesh mesh, 
+            int submeshIndex, 
+            Material material, 
+            Bounds bounds, 
+            GraphicsBuffer bufferWithArgs, 
+            [Internal.DefaultValue("0")] int argsOffset, 
+            [Internal.DefaultValue("null")] MaterialPropertyBlock properties, 
+            [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, 
+            [Internal.DefaultValue("true")] bool receiveShadows, 
+            [Internal.DefaultValue("0")] int layer, 
+            [Internal.DefaultValue("null")] Camera camera, 
+            [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, 
+            [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume
+        );
         
             [ExcludeFromDocs]public static void DrawMeshInstancedIndirect(Mesh mesh, int submeshIndex, Material material, Bounds bounds, ComputeBuffer bufferWithArgs, int argsOffset = 0, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0, Camera camera = null, LightProbeUsage lightProbeUsage = LightProbeUsage.BlendProbes);
             [ExcludeFromDocs]public static void DrawMeshInstancedIndirect(Mesh mesh, int submeshIndex, Material material, Bounds bounds, GraphicsBuffer bufferWithArgs, int argsOffset = 0, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0, Camera camera = null, LightProbeUsage lightProbeUsage = LightProbeUsage.BlendProbes);
@@ -749,43 +777,43 @@ namespace UnityEngine
             catlike 数个教程中都是使用过此函数
 
 
-        // 参数:
-        //   mesh:
-        //     The Mesh to draw.
-        //
-        //   submeshIndex:
-        //     Which subset of the mesh to draw. This applies only to meshes that are composed
-        //     of several materials.
-        //
-        //   material:
-        //     Material to use.
-        //
-        //   bounds:
-        //     The bounding volume surrounding the instances you intend to draw.
-        //
-        //   count:
-        //     The number of instances to be drawn.
-        //
-        //   properties:
-        //     Additional material properties to apply. See MaterialPropertyBlock.
-        //
-        //   castShadows:
-        //     Determines whether the Meshes should cast shadows.
-        //
-        //   receiveShadows:
-        //     Determines whether the Meshes should receive shadows.
-        //
-        //   layer:
-        //     to use.
-        //
-        //   camera:
-        //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
-        //     drawn in the given Camera only.
-        //
-        //   lightProbeUsage:
-        //     LightProbeUsage for the instances.
-        //
-        //   lightProbeProxyVolume:
+        参数:
+          mesh:
+            The Mesh to draw.
+        
+          submeshIndex:
+            Which subset of the mesh to draw. This applies only to meshes that are composed
+            of several materials.
+        
+          material:
+            Material to use.
+        
+          bounds:
+            The bounding volume surrounding the instances you intend to draw.
+        
+          count:
+            The number of instances to be drawn.
+        
+          properties:
+            Additional material properties to apply. See MaterialPropertyBlock.
+        
+          castShadows:
+            Determines whether the Meshes should cast shadows.
+        
+          receiveShadows:
+            Determines whether the Meshes should receive shadows.
+        
+          layer:
+            to use.
+        
+          camera:
+            If null (default), the mesh will be drawn in all cameras. Otherwise it will be
+            drawn in the given Camera only.
+        
+          lightProbeUsage:
+            LightProbeUsage for the instances.
+        
+          lightProbeProxyVolume:
         */
         public static void DrawMeshInstancedProcedural(
             Mesh mesh, int submeshIndex, Material material, Bounds bounds, int count, 
