@@ -237,6 +237,18 @@ unity 的 shader libraries, 它们包含 预处理macros, 能替你管理这些�
 
 -- instancing
     SV_InstanceID input system value.
+    ---
+    当使用 Graphics.DrawMeshInstancedIndirect() 等函数, 批量绘制mesh时 (比如草地)
+    此时 可将 vs 写为:
+        Varyings vert(Attributes IN, uint instanceID : SV_InstanceID)
+        {
+            ...
+        }
+        ---
+    此处的 instanceID 就是 本次 vs 处理的 mesh, 在一整批 mesh 中的 idx;
+
+
+
 
 -- geometry
     DX10 geometry shaders.

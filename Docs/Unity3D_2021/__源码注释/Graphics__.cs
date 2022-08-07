@@ -661,6 +661,8 @@ namespace UnityEngine
         /*
             摘要:
             Draws the same mesh multiple times using GPU instancing.
+
+            只有支持 compute shader 的平台, 才支持本函数 !!!!!!!!
         
             和 "Graphics.DrawMeshInstanced()" 类似, 不同点在于, 本函数中, 
             绘制多少个 instances 的数据, 来自于参数 bufferWithArgs;
@@ -670,6 +672,8 @@ namespace UnityEngine
 
             Meshes are not further culled by the view frustum or baked occluders, 
             nor sorted for transparency or z efficiency.
+            ---
+
 
             参数 "bufferWithArgs", has to have five integer numbers at given argsOffset offset: 
             -- index count per instance, 
@@ -683,6 +687,10 @@ namespace UnityEngine
             否则, all the information about which submesh to draw comes from the 参数 "bufferWithArgs";
 
             文档给出了 示范代码;
+
+            建议阅读:
+              https://toqoz.fyi/thousands-of-meshes.html
+              
 
         参数:
           mesh:
@@ -699,8 +707,7 @@ namespace UnityEngine
             The bounding volume surrounding the instances you intend to draw.
         
           bufferWithArgs:
-            The GPU buffer containing the arguments for how many instances of this mesh to
-            draw.
+            The GPU buffer containing the arguments for how many instances of this mesh to draw.
         
           argsOffset:
             The byte offset into the buffer, where the draw arguments start.
