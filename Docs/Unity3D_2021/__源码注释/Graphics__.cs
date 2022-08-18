@@ -592,12 +592,18 @@ namespace UnityEngine
 
             注意, 
                 最多只能绘制 1023 个 instances;
+                (猜测: 这个数量限制可能来自于: MaterialPropertyBlock )
 
             如果参数 material 没有开启 "Material.enableInstancing", 或者当前api 不支持 GPU Instancing,
             将抛出异常;
             可查看: "SystemInfo.supportsInstancing";
 
             catlike 教程中使用过此函数;
+
+            缺陷:
+                本版本需要在每次调用时, 强制传入每个 实例的 marix, 这是一个很大的工程量;
+                如果我们只是想画草, 且每个草的 matrix 都可在 shader 中当场生成的话, 就没必要每次都从 cpu 端传入了;
+                对于这种情况, 可改用下方的 DrawMeshInstancedIndirect() 版;
 
         参数:
           mesh:
@@ -637,9 +643,33 @@ namespace UnityEngine
         
           lightProbeProxyVolume:
         */
-        public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, Matrix4x4[] matrices, [Internal.DefaultValue("matrices.Length")] int count, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
-        public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, List<Matrix4x4> matrices, [Internal.DefaultValue("null")] MaterialPropertyBlock properties, [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, [Internal.DefaultValue("true")] bool receiveShadows, [Internal.DefaultValue("0")] int layer, [Internal.DefaultValue("null")] Camera camera, [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume);
-        
+        public static void DrawMeshInstanced(
+            Mesh mesh, 
+            int submeshIndex, 
+            Material material, 
+            Matrix4x4[] matrices, 
+            [Internal.DefaultValue("matrices.Length")] int count, 
+            [Internal.DefaultValue("null")] MaterialPropertyBlock properties, 
+            [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, 
+            [Internal.DefaultValue("true")] bool receiveShadows, 
+            [Internal.DefaultValue("0")] int layer, 
+            [Internal.DefaultValue("null")] Camera camera, 
+            [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, 
+            [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume
+        );
+        public static void DrawMeshInstanced(
+            Mesh mesh, 
+            int submeshIndex, 
+            Material material, 
+            List<Matrix4x4> matrices, 
+            [Internal.DefaultValue("null")] MaterialPropertyBlock properties, 
+            [Internal.DefaultValue("ShadowCastingMode.On")] ShadowCastingMode castShadows, 
+            [Internal.DefaultValue("true")] bool receiveShadows, 
+            [Internal.DefaultValue("0")] int layer, 
+            [Internal.DefaultValue("null")] Camera camera, 
+            [Internal.DefaultValue("LightProbeUsage.BlendProbes")] LightProbeUsage lightProbeUsage, 
+            [Internal.DefaultValue("null")] LightProbeProxyVolume lightProbeProxyVolume
+        );
             [ExcludeFromDocs]public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, Matrix4x4[] matrices, int count, MaterialPropertyBlock properties, ShadowCastingMode castShadows, bool receiveShadows, int layer);
             [ExcludeFromDocs]public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, Matrix4x4[] matrices);
             [ExcludeFromDocs]public static void DrawMeshInstanced(Mesh mesh, int submeshIndex, Material material, Matrix4x4[] matrices, int count);
@@ -666,6 +696,9 @@ namespace UnityEngine
         
             和 "Graphics.DrawMeshInstanced()" 类似, 不同点在于, 本函数中, 
             绘制多少个 instances 的数据, 来自于参数 bufferWithArgs;
+
+            数量:
+              和 "Graphics.DrawMeshInstanced()" 不同, 本函数可以绘制超过 1023 个实例;
 
             tpr:
                 改用 ComputeBuffer/GraphicsBuffer 来存储 各个 instance 的绘制信息;

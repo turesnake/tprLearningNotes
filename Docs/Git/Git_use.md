@@ -402,10 +402,19 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
 
 
+# ================================================================
+#                替换掉整个目录
+# ----------------------------------------------------------------
+# 需求:
+    假设存在两分支 dev 和 art, 现在 art 中的相对目录 Assets/BundleResources/Shaders/ 中的文件严重落后于主线进度, 
+    已经没办法通过 cherr-pick 来一点点同步两个分支中的内容了, 此时就需要将整个 Shaders/ 目录替换成 dev 分支中的那个;
 
+# 实施:
+    cmd 进入 art 工程目录, 输入:
+        git checkout origin/dev Assets/BundleResources/Shaders/Scene/
 
-
-
+注意, 此处指定的 branch 必须写: "origin/dev"; 它指向远端库中的 dev 分支, 而不是本地的,
+否则如果写了 "dev", 则只会同步到本地 dev分支的当下时间节点,  如果 本地 dev 没有被拉到最新, 则会导致本次同步并不彻底;
 
 
 

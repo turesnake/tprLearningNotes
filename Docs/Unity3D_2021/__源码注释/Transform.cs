@@ -479,43 +479,32 @@ namespace UnityEngine
         //   direction:
         public Vector3 TransformDirection(Vector3 direction);
         
-        //
-        // 摘要:
-        //     Transforms the position x, y, z from local space to world space.
-        //
-        // 参数:
-        //   x:
-        //
-        //   y:
-        //
-        //   z:
+
+        /*
+        摘要:
+            Transforms the position x, y, z from local space to world space.
+            Transforms position from local space to world space.
+
+
+        */
         public Vector3 TransformPoint(float x, float y, float z);
-        //
-        // 摘要:
-        //     Transforms position from local space to world space.
-        //
-        // 参数:
-        //   position:
         public Vector3 TransformPoint(Vector3 position);
 
-        //
-        // 摘要:
-        //     Transforms vector x, y, z from local space to world space.
-        //
-        // 参数:
-        //   x:
-        //
-        //   y:
-        //
-        //   z:
+
+
+        /*
+            摘要:
+                Transforms vector x, y, z from local space to world space.
+                Transforms vector from local space to world space.
+
+            注意:
+                若要转换 pos, 不要用本函数, 改用上面的 TransformPoint();
+            
+
+        */
         public Vector3 TransformVector(float x, float y, float z);
-        //
-        // 摘要:
-        //     Transforms vector from local space to world space.
-        //
-        // 参数:
-        //   vector:
         public Vector3 TransformVector(Vector3 vector);
+
 
         
         // 摘要:

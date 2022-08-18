@@ -202,7 +202,7 @@ The type userdata is provided to allow arbitrary C data to be stored in Lua vari
 # 但是, 这三个运算符返回的不是 bool 类型元素, 而是它的操作数:
 
 #  and: 
-    若第一操作数 是 false/nil, 返回第一操作数。否则反而第二个
+    若第一操作数 是 false/nil, 返回第一操作数 (即 false/nil )。否则反而第二个
 
 nil   and 13 --> nil
 false and 13 --> false

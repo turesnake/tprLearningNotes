@@ -107,6 +107,10 @@ urp 不再使用 screen space shadow;
 # ======================================== #
 
 
+# 前置注意:
+#   在 12.6 中发现 copy depth pass (copydepth) 可在某些情况下, 放在 trnasparents 之后执行.....
+
+
 # 何时使用 depth prepass: (requiresDepthPrepass)
     && camra or asset 需要 depth texture, 但环境(平台+camera) 又不支持 depth copy 操作;
     ||  若 camera 被用于  editor: scene 窗口, 或 预览窗口;

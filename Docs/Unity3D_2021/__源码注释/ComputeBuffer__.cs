@@ -188,18 +188,18 @@ namespace UnityEngine
             注意:
             参数 data 的中元素的类型必须是 "blittable type" 的;
         
-        // 参数:
-        //   data:
-        //     An array to receive the data.  接收端
-        //
-        //   managedBufferStartIndex:
-        //     The first element index in data where retrieved elements are copied.
-        //
-        //   computeBufferStartIndex:
-        //     The first element index of the compute buffer from which elements are read.
-        //
-        //   count:
-        //     The number of elements to retrieve.
+            参数:
+            data:
+                An array to receive the data.  接收端
+            
+            managedBufferStartIndex:
+                The first element index in data where retrieved elements are copied.
+            
+            computeBufferStartIndex:
+                The first element index of the compute buffer from which elements are read.
+            
+            count:
+                The number of elements to retrieve.
         */
         [SecurityCritical]
         public void GetData(Array data);
