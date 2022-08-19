@@ -42,7 +42,8 @@ float3 hash_0( float3 p ) // replace this by something better. really. do
 
 // gradient noise
 // ret [-1, 1] 仅检测得知，不完全保证
-float gradientNoise3D( float3 pos_ ){
+float gradientNoise3D( float3 pos_ )
+{
 
     float3 p = floor( pos_ );
     float3 w = frac(  pos_ ); // 就算参数是负数，也运行正常

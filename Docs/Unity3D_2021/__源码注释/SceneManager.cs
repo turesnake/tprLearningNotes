@@ -130,6 +130,7 @@ namespace UnityEngine.SceneManagement
         //     A reference to the Scene, if valid. If not, an invalid Scene is returned.
         [StaticAccessorAttribute("SceneManagerBindings", Bindings.StaticAccessorType.DoubleColon)]
         public static Scene GetSceneByPath(string scenePath);
+
         //
         // 摘要:
         //     Loads the Scene by its name or index in Build Settings.
@@ -145,8 +146,9 @@ namespace UnityEngine.SceneManagement
         //     Allows you to specify whether or not to load the Scene additively. See SceneManagement.LoadSceneMode
         //     for more information about the options.
         public static void LoadScene(string sceneName, [DefaultValue("LoadSceneMode.Single")] LoadSceneMode mode);
-        [ExcludeFromDocs]
-        public static void LoadScene(string sceneName);
+
+        [ExcludeFromDocs] public static void LoadScene(string sceneName);
+
         //
         // 摘要:
         //     Loads the Scene by its name or index in Build Settings.
@@ -164,6 +166,7 @@ namespace UnityEngine.SceneManagement
         // 返回结果:
         //     A handle to the Scene being loaded.
         public static Scene LoadScene(string sceneName, LoadSceneParameters parameters);
+
         //
         // 摘要:
         //     Loads the Scene by its name or index in Build Settings.
@@ -179,8 +182,8 @@ namespace UnityEngine.SceneManagement
         //     Allows you to specify whether or not to load the Scene additively. See SceneManagement.LoadSceneMode
         //     for more information about the options.
         public static void LoadScene(int sceneBuildIndex, [DefaultValue("LoadSceneMode.Single")] LoadSceneMode mode);
-        [ExcludeFromDocs]
-        public static void LoadScene(int sceneBuildIndex);
+        [ExcludeFromDocs] public static void LoadScene(int sceneBuildIndex);
+
         //
         // 摘要:
         //     Loads the Scene by its name or index in Build Settings.
@@ -198,6 +201,8 @@ namespace UnityEngine.SceneManagement
         // 返回结果:
         //     A handle to the Scene being loaded.
         public static Scene LoadScene(int sceneBuildIndex, LoadSceneParameters parameters);
+
+        
         //
         // 摘要:
         //     Loads the Scene asynchronously in the background.

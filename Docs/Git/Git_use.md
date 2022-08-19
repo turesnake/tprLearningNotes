@@ -416,6 +416,11 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 注意, 此处指定的 branch 必须写: "origin/dev"; 它指向远端库中的 dev 分支, 而不是本地的,
 否则如果写了 "dev", 则只会同步到本地 dev分支的当下时间节点,  如果 本地 dev 没有被拉到最新, 则会导致本次同步并不彻底;
 
+运行成功后, 可看到: 
+
+    Updated 22 paths from xxxxx
+
+表示更新了 目标目录中 22 个文件;
 
 
 
