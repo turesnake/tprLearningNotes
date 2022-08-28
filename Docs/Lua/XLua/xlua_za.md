@@ -45,6 +45,62 @@ max 就是得到的 lua 函数; 然后就能调用它:
     
 
 
+# [XLua]lua和c#交互
+https://blog.fengyiqun.com/?p=779
+
+写得不太好.....
+
+
+
+
+# ----------------------------------- #
+#    如何 实例化一个 c# 类对象;   constructor,  New
+# ----------------------------------- #
+
+# --- 在 c# 中为:
+    var buffer = new ComputeBuffer(128, sizeof(uint));
+
+# --- 翻译到 lua 中则是:
+    local buffer = CS.UnityEngine.ComputeBuffer( 128, 4 )
+
+
+
+
+
+# ----------------------------------- #
+#     如何在 lua 中构造 泛型 实例. 比如 List
+# ----------------------------------- #
+https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md#%E6%B3%9B%E5%9E%8B%E5%AE%9E%E4%BE%8B%E6%80%8E%E4%B9%88%E6%9E%84%E9%80%A0
+
+    local lst = CS.System.Collections.Generic["List`1[System.String]"]()
+
+这个文档写的很好.....
+
+
+
+
+# ----------------------------------- #
+#     如何在 lua 中构造 数组 实例;  array 
+# ----------------------------------- #
+https://blog.csdn.net/qq_42385019/article/details/108962978
+
+
+    local ary = CS.System.Array.CreateInstance( typeof(CS.System.Int32), 5 )
+    print( ary.Length )
+    print( ary[0] )
+
+# 注意, 不能用: 
+    for k,v in pairs(ary) do
+        ...
+    end 
+    ---
+    去遍历这个 ary, 因为它不是 lua 的 table; 
+    只能老老实实用 c# 方式去遍历;
+
+
+
+
+
 
 
 

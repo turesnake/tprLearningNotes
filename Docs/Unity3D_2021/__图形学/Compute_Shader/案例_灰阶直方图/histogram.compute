@@ -1,0 +1,61 @@
+#pragma kernel HistogramInitialize
+#pragma kernel HistogramMain
+
+Texture2D<float4> _InputTexture; // input texture, 一张贴图
+
+// 目标贴图的 长宽
+uint _TexWidth;
+uint _TexHeight;
+
+
+
+RWStructuredBuffer<uint> _HistogramBuffer; // 共 128 个桶;
+
+
+
+float Luminance_2(float3 linearRgb)
+{
+    return dot(linearRgb, float3(0.2126729, 0.7151522, 0.0721750));
+    //return dot(linearRgb, float3(0.299, 0.587, 0.114));
+}
+float Gamma22ToLinear(float c)
+{
+    //return PositivePow(c, 2.2);
+    return pow( abs(c), 2.2);
+}
+float LinearToGamma22(float c)
+{
+    //return PositivePow(c, 0.454545454545455);
+    return pow( abs(c), 0.454545454545455);
+}
+
+
+
+[numthreads(64,1,1)]
+void HistogramInitialize(uint3 id : SV_DispatchThreadID) 
+{
+   _HistogramBuffer[id.x] = 0;
+}
+
+
+
+[numthreads(8,8,1)]
+void HistogramMain (uint3 id : SV_DispatchThreadID) 
+{
+    
+    // 确保 uv 不越界
+    int2 uv = id.xy*2; // 2x2 个像素中, 只采样一个;
+    uv.x = min( max(0,uv.x), _TexWidth);
+    uv.y = min( max(0,uv.y), _TexHeight);
+    
+    
+    float lumGamma = LinearToGamma22(Luminance_2(_InputTexture[uv].rgb)); // [0,1]
+
+    uint ulum = (uint)floor( 127.0 * lumGamma ); // [0,127]
+    ulum = min(max(0,ulum), 127);
+
+    InterlockedAdd(_HistogramBuffer[ulum], 1);
+
+    
+}
+

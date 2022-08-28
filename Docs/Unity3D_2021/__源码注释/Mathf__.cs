@@ -316,20 +316,20 @@ namespace UnityEngine
             然后根据这三个值来计算 t 值;
 
             参数 value 位于 区间 [a,b] 上 (也可能超出此区间), 本函数计算 value 在 [a,b] 上的 相对关系值 t:
-            若 value 位于 [0,1], 本函数返回的 t值 位于 [0,1];
-            若 value 小于 0, 本函数返回 0;
-            若 value 大于 1, 本函数返回 1;
+            若 value 位于 [a,b], 本函数返回的 t值 位于 [0,1];
+            若 value 小于 a, 本函数返回 0;
+            若 value 大于 b, 本函数返回 1;
 
-        // 参数:
-        //   a:
-        //     Start value.
-        //   b:
-        //     End value.
-        //   value:
-        //     Value between start and end.
-        //
-        // 返回结果:
-        //     Percentage of value between start and end. 返回 t 值;
+        参数:
+          a:
+            Start value.
+          b:
+            End value.
+          value:
+            Value between start and end.
+        
+        返回结果:
+            Percentage of value between start and end. 返回 t 值;
         */
         public static float InverseLerp(float a, float b, float value);
 

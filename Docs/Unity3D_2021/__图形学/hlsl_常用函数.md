@@ -113,6 +113,17 @@ ret lerp ( x, y, s );
 Lerp is shorthand for linear interpolation
 
 
+# ------------------ #
+#   exp
+ret exp(x);
+
+---
+就是计算: e^x 的值;
+
+
+
+
+
 
 
 # ------------------ #

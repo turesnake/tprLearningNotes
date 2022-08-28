@@ -29,8 +29,7 @@ Shader "tpr/tprURP_001b_texture_color"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             // 声明一个 texture sampler pair
-            TEXTURE2D( _BaseMap );
-            SAMPLER( sampler_BaseMap );
+            TEXTURE2D( _BaseMap );   SAMPLER( sampler_BaseMap );
 
             // 为支持 SRP Batcher 功能, 所有 material properties 都要被整合进 cbuffer 中
             // 参数是 cbuffer 的名字

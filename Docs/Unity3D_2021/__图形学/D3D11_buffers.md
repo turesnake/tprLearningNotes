@@ -35,7 +35,6 @@ and are used to render primitives more efficiently.
 #            Constant Buffer
 # ---------------------------------------------- #
 
-
 A constant buffer 允许你高效的将 shader constants data 提供给 渲染管线;
 
 可用来存储 the results of the stream-output stage. 
@@ -109,10 +108,68 @@ that supports adding and removing values from the end of a buffer similar to the
 -- ConsumeStructuredBuffer
 
 
+# -------------------------------------------------------------------------------------------------------------- #
+
+
+# =============================================== #
+#      StructuredBuffer  的访问性能 怎么样 ?
+# =============================================== #
+
+目前的猜测, StructuredBuffer 是可能非常大的, 每次访问都只会读取 一个 cache line 到 本地缓存;
+
+
+# --1-- 为提高访问性能, 务必手动管理 StructuredBuffer 中的 字节对齐问题;
+    StructuredBuffer 内的元素 不会自动插入 padding, 而是一定紧密相连, 如果一个 元素长 5-bytes, 
+    那么就会以 5*N 的状态紧密存储;
+    ---
+    但是 cache line 一定是字节对齐到 4x4-bytes 的,(float4 为一个单位), 
+    所有一定要让 StructuredBuffer 中的元素, 字节对齐到 4x4-bytes;
+
+
+# --------
+# 在部分 安卓设备上, vs 可能不支持访问 StructuredBuffer;
 
 
 
 
+
+# =============================================== #
+#      StructuredBuffer  和  cbuffer
+# =============================================== #
+
+# cbuffer 特性:
+    -- 存储自动 16-bytes 对齐 (一个 float4)
+    -- 单个 cbuffer 的上限为 64kb (4096 个 float4 元素)
+    -- coherent access patterns 
+        (一致访问模式... 没太理解)
+        tpr: 此处的 "一致", 似乎是对数据 "读写访问" 的一致性, 比如多线程访问时保证数据相同 ?
+
+
+
+# StructuredBuffer 和 cbuffer 的性能比较;
+https://developer.nvidia.com/content/how-about-constant-buffers
+    按照此文说法, 如果 gpu 中的 array 完全符合 cbuffer 的要求, 那么从 StructuredBuffer 改为 cbuffer, 能提高很多性能;
+
+------ 文中写道:
+    As a warning, D3D 11 will unfortunately not allow you to create a resource with the flags to work as both a structured buffer and a constant buffer. 
+    If you need both, you must create a second resource and use CopyResource() to move the data.
+    ---
+    (2015) d3d 11 可能不允许将同一份资源被同时当作 StructuredBuffer 和 cbuffer 来使用; (比如在生成端, 它是 StructuredBuffer, 在使用端, 它是 cbuffer)
+    你必须再建立一个资源, 然后调用 CopyResource() 来移动它...
+    ----
+    微软说, 这个函数好像性能不太好... 不是很常用...
+
+按照此文的意思, StructuredBuffer 的整体访问性能不如 cbuffer, 但好像也没有差到 texture 的程度;
+
+
+# GPUs L1 caches
+据说只有 16-kb, 那么是绝对装不下一个完整大小的 cbuffer 的;
+
+
+# -----------------
+#     perftest
+# 测试了各种 资源类型的 性能....
+https://github.com/sebbbi/perftest
 
 
 

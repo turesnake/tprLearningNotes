@@ -144,32 +144,32 @@ namespace UnityEngine
             本函数改写了变量: "RenderTexture.active";
             如果你希望它不被改写, 你应该在调用本函数之前手动 暂存它, 并在调用后设置回去;
             
-        // 参数:
-        //   source:
-        //     Source texture.
-        //
-        //   dest:
-        //     The destination RenderTexture. Set this to null to blit directly to screen. 
+        参数:
+          source:
+            Source texture.
+        
+          dest:
+            The destination RenderTexture. Set this to null to blit directly to screen. 
                 当 dest 为 null 时, unity 会去自动使用 "Camera.main.targetTexture" 当作目标地址;
-        //
-        //   mat:
-        //     Material to use. Material's shader could do some post-processing effect, for example.
-        //
-        //   pass:
-        //     If -1 (default), draws all passes in the material. Otherwise, draws given pass only.
-        //
-        //   offset:
-        //     Offset applied to the "source" texture coordinate.
-        //
-        //   scale:
-        //     Scale applied to the "source" texture coordinate.
-        //
-        //   sourceDepthSlice:
-        //     The texture array source slice to perform the blit from.  
+        
+          mat:
+            Material to use. Material's shader could do some post-processing effect, for example.
+        
+          pass:
+            If -1 (default), draws all passes in the material. Otherwise, draws given pass only.
+        
+          offset:
+            Offset applied to the "source" texture coordinate.
+        
+          scale:
+            Scale applied to the "source" texture coordinate.
+        
+          sourceDepthSlice:
+            The texture array source slice to perform the blit from.  
                 选择 texture array 中的某一片
-        //
-        //   destDepthSlice:
-        //     The texture array destination slice to perform the blit to.
+        
+          destDepthSlice:
+            The texture array destination slice to perform the blit to.
                 选择 texture array 中的某一片
         */
         public static void Blit(Texture source, RenderTexture dest, Vector2 scale, Vector2 offset);
@@ -1284,30 +1284,30 @@ namespace UnityEngine
             You should consider setting "GL.sRGBWrite()" as you need it before doing SetRenderTarget 
             or any other manual rendering.
 
-        // 参数:
-        //   rt:
-        //     RenderTexture to set as active render target.
-        //
-        //   mipLevel:
-        //     Mipmap level to render into (use 0 if not mipmapped).
-        //
-        //   face:
-        //     Cubemap face to render into (use Unknown if not a cubemap).
-        //
-        //   depthSlice:
-        //     Depth slice to render into (use 0 if not a 3D or 2DArray render target).
-        //
-        //   colorBuffer:
-        //     Color buffer to render into.
-        //
-        //   depthBuffer:
-        //     Depth buffer to render into.
-        //
-        //   colorBuffers:
-        //     Color buffers to render into (for multiple render target effects).
-        //
-        //   setup:
-        //     Full render target setup information.
+        参数:
+          rt:
+            RenderTexture to set as active render target.
+        
+          mipLevel:
+            Mipmap level to render into (use 0 if not mipmapped).
+        
+          face:
+            Cubemap face to render into (use Unknown if not a cubemap).
+        
+          depthSlice:
+            Depth slice to render into (use 0 if not a 3D or 2DArray render target).
+        
+          colorBuffer:
+            Color buffer to render into.
+        
+          depthBuffer:
+            Depth buffer to render into.
+        
+          colorBuffers:
+            Color buffers to render into (for multiple render target effects).
+        
+          setup:
+            Full render target setup information.
         */
         public static void SetRenderTarget(RenderTargetSetup setup);
         public static void SetRenderTarget(RenderBuffer[] colorBuffers, RenderBuffer depthBuffer);

@@ -1027,12 +1027,12 @@ namespace UnityEngine
             通过 pass 的 pass tag: "LightMode" 的值 (也就是参数 passName 提供的) 找到 material
             体内对应的 shader pass; 然后可以开启/禁用它;
 
-        // 参数:
-        //   passName:
-        //     Shader pass name (case insensitive).(不区分大小写)
-        //
-        //   enabled:
-        //     Flag indicating whether this Shader pass should be enabled.
+            参数:
+            passName:
+                Shader pass name (case insensitive).(不区分大小写)
+            
+            enabled:
+                Flag indicating whether this Shader pass should be enabled.
         */
         [FreeFunctionAttribute("MaterialScripting::SetShaderPassEnabled", HasExplicitThis = true)]
         public void SetShaderPassEnabled(string passName, bool enabled);
@@ -1047,17 +1047,17 @@ namespace UnityEngine
             更多细节查看:
             https://docs.unity3d.com/2021.1/Documentation/Manual/MaterialsAccessingViaScript.html
         
-        // 参数:
-        //   nameID:
-        //     Property name ID, use Shader.PropertyToID to get it.
-        //   name:
-        //     Property name, e.g. "_MainTex".
-        //
-        //   value:
-        //     Texture to set.
-        //
-        //   element:
-        //     Optional parameter that specifies the type of data to set from the RenderTexture.
+            参数:
+            nameID:
+                Property name ID, use Shader.PropertyToID to get it.
+            name:
+                Property name, e.g. "_MainTex".
+            
+            value:
+                Texture to set.
+            
+            element:
+                Optional parameter that specifies the type of data to set from the RenderTexture.
         */
         public void SetTexture(string name, Texture value);
         public void SetTexture(int nameID, Texture value);

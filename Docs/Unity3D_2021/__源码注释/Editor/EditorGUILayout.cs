@@ -443,25 +443,25 @@ namespace UnityEditor
             Make a field for editing an AnimationCurve.
             画一个 曲线调节窗口
         
-        // 参数:
-        //   property:
-        //     The curve to edit.
-        //
-        //   color:
-        //     The color to show the curve with.
-        //
-        //   ranges:
-        //     Optional rectangle that the curve is restrained within.
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        //   label:
-        //     Optional label to display in front of the field. Pass [[GUIContent.none] to hide
-        //     the label.
+        参数:
+          property:
+            The curve to edit.
+        
+          color:
+            The color to show the curve with.
+        
+          ranges:
+            Optional rectangle that the curve is restrained within.
+        
+          options:
+            An optional list of layout options that specify extra layout properties. Any
+            values passed in here will override settings defined by the style.<br> See Also:
+            GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+            GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        
+          label:
+            Optional label to display in front of the field. Pass [[GUIContent.none] to hide
+            the label.
         */
         public static void CurveField(SerializedProperty property, Color color, Rect ranges, params GUILayoutOption[] options);
         public static void CurveField(SerializedProperty property, Color color, Rect ranges, GUIContent label, params GUILayoutOption[] options);
@@ -3785,25 +3785,25 @@ namespace UnityEditor
                 Make a field for SerializedProperty.
         
         
-        // 参数:
-        //   property:
-        //     The SerializedProperty to make a field for.
-        //
-        //   label:
-        //     Optional label to use. If not specified the label of the property itself is used.
-        //     Use GUIContent.none to not display a label at all.
-        //
-        //   includeChildren:
-        //     If true the property including children is drawn; otherwise only the control
-        //     itself (such as only a foldout but nothing below it).
-        //
-        //   options:
-        //     An optional list of layout options that specify extra layout properties. Any
-        //     values passed in here will override settings defined by the style.<br> See Also:
-        //     GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
-        //     GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
-        //
-        // 返回结果:
+        参数:
+          property:
+            The SerializedProperty to make a field for.
+        
+          label:
+            Optional label to use. If not specified the label of the property itself is used.
+            Use GUIContent.none to not display a label at all.
+        
+          includeChildren:
+            If true the property including children is drawn; otherwise only the control
+            itself (such as only a foldout but nothing below it).
+        
+          options:
+            An optional list of layout options that specify extra layout properties. Any
+            values passed in here will override settings defined by the style.<br> See Also:
+            GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
+            GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.
+        
+        返回结果:
                 True if the property has children and is expanded and includeChildren was set to false; 
                 otherwise false.
         */
