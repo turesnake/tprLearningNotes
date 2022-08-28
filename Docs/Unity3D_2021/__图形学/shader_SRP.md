@@ -497,6 +497,9 @@ posHCS.y *= _ProjectionParams.x;
 #        positionSS
 # ---------------------------------------------- #
 
+# positionSS
+屏幕空间上的, [0,1] 区间的值;
+
 # == 理论 ==
 准备好当前位置的 posHCS, 执行齐次除法, 获得 NDC 值: posNDC (float3)
 取 posNDC 的 xy 两项, 此时它们的取值区间为 [-1, 1] 执行:
