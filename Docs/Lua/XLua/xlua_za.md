@@ -73,6 +73,8 @@ https://blog.fengyiqun.com/?p=779
 https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md#%E6%B3%9B%E5%9E%8B%E5%AE%9E%E4%BE%8B%E6%80%8E%E4%B9%88%E6%9E%84%E9%80%A0
 
     local lst = CS.System.Collections.Generic["List`1[System.String]"]()
+    ---
+    后面的 圆括号 里是可以传参的
 
 这个文档写的很好.....
 
