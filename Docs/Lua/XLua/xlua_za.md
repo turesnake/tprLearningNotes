@@ -79,6 +79,13 @@ https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md#%E6%B3%9B%E5%
 这个文档写的很好.....
 
 
+# --- List< List<Vector3> >
+    版本大于 v2.1.12 的 xlua 可使用:
+        local type_1 = CS.System.Collections.Generic.List(CS.UnityEngine.Vector3)
+        local type_2 = CS.System.Collections.Generic.List( type_1 )
+        ll = type_2()
+
+
 
 
 # ----------------------------------- #
