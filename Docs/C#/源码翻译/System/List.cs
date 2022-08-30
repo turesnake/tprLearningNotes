@@ -101,6 +101,8 @@ namespace System.Collections.Generic
 
         public void Sort(Comparison<T> comparison);
         public void Sort(int index, int count, IComparer<T> comparer);
+
+        // 直接将 本list 内的元素进行排序, 
         public void Sort();
         public void Sort(IComparer<T> comparer);
 
