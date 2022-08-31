@@ -241,6 +241,13 @@ int lua_pcallk (lua_State *L,
 //     将 返回值 按照 in direct order （第一个返回值先push）push 到 stack
 //     最后，在 c函数中，return 返回值的 个数
 //-- （被 lua 调用的 C函数，也能返回 多个 返回值）
+/*
+    换句话说，所有的函数必须接收一个 lua_State 作为参数，同时返回一个整数值。
+    因为这个函数使用Lua栈作为参数，所以它可以从栈里面读取任意数量和任意类型的参数。
+    而这个函数的返回值则表示函数返回时有多少返回值被压入Lua栈。（因为Lua的函数是可以返回多个值的）
+
+
+*/
 typedef int (*lua_CFunction) (lua_State *L);
 
     //--- C函数 示范 ---
@@ -513,10 +520,19 @@ int lua_type (lua_State *L, int index);
 
 
 //-------------------------------------------------------------
-//-- 返回 stack 中栈顶元素的 idx值（最浅层的那个）
-//   由于 lua 的起始元素 标号为1，所以，本函数的返回值，也可理解为：
-//   “stack 中元素的 个数”
+// 
+//   直白: "得到栈中元素个数"
+// 
+//   具体:
+//-- 返回 stack 中栈顶元素的 idx 值（最浅层的那个）
+//      由于 lua 的起始元素 标号为1，所以，本函数的返回值，也可理解为：
+//      “stack 中元素的 个数”
+// 
 //--  如果 本函数返回 0，表示 stack 是空的
+/*
+    这个操作非常常见, 每次操作 lua 栈之前, 都会先调用 lua_gettop(), 得到 栈元素个数 oldTop,
+    然后执行一系列操作, 最后再把 oldTop 压回去;
+*/
 int lua_gettop (lua_State *L); 
 
 
@@ -525,6 +541,20 @@ int lua_gettop (lua_State *L);
 // 如果，参数index 的值大于 原有 栈顶index，则对 stack 扩容。新增的 元素统统填 nil
 // 如果 参数index 变小了，则对 stack 缩容。
 // 如果 参数index 为0. 则将 stack 彻底清空
+/*
+    本函数通常和 上面的 lua_gettop() 配套调用:
+
+        int oldTop = lua_gettop(L);  // 暂存原初的 栈顶idx
+        ...
+        lua_pushnumber(L, sum/n);
+        lua_pushnumber(L, sum/n);
+        ...
+        lua_settop(L, oldTop)        // 将当前栈顶指针 指向 原来的 栈顶idx, 同时 清空栈顶以上的内容;
+
+    -----------
+    通过这个操作, 允许我们借用 lua栈来做一些 临时运算, 最后再把栈恢复到 原初的样子;
+
+*/
 void lua_settop (lua_State *L, int index);
     //- 也可以使用 负数index。
 
@@ -726,6 +756,78 @@ const char *lua_getlocal (lua_State *L, const lua_Debug *ar, int n);
 typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
 
 
+
+
+/*
+    Pushes onto the stack the value of the global name. Returns the type of that value.
+    ---
+    lua_getglobal(L,"var") 会执行两步操作：
+        1.将 "var" 这个 string 放入栈中, (应该是这个 string 的引用)
+        2.由Lua去寻找变量 "var" 的值,  并将 变量 var 的值, 返回栈顶 (替换var);
+
+    所以函数调用结束后, 栈顶的元素是 全局变量 "var" 的 "值本身";
+*/
+int lua_getglobal (lua_State *L, const char *name);
+
+
+
+
+/*
+    Pushes onto the stack the value t[k], where t is the value at the given index. 
+    As in Lua, this function may trigger a metamethod for the "index" event (see §2.4).
+    Returns the type of the pushed value.
+    ---
+    举例:
+        lua_getglobal( L," tbl" );   
+        lua_getfield(  L, -1, "name");
+        ---
+    先将一个名为 "tbl" 的 table 压到 lua 栈中, 它此时位于栈顶, idx = -1;
+    然后调用本函数, 将 table: "tbl" 体内的一个名为 "name" 的 元素, 压到栈顶位置;
+
+    参数 index 用来在栈中索引到一个 元素, 并把这个元素当作一个 table, 去访问它的 "__index" 操作符, (毕竟要去访问它的 .k 元素 )
+
+*/
+int lua_getfield (lua_State *L, int index, const char *k);
+
+
+
+/* 
+    Does the equivalent to t[k] = v, where t is the value at the given index and v is the value at the top of the stack.
+    This function pops the value from the stack. As in Lua, this function may trigger a metamethod for the "newindex" event (see §2.4).
+    ---
+    举例:
+        lua_pushstring(L, "abc");  
+        lua_setfield(L, 2, "name");
+        ---
+    我们的目的操作是:
+        t[k] = v
+
+    第一步, 先将目前值 v 压入栈中;
+    第二步, 通过 参数 index, 在栈中找到目标 table, 用参数 k (一个字符串) 在这个 table 中找到目标元素 t[k];
+    最后本函数会执行 赋值操作;
+
+*/
+void lua_setfield (lua_State *L, int index, const char *k);
+
+
+
+/*
+    Pushes onto the stack the value t[k], where t is the value at the given index and k is the value at the top of the stack.
+
+    This function pops the key from the stack, pushing the resulting value in its place. 
+    As in Lua, this function may trigger a metamethod for the "index" event (see §2.4).
+
+    Returns the type of the pushed value.
+    ---
+    将 t[k] 的值 压入栈中, 使用参数 index 在栈中找到 目标 table, table.field: k 则是当前栈顶元素 (这意味着在调用本函数之前, 要先把 k 值压入栈顶)
+
+    本函数在运行时, 会先把栈顶的 k 值 pop 出栈, 然后将 t[k] 值 压入栈顶;
+    在 lua 端, 本函数会访问 table 的 __index 元方法
+
+    本函数返回  pushed value 的 类型信息: (没看懂)
+
+*/
+int lua_gettable (lua_State *L, int index);
 
 
 
