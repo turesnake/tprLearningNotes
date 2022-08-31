@@ -160,7 +160,7 @@ void lua_call (lua_State *L, int nargs, int nresults);
 
     //- 在调用过程中发生的任何 error，都将 “向上传递” -- propagated upwards (with a longjmp)
 
-    //- 情确保，在一系列 lua_call 流程后，将 stack 恢复到最初的状态。
+    //- 请确保，在一系列 lua_call 流程后，将 stack 恢复到最初的状态。
 
 
 
@@ -290,10 +290,9 @@ const char *lua_pushstring (lua_State *L, const char *s);
 
     // 如果 参数s 为 NULL， 会向 stack push nil，并且本函数最终返回 NULL
 
-void lua_pushboolean (lua_State *L, int b);
 void lua_pushcclosure (lua_State *L, lua_CFunction fn, int n);
     //  Pushes a new C closure
-    //  压入一个 c函数，及其关联变量。本函数将创建一个 c闭包 （通畅给 lua 调用）
+    //  压入一个 c函数，及其关联变量。本函数将创建一个 c闭包 （通常给 lua 调用）
 
     //-- C Closures --
     //-  当一个 C函数被创建，它可能与一些 自由变量有关联。这种 c函数就是 c闭包
@@ -306,7 +305,7 @@ void lua_pushcclosure (lua_State *L, lua_CFunction fn, int n);
 
     //-- 为了将一个 自由变量 与 c函数 绑定，
     //   首先，这些 变量 必须被 push 到 stack。（第一个变量先 push）
-    //   然后调用 lua_pushcclosure，将 c函数 创建并push 到 stack
+    //   然后调用 lua_pushcclosure, 将 c函数 创建并push 到 stack
     //   参数n 表示 有多少个 关联变量。上限为 255
 
     //-- 若 参数n 为0. 此时将创建 a light C function
@@ -330,9 +329,19 @@ void lua_pushglobaltable (lua_State *L);
     // Pushes the global environment onto the stacks
 
 void lua_pushinteger (lua_State *L, lua_Integer n);
+    // Pushes an integer with value n onto the stack.
+
+
 void lua_pushlightuserdata (lua_State *L, void *p);
     // Pushes a light userdata onto the stack
-    // 未完...
+
+    // Userdata represent C values in Lua. 
+    // A light userdata represents a pointer, a void*. 
+    // It is a value (like a number): you do not create it, it has no individual metatable, 
+    // and it is not collected (as it was never created). 
+    
+    // A light userdata is equal to "any" light userdata with the same C address.
+
 
 const char *lua_pushliteral (lua_State *L, const char *s);
     //-- 宏，等同于 lua_pushstring
@@ -356,7 +365,7 @@ const char *lua_pushvfstring (lua_State *L,
 //  扩充 stack，从而确保 stack 至少拥有 参数n 个 slots。
 int lua_checkstack (lua_State *L, int n);
 
-    //- 本函数永远不会 缩小 stack。如果满足 参数n 大的空间。
+    //- 本函数永远不会 缩小 stack; 如果满足 参数n 大的空间。
     //  本函数也不会去 缩小 stack
 
     //-- return:
@@ -523,7 +532,9 @@ void lua_settop (lua_State *L, int index);
 //-------------------------------------------------------------
 //  #define lua_pop(L,n) lua_settop( L, -(n)-1 )
 //  从栈顶 弹出 参数n 个元素
+// tpr: 弹出元素 并不意味着拿到这些元素, 仅仅是将它们从栈中清除掉;
 void lua_pop (lua_State *L, int n);
+
 
 //-------------------------------------------------------------
 // 将 stack 中，idx处元素 到 栈顶 这段区域内的元素， 回环旋转 n个位置
@@ -568,9 +579,10 @@ void lua_replace (lua_State *L, int index);
 
 
 //-------------------------------------------------------------
+// Copies the element at index fromidx into the valid index toidx, replacing the value at that position. 
+// Values at other positions are not affected.
 // 将 参数fromidx 处的元素，复制一份，到 参数toidx处
-// 参数fromidx 处的原有元素 将被覆盖
-// 参数toidx 处的原有元素，不变
+// 参数fromidx 处的原有元素 将被覆盖, 参数toidx 处的原有元素，不变 -- 这段解释不太对..
 void lua_copy (lua_State *L, int fromidx, int toidx);
 
 
@@ -579,7 +591,7 @@ void lua_copy (lua_State *L, int fromidx, int toidx);
 //-------------------------------------------------------------
 //- 一个用来容纳 某个 函数／激活态记录 的数段信息的 数据结构。
 //  lua_getstack函数 只装填这个 结构中的 private部分，用于后续使用
-//  剩余部分，通过调用 lua_getinfo 来写入
+//  剩余部分，通过调用 lua_getinfo() 来写入
 typedef struct lua_Debug {
     int event;
     const char *name;           /* (n) */
@@ -693,6 +705,25 @@ int lua_getinfo (lua_State *L, const char *what, lua_Debug *ar);
 //    如果 参数n 大于 active local变量 的数量，本函数返回 NULL（且 push nothing）
 const char *lua_getlocal (lua_State *L, const lua_Debug *ar, int n);
 
+
+
+//-------------------------------------------------------------
+// Type for debugging hook functions.  -- debug hook 函数的 类型;
+
+// Whenever a hook is called, its ar argument has its field event set to the specific event that triggered the hook. 
+// Lua identifies these events with the following constants: LUA_HOOKCALL, LUA_HOOKRET, LUA_HOOKTAILCALL, LUA_HOOKLINE, and LUA_HOOKCOUNT. 
+// Moreover, for line events, the field currentline is also set. To get the value of any other field in ar, the hook must call lua_getinfo.
+
+// For call events, event can be LUA_HOOKCALL, the normal value, or LUA_HOOKTAILCALL, 
+// for a tail call; in this case, there will be no corresponding return event.
+
+// While Lua is running a hook, it disables other calls to hooks. 
+// Therefore, if a hook calls back Lua to execute a function or a chunk, this execution occurs without any calls to hooks.
+
+// Hook functions cannot have continuations, that is, they cannot call lua_yieldk, lua_pcallk, or lua_callk with a non-null k.
+// Hook functions can yield under the following conditions: Only count and line events can yield; 
+// to yield, a hook function must finish its execution calling lua_yield with nresults equal to zero (that is, with no values).
+typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
 
 
 

@@ -8,6 +8,18 @@ https://github.com/Tencent/xLua
 下载后查看 demo 项目;
 
 
+
+
+#  xlua源码分析
+https://blog.csdn.net/Jesse__Zhong/article/details/111744622
+
+
+
+# 看懂Xlua实现原理——从宏观到微观（1）传递c#对象到Lua
+https://zhuanlan.zhihu.com/p/146377267
+
+
+
 # ----------------------------------- #
 #   如何查找 xlua 各种 attributes 的使用文档
 # ----------------------------------- #

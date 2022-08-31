@@ -173,6 +173,9 @@ A metatable controls how an object behaves in arithmetic operations, bitwise ope
                 b = 122
             }
 
+    注意:
+        对 __index 的访问, 不光可以是: table[key], 还可以是: table.key;  (后者更常见)
+
 
 # __newindex: 
     The indexing assignment table[key] = value. Like the index event, this event happens when table is not a table or when key is not present in table. The metamethod is looked up in table.

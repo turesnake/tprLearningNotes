@@ -170,6 +170,19 @@ https://wiki.luatos.com/_static/luatos-emulator/lua.html
 
 
 # ----------------------------------------------#
+#        值: NaN
+# ----------------------------------------------#
+Not a Number is a special value used to represent undefined or unrepresentable numerical results, such as 0/0;
+一般在除 0 时出现;
+
+# NaN 的类型为: number: float:
+
+暂时没发现怎么 确认这个值...
+
+
+
+
+# ----------------------------------------------#
 #         type: userdata 
 # ----------------------------------------------#
 The type userdata is provided to allow arbitrary C data to be stored in Lua variables. This type corresponds to a block of raw memory and has no pre-defined operations in Lua, except assignment and identity test. However, by using metatables, the programmer can define operations for userdata values (see §2.8). Userdata values cannot be created or modified in Lua, only through the C API. This guarantees the integrity of data owned by the host program.
@@ -503,6 +516,21 @@ e
     print( tb[",,."] )  -- 得到: 12
 
 
+# 另一种声明方式:
+    tb = {
+        ["kk"] = 99
+    }
+
+    这个方法等价于在内部写: 
+        kk = 99
+
+    这个方法的好处是, key 这个字符串的约束会更少, 比如可以写成:
+
+        [".kk"] = 99
+
+    也是正确的, 此时可用 tb[".kk"] 去正确访问它... 
+
+
 
 
 # ----------------------------------------------#
@@ -533,6 +561,11 @@ t[9] = 9;
 # 此时可改用 pairs 迭代器:
 
 
+#  ipairs 是 "无迭代器" 版本, 理论上性能更优秀;
+
+
+
+
 # ----------------------------------------------#
 #    迭代器-2-: pairs   (同时适合 数字下标的 table, 和 key-value 格式的 table)
 # ----------------------------------------------#
@@ -551,21 +584,7 @@ t[9] = 9;
 
 
 
-# ----------------------------------------------#
-#     元表 metatable
-# ----------------------------------------------#
-metatable 自己也是一个普通的 table, 但是它可以存放一些类似 运算符重载函数 之类的 元函数; 
-然后这些 重载函数并不是服务于 metatable 自己的, 而是服务于另一个 普通 table:
 
-    t = {a=15}
-    mt = {
-        __add = function(a,b)
-            return a.a+b
-        end
-    }
-    setmetatable(t,mt)   -- 为一个普通table: t 设置它的元表: mt
-
-上例可看出, 元表 mt 定义了一个 加法重载, 然后绑定之后, t 的 加法运算就被更改了;
 
 
 
@@ -596,7 +615,7 @@ bagmt = {
     take = function(t)       -- 取出一个元素
         return table.remove( t.items, item )
     end,
-    list = function(t)       -- 将所有元素练成一个 string, 中间用 ',' 分隔;
+    list = function(t)       -- 将所有元素连成一个 string, 中间用 ',' 分隔;
         return table.concat( t.items, "," )
     end,
     clear = function(t,item)   -- 清空表
@@ -623,6 +642,19 @@ print( b:list() )
 
 
 
+# 另一种 oop 方法声明方式:
+
+    function metatable:Foo(key) 
+        ... self ...
+    end
+
+注意,在此方法中, 不用 '.' 改用 ':', 
+且隐藏首参数;
+然后在函数体内, 可直接访问 self, (把它当首参数来访问)
+
+
+
+
 # ----------------------------------------------#
 #      协程
 # ----------------------------------------------#
@@ -643,8 +675,19 @@ print( b:list() )
 
 
 
+# ----------------------------------------------#
+#      Log
+#      Debug
+#      console 打印信息
+# ----------------------------------------------#
 
+# -- 常规信息:
+    print("koko"..intVal.."; ")
 
+# -- error:
+    printError("此处有错误: %s; 错误完毕", debug.traceback())
+    ---
+    好吧, 这个貌似是项目自己封装的...
 
 
 
