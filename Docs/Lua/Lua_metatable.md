@@ -250,7 +250,7 @@ Sets the real value of table[index] to value, without invoking the __newindex me
 
 -- 参数 table must be a table, 
 -- 参数 index any value different from nil and NaN, 
--- and 参数 value any Lua value.
+-- 参数 value any Lua value.
 
 This function returns table.
 

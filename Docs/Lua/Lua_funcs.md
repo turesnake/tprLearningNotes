@@ -418,7 +418,74 @@ Numeric codes are not necessarily portable across platforms.
 
 
 
+# ----------------------------------------------#
+#     pcall (f [, arg1, ···])
+# ----------------------------------------------#
+在保护模式下调用 函数 f;
+
+Calls function "f" with the given arguments in protected mode. 
+
+This means that any error inside f is not propagated (传播); instead, pcall catches the error and returns a status code. 
+Its first result is the status code (a boolean), which is true if the call succeeds without errors. 
+In such case, pcall also returns all results from the call, after this first result. 
+In case of any error, pcall returns false plus the error message.
+
+如果调用函数 f 出错:
+    第一个返回值 为 false;
+    第二个返回值 为 error message;
+
+如果调用函数 f 没出错:
+    第一个返回值 为 true;
+    后续数个返回值为 函数 f 的返回值;
+
+# 案例:
+    local function test(a)
+        if a == 2 then
+            error("test error")
+        end
+        return true
+    end
+    local ok, ret = pcall(test, 1)      --> true    true
+    local ok, ret = pcall(test, 2)      --> false   test.lua:5: test error
 
 
+# ----------------------------------------------#
+#    xpcall (f, msgh [, arg1, ···])
+# ----------------------------------------------#
+This function is similar to pcall(), except that it sets a new message handler msgh.
+---
+额外传入一个参数 message handler: msgh
+
+pcall() 有时候并不能满足要求，比如我们想知道错误是在哪里发生的，那么就要用 xpcall() 来实现：
+
+# 案例:
+    local function msghander(msg)
+        print(msg)
+        print(debug.traceback())
+    end
+    local ok, ret = xpcall(test, msghander, 1)      --> true    true
+    local ok, ret = xpcall(test, msghander, 2)      --> false   nil
+
+    ---
+    test.lua:5: test error
+    stack traceback:
+        test.lua:11: in function <test.lua:9>
+        [C]: in function 'error'
+        test.lua:5: in function <test.lua:3>
+        [C]: in function 'xpcall'
+        test.lua:14: in main chunk
+        [C]: in ?
 
 
+# ----------------------------------------------#
+#    tostring (v)
+# ----------------------------------------------#
+Receives a value of any type and converts it to a string in a human-readable format. 
+(For complete control of how numbers are converted, use string.format.)
+
+If the metatable of v has a "__tostring" field, then tostring() calls the corresponding value with v as argument, 
+and uses the result of the call as its result.
+---
+可使用 元方法 "__tostring" 来重载 tostring() 的功能;
+
+# 这是一种将 obj 序列化的方式;
