@@ -485,6 +485,7 @@ e
 # 利用这个特征, 可以让很多代码 被简化;
 
 
+# 依赖 元方法: __pairs
 
 
 
@@ -743,6 +744,50 @@ https://zhuanlan.zhihu.com/p/76248759
 
 函数 New() 返回的其实是一个 代理obj; 在这个阶段, 那个真正的 obj 变成了 upvalues;
 返回的 代理obj 则只提供安全的 访问接口;
+
+
+
+# ----------------------------------------------#
+#     环境 和 全局环境
+#     _G
+#     _ENV
+# ----------------------------------------------#
+
+# 2.2 – Environments and the Global Environment 翻译:
+https://www.lua.org/manual/5.3/manual.html
+
+
+正如将在 §3.2 and §3.3.3 中要讲的, 
+
+any reference to a free name (that is, a name not bound to any declaration) var is syntactically translated to _ENV.var.
+一个 free name var, 比如写了一个 a=9 , 那么这个 a 实际上是 _ENV.a
+
+Moreover, every chunk is compiled in the scope of an external local variable named _ENV (see §3.3.2), 
+so _ENV itself is never a free name in a chunk.
+此外，每个块都在名为 _ENV 的外部局部变量的范围内编译（参见 §3.3.2），因此 _ENV 本身绝不是块中的自由名称。
+
+尽管存在 "external _ENV variable" 和 "free names" 的称号, _ENV 其实是个完全 常规的 name;
+
+特别是, 你可以用这个 变量名 去定义新的 变量 和 参数;
+
+Each reference to a free name uses the _ENV that is visible at that point in the program, following the usual visibility rules of Lua (see §3.5).
+
+# Any table used as the value of _ENV is called an environment.
+
+Lua keeps a distinguished environment called the global environment. This value is kept at a special index in the C registry (see §4.5). 
+In Lua, the global variable _G is initialized with this same value. ( _G is never used internally. )
+
+
+When Lua loads a chunk, the default value for its _ENV upvalue is the global environment (see load() ). 
+Therefore, by default, free names in Lua code refer to entries in the global environment (and, therefore, they are also called global variables).
+ 
+而且, 所以 标准库 都会被加载进 global environment, 并且那里的一些函数在 global environment 中运行;
+
+你可调用 load() 和 loadfile() 加载一个 chunk 到一个不同的 环境中去;
+(In C, you have to load the chunk and then change the value of its first upvalue.)
+在 c 中, 你需要加载那个 chunk, 然后修改它的第一个 upvalue
+
+
 
 
 
