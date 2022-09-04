@@ -39,7 +39,14 @@ namespace System.Collections.Generic
         public virtual void OnDeserialization(object sender);
         public bool Remove(TKey key, out TValue value);
         public bool Remove(TKey key);
+
+        
+        //  Sets the capacity of this dictionary to what it would be 
+        // if it had been originally initialized with all its entries.
         public void TrimExcess();
+
+        // Sets the capacity of this dictionary to hold up a specified number of entries 
+        // without any further expansion of its backing storage.
         public void TrimExcess(int capacity);
 
         // 若 key 已存在, 本函数啥也不做, 直接返回 false;  否则返回 true
