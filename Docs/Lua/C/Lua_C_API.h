@@ -444,14 +444,14 @@ lua_Integer lua_tointegerx (lua_State *L, int index, int *isnum);
 lua_Integer lua_tointeger (lua_State *L, int index);
     //- 等同于 lua_tointegerx （参数 isnum 为 NULL）
 
+
 const char *lua_tolstring (lua_State *L, int index, size_t *len);
     //- 读取 stack 中目标元素，将其转换为 一个 c字符串。
     //  目标元素 必须是 lua 的 string，number。
     //  否则，本函数返回 NULL。
 
     // 如果 目标元素 是 number，本函数会将其 转换为一个 c字符串。
-    // This change confuses lua_next when lua_tolstring 
-    // is applied to keys during a table traversal.
+    // This change confuses lua_next when lua_tolstring is applied to keys during a table traversal.
 
     //-- 本函数返回一个 字符串指针，指向的字符串 存储在 lua state 中。
     //   这个字符串 永远自备 尾后0. （但也能在 字符串体内包含其他0. 意味着可以表示任何二进制数）

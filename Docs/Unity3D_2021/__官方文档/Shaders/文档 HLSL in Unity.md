@@ -323,6 +323,7 @@ wiiu:
 在编写 shader 程序时, input 和 output 变量 需要通过 semantics 设置它们的 "intent"(猜测是 使用目的) 
 这是 hlsl 语言中的一个 标准概念. 
 
+# ----------------------------------- #
 # Vertex shader input semantics
 vertex shader 的每一个 input变量,都要设置自己的 semantics. 比如:
 # --
@@ -331,6 +332,8 @@ float2 uv     : TEXCOORD0 // first texture coordinate input
 
 更多内容请看 后续页面...
 
+
+# ----------------------------------- #
 # Fragment shader output semantics
 通常, frag shader 输出一个颜色, 它的 semantic 被设置为 [SV_Target].
 具体代码格式写为:
@@ -372,6 +375,7 @@ fragOutput frag (v2f i)
     返回的 深度值, 需要为单个 float.
 
 
+# ----------------------------------- #
 # Vertex shader outputs and fragment shader inputs
 vertex shader 需要输出各顶点的 CSPos (剪切空间坐标),(以便 gpu知道在屏幕的哪个位置去光栅化它.) 以及顶点的 深度值. 
 上面这组信息( cspos + 深度值 ) 需要被标识 [SV_POSITION] semantic, 其类型为 float4.
@@ -390,6 +394,7 @@ vertex shader 需要输出各顶点的 CSPos (剪切空间坐标),(以便 gpu知
 为了获得最好的平台支持, 将 vertex shader 的输出值, frag shader 的输入值,标记为 [TEXCOORDn] semantics.
 
 
+# ----------------------------------- #
 # - Interpolator count limits
 从 vertex shader 到 frag shader 间能传递的 "需要插值的" 变量的数量是有限的. 这个限制取决于 平台和gpu,通常为:
 --
@@ -411,6 +416,7 @@ vertex shader 需要输出各顶点的 CSPos (剪切空间坐标),(以便 gpu知
 无论用于哪个平台, 都请尽量减少两 shader 间通信的 变量的数量,这样能提高性能 (毕竟这些变量 都要在 光栅化中 插值到每个像素上去)
 
 
+# ----------------------------------- #
 # Other special semantics
 frag shader 可以接受 像素的 SSPos (屏幕空间pos), 它的 semantics 为 [VPOS].
 这个 feature 只在 shader model 3.0 及之后版本 才存在. 
@@ -462,7 +468,9 @@ fixed4 frag (v2f i, UNITY_VPOS_TYPE screenPos : VPOS) : SV_Target
 }
 
 
+# ----------------------------------- #
 # Face orientation: VFACE
+# 正面 反面 双面
 frag shader 可以接收一种变量, 它记录了 本像素所在的三角形的要渲染的那个面,是否正朝向相机.  当我们需要渲染一个 双面都可见的几何体时,这个变量很管用., 比如纸张这种很薄的物体. 使用 [VFACE] 的变量, 在表达正面时 值为正数, 反之负数.
 
 此 feature 要求至少 shader model 3.0 
@@ -482,6 +490,15 @@ fixed4 frag (fixed facing : VFACE) : SV_Target
 }
 
 
+# 使用范例:
+    float4 frag( Varyings input, float facing : VFACE ) : SV_Target
+    {
+        ...
+    }
+
+
+
+# ----------------------------------- #
 # Vertex ID:  
 [SV_VertexID]
 vertex shader 可接收一种变量, 它的类型是 无符号整型, 含义为 顶点的idx. 

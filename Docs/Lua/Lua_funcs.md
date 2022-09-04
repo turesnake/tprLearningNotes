@@ -118,6 +118,39 @@ lua 并不检测 二进制chunk 的连贯性(?)
 不同在于，要么从 参数filename 处获得 chunk 来源
 要么从 stdin 获得，
 
+参数:
+-- filename --:
+    lua文件名
+
+-- mode --:
+    加载模式, b 表示字节码，t 表示脚本，默认是 bt (即允许字节码也允许脚本)；
+
+-- env --:
+    env 表示加载后的函数的环境，默认这个环境被设置为 全局环境，然后作为函数的第一个 upvalue;
+
+一句:
+    loadfile ([filename [, mode [, env]]])
+等价于:
+    local _ENV = the global environment
+    return function (...)
+        -- code
+    end
+
+这个_ENV 就是代码块的环境，而自由变量都会转换成 _ENV 的字段，比如：
+
+    local z = 10
+    x = y + z
+
+-- x和y是自由变量，上面代码等价于:
+
+    local z = 10
+    _ENV.x = _ENV.y + z
+
+
+我们编写的代码总是使用 _ENV 作为当前代码块的环境，只是恰巧 _ENV 被设置成 _G, 所以自由变量都是全局环境的变量;
+如果修改 _ENV, 那么环境就变成一个独立的沙盒;
+
+
 
 
 # ================================ #
@@ -327,19 +360,28 @@ Returns a string that is the concatenation of n copies of the string s separated
 # ----------------------------------------------#
 #          next (table [, index])
 # ----------------------------------------------#
-Allows a program to traverse all fields of a table. Its first argument is a table and its second argument is an index in this table. next returns the next index of the table and its associated value. When called with nil as its second argument, next returns an initial index and its associated value. When called with the last index, or with nil in an empty table, next returns nil. If the second argument is absent (缺席), then it is interpreted as nil. In particular, you can use next(t) to check whether a table is empty.
+Allows a program to traverse all fields of a table. Its first argument is a table and its second argument is an index in this table. 
+next returns the next index of the table and its associated value. 
+When called with nil as its second argument, next returns an initial index and its associated value. 
+When called with the last index, or with nil in an empty table, next returns nil. 
+
+If the second argument is absent (缺席), then it is interpreted as nil (tpr: 第二个参数将被解释为 nil). 
+In particular, you can use next(t) to check whether a table is empty.
 
 The order in which the indices are enumerated is not specified, even for numeric indices. (To traverse a table in numerical order, use a numerical for.)
 
-The behavior of next is undefined if, during the traversal, you assign any value to a non-existent field in the table. You may however modify existing fields. In particular, you may clear existing fields.
+The behavior of next is undefined if, during the traversal, you assign any value to a non-existent field in the table. 
+You may however modify existing fields. 
+In particular, you may clear existing fields.
 # ------
 允许 一个程序 来遍历 table 的所有字段。
 参数 table 是个表, 参数 index 是这个表的一个 idx; 
-
+--
+    若两参数正常, next() 将返回 table 中 index+1 位的 idx 和 value;
 --
     若参数 index 为 nil, 且参数 table 有限, 则本函数返回 table 的第一个元素;
 --
-    若参数 index 为 一个 table 的最后一个 idx, 或 table 自己为 nil, 则本函数返回 nil;
+    When called with the last index, or with nil in an empty table, next returns nil. 
 --
     若参数 index 没有设置, 则系统会默认 index 为 nil;
 
@@ -354,6 +396,52 @@ index 遍历的顺序 是未定义的, (在 网络lua平台测试时, 它是倒�
 # 在调用 next() 遍历期间, 你往 table 的任何 "non-existent field" 分配值 都将导致 未定义行为;
 
 
+# 若用 next 访问一个 dictionary, 如 t={ a=1, b=2 },  此时必须写成 next( t, "a" ) 这种格式; (注意它的 key)
+
+
+# -------------- #
+# 案例 --1-- :
+    t = {1,2,3,4}
+
+    k,v = next(t ) -- 返回第一对元素
+    print( k,v )
+
+    while k do    
+        k,v = next(t, k)
+        print( k,v )
+    end
+    -----
+运行结果:
+    4	4
+    3	3
+    2	2
+    1	1
+    nil	nil
+    ------
+可以看到:
+    -- 遍历次序是倒叙 (其实是未定义)
+    -- 所以一上来就调用 next(t,1) 可能会直接得到: nil nil
+        因为此时说不定 1 就是最后一对元素的 序号...
+        所以正确的调用是先用 next(t) 来自动获得第一对元素
+
+# -------------- #
+# 案例 --2-- :
+    将 --1-- 中的 t 改为: 
+        t = {1,2,nil,4}
+        ---
+运行结果:
+    4	4
+    2	2
+    1	1
+    nil	nil
+    ------
+可以看到:
+    中间的 3号位 nil 元素被 next() 直接跳过了....
+    当调用 next(t,4) 将直接得到: 2 2
+
+
+
+
 
 # ----------------------------------------------#
 #            pairs (t)
@@ -365,7 +453,7 @@ Otherwise, returns three values: the next function, the table t, and nil, so tha
      for k,v in pairs(t) do body end
 will iterate over all key–value pairs of table t.
 
-See function next() for the caveats警告 of modifying the table during its traversal.
+See function next() for the caveats(警告) of modifying the table during its traversal.
 
 
 # ----------------------------------------------#
@@ -415,6 +503,84 @@ Receives a string and returns a copy of this string with all uppercase letters c
 # ----------------------------------------------#
 Returns the internal numeric codes of the characters s[i], s[i+1], ..., s[j]. The default value for i is 1; the default value for j is i. These indices are corrected following the same rules of function string.sub.
 Numeric codes are not necessarily portable across platforms.
+
+
+
+# ----------------------------------------------#
+#     pcall (f [, arg1, ···])
+# ----------------------------------------------#
+在保护模式下调用 函数 f;
+
+Calls function "f" with the given arguments in protected mode. 
+
+This means that any error inside f is not propagated (传播); instead, pcall catches the error and returns a status code. 
+Its first result is the status code (a boolean), which is true if the call succeeds without errors. 
+In such case, pcall also returns all results from the call, after this first result. 
+In case of any error, pcall returns false plus the error message.
+
+如果调用函数 f 出错:
+    第一个返回值 为 false;
+    第二个返回值 为 error message;
+
+如果调用函数 f 没出错:
+    第一个返回值 为 true;
+    后续数个返回值为 函数 f 的返回值;
+
+# 案例:
+    local function test(a)
+        if a == 2 then
+            error("test error")
+        end
+        return true
+    end
+    local ok, ret = pcall(test, 1)      --> true    true
+    local ok, ret = pcall(test, 2)      --> false   test.lua:5: test error
+
+
+# ----------------------------------------------#
+#    xpcall (f, msgh [, arg1, ···])
+# ----------------------------------------------#
+This function is similar to pcall(), except that it sets a new message handler msgh.
+---
+额外传入一个参数 message handler: msgh
+
+pcall() 有时候并不能满足要求，比如我们想知道错误是在哪里发生的，那么就要用 xpcall() 来实现：
+
+# 案例:
+    local function msghander(msg)
+        print(msg)
+        print(debug.traceback())
+    end
+    local ok, ret = xpcall(test, msghander, 1)      --> true    true
+    local ok, ret = xpcall(test, msghander, 2)      --> false   nil
+
+    ---
+    test.lua:5: test error
+    stack traceback:
+        test.lua:11: in function <test.lua:9>
+        [C]: in function 'error'
+        test.lua:5: in function <test.lua:3>
+        [C]: in function 'xpcall'
+        test.lua:14: in main chunk
+        [C]: in ?
+
+
+# ----------------------------------------------#
+#    tostring (v)
+# ----------------------------------------------#
+Receives a value of any type and converts it to a string in a human-readable format. 
+(For complete control of how numbers are converted, use string.format.)
+
+If the metatable of v has a "__tostring" field, then tostring() calls the corresponding value with v as argument, 
+and uses the result of the call as its result.
+---
+可使用 元方法 "__tostring" 来重载 tostring() 的功能;
+
+# 这是一种将 obj 序列化的方式;
+
+# 注意, 调用: tostring (v)  不要调用 v.tostring()
+
+# 实际上只要print(t)就可以了，因为print内部会自动调用tostring(t)
 
 
 
