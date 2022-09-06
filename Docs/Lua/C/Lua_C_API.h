@@ -831,3 +831,42 @@ int lua_gettable (lua_State *L, int index);
 
 
 
+/* 
+    Creates and returns a reference, in the table at index t, for the object at the top of the stack (and pops the object).
+
+    将栈顶元素(一个obj), 添加到一个 lua table 中去, 这个 table 位于栈中 t 位置;
+    但是 obj 的 key 由 Lua 自己管理, 而不是我们手动指定的; 
+    函数调用完之后会返回这个 key, 以后我们通过这个 key, 就可以找到 obj;
+
+
+    A reference is a unique integer key. As long as you do not manually add integer keys into table t, luaL_ref ensures the uniqueness of the key it returns. 
+    You can retrieve an object referred by reference r by calling lua_rawgeti(L, t, r). Function luaL_unref() frees a reference and its associated object.
+
+    If the object at the top of the stack is nil, luaL_ref() returns the constant LUA_REFNIL. 
+    The constant LUA_NOREF is guaranteed to be different from any reference returned by luaL_ref.
+
+    若 栈顶元素为 nil, 本函数返回 常数 LUA_REFNIL;
+    常数 LUA_NOREF 保证和 本函数返回的任何 ref 值都不同; 
+
+*/
+int luaL_ref (lua_State *L, int t);
+
+
+
+/* 
+    Releases reference ref from the table at index t (see luaL_ref()). 
+    The entry is removed from the table, so that the referred object can be collected. The reference ref is also freed to be used again.
+
+    将 luaL_ref() 分配返回的 ref 释放掉; 同时将 table 中相关的 kv对 释放掉; 
+    在此之后,
+
+    If ref is LUA_NOREF or LUA_REFNIL, luaL_unref does nothing.
+
+*/
+void luaL_unref (lua_State *L, int t, int ref);
+
+
+
+
+
+

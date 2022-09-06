@@ -18,24 +18,34 @@ https://zhuanlan.zhihu.com/p/76249973
 
 # Lua语言：垃圾回收
 https://zhuanlan.zhihu.com/p/76250195
+    ---
+    写得很清晰!!!
 
 # Lua语言：实现一个调试器玩具
 https://zhuanlan.zhihu.com/p/76250440
+
 
 # Lua语言：和C语言的交互
 https://zhuanlan.zhihu.com/p/76250674
 
 # 深入Lua：引用机制
 https://zhuanlan.zhihu.com/p/97322052
+    不错
 
 # 深入Lua：虚拟机指令集
 https://zhuanlan.zhihu.com/p/97722378
+    讲得非常好 !!!!!!!!
+
 
 # 深入Lua：对象模型总览
 https://zhuanlan.zhihu.com/p/97789573
+    讲得非常好 !!!!!!!!
+
 
 # 深入Lua：Table的实现
 https://zhuanlan.zhihu.com/p/97830462
+    讲得非常好 x 3 !!!!!!!!
+
 
 # 深入Lua：字符串管理
 https://zhuanlan.zhihu.com/p/97917024
@@ -43,8 +53,11 @@ https://zhuanlan.zhihu.com/p/97917024
 # 深入Lua：用户数据
 https://zhuanlan.zhihu.com/p/97967159
 
+
 # 深入Lua：元表
 https://zhuanlan.zhihu.com/p/98072589
+
+
 
 # 深入Lua：线程和栈
 https://zhuanlan.zhihu.com/p/98134347
@@ -72,8 +85,6 @@ https://zhuanlan.zhihu.com/p/100197243
 
 # Lua：一个实用的traceback函数
 https://zhuanlan.zhihu.com/p/128669097
-
-# 
 
 
 

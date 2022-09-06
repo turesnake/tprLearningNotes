@@ -57,7 +57,7 @@ local function hotfix_func(func, upmap)
         local name, value = debug.getupvalue(func, i)
         if name == nil then
             break
-        elseif value == hotfix.OUV then
+        elseif value == hotfix.OUV then -- 这是在 new 文件里用户自己定义的
             -- 引用老的upvalue
             local old_uv = upmap[name]
             if old_uv then
@@ -88,6 +88,17 @@ function hotfix.run(oldmod, newmod)
     end
 end
 return hotfix
+
+
+-----------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 
 
