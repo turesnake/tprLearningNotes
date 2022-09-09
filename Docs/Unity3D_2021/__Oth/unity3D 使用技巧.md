@@ -319,6 +319,18 @@ Gradient gradient;
 
 
 
+# ----------------------------------------------#
+#      shader 被哪些 materials 使用了 ?
+#      查找项目中 shader 的使用
+# ----------------------------------------------#
+shader 会被 不同的 material 使用, 我们想找出这些 materials;
+
+--
+	去 shader 的 .meta 文件里, 拿到 guid;
+
+--
+	在 vscode 搜索中, 锁定 *.mat 文件, 然后搜索这个 guid;
+	就能搜到所有的 materials 文件;
 
 
 

@@ -61,6 +61,9 @@ https://zhuanlan.zhihu.com/p/98072589
 
 # 深入Lua：线程和栈
 https://zhuanlan.zhihu.com/p/98134347
+    感觉需要多看几遍
+
+
 
 # 深入Lua：调用信息
 https://zhuanlan.zhihu.com/p/98618004

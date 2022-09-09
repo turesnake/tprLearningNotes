@@ -151,6 +151,20 @@ Player settings - other settings - Identification - "Minimum API Level"
 
 
 # --------------------------- #
+#   指定 opengl 或 vulkan
+# --------------------------- #
+player - other settings:
+
+--
+    先将 Auto Graphics API 取消勾选
+
+--
+    在下方的 Graphic APIs 中, 把需要的图形库, 拖到最上面;
+
+
+
+
+# --------------------------- #
 # -5-  打包
 # --------------------------- #
 file - build settings, 开始 build:
@@ -202,6 +216,9 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 #         真机  profiler 测试
 # ================================================== #
 
+# -0- 确保 手机开启 开发者模式, 然后 开启 usb 调试模式
+
+
 # -1- 首先, 查找 vivo 手机 ip 地址:
     设置 - 系统管理 - 关于手机 - 状态信息 - ip地址;
 
@@ -209,6 +226,8 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 
     黑鲨:
     192.168.2.110
+
+    192.168.31.30
     
     ( 设置 - 我的设备 - 全部参数 - 状态信息 )
 
@@ -225,6 +244,12 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
         正式连接手机
 
         mi11 的则是: adb connect 192.168.2.9
+
+        adb connect 192.168.2.65
+
+
+    adb disconnect
+        断联一切
 
 
 # -4- 确保电脑上只打开一个 unity editor, 进入 profiler
