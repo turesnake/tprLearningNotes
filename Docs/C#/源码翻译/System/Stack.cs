@@ -4,6 +4,8 @@
 #endregion
 
 
+
+
 namespace System.Collections.Generic
 {
     public class Stack<T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>, ICollection
