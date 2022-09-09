@@ -93,6 +93,19 @@ namespace System.Collections.Generic
         public int RemoveAll(Predicate<T> match);
 
 
+        /*
+            将目标元素删除后, 后面所有元素都会往前移动一位. 
+            所以可能存在 巨大开销
+
+            若 list 中元素可任意调换顺序, 可用手动法来 "移除" 一个元素:
+
+                int lastIndex = list.Count - 1;
+                shapes[index] = shapes[lastIndex];
+                shapes.RemoveAt(lastIndex);
+
+            手动交换 目标元素 和 最后一个元素,
+            再删除最后一个元素. 
+        */
         public void RemoveAt(int index);
         public void RemoveRange(int index, int count);
 

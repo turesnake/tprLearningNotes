@@ -6,6 +6,17 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
+/*
+    ----------------- 得到所有 value 组成的 List<> ------------------
+        Dictionary<int, B> dic; // 然后往 dic 里塞很多值
+        ...
+        new List<B>(dic.Values);
+    
+    直接就能获得所有 values 组成的 List<>, 无需手动遍历;
+    
+
+*/
+
 namespace System.Collections.Generic
 {
     [DefaultMember("Item")]
