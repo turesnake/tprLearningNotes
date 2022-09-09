@@ -235,6 +235,10 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 
 
 # -3- 终端/cmd 输入:
+    adb disconnect
+        ---
+        断联一切
+
     adb tcpip 5555
         ---
         让 adb 监听端口 5555
@@ -248,8 +252,6 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
         adb connect 192.168.2.65
 
 
-    adb disconnect
-        断联一切
 
 
 # -4- 确保电脑上只打开一个 unity editor, 进入 profiler
