@@ -23,9 +23,15 @@ namespace System.Collections.ObjectModel
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy("System.Collections.Generic.Mscorlib_CollectionDebugView<T>")]
     [DefaultMember("Item")]
-    public class ReadOnlyCollection<T>//ReadOnlyCollection__RR
-        : ICollection<T>, IEnumerable<T>, IEnumerable, IList<T>, 
-        IReadOnlyCollection<T>, IReadOnlyList<T>, ICollection, IList
+    public class ReadOnlyCollection<T> :
+                                        ICollection<T>, 
+                                        IEnumerable<T>, 
+                                        IEnumerable, 
+                                        IList<T>, 
+                                        IReadOnlyCollection<T>, 
+                                        IReadOnlyList<T>, 
+                                        ICollection, 
+                                        IList
     {
 
         public ReadOnlyCollection(IList<T> list);

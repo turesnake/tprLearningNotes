@@ -5,10 +5,38 @@
 
 using System.Reflection;
 
+/*
+    ------------------------ 如何倒叙排序 --------------------------------
+    https://stackoverflow.com/questions/931891/reverse-sorted-dictionary-in-net
+    自己实现一个排序class:
+
+        class DescendingComparer<T> : IComparer<T> where T : IComparable<T> 
+        {
+            public int Compare(T x, T y) 
+            {
+                return y.CompareTo(x); // 倒着比较
+            }
+        }
+        SortedDictionary<int,int> dic = new SortedDictionary<int, int>(new DescendingComparer<int>());
+
+
+
+
+
+*/
+
 namespace System.Collections.Generic
 {
     [DefaultMember("Item")]
-    public class SortedDictionary<TKey, TValue> : ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable, IDictionary<TKey, TValue>, IReadOnlyCollection<KeyValuePair<TKey, TValue>>, IReadOnlyDictionary<TKey, TValue>, ICollection, IDictionary
+    public class SortedDictionary<TKey, TValue> : 
+                                        ICollection<KeyValuePair<TKey, TValue>>, 
+                                        IEnumerable<KeyValuePair<TKey, TValue>>, 
+                                        IEnumerable, 
+                                        IDictionary<TKey, TValue>, 
+                                        IReadOnlyCollection<KeyValuePair<TKey, TValue>>, 
+                                        IReadOnlyDictionary<TKey, TValue>, 
+                                        ICollection, 
+                                        IDictionary
     {
         public SortedDictionary();
         public SortedDictionary(IComparer<TKey> comparer);
@@ -31,7 +59,11 @@ namespace System.Collections.Generic
         public bool Remove(TKey key);
         public bool TryGetValue(TKey key, out TValue value);
 
-        public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>, IEnumerator, IDisposable, IDictionaryEnumerator
+        public struct Enumerator : 
+                                    IEnumerator<KeyValuePair<TKey, TValue>>, 
+                                    IEnumerator, 
+                                    IDisposable, 
+                                    IDictionaryEnumerator
         {
             public KeyValuePair<TKey, TValue> Current { get; }
 
@@ -39,7 +71,12 @@ namespace System.Collections.Generic
             public bool MoveNext();
         }
 
-        public sealed class KeyCollection : ICollection<TKey>, IEnumerable<TKey>, IEnumerable, IReadOnlyCollection<TKey>, ICollection
+        public sealed class KeyCollection : 
+                                            ICollection<TKey>, 
+                                            IEnumerable<TKey>, 
+                                            IEnumerable, 
+                                            IReadOnlyCollection<TKey>, 
+                                            ICollection
         {
             public KeyCollection(SortedDictionary<TKey, TValue> dictionary);
 
@@ -56,7 +93,12 @@ namespace System.Collections.Generic
                 public bool MoveNext();
             }
         }
-        public sealed class ValueCollection : ICollection<TValue>, IEnumerable<TValue>, IEnumerable, IReadOnlyCollection<TValue>, ICollection
+        public sealed class ValueCollection : 
+                                            ICollection<TValue>, 
+                                            IEnumerable<TValue>, 
+                                            IEnumerable, 
+                                            IReadOnlyCollection<TValue>, 
+                                            ICollection
         {
             public ValueCollection(SortedDictionary<TKey, TValue> dictionary);
 

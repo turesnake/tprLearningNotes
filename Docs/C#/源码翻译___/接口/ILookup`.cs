@@ -16,7 +16,9 @@ using System.Reflection;
 namespace System.Linq
 {
     [DefaultMember("Item")]
-    public interface ILookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>>, IEnumerable
+    public interface ILookup<TKey, TElement> : 
+                                        IEnumerable<IGrouping<TKey, TElement>>, 
+                                        IEnumerable
     {
         IEnumerable<TElement> this[TKey key] { get; }
 

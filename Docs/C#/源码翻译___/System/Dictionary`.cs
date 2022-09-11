@@ -20,7 +20,17 @@ using System.Runtime.Serialization;
 namespace System.Collections.Generic
 {
     [DefaultMember("Item")]
-    public class Dictionary<TKey, TValue> : ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>, IEnumerable, IDictionary<TKey, TValue>, IReadOnlyCollection<KeyValuePair<TKey, TValue>>, IReadOnlyDictionary<TKey, TValue>, ICollection, IDictionary, IDeserializationCallback, ISerializable
+    public class Dictionary<TKey, TValue> : 
+                                            ICollection<KeyValuePair<TKey, TValue>>, 
+                                            IEnumerable<KeyValuePair<TKey, TValue>>, 
+                                            IEnumerable, 
+                                            IDictionary<TKey, TValue>, 
+                                            IReadOnlyCollection<KeyValuePair<TKey, TValue>>, 
+                                            IReadOnlyDictionary<TKey, TValue>, 
+                                            ICollection, 
+                                            IDictionary, 
+                                            IDeserializationCallback, 
+                                            ISerializable
     {
         public Dictionary();
         public Dictionary(IDictionary<TKey, TValue> dictionary);

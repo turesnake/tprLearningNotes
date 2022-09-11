@@ -9,7 +9,7 @@ namespace System.Linq
 {
 
 
-    // 协变类型;
+    // 协变类型;    
     public interface IGrouping<out TKey, out TElement> : IEnumerable<TElement>, IEnumerable
     {
         TKey Key { get; }

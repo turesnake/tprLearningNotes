@@ -11,9 +11,15 @@ namespace System.Collections.Generic
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy("System.Collections.Generic.Mscorlib_CollectionDebugView<T>")]
     [DefaultMember("Item")]
-    public class List<T> // List__RR
-        : ICollection<T>, IEnumerable<T>, IEnumerable, IList<T>, 
-        IReadOnlyCollection<T>, IReadOnlyList<T>, ICollection, IList
+    public class List<T> :
+                            ICollection<T>, 
+                            IEnumerable<T>, 
+                            IEnumerable, 
+                            IList<T>, 
+                            IReadOnlyCollection<T>, 
+                            IReadOnlyList<T>, 
+                            ICollection, 
+                            IList
     {
 
         public List();
@@ -112,6 +118,7 @@ namespace System.Collections.Generic
         public void Reverse(int index, int count);
         public void Reverse();
 
+        // 若想用 lambda 来定义排序规则, 就该调用本函数:
         public void Sort(Comparison<T> comparison);
         public void Sort(int index, int count, IComparer<T> comparer);
 

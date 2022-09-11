@@ -29,8 +29,10 @@ namespace System
     [ClassInterface(ClassInterfaceType.None)]
     [ComDefaultInterface(typeof(_AppDomain))]
     [ComVisible(true)]
-    public sealed class AppDomain//AppDomain__RR
-    : MarshalByRefObject, IEvidenceFactory, _AppDomain
+    public sealed class AppDomain :
+                                MarshalByRefObject, 
+                                IEvidenceFactory, 
+                                _AppDomain
     {
         public static long MonitoringSurvivedProcessMemorySize { get; }
 

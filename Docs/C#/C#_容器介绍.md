@@ -8,6 +8,11 @@ c# 的容器数量很多, 接口类的数量也很多, 本文件做一个简单�
 
 
 
+# Non-generic collections shouldn't be used
+https://github.com/dotnet/platform-compat/blob/master/docs/DE0006.md
+
+
+
 # ------------------------------- #
    数组:
 #  c#:      Array
@@ -46,8 +51,28 @@ c# 的容器数量很多, 接口类的数量也很多, 本文件做一个简单�
 # ------------------------------- #
    c++:     map<K,V>
 #  c#:      SortedDictionary<K,V>
+#  c#:      SortedList<K,V>          -- 没错, 这也是个 dic...
 # ------------------------------- #
 元素按照 K 升序排序;
+本质是一颗 二叉搜索树; O(log n) 
+它和 SortedList<> 很像;
+
+    public class SortedDictionary<TKey, TValue> : 
+        ICollection<KeyValuePair<TKey, TValue>>, 
+        IEnumerable<KeyValuePair<TKey, TValue>>, 
+        IEnumerable, 
+        IDictionary<TKey, TValue>, 
+        IReadOnlyCollection<KeyValuePair<TKey, TValue>>, 
+        IReadOnlyDictionary<TKey, TValue>, 
+        ICollection, 
+        IDictionary
+
+# 排序:
+The SortedDictionary class is assigned a IComparer<T> when it is constructed, and this cannot be changed after the fact.
+默认使用 Comparer<T>.Default;
+
+https://stackoverflow.com/questions/931891/reverse-sorted-dictionary-in-net
+
 
 
 
@@ -59,6 +84,19 @@ c# 的容器数量很多, 接口类的数量也很多, 本文件做一个简单�
 
 designed for high performance searches;
 
+    public class Dictionary<TKey, TValue> : 
+        ICollection<KeyValuePair<TKey, TValue>>, 
+        IEnumerable<KeyValuePair<TKey, TValue>>, 
+        IEnumerable, 
+        IDictionary<TKey, TValue>, 
+        IReadOnlyCollection<KeyValuePair<TKey, TValue>>, 
+        IReadOnlyDictionary<TKey, TValue>, 
+        ICollection, 
+        IDictionary, 
+        IDeserializationCallback, 
+        ISerializable
+    
+
 
 # ------------------------------- #
 #  c#:      ILookup<TKey,TElement>
@@ -69,10 +107,18 @@ System.Linq 的
 
 # ------------------------------- #
    c++:     unordered_multimap<K,V>
+#  c#:      Dictionary<K, List<V>>
 #  c#:      ILookup<TKey,TElement>
 #  c#:      Lookup<TKey,TElement>
 # ------------------------------- #
 
+# ---------------------:
+# Dictionary<K, List<V>>
+   说白了就是手动搭一个, 
+
+
+# ---------:
+# ILookup<>:
     int[][] nums= new int[][]{
         new int[]{ 1,1 },
         new int[]{ 5,1 },
@@ -99,6 +145,17 @@ System.Linq 的
 
 # -3- 这个容器是 immutable (固定不变的), 一旦建成不能 添加 / 删除 元素, 不能改写 key...
 #      感觉有点残废...
+
+
+
+
+# ------------------------------- #
+   c++:     multimap<K,V>
+#  c#:      SortedDictionary<K, List<V>>
+# ------------------------------- #
+      说白了就是手动搭一个, 
+
+
 
 
 

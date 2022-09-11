@@ -8,7 +8,11 @@
 
 namespace System.Collections.Generic
 {
-    public class Stack<T> : IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>, ICollection
+    public class Stack<T> : 
+                            IEnumerable<T>, 
+                            IEnumerable, 
+                            IReadOnlyCollection<T>, 
+                            ICollection
     {
         public Stack();
         public Stack(IEnumerable<T> collection);
