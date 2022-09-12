@@ -12,6 +12,10 @@ c# 的容器数量很多, 接口类的数量也很多, 本文件做一个简单�
 https://github.com/dotnet/platform-compat/blob/master/docs/DE0006.md
 
 
+# C# 泛型容器
+https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic?redirectedfrom=MSDN&view=net-6.0
+
+
 
 # ------------------------------- #
    数组:
@@ -46,6 +50,12 @@ https://github.com/dotnet/platform-compat/blob/master/docs/DE0006.md
 
 是个 set 容器, 元素不重复, 
 是个 hash 容器, 元素无排序规则;
+
+
+# ------------------------------- #
+   c++:     set<K>
+#  c#:      SortedSet<K>
+# ------------------------------- #
 
 
 # ------------------------------- #
@@ -166,9 +176,51 @@ System.Linq 的
 
 
 
+# ------------------------------- #
+   c++:     queue<T>
+#  c#:      Queue<T>
+# ------------------------------- #
 
 
 
 
+# ------------------------------- #
+   c++:     deque<K,V>
+#  c#:      LinkedList<T>
+# ------------------------------- #
 
+
+
+# ------------------------------- #
+   最大堆,最小堆:
+#  c#:      PriorityQueue<TElement,TPriority>
+# ------------------------------- #
+Implements an array-backed, quaternary min-heap.
+
+.net 6,7 以上, 貌似现在的 unity 不支持 ?
+
+
+
+# ============================================ #
+#               反向迭代
+# ============================================ #
+使用 linq 的 Reverse() 扩展方法;
+
+   foreach( var e in cap.Reverse() )
+   {
+      Debug.Log( e.Key + ", " + e.Value );
+   }
+
+
+# 经 tpr 实测, 支持的容器有:
+   Dictionary<>
+   SortedDictionary<>
+   Array                -- 不是 Array 自带的那个函数
+   SortedList<>
+   HashSet<>
+   SortedSet<>          -- 自带的函数
+   
+
+# 不支持的容器:
+   List<>               -- 手动用 idx 倒叙遍历吧
 

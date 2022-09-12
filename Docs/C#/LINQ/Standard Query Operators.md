@@ -113,11 +113,8 @@ ThenBy<TSource,TKey>(IOrderedEnumerable<TSource>, Func<TSource,TKey>, IComparer<
 # -------------------------------------------------------------- #
 # 为延迟执行...
 
-Reverse<TSource> (this IEnumerable<TSource> source);
+查看文件: Enumerable.cs
 
-# ==:
-    list.Reverse();
-# --
 
 
 

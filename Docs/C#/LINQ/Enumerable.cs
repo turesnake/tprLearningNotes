@@ -132,7 +132,26 @@ namespace System.Linq
         public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource element);
         public static IEnumerable<int> Range(int start, int count);
         public static IEnumerable<TResult> Repeat<TResult>(TResult element, int count);
+
+
+        /*
+            获得一个容器的 反向迭代器; (大概这个意思)
+            本函数并不关心 原始容器中存储的每个元素的内容, 它只是先按照 正向顺序 遍历一遍, 把每个迭代器塞入一个 stack 中;
+            然后再逐个 pop 这些迭代器, 从而实现 反向遍历...
+            ---
+            说到底, 调用本函数是存在一定成本的: O(N);
+
+            注意:
+                本函数是惰性的, 调用位置不会立刻执行, 而是要等到访问 GetEnumerator() 或者 foreach 时才会执行;
+            =====
+            案例:
+            foreach( var e in list.Reverse() )
+            {
+                ...
+            }
+        */
         public static IEnumerable<TSource> Reverse<TSource>(this IEnumerable<TSource> source);
+
         public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector);
         public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, int, TResult> selector);
         public static IEnumerable<TResult> SelectMany<TSource, TCollection, TResult>(this IEnumerable<TSource> source, Func<TSource, int, IEnumerable<TCollection>> collectionSelector, Func<TSource, TCollection, TResult> resultSelector);

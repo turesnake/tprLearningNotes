@@ -244,8 +244,15 @@ namespace System
         public object GetValue(params int[] indices);
         public object GetValue(long index1, long index2, long index3);
 
+        /*
+            Initializes every element of the value-type Array by calling the parameterless constructor of the value type.
+            ---
+            无序为一个新建的 array 调用本函数;
+            比如:
+                int[] ary = new int[9];
 
-        // Initializes every element of the value-type Array by calling the parameterless constructor of the value type.
+            c# 和 c/c++ 不同, c# 中新建的数组, 每个元素自动初始化为默认值, int 就是 0;
+        */
         public void Initialize();
 
 

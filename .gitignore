@@ -8,6 +8,7 @@
 /build/
 /old/
 /_tpr_/
+/Temp/
 
 # Visual Studio
 .vs/
