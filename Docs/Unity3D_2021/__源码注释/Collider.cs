@@ -19,35 +19,43 @@ namespace UnityEngine
         // 摘要:
         //     Enabled Colliders will collide with other Colliders, disabled Colliders won't.
         public bool enabled { get; set; }
+
         //
         // 摘要:
         //     The rigidbody the collider is attached to.
         public Rigidbody attachedRigidbody { get; }
+
         //
         // 摘要:
         //     The articulation body the collider is attached to.
         public ArticulationBody attachedArticulationBody { get; }
+
         //
         // 摘要:
         //     Is the collider a trigger?
         public bool isTrigger { get; set; }
+
         //
         // 摘要:
         //     Contact offset value of this collider.
         public float contactOffset { get; set; }
+
         //
         // 摘要:
         //     The world space bounding volume of the collider (Read Only).
         public Bounds bounds { get; }
+
         //
         // 摘要:
         //     Specify whether this Collider's contacts are modifiable or not.
         public bool hasModifiableContacts { get; set; }
+
         //
         // 摘要:
         //     The shared physic material of this collider.
         [NativeMethodAttribute("Material")]
         public PhysicMaterial sharedMaterial { get; set; }
+        
         //
         // 摘要:
         //     The material used by the collider.
