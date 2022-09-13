@@ -12,7 +12,8 @@
 
 //---------------------------------------------------
 // lua栈。
-// 一个不透明的 struct，指向一个线程，通过这个线程，间接获得 lua解释器的 所有 state
+// 一个不透明的 struct; 声明在源码: lstate.h
+// 指向一个线程，通过这个线程，间接获得 lua解释器的 所有 state
 // Lua library 是完全可重入的，它没有全局变量。
 // 有关一个 state／状态机 的所有信息，都可通过这个 struct 来访问
 // 库中所有函数的 首参数，就是一个 指向 lua_State 的指针（除了 lua_newstate函数。）
@@ -64,7 +65,11 @@ lua_State *lua_newstate (lua_Alloc f, void *ud);
 
     //-- return:
     //  若失败，返回 NULL (当无法创建新线程，或新虚拟栈，因为内存不足)
+    
+    // 一般不需要直接调用此函数, 该调用:
+    //  lua_State *L = luaL_newstate();
     //
+    //  使用默认的内存分配函数;
 
 
 

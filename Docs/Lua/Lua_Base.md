@@ -826,6 +826,31 @@ Therefore, by default, free names in Lua code refer to entries in the global env
 
 
 
+# ----------------------------------------------#
+#    设置 lua 局部变量的 属性   [5.4 新功能]
+# ----------------------------------------------#
+https://zhuanlan.zhihu.com/p/137588708
+
+# ----- 1 ------:
+#  <const>
+
+    local a <const> = 4
+    local b = a + 7
+    print(b)
+
+有点类似 静态语言中的 常量变量, 就是能在编译阶段, 将 变量a 直接替换为 4;
+
+# ----- 2 ------:
+#  <close>
+类似 c++ 的 RAII:
+这个 变量在离开自己的作用域后, 会被立刻 release;
+
+close 变量 (To-be-closed Variables) 需要和 close 元方法 结合使用，
+在变量超出作用域时，会调用变量的 close 元方法;
+
+
+
+
 
 
 
