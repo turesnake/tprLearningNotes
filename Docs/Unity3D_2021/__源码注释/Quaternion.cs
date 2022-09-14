@@ -51,7 +51,7 @@ namespace UnityEngine
 
 
         // 摘要:
-        //     The identity rotation (Read Only).
+        //     The identity rotation (Read Only).  单位旋转
         public static Quaternion identity { get; }
 
         
@@ -303,6 +303,7 @@ namespace UnityEngine
         //     The vector that defines in which direction up is.
         [ExcludeFromDocs]
         public void SetLookRotation(Vector3 view);
+
         //
         // 摘要:
         //     Creates a rotation with the specified forward and upwards directions.
