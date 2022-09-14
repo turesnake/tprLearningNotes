@@ -460,23 +460,18 @@ namespace UnityEngine
         //   index:
         //     Index to set.
         public void SetSiblingIndex(int index);
-        //
-        // 摘要:
-        //     Transforms direction x, y, z from local space to world space.
-        //
-        // 参数:
-        //   x:
-        //
-        //   y:
-        //
-        //   z:
+
+
+        /*
+            Transforms direction (x, y, z) 或一个向量 from local space to world space.
+
+            就算传入相同的参数, 只要 本transform 发生旋转, 最终的返回值也会不一样;
+
+            通常会使用 camera 的 transform 来调用本函数, 比如传入一个 (1,0,0), 那么就能得到 camera 视野内
+            右手方向 在 world-space 下的表达;
+            
+        */
         public Vector3 TransformDirection(float x, float y, float z);
-        //
-        // 摘要:
-        //     Transforms direction from local space to world space.
-        //
-        // 参数:
-        //   direction:
         public Vector3 TransformDirection(Vector3 direction);
         
 

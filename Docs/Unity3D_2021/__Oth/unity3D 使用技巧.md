@@ -334,9 +334,25 @@ shader 会被 不同的 material 使用, 我们想找出这些 materials;
 
 
 
+# ---------------------------------------------- #
+#    如何计算 camera 的 near plane half extends ( 近平面尺寸 )
+# ---------------------------------------------- #
+假设我们要计算的 近平面 half extends 为:
 
+	Vector3 halfExtends;
 
+则:
+	halfExtends.y =
+				camera.nearClipPlane *
+				Mathf.Tan(0.5f * Mathf.Deg2Rad * camera.fieldOfView);
+	
+	halfExtends.x = halfExtends.y * camera.aspect;
 
+	halfExtends.z = 0f;
+
+# 这个信息位于 camera-space;
+
+# 通常被用作 Physics.BoxCast() 的一个参数;
 
 
 
