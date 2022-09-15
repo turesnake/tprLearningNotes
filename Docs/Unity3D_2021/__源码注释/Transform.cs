@@ -57,9 +57,11 @@ namespace UnityEngine
         */
         public Vector3 position { get; set; }
 
-        //
-        // 摘要:
-        //     The rotation of the transform relative to the transform rotation of the parent.
+        /*
+            The rotation of the transform relative to the transform rotation of the parent.
+            --
+            和自己的 父级transform 相比, 本transform 的朝向 所对应的 "旋转"信息;
+        */
         public Quaternion localRotation { get; set; }
         //
         // 摘要:
