@@ -70,27 +70,130 @@ xxx.anim 文件, 本质是个 yaml 语言写的信息文件; (animator 也是)
 	层级不对的话, .anim 也是找不到目标 go 的;
 
 
-# ----------------------------------------------#
-#    root motion
-# ----------------------------------------------#
+
+
+# ============================================================ #
+#                 .anim clip 面板设置
+# ============================================================ #
+在 animator controller 中选中一个 animation clip, 然后在 inspector 中能看到的属性:
+
+# ---------------------------#
+#	speed
+#  	修改 .anim 动画播放速度
+.anim clip 上的 speed 值, 默认为 1, 表示正常速度, 大于1 时变快, 小于0 时倒放;
+这个 speed 值不能被修改;
+
+若想修改动画速度, 因开启下方的 Multiplier, 然后新建一个 变量, 比如 float scale,
+然后在这个 Multiplier 中, 选中变量 scale;
+
+而这个变量 scale, 是可直接在 脚本中被更改的;
+
+
+# ---------------------------#
+#	motion time
+指定 动画播放的时间点, 0f 表示开始位置, 1f表示结束位置;
+
+
+# ---------------------------#
+#	cycle offset
+0f表示开始位置, 1f表示结束位置;
+将播放的起始位置偏移一个距离, 比如一个人行走动画, 先迈左腿后迈右腿; 
+若将 cycle offset 设为 0.5, 则会从中间开始放, 先迈右腿后迈左腿;
+
+# 注意:
+就算这个动画被设置为 只播放一遍, 本变量被设置为 0.5 后, 也不会说只播放 后半部分, 而是会把前半部分再补上, 播放完完整的一遍;
+
+
+# ---------------------------#
+#	Foot IK
+是一种使用了 IK (反向动力学) 的 动画校正机制;
+
+https://www.bilibili.com/video/BV1v3411e7am/?spm_id_from=333.788&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+可用此 IK Goal 系统, 开发出 脚部适应地形 的功能;
+
+	Animator.SetIKPosition()
+	Animator.SetIKPositionWeight()
+
+
+# ---------------------------#
+#	Write Defaults
+Whether the AnimatorStates writes the default values for properties that are not animated by its motion.
+
+https://www.bilibili.com/video/BV1WL411c7mK/?spm_id_from=333.788&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+这个功能 最好 先别开;
+
+
+# ============================================================ #
+#                 transitions 动画转换 面板设置
+# ============================================================ #
+就是在两个 .anim clip 之间做的转换;
+
+https://www.bilibili.com/video/BV1gL4y1g7uZ/?spm_id_from=333.788&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+# ------------ #
+# Sole
+
+# ------------ #
+# Mute
+勾选了此值的 转换, 永远不会被执行
+
+# ------------ #
+# has Exit Time
+默认为勾选
+-- 若勾选:
+	当 起始.anim 执行到 exit time 时, 将自动执行本转换;
+	此处的 exit time 需要在下方设置;
+
+-- 若不勾选:
+	则需要在下发的 conditions 中手动设置 触发转换 的条件;
+
+
+# ------------ #
+#  Conditions
+可同时设置多条 转换条件, 这些条件需要全部被满足时, 转换才算成立;
+
+# 若想在数个条件中 满足其一 就能激活转换, 
+则可在 起始.anim 和 目的.anim 之间设置多条 转换线, 每条线单独设置 判断条件, 即可;
+
+
+# ------------ #
+# Interruption source
+	当从 a.anim 转换到 b.anim 时, 开启本功能后, 是可以触发某些条件来中断当前这个转换, 
+	并立即进入新的 转换的; 
+
+#  官方博客:
+https://blog.unity.com/technology/wait-ive-changed-my-mind-state-machine-transition-interruptions
+
+
+https://www.bilibili.com/video/BV1xq4y147pD/?spm_id_from=333.788&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+
+
+# ============================================================ #
+#                Root Motion
+# ============================================================ #
 有的 .anim 文件内定义了角色的 位移信息,
 如果勾选了 animator 组件中的 "Apply Root Motion" 选项, 那么 .anim 文件内的位移信息 就会被作用到 角色身上;
 也可以不勾选, 然后自己用脚本实现;
 
+https://www.bilibili.com/video/BV1kZ4y1B7Tc/?spm_id_from=333.788&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+说白了就是: 原本一个不开启 Root Motion 的位移动画, 会反复从 0 运动到 1, 然后再回来, 开启下以循环;
+开启 Root Motion 后, 第二次循环时, 起始位置不再重置, 而是接上上一回合末尾帧的位置;
+
+# 此外, 如果 prefab 发生了缩放, 勾选 root motion 后, 位移/旋转等 的值也会跟着缩放;
+	比如原本从 0 运动到 1;
+	缩放为 0.5 倍后, 运动将从 0 运动到 0.5;
 
 
+# OnAnimatorMove()
+	若在一个 Animator 组件所在的 go 上, 绑定一个脚本, 在此脚本内实现一个 message: OnAnimatorMove()
 
+	那么 Animator 组件内的 "Apply Root Motion" 会被修改为 Handled by Script;
 
-
-
-
-
-
-
-
-
-
-
+	此时, unity 就不会再用 动画 来驱动 go 的移动; (而由我们的 脚本来负责)
 
 
 

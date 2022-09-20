@@ -9,9 +9,20 @@ using UnityEngine.Playables;
 
 namespace UnityEngine
 {
-    //
-    // 摘要:
-    //     Interface to control the Mecanim animation system.
+    /*
+        Interface to control the Mecanim animation system.
+
+        ==============
+        设置变量值:
+            static int id = Animator.StringToHash("_AAA");
+            animator.SetFloat( id, 0.1f );
+
+
+
+
+
+
+    */
     [NativeHeaderAttribute("Modules/Animation/ScriptBindings/AnimatorControllerParameter.bindings.h")]
     [NativeHeaderAttribute("Modules/Animation/ScriptBindings/Animator.bindings.h")]
     [NativeHeaderAttribute("Modules/Animation/Animator.h")]
@@ -24,6 +35,8 @@ namespace UnityEngine
         // 摘要:
         //     Controls the behaviour of the Animator component when a GameObject is disabled.
         public bool keepAnimatorControllerStateOnDisable { get; set; }
+
+        
         //
         // 摘要:
         //     The rotation of the body center of mass.
@@ -32,6 +45,8 @@ namespace UnityEngine
         // 摘要:
         //     The position of the body center of mass.
         public Vector3 bodyPosition { get; set; }
+
+
         //
         // 摘要:
         //     Returns true if the object has a transform hierarchy.
@@ -213,6 +228,8 @@ namespace UnityEngine
         //     The string to convert to Id.
         [NativeMethodAttribute(Name = "ScriptingStringToCRC32", IsThreadSafe = true)]
         public static int StringToHash(string name);
+
+
         //
         // 摘要:
         //     Apply the default Root Motion.
@@ -416,17 +433,27 @@ namespace UnityEngine
         // 返回结果:
         //     The number of AnimatorClipInfo in the current state.
         public int GetCurrentAnimatorClipInfoCount(int layerIndex);
-        //
-        // 摘要:
-        //     Returns an AnimatorStateInfo with the information on the current state.
-        //
-        // 参数:
-        //   layerIndex:
-        //     The layer index.
-        //
-        // 返回结果:
-        //     An AnimatorStateInfo with the information on the current state.
+
+
+        /*
+            Returns an AnimatorStateInfo with the information on the current state.
+
+            常见用法:
+
+                stateInfo = animator.GetCurrentAnimatorStateInfo( animator.GetLayerIndex("Base Layer") );
+
+            这个动画状态信息 时刻在变动, 应该随用随取
+            
+            参数:
+            layerIndex:
+                The layer index.
+            
+            返回结果:
+                An AnimatorStateInfo with the information on the current state.
+        */
         public AnimatorStateInfo GetCurrentAnimatorStateInfo(int layerIndex);
+
+
         //
         // 摘要:
         //     Returns the value of the given float parameter.
@@ -543,6 +570,8 @@ namespace UnityEngine
         // 返回结果:
         //     The value of the parameter.
         public int GetInteger(string name);
+
+
         //
         // 摘要:
         //     Returns the index of the layer with the given name.
@@ -554,6 +583,8 @@ namespace UnityEngine
         // 返回结果:
         //     The layer index.
         public int GetLayerIndex(string layerName);
+
+
         //
         // 摘要:
         //     Returns the layer name.
