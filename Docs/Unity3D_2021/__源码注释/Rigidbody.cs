@@ -52,11 +52,36 @@ namespace UnityEngine
         //     Interpolation allows you to smooth out the effect of running physics at a fixed
         //     frame rate.
         public RigidbodyInterpolation interpolation { get; set; }
-        //
-        // 摘要:
-        //     The velocity vector of the rigidbody. It represents the rate of change of Rigidbody
-        //     position.
+
+
+        /*
+            The velocity vector of the rigidbody. It represents the rate of change of Rigidbody position.
+
+            In most cases you should not modify the velocity directly, as this can result in unrealistic behaviour - 
+            use AddForce() instead Do not set the velocity of an object every physics step, this will lead to unrealistic physics simulation. 
+
+            注意:
+                本值位于 world-space;
+        
+            ==================================
+            在每帧 FixedUpdate() 中, 通过直接设置此值, 可直接驱动 rigid 做我们想要的运动; 通常很适合 第一人称第三人称 角色运动;
+            
+            它和 物理引擎 自己计算出来的 velocity 之间到底谁先谁后, 怎么正确管理 暂时还有待学习...
+
+            注意:
+                此值的含义是: XXX m/s; 
+                所以, 设置给它的值, 不需要乘以 Time.deltaTime; 
+                ---
+                但是, 请参考 catlike 中的用法, 它选择 先缓存 上一帧的 velocity, 然后在此基础上 累加本帧的 额外 加速度;
+                基于这个思路去实现, 则需要  velocity += a * Time.deltaTime; 
+
+            tpr:
+                和 AddForce() 不同, AddForce() 是会考虑 质量mass 因素的; 直接改写本值则完全无视 质量;
+        */
         public Vector3 velocity { get; set; }
+
+
+
         //
         // 摘要:
         //     The angular velocity vector of the rigidbody measured in radians per second.
@@ -128,11 +153,11 @@ namespace UnityEngine
         // public float sleepVelocity { get; set; }
 
         
-        // 摘要:
+    
         //     The position of the rigidbody.
         public Vector3 position { get; set; }
-        //
-        // 摘要:
+
+
         //     The rotation of the Rigidbody.
         public Quaternion rotation { get; set; }
 
@@ -219,6 +244,8 @@ namespace UnityEngine
 
         /*
             Adds a force to the Rigidbody.
+
+            本函数会考虑 质量mass 因素;
             
 
             参数:
@@ -486,14 +513,28 @@ namespace UnityEngine
         //   position:
         //     Provides the new position for the Rigidbody object.
         public void MovePosition(Vector3 position);
-        //
-        // 摘要:
-        //     Rotates the rigidbody to rotation.
-        //
-        // 参数:
-        //   rot:
-        //     The new rotation for the Rigidbody.
+
+
+        /*
+            Rotates the rigidbody to rotation.
+
+            使用本函数来旋转 rigidbody, 它将符合 Rigidbody 组件上的 "interpolation" 插值设置选项:
+
+            If Rigidbody interpolation is enabled on the Rigidbody, 
+            calling Rigidbody.MoveRotation will resulting in a smooth transition between the two rotations in any intermediate frames rendered. 
+            This should be used if you want to continuously rotate a rigidbody in each FixedUpdate.
+
+            Set "Rigidbody.rotation" instead, if you want to teleport a rigidbody from one rotation to another, with no intermediate positions being rendered.
+
+            
+            
+            参数:
+            rot:
+                The new rotation for the Rigidbody.
+        */
         public void MoveRotation(Quaternion rot);
+
+
         //
         // 摘要:
         //     Reset the center of mass of the rigidbody.

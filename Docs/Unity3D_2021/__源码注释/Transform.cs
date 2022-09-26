@@ -163,8 +163,12 @@ namespace UnityEngine
         // 返回结果:
         //     The returned child transform or null if no child is found.
         public Transform Find(string n);
-        [Obsolete("FindChild has been deprecated. Use Find instead (UnityUpgradable) -> Find([mscorlib] System.String)", false)]
-        public Transform FindChild(string n);
+
+
+        // [Obsolete("FindChild has been deprecated. Use Find instead (UnityUpgradable) -> Find([mscorlib] System.String)", false)]
+        // public Transform FindChild(string n);
+
+
         //
         // 摘要:
         //     Returns a transform child by index.
@@ -178,9 +182,13 @@ namespace UnityEngine
         [FreeFunctionAttribute("GetChild", HasExplicitThis = true)]
         [NativeThrowsAttribute]
         public Transform GetChild(int index);
-        [NativeMethodAttribute("GetChildrenCount")]
-        [Obsolete("warning use Transform.childCount instead (UnityUpgradable) -> Transform.childCount", false)]
-        public int GetChildCount();
+
+
+        // [NativeMethodAttribute("GetChildrenCount")]
+        // [Obsolete("warning use Transform.childCount instead (UnityUpgradable) -> Transform.childCount", false)]
+        // public int GetChildCount();
+
+
         public IEnumerator GetEnumerator();
         //
         // 摘要:
@@ -399,15 +407,13 @@ namespace UnityEngine
         //
         //   angle:
         public void RotateAround(Vector3 point, Vector3 axis, float angle);
-        //
-        // 参数:
-        //   axis:
-        //
-        //   angle:
-        [Obsolete("warning use Transform.Rotate instead.")]
-        public void RotateAround(Vector3 axis, float angle);
-        [Obsolete("warning use Transform.Rotate instead.")]
-        public void RotateAroundLocal(Vector3 axis, float angle);
+        
+        // [Obsolete("warning use Transform.Rotate instead.")]
+        // public void RotateAround(Vector3 axis, float angle);
+
+        // [Obsolete("warning use Transform.Rotate instead.")]
+        // public void RotateAroundLocal(Vector3 axis, float angle);
+
         //
         // 摘要:
         //     Move the transform to the start of the local transform list.

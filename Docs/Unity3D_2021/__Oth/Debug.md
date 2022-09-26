@@ -5,9 +5,9 @@
 # ----------------------------------------------#
     void DrawRay(
         Vector3 start, 
-        Vector3 dir,    // 名为方向,其实也记录了射线的长度, 所以可以弄长点(远)
+        Vector3 dir,    // 虽然名为方向,其实也记录了射线的长度, 所以可以弄长点(远)
         Color color = Color.white, 
-        float duration = 0.0f, // 射线存在的视线, 最好设长点
+        float duration = 0.0f, // 射线存在的时间, 最好设长点
         bool depthTest = true
     );
 

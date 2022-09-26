@@ -203,6 +203,7 @@ namespace UnityEngine
         // 参数:
         //   q:
         public static Quaternion Normalize(Quaternion q);
+        
         //
         // 摘要:
         //     Rotates a rotation from towards to.
@@ -214,6 +215,7 @@ namespace UnityEngine
         //
         //   maxDegreesDelta:
         public static Quaternion RotateTowards(Quaternion from, Quaternion to, float maxDegreesDelta);
+
         //
         // 摘要:
         //     Spherically interpolates between quaternions a and b by ratio t. The parameter

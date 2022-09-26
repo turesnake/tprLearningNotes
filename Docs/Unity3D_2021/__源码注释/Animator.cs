@@ -442,7 +442,8 @@ namespace UnityEngine
 
                 stateInfo = animator.GetCurrentAnimatorStateInfo( animator.GetLayerIndex("Base Layer") );
 
-            这个动画状态信息 时刻在变动, 应该随用随取
+            这里的 "state" 就是指: 当前时刻, animator 正运行到哪一个 .anim clip 状态; (就是 animator 里的那些块块);
+            这个 state信息 时刻在变动, 应该随用随取;
             
             参数:
             layerIndex:
@@ -772,6 +773,7 @@ namespace UnityEngine
         // 返回结果:
         //     True if the parameter is controlled by a curve, false otherwise.
         public bool IsParameterControlledByCurve(int id);
+
         public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime, [Internal.DefaultValue("1")] float targetNormalizedTime, [Internal.DefaultValue("true")] bool completeMatch);
         public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime);
         //
@@ -805,6 +807,9 @@ namespace UnityEngine
         //     if interrupted. A value of false causes the GameObject to stay at its current
         //     position if interrupted.
         public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime, [Internal.DefaultValue("1")] float targetNormalizedTime);
+        
+        
+        
         public void Play(string stateName, int layer);
         //
         // 摘要:
