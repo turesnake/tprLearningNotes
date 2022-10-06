@@ -125,6 +125,23 @@ https://www.bilibili.com/video/BV1WL411c7mK/?spm_id_from=333.788&vd_source=df0fa
 这个功能 最好 先别开;
 
 
+# 简单来说就是:
+在 animator 被调用 Onenable() 的一瞬间, (就是这个组件及其 go 都被设置为 active 的一瞬间 ), 
+animator 组件会遍历自己内部包含的所有 .anim clip 文件, 查看它们都包含了哪些 properties,
+并记录下 这些 properties 此时被设置为的值, 把这些值看作 "Defaults";
+
+
+若在某个 .anim clip 播放过程中, 发现某个 property 并没有在这个 clip 中被设置值, 且这个 clip 开启了 "Write Defaults" 选项;
+那么就会在需要访问这个 property 的 关键帧上, 用之前记录的  Defaults 值来替代当前值 (当前无值...)
+
+# 在这儿机制中:
+每次触发 onenable(), unity 都会重新设置 Defaults 值, 这个行为会导致很多 意外的效果;
+
+
+
+
+
+
 # ============================================================ #
 #                 transitions 动画转换 面板设置
 # ============================================================ #
@@ -194,6 +211,51 @@ https://www.bilibili.com/video/BV1kZ4y1B7Tc/?spm_id_from=333.788&vd_source=df0fa
 	那么 Animator 组件内的 "Apply Root Motion" 会被修改为 Handled by Script;
 
 	此时, unity 就不会再用 动画 来驱动 go 的移动; (而由我们的 脚本来负责)
+
+
+# ---------------
+# Bake Into Pose:
+https://www.bilibili.com/video/BV1fq4y1Y7Sz/?spm_id_from=pageDriver&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+# 注意, 以下描述是基于 generic 动画的 (非 Humanoid 动画)
+# Humanoid 动画 原理上也是类似的, 不过 Humanoid 动画 没有 根骨骼 这个概念, 而是 unity 自己为我们计算的 "质心点" 这个概念;
+
+	点击 fbx 文件, 可设置它的 .anim clip 的三个 root motion 信息:
+	如果勾选, 表示:
+    	不要将 骨骼根节点的 (y轴旋转/y轴位移/xz平面位移) 当作 root motion 的一部分来处理; 
+		而是把它们 当作普通的 骨骼动画来处理;
+
+默认情况下, 是不勾选这 三个选项的;
+此时, 如果开启了 root motion 功能; 那么对 骨骼根节点 的 (y轴旋转/y轴位移/xz平面位移) 将不会作用在这个 根节点上,
+而是作用在 角色本身身上;
+
+
+# 用途 -1-: 角色越走越偏:
+	比如, 存在一个 向前行走的动画, 但是在动画过程中, 其实根骨骼还发生了一点点 y轴旋转;
+	此时如果不勾选 Bake Into Pose, 那么 根骨骼的 y轴旋转会被作用到 角色身上, 导致角色越走越歪;
+	---
+	勾选 Bake Into Pose 后, 角色就能笔直向前走了
+	---
+	此时还应把下方的 Based Upon 改选为 Original;
+
+	===
+	当然, 对于那些本来就需要转弯的动画, 比如 "原地转90度", 就不应该勾选 Bake Into Pose;
+
+
+# y轴方向位移:
+	跳跃类动作, 建议不勾选, 让角色跟着动画 上下位移;
+	待机走路跑步, 建议勾选, 
+
+# xz平面位移:
+	待机动画建议勾选, 这样角色在播放待机动画时就不发生位移了;
+
+
+
+
+
+
+
+
 
 
 

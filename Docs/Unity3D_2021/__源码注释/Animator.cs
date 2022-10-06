@@ -36,13 +36,28 @@ namespace UnityEngine
         //     Controls the behaviour of the Animator component when a GameObject is disabled.
         public bool keepAnimatorControllerStateOnDisable { get; set; }
 
-        
-        //
-        // 摘要:
+        /*
+            https://www.bilibili.com/video/BV11T4y1Y7RX/?spm_id_from=333.788&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+            下二变量 只在 Humanoid 动画 中存在, 因为在 Humanoid 中, 所有骨骼都被转化为了 "肌肉" 这个概念;
+            进而不再存在 根骨骼 root 这个东西; 相应的, unity 自己计算了一个 "质心点";
+            ----
+            这个 质心点 一般位于 角色的 臀部区域, 和传统人形模型的 root node 的位置其实是非常接近的;
+            ---
+            然后, unity 根据当前动画, 计算本帧 质心点 在 xz平面的 投影点, 然后把这个 投影点, 当作角色的 "根节点";
+            这个 投影点 被称为 "root transform"
+                有关它的参数为:
+                    rootPosition
+                    rootRotation
+
+            bodyPosition 就是 质心点 的 pos;      (ws)
+            bodyRotation 就是 质心点 的 rotation; (ws)
+            ---
+            这两个变量只能在 OnAnimatorIK() 中改写这两个值;
+
+        */
         //     The rotation of the body center of mass.
         public Quaternion bodyRotation { get; set; }
-        //
-        // 摘要:
         //     The position of the body center of mass.
         public Vector3 bodyPosition { get; set; }
 
@@ -71,14 +86,18 @@ namespace UnityEngine
         // 摘要:
         //     Should root motion be applied?
         public bool applyRootMotion { get; set; }
-        //
-        // 摘要:
+
+
+        // "root tranform" (质心点到 xz平面的投影点) 的 pos 和 rotation; (ws)
+        // 参考本文件 上方的 "bodyPosition" 区域 有关 "质心点" 的描述;
+        //   
         //     The root rotation, the rotation of the game object.
         public Quaternion rootRotation { get; set; }
-        //
-        // 摘要:
         //     The root position, the position of the game object.
         public Vector3 rootPosition { get; set; }
+
+
+
         //
         // 摘要:
         //     Gets the avatar angular velocity for the last evaluated frame.
@@ -87,23 +106,52 @@ namespace UnityEngine
         // 摘要:
         //     Gets the avatar velocity for the last evaluated frame.
         public Vector3 velocity { get; }
-        //
-        // 摘要:
-        //     Gets the avatar delta rotation for the last evaluated frame.
+
+
+        /*
+            Gets the avatar delta rotation for the last evaluated frame.
+            Animator.applyRootMotion must be enabled for deltaRotation to be calculated.
+            ---
+            只有在开启 root motion 功能后, 才会被计算的 上帧-本帧 旋转量 (已经计算进了角色的缩放值);
+
+            可在 OnAnimatorMove() 函数内, 直接写:
+
+        */
         public Quaternion deltaRotation { get; }
-        //
-        // 摘要:
-        //     Gets the avatar delta position for the last evaluated frame.
+
+        /*
+            Gets the avatar delta position for the last evaluated frame.
+            Animator.applyRootMotion must be enabled for deltaPosition to be calculated.
+            --
+            只有在开启 root motion 功能后, 才会被计算的 上帧-本帧 位移量 (已经计算进了角色的缩放值);
+
+            可在 OnAnimatorMove() 函数内, 直接写:
+                transform.position += animator.deltaPosition;
+            
+            来模拟相同的 root motion 功能;
+
+        */
         public Vector3 deltaPosition { get; }
+
+
         //
         // 摘要:
         //     Returns whether the animator is initialized successfully.
         public bool isInitialized { get; }
-        //
-        // 摘要:
-        //     Returns the scale of the current Avatar for a humanoid rig, (1 by default if
-        //     the rig is generic).
+
+
+        /*
+            Returns the scale of the current Avatar for a humanoid rig, (1 by default if the rig is generic).
+            The scale is relative to Unity's Default Avatar.  ( Unity's Default Avatar 的 scale 值为 1f  )
+            ---
+            如果启用了 root motion,
+            且多个角色 共用一套 animator controller, 那么各个角色的 humanScale 会影响最终的移动速度;
+            humanScale 值较小的角色, 最终移动速度会较慢; 此时就需要用 本值来修正
+
+        */
         public float humanScale { get; }
+
+
         //
         // 摘要:
         //     Returns true if the current rig has root motion.
@@ -360,16 +408,21 @@ namespace UnityEngine
         public T GetBehaviour<T>() where T : StateMachineBehaviour;
         public T[] GetBehaviours<T>() where T : StateMachineBehaviour;
         public StateMachineBehaviour[] GetBehaviours(int fullPathHash, int layerIndex);
-        //
-        // 摘要:
-        //     Returns Transform mapped to this human bone id. Returns null if the animator
-        //     is disabled, if it does not have a human description, or if the bone id is invalid.
-        //
-        // 参数:
-        //   humanBoneId:
-        //     The human bone that is queried, see enum HumanBodyBones for a list of possible
-        //     values.
+
+
+        /*
+            Returns Transform mapped to this human bone id. 
+            Returns null if the animator组件 is disabled, or if it does not have a human description, or if the bone id is invalid.
+            ---
+            
+            参数:
+            humanBoneId:
+                The human bone that is queried, see enum HumanBodyBones for a list of possible
+                values.
+        */
         public Transform GetBoneTransform(HumanBodyBones humanBoneId);
+
+
         //
         // 摘要:
         //     Returns the value of the given boolean parameter.

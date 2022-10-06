@@ -137,6 +137,8 @@ namespace UnityEngine
 
                 我们需要用 叉乘 去手动判断 是否为 逆时针, 然后将本函数的返回值 *= -1f;
 
+                注意:
+                    其实还能直接用 本class 中的 SignedAngle() 函数;
             
             参数:
             from:

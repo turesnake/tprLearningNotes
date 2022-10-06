@@ -356,4 +356,13 @@ shader 会被 不同的 material 使用, 我们想找出这些 materials;
 
 
 
+# ----------------------------------------------#
+#  快速进入 play 模式:
+#    	Enter Play Mode Options (Experimental)
+# ----------------------------------------------#
+
+https://www.jianshu.com/p/226d557ab226
+
+
+
 
