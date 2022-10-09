@@ -361,6 +361,8 @@ shader 会被 不同的 material 使用, 我们想找出这些 materials;
 #    	Enter Play Mode Options (Experimental)
 # ----------------------------------------------#
 
+Project Settings -> Editor -> Enter Play Mode Settings
+
 https://www.jianshu.com/p/226d557ab226
 
 

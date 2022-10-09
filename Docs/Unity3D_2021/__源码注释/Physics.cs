@@ -99,10 +99,17 @@ namespace UnityEngine
         //     Two colliding objects with a relative velocity below this will not bounce (default
         //     2). Must be positive.
         public static float bounceThreshold { get; set; }
-        //
-        // 摘要:
-        //     Sets whether the physics should be simulated automatically or not.
+
+
+        /*
+            Sets whether the physics should be simulated automatically or not.
+            ---
+            对应 project settings -- physic 面板上的 Auto Simulation 开关
+            关闭后可节省 物理模拟开销;
+        */
         public static bool autoSimulation { get; set; }
+
+
         //
         // 摘要:
         //     Sets the minimum separation distance for cloth inter-collision.

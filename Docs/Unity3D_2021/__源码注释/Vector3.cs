@@ -467,6 +467,9 @@ namespace UnityEngine
         public static Vector3 operator *(float d, Vector3 a);
         public static Vector3 operator *(Vector3 a, float d);
         public static Vector3 operator /(Vector3 a, float d);
+
+
+        // 浮点数 近似等于:  只要差值小于 1e-5, 就算相等;
         public static bool operator ==(Vector3 lhs, Vector3 rhs);
         public static bool operator !=(Vector3 lhs, Vector3 rhs);
     }
