@@ -367,4 +367,15 @@ https://www.jianshu.com/p/226d557ab226
 
 
 
+# ----------------------------------------------#
+#    安卓打包, 在 OpenGLES3 和 Vulkan 之间如何切换
+# ----------------------------------------------#
+project settings -- Player -- Other settings -- "Auto Graphic API"
+	取消打勾;
+
+然后在下方新增的窗口中, 把需要的图形库, 比如 OpenGLES3, 拖到最上方去;
+
+
+
+
 
