@@ -1010,86 +1010,35 @@ namespace UnityEngine
         //   value:
         //     The new parameter value.
         public void SetBool(int id, bool value);
-        //
-        // 摘要:
-        //     Send float values to the Animator to affect transitions.
-        //
-        // 参数:
-        //   name:
-        //     The parameter name.
-        //
-        //   id:
-        //     The parameter ID.
-        //
-        //   value:
-        //     The new parameter value.
-        //
-        //   dampTime:
-        //     The damper total time.
-        //
-        //   deltaTime:
-        //     The delta time to give to the damper.
+
+
+        /*
+            Send float values to the Animator to affect transitions.
+            ---
+            带阻尼 damper 的版本, 可实现类似 线性过度的效果;
+            
+            参数:
+            name:
+                The parameter name.
+            
+            id:
+                The parameter ID.
+            
+            value:
+                The new parameter value.
+            
+            dampTime:
+                The damper total time.
+            
+            deltaTime:
+                The delta time to give to the damper.
+        */
         public void SetFloat(int id, float value, float dampTime, float deltaTime);
-        //
-        // 摘要:
-        //     Send float values to the Animator to affect transitions.
-        //
-        // 参数:
-        //   name:
-        //     The parameter name.
-        //
-        //   id:
-        //     The parameter ID.
-        //
-        //   value:
-        //     The new parameter value.
-        //
-        //   dampTime:
-        //     The damper total time.
-        //
-        //   deltaTime:
-        //     The delta time to give to the damper.
         public void SetFloat(int id, float value);
-        //
-        // 摘要:
-        //     Send float values to the Animator to affect transitions.
-        //
-        // 参数:
-        //   name:
-        //     The parameter name.
-        //
-        //   id:
-        //     The parameter ID.
-        //
-        //   value:
-        //     The new parameter value.
-        //
-        //   dampTime:
-        //     The damper total time.
-        //
-        //   deltaTime:
-        //     The delta time to give to the damper.
         public void SetFloat(string name, float value);
-        //
-        // 摘要:
-        //     Send float values to the Animator to affect transitions.
-        //
-        // 参数:
-        //   name:
-        //     The parameter name.
-        //
-        //   id:
-        //     The parameter ID.
-        //
-        //   value:
-        //     The new parameter value.
-        //
-        //   dampTime:
-        //     The damper total time.
-        //
-        //   deltaTime:
-        //     The delta time to give to the damper.
         public void SetFloat(string name, float value, float dampTime, float deltaTime);
+
+
         //
         // 摘要:
         //     Sets the position of an IK hint.
