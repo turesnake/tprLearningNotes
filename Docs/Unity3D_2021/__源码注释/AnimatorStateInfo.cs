@@ -29,10 +29,17 @@ namespace UnityEngine
         //     The hash is generated using Animator.StringToHash. The hash does not include
         //     the name of the parent layer.
         public int shortNameHash { get; }
-        //
-        // 摘要:
-        //     Normalized time of the State.
+
+
+        /*
+            Normalized time of the State.
+
+            小数部分表示 本帧 anim clip 的播放进度条, 大致在 [0f,1f] 区间内; 实际可能会超 1f, 最后 clamp 下再用; 
+        */
         public float normalizedTime { get; }
+
+
+
         //
         // 摘要:
         //     Current duration of the state.

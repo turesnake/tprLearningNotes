@@ -1028,7 +1028,7 @@ namespace UnityEngine
                 The new parameter value.
             
             dampTime:
-                The damper total time.
+                The damper total time. -- 值越大, 阻尼越大, 值过度得越慢
             
             deltaTime:
                 The delta time to give to the damper.

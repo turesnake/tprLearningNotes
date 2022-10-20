@@ -39,6 +39,8 @@
 
 本组件每次在 editor 中热更新后 (也包括 刚启动的 Awake() 时),
 进入 enable 状态的一瞬间, 会调用此函数
+    ---
+    注意, 上文的 "editor" 指的应该是 play 模式... 反正如果你不启动 play, 本组函数是不会被调用的; 
 
 
 # 注意 (tpr):
@@ -338,6 +340,10 @@ followed by an OnEnable after the script has been loaded.
 即便在 editor 模式中, (非 play 模式), OnDrawGizmos() 也会被调用
 所以需要注意此函数中存在的变量, 已经提前配置好了, 而不是那种直到 Awake()
 才被配置的数据; 
+
+# 实践表明, 只有当我们去改动 scene 窗口时 (比如改动观察 scene 窗口的方式), 
+    此时 unity 才会去重渲染 scene 窗口
+    此时才会调用 OnDrawGizmos() 函数 (另一个函数可能也是如此)
 
 
 

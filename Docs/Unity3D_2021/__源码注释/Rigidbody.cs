@@ -538,7 +538,6 @@ namespace UnityEngine
             Set "Rigidbody.rotation" instead, if you want to teleport a rigidbody from one rotation to another, with no intermediate positions being rendered.
 
             
-            
             参数:
             rot:
                 The new rotation for the Rigidbody.
