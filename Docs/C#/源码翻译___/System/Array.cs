@@ -116,8 +116,15 @@ namespace System
         public static T[] Empty<T>();
         public static bool Exists<T>(T[] array, Predicate<T> match);
 
+
+        /*
+            将一个数组的所有元素, 设为一个指定值 value;
+                int[] ary = new int[9];
+                Array.Fill( ary, -1 );
+        */
         public static void Fill<T>(T[] array, T value);
         public static void Fill<T>(T[] array, T value, int startIndex, int count);
+
 
         public static T Find<T>(T[] array, Predicate<T> match);
         public static T[] FindAll<T>(T[] array, Predicate<T> match);

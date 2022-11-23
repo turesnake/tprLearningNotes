@@ -258,6 +258,11 @@ namespace UnityEngine
             注意:
             本函数会自动将 materials 实例化, 并让这些返回的 materials 成为你这个 物体(renderer) 的专属物;
             当你这个 go 被销毁时, 用户有责任把本函数返回的这些 materials 也销毁掉;
+            比如:
+                void OnDisable()
+                {
+                    meshRenderer.material = null;
+                }
 
             Resources.UnloadUnusedAssets() 也能销毁 materials, 不过此函数仅在加载新 level 时才会被调用;
 

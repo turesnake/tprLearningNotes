@@ -13,7 +13,7 @@
 
 vscode 也能识别这个 git 信息;
 
-
-
+# .gitignore
+一个 unity 项目, 不是所有文件都需要 git, 记得设置 .gitignore 文件;
 
 

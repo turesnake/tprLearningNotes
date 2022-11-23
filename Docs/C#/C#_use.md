@@ -551,6 +551,36 @@ c#8.0 中引入了新的用法, 支持没有 {} 的写法, 上面的代码可变
 
 
 
+# ---------------------------------------------- #
+#     运算符重载 ==, !=
+# ---------------------------------------------- #
+
+public class A 
+{
+    public string keyStr;
+
+    public static bool operator == ( A a, A b )
+    {
+        if( (object)a == null && (object)b == null ) // 此处的 == 使用的是 object 类型的;
+        {
+            return true;
+        }
+        if( (object)a == null || (object)b == null ) // 此处的 == 使用的是 object 类型的;
+        {
+            return false;
+        }
+        return a.keyStr == b.keyStr;
+    }
+    public static bool operator != ( A a, A b )
+    {
+        return !(a == b);
+    }
+}
+
+
+
+
+
 
 
 

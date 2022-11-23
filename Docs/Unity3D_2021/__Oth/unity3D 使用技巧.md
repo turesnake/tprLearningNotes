@@ -316,7 +316,12 @@ Gradient gradient;
 	注意, 当在一个 ScriptableObject 实例的 OnEnable() 函数体内访问 Application.isPlaying 时, 将获得 false;
 	具体原因请在全局查找 Application.cs 内的注释;
 
-
+# 以下代码有同等效果:
+	[Conditional("UNITY_EDITOR")]
+	void OnDrawGizmos()
+	{
+    	// ...
+	}
 
 
 # ----------------------------------------------#
@@ -374,6 +379,28 @@ project settings -- Player -- Other settings -- "Auto Graphic API"
 	取消打勾;
 
 然后在下方新增的窗口中, 把需要的图形库, 比如 OpenGLES3, 拖到最上方去;
+
+
+
+# ----------------------------------------------#
+#    点击屏幕, 如何防止 UI 层 和 obj层 的穿透问题
+# ----------------------------------------------#
+若想只点击 ui 层, 不点击屏下的 obj 层, 可以:
+
+	using UnityEngine.EventSystems;
+
+    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+    //EventSystem.current.IsPointerOverGameObject()  如果当前鼠标在 ui 上返回true 否则返回false
+    if( Physics.Raycast(ray, out RaycastHit hit) && !EventSystem.current.IsPointerOverGameObject() )
+    {
+        ...
+    }
+
+# 核心: EventSystem.current.IsPointerOverGameObject()
+
+
+
+
 
 
 

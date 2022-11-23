@@ -10,6 +10,13 @@ namespace System.Collections.Generic
 {
     /*
         就是 c++ 中的 unordered_set<> 容器
+
+        ----------------- key -------------------------
+        和 Dictionary 一样:
+        需要实现一个 IEqualityComparer<TKey> 的比较器, 
+        查看:
+        https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iequalitycomparer-1?view=net-7.0
+
     */
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy("System.Collections.Generic.HashSetDebugView<T>")]

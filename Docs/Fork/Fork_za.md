@@ -195,8 +195,9 @@ https://zhuanlan.zhihu.com/p/459863566
 # -------------------------------------- #
 点击 revert commit  (有待实践测试具体用法...)
 
-https://blog.csdn.net/shaobo8910/article/details/106055164
+维持那个 commit 按钮为勾选状态;
 
+https://blog.csdn.net/shaobo8910/article/details/106055164
 
 
 
@@ -214,9 +215,6 @@ https://blog.csdn.net/shaobo8910/article/details/106055164
 # -------------------------------------- #
 选择那个 commit, 右键: 
     Reset 'dev' to here;
-
-
-
 
 
 

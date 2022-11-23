@@ -13,6 +13,12 @@ using System.Runtime.Serialization;
         new List<B>(dic.Values);
     
     直接就能获得所有 values 组成的 List<>, 无需手动遍历;
+
+
+    ----------------- key -------------------------
+    需要实现一个 IEqualityComparer<TKey> 的比较器, 
+    查看:
+    https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.iequalitycomparer-1?view=net-7.0
     
 
 */
@@ -72,6 +78,12 @@ namespace System.Collections.Generic
 
         // 若 key 已存在, 本函数啥也不做, 直接返回 false;  否则返回 true
         public bool TryAdd(TKey key, TValue value);
+
+
+        /*
+            使用本函数来 安全地访问元素, 若用 dic[k], 且元素不存在, 则会报错;
+            访问不到的话, out 参数值为 null
+        */
         public bool TryGetValue(TKey key, out TValue value);
 
         public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>, IEnumerator, IDisposable, IDictionaryEnumerator

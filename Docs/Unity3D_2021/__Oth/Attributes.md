@@ -67,8 +67,15 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attrib
 绑定本脚本的 go, 需要携带指定的 组件
 
 
+# ----------------------------------------------#
+# [HideInInspector] public bool isInTrackNode = false; 
+虽然是 public 的, 但不显示在 inspector 上;
 
 
+
+# ----------------------------------------------#
+# [DisallowMultipleComponent] class ...
+在本go 中, 本组件只允许挂载一个;
 
 
 # ----------------------------------------------#

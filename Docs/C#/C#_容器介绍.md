@@ -24,6 +24,10 @@ https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic?redirecte
 提供了各种 static 方法, 使用起来很方便
 感觉比 c++ 的数组好用
 
+# 自定义 数组内初始值
+   int[] ary = new int[9];
+   Array.Fill( ary, -1 );
+
 
 
 # ------------------------------- #

@@ -96,7 +96,18 @@ namespace UnityEngine
         public static bool RectangleContainsScreenPoint(RectTransform rect, Vector2 screenPoint, Camera cam);
         public static bool RectangleContainsScreenPoint(RectTransform rect, Vector2 screenPoint, Camera cam, Vector4 offset);
 
+        /*
+            Transform a screen space point to a position in the local space of a RectTransform that is on the plane of its rectangle.
 
+            The cam parameter should be the camera associated with the screen point. 
+            For a RectTransform in a Canvas set to Screen Space - Overlay mode, the cam parameter should be null.
+
+            When ScreenPointToLocalPointInRectangle is used from within an event handler that provides a PointerEventData object, 
+            the correct camera can be obtained by using PointerEventData.enterEventData (for hover functionality) or PointerEventData.pressEventCamera (for click functionality). 
+            This will automatically use the correct camera (or null) for the given event.
+
+
+        */
         public static bool ScreenPointToLocalPointInRectangle(RectTransform rect, Vector2 screenPoint, Camera cam, out Vector2 localPoint);
 
         

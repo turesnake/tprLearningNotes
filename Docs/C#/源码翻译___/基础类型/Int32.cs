@@ -16,15 +16,34 @@ namespace System
         public const Int32 MaxValue = 2147483647;
         public const Int32 MinValue = -2147483648;
 
+
+        /*
+            Converts the string representation of a number to its 32-bit signed integer equivalent. 
+            若参数无法转换, 将抛出异常;
+        */
         public static Int32 Parse(string s, IFormatProvider provider);
         public static Int32 Parse(string s, NumberStyles style, IFormatProvider provider);
         public static Int32 Parse(string s);
         public static Int32 Parse(ReadOnlySpan<char> s, NumberStyles style = NumberStyles.Integer, IFormatProvider provider = null);
         public static Int32 Parse(string s, NumberStyles style);
+
+        /*
+            Converts the string representation of a number to its 32-bit signed integer equivalent. 
+            A return value indicates whether the conversion succeeded.
+            ---
+            ret:
+                When this method returns, contains the 32-bit signed integer value equivalent of the number contained in s, if the conversion succeeded, 
+                or zero if the conversion failed. 
+                The conversion fails if the s parameter is null or Empty, is not of the correct format, or represents a number less than Int32.MinValue or greater than Int32.MaxValue. 
+                This parameter is passed uninitialized; any value originally supplied in result will be overwritten.
+            ===
+            出现异常时会返回 false, 而不是抛出异常
+        
+        */
         public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out Int32 result);
         public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out Int32 result);
         public static bool TryParse(ReadOnlySpan<char> s, out Int32 result);
-        public static bool TryParse(string s, out Int32 result);
+        public static bool TryParse(string s, out Int32 result); // 最常用
 
         /*
             ret:

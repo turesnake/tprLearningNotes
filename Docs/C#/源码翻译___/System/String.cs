@@ -122,10 +122,13 @@ namespace System
         public static String Format(IFormatProvider provider, String format, object arg0);
 
 
+        // Retrieves the system's reference to the specified String.
         [SecuritySafeCritical]
         public static String Intern(String str);
 
 
+        // Retrieves a reference to a specified String.
+        // ret A reference to str if it is in the common language runtime intern pool; otherwise, null.
         [SecuritySafeCritical]
         public static String IsInterned(String str);
 

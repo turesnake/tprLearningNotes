@@ -59,9 +59,10 @@ namespace UnityEngine
         // 摘要:
         //     The ParticleSystem attached to this GameObject (Read Only). (Null if there is
         //     none attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property particleSystem has been deprecated. Use GetComponent<ParticleSystem>() instead. (UnityUpgradable)", true)]
-        public Component particleSystem { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property particleSystem has been deprecated. Use GetComponent<ParticleSystem>() instead. (UnityUpgradable)", true)]
+        // public Component particleSystem { get; }
+
         //
         // 摘要:
         //     The Transform attached to this GameObject.
@@ -70,8 +71,12 @@ namespace UnityEngine
         // 摘要:
         //     The layer the GameObject is in.
         public int layer { get; set; }
-        [Obsolete("GameObject.active is obsolete. Use GameObject.SetActive(), GameObject.activeSelf or GameObject.activeInHierarchy.")]
-        public bool active { get; set; }
+
+
+        // [Obsolete("GameObject.active is obsolete. Use GameObject.SetActive(), GameObject.activeSelf or GameObject.activeInHierarchy.")]
+        // public bool active { get; set; }
+
+
         //
         // 摘要:
         //     The local active state of this GameObject. (Read Only)
@@ -98,86 +103,93 @@ namespace UnityEngine
         //     in.
         public ulong sceneCullingMask { get; }
         public GameObject gameObject { get; }
+
         //
         // 摘要:
         //     The Rigidbody2D component attached to this GameObject. (Read Only)
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property rigidbody2D has been deprecated. Use GetComponent<Rigidbody2D>() instead. (UnityUpgradable)", true)]
-        public Component rigidbody2D { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property rigidbody2D has been deprecated. Use GetComponent<Rigidbody2D>() instead. (UnityUpgradable)", true)]
+        // public Component rigidbody2D { get; }
+
         //
         // 摘要:
         //     The Camera attached to this GameObject (Read Only). (Null if there is none attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property camera has been deprecated. Use GetComponent<Camera>() instead. (UnityUpgradable)", true)]
-        public Component camera { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property camera has been deprecated. Use GetComponent<Camera>() instead. (UnityUpgradable)", true)]
+        // public Component camera { get; }
+
         //
         // 摘要:
         //     The Light attached to this GameObject (Read Only). (Null if there is none attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property light has been deprecated. Use GetComponent<Light>() instead. (UnityUpgradable)", true)]
-        public Component light { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property light has been deprecated. Use GetComponent<Light>() instead. (UnityUpgradable)", true)]
+        // public Component light { get; }
+
         //
         // 摘要:
         //     The Animation attached to this GameObject (Read Only). (Null if there is none
         //     attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property animation has been deprecated. Use GetComponent<Animation>() instead. (UnityUpgradable)", true)]
-        public Component animation { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property animation has been deprecated. Use GetComponent<Animation>() instead. (UnityUpgradable)", true)]
+        // public Component animation { get; }
+
         //
         // 摘要:
         //     The ConstantForce attached to this GameObject (Read Only). (Null if there is
         //     none attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property constantForce has been deprecated. Use GetComponent<ConstantForce>() instead. (UnityUpgradable)", true)]
-        public Component constantForce { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property constantForce has been deprecated. Use GetComponent<ConstantForce>() instead. (UnityUpgradable)", true)]
+        // public Component constantForce { get; }
+
         //
         // 摘要:
         //     The Renderer attached to this GameObject (Read Only). (Null if there is none
         //     attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property renderer has been deprecated. Use GetComponent<Renderer>() instead. (UnityUpgradable)", true)]
-        public Component renderer { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property renderer has been deprecated. Use GetComponent<Renderer>() instead. (UnityUpgradable)", true)]
+        // public Component renderer { get; }
+
         //
         // 摘要:
         //     The AudioSource attached to this GameObject (Read Only). (Null if there is none
         //     attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property audio has been deprecated. Use GetComponent<AudioSource>() instead. (UnityUpgradable)", true)]
-        public Component audio { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property audio has been deprecated. Use GetComponent<AudioSource>() instead. (UnityUpgradable)", true)]
+        // public Component audio { get; }
         //
         // 摘要:
         //     The NetworkView attached to this GameObject (Read Only). (Null if there is none
         //     attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property networkView has been deprecated. Use GetComponent<NetworkView>() instead. (UnityUpgradable)", true)]
-        public Component networkView { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property networkView has been deprecated. Use GetComponent<NetworkView>() instead. (UnityUpgradable)", true)]
+        // public Component networkView { get; }
         //
         // 摘要:
         //     The Collider attached to this GameObject (Read Only). (Null if there is none
         //     attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property collider has been deprecated. Use GetComponent<Collider>() instead. (UnityUpgradable)", true)]
-        public Component collider { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property collider has been deprecated. Use GetComponent<Collider>() instead. (UnityUpgradable)", true)]
+        // public Component collider { get; }
         //
         // 摘要:
         //     The Collider2D component attached to this object.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property collider2D has been deprecated. Use GetComponent<Collider2D>() instead. (UnityUpgradable)", true)]
-        public Component collider2D { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property collider2D has been deprecated. Use GetComponent<Collider2D>() instead. (UnityUpgradable)", true)]
+        // public Component collider2D { get; }
         //
         // 摘要:
         //     The Rigidbody attached to this GameObject (Read Only). (Null if there is none
         //     attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property rigidbody has been deprecated. Use GetComponent<Rigidbody>() instead. (UnityUpgradable)", true)]
-        public Component rigidbody { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property rigidbody has been deprecated. Use GetComponent<Rigidbody>() instead. (UnityUpgradable)", true)]
+        // public Component rigidbody { get; }
         //
         // 摘要:
         //     The HingeJoint attached to this GameObject (Read Only). (Null if there is none
         //     attached).
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Property hingeJoint has been deprecated. Use GetComponent<HingeJoint>() instead. (UnityUpgradable)", true)]
-        public Component hingeJoint { get; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Property hingeJoint has been deprecated. Use GetComponent<HingeJoint>() instead. (UnityUpgradable)", true)]
+        // public Component hingeJoint { get; }
 
         //
         // 摘要:
@@ -216,15 +228,17 @@ namespace UnityEngine
         //   tag:
         //     The tag to search for.
         public static GameObject FindWithTag(string tag);
+
         //
         // 摘要:
         //     Adds a component class named className to the game object.
         //
         // 参数:
         //   className:
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("GameObject.AddComponent with string argument has been deprecated. Use GameObject.AddComponent<T>() instead. (UnityUpgradable).", true)]
-        public Component AddComponent(string className);
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("GameObject.AddComponent with string argument has been deprecated. Use GameObject.AddComponent<T>() instead. (UnityUpgradable).", true)]
+        // public Component AddComponent(string className);
+
         //
         // 摘要:
         //     Adds a component class of type componentType to the game object. C# Users can
@@ -441,12 +455,15 @@ namespace UnityEngine
         public Component[] GetComponentsInParent(Type type, [Internal.DefaultValue("false")] bool includeInactive);
         [ExcludeFromDocs]
         public Component[] GetComponentsInParent(Type type);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("gameObject.PlayAnimation is not supported anymore. Use animation.Play()", true)]
-        public void PlayAnimation(Object animation);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("GameObject.SampleAnimation(AnimationClip, float) has been deprecated. Use AnimationClip.SampleAnimation(GameObject, float) instead (UnityUpgradable).", true)]
-        public void SampleAnimation(Object clip, float time);
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("gameObject.PlayAnimation is not supported anymore. Use animation.Play()", true)]
+        // public void PlayAnimation(Object animation);
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("GameObject.SampleAnimation(AnimationClip, float) has been deprecated. Use AnimationClip.SampleAnimation(GameObject, float) instead (UnityUpgradable).", true)]
+        // public void SampleAnimation(Object clip, float time);
+
         //
         // 摘要:
         //     Calls the method named methodName on every MonoBehaviour in this game object.
@@ -562,12 +579,15 @@ namespace UnityEngine
         //     deactivates the GameObject.
         [NativeMethodAttribute(Name = "SetSelfActive")]
         public void SetActive(bool value);
-        [NativeMethodAttribute(Name = "SetActiveRecursivelyDeprecated")]
-        [Obsolete("gameObject.SetActiveRecursively() is obsolete. Use GameObject.SetActive(), which is now inherited by children.")]
-        public void SetActiveRecursively(bool state);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("gameObject.StopAnimation is not supported anymore. Use animation.Stop()", true)]
-        public void StopAnimation();
+
+
+        // [NativeMethodAttribute(Name = "SetActiveRecursivelyDeprecated")]
+        // [Obsolete("gameObject.SetActiveRecursively() is obsolete. Use GameObject.SetActive(), which is now inherited by children.")]
+        // public void SetActiveRecursively(bool state);
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("gameObject.StopAnimation is not supported anymore. Use animation.Stop()", true)]
+        // public void StopAnimation();
 
 
 
