@@ -390,7 +390,7 @@ project settings -- Player -- Other settings -- "Auto Graphic API"
 	using UnityEngine.EventSystems;
 
     Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-    //EventSystem.current.IsPointerOverGameObject()  如果当前鼠标在 ui 上返回true 否则返回false
+    //EventSystem.current.否则返回false
     if( Physics.Raycast(ray, out RaycastHit hit) && !EventSystem.current.IsPointerOverGameObject() )
     {
         ...

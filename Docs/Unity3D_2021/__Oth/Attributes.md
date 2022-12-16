@@ -28,7 +28,6 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attrib
 可以将其作为一个 script component，添加到 obj 上
 
 
-
 # ----------------------------------------------#
 # [CreateAssetMenu(fileName = "aoa.asset",menuName="tpr/AA")]   
 # public class AA : ScriptableObject {}
@@ -62,9 +61,10 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attrib
 
 
 # ----------------------------------------------#
+# [RequireComponent(typeof(MeshRenderer))] 
 # [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 # public class Grid : MonoBehaviour {}
-绑定本脚本的 go, 需要携带指定的 组件
+必须协同绑定另一个组件, 若在绑定本组件时发现没有目标组件, 会自动绑定一个
 
 
 # ----------------------------------------------#

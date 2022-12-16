@@ -47,12 +47,13 @@ namespace UnityEngine
         //     When turned on, animations will be executed in the physics loop. This is only
         //     useful in conjunction with kinematic rigidbodies.
         public bool animatePhysics { get; set; }
+
         //
         // 摘要:
         //     When turned on, Unity might stop animating if it thinks that the results of the
         //     animation won't be visible to the user.
-        [Obsolete("Use cullingType instead")]
-        public bool animateOnlyIfVisible { get; set; }
+        //[Obsolete("Use cullingType instead")]public bool animateOnlyIfVisible { get; set; }
+
         //
         // 摘要:
         //     Is an animation currently being played?
@@ -142,6 +143,8 @@ namespace UnityEngine
         //
         //   fadeLength:
         public void Blend(string animation, [DefaultValue("1.0F")] float targetWeight, [DefaultValue("0.3F")] float fadeLength);
+
+
         //
         // 摘要:
         //     Fades the animation with name animation in over a period of time seconds and
@@ -155,31 +158,11 @@ namespace UnityEngine
         //   mode:
         [ExcludeFromDocs]
         public void CrossFade(string animation);
-        //
-        // 摘要:
-        //     Fades the animation with name animation in over a period of time seconds and
-        //     fades other animations out.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   fadeLength:
-        //
-        //   mode:
         [ExcludeFromDocs]
         public void CrossFade(string animation, float fadeLength);
-        //
-        // 摘要:
-        //     Fades the animation with name animation in over a period of time seconds and
-        //     fades other animations out.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   fadeLength:
-        //
-        //   mode:
         public void CrossFade(string animation, [DefaultValue("0.3F")] float fadeLength, [DefaultValue("PlayMode.StopSameLayer")] PlayMode mode);
+
+
         //
         // 摘要:
         //     Cross fades an animation after previous animations has finished playing.
@@ -194,48 +177,14 @@ namespace UnityEngine
         //   mode:
         [ExcludeFromDocs]
         public AnimationState CrossFadeQueued(string animation);
-        //
-        // 摘要:
-        //     Cross fades an animation after previous animations has finished playing.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   fadeLength:
-        //
-        //   queue:
-        //
-        //   mode:
         [ExcludeFromDocs]
         public AnimationState CrossFadeQueued(string animation, float fadeLength, QueueMode queue);
-        //
-        // 摘要:
-        //     Cross fades an animation after previous animations has finished playing.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   fadeLength:
-        //
-        //   queue:
-        //
-        //   mode:
         [ExcludeFromDocs]
         public AnimationState CrossFadeQueued(string animation, float fadeLength);
-        //
-        // 摘要:
-        //     Cross fades an animation after previous animations has finished playing.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   fadeLength:
-        //
-        //   queue:
-        //
-        //   mode:
         [FreeFunctionAttribute("AnimationBindings::CrossFadeQueuedImpl", HasExplicitThis = true)]
         public AnimationState CrossFadeQueued(string animation, [DefaultValue("0.3F")] float fadeLength, [DefaultValue("QueueMode.CompleteOthers")] QueueMode queue, [DefaultValue("PlayMode.StopSameLayer")] PlayMode mode);
+        
+        
         public AnimationClip GetClip(string name);
         //
         // 摘要:
@@ -279,46 +228,31 @@ namespace UnityEngine
         public bool Play([DefaultValue("PlayMode.StopSameLayer")] PlayMode mode);
         [ExcludeFromDocs]
         public bool Play();
-        [Obsolete("use PlayMode instead of AnimationPlayMode.")]
-        public bool Play(AnimationPlayMode mode);
-        [Obsolete("use PlayMode instead of AnimationPlayMode.")]
-        public bool Play(string animation, AnimationPlayMode mode);
-        //
-        // 摘要:
-        //     Plays an animation after previous animations has finished playing.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   queue:
-        //
-        //   mode:
+
+        //[Obsolete("use PlayMode instead of AnimationPlayMode.")]public bool Play(AnimationPlayMode mode);
+        //[Obsolete("use PlayMode instead of AnimationPlayMode.")]public bool Play(string animation, AnimationPlayMode mode);
+
+
+        /*
+                Plays an animation after previous animations has finished playing.
+                设置 AnimationState.speed 似乎对这个函数不管用, 它始终会以 1f 的速度播放...
+                --
+                但是可以设置 animationClip.frameRate 来修改播放速度;
+            
+            参数:
+            animation:
+            
+            queue:
+            
+            mode:
+        */
         [ExcludeFromDocs]
         public AnimationState PlayQueued(string animation, QueueMode queue);
-        //
-        // 摘要:
-        //     Plays an animation after previous animations has finished playing.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   queue:
-        //
-        //   mode:
         [FreeFunctionAttribute("AnimationBindings::PlayQueuedImpl", HasExplicitThis = true)]
         public AnimationState PlayQueued(string animation, [DefaultValue("QueueMode.CompleteOthers")] QueueMode queue, [DefaultValue("PlayMode.StopSameLayer")] PlayMode mode);
-        //
-        // 摘要:
-        //     Plays an animation after previous animations has finished playing.
-        //
-        // 参数:
-        //   animation:
-        //
-        //   queue:
-        //
-        //   mode:
         [ExcludeFromDocs]
         public AnimationState PlayQueued(string animation);
+        
         //
         // 摘要:
         //     Remove clip from the animation list.

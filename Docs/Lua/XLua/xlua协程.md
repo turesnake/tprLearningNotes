@@ -63,34 +63,90 @@ tpr: 也就是说, 在 lua 版协程中, 新建一个协程, 然后每调用一�
 # --------------------------- #
 # 在 xlua 的 lua 代码中直接使用协程:
 
-    local cs_coroutine = require('XLua.cs_coroutine')
 
-    -- 开始一个协程:
-    co = cs_coroutine.start(function()
-        ...
+# 完整例子:
+    local cs_coroutine = require('XLua.cs_coroutine')
+    local Yielders = CS.Engine.Lib.Yielders
+
+
+    -- 立即运行一个协程:
+    self.co = cs_coroutine.start(function()
+
+        cs_coroutine.yield_return(Yielders.GetWaitForSeconds(3)) -- 待机数秒
+
+        for i=1,1000 do
+            printInfo("    "..i)
+            coroutine.yield(Yielders.EndOfFrame) -- yield return null;
+        end
+
+        printInfo(" ~~~ 循环结束")
+
+        self.co = nil
     end)
 
-    ...
 
-    -- 终止一个协程:
-    cs_coroutine.stop(co)
+# 记得在 OnDestroy() 中释放 self.co:
 
-
-
-
-
-
-
-
-
+    function TestT:OnDestroy()
+        ...
+        if self.co then
+            cs_coroutine.stop(self.co) -- 终止携程
+            self.co = nil
+        end
+        ...
+    end
 
 
+# 也可以把 协程函数写在外边:
+这样更规范一些:
+
+    -1- 方法 1 :
+    self.co = cs_coroutine.start(function()
+        self:MM()
+    end)
+
+    -2- 方法 2 :
+        把 self 当第一个参数传进去
+    self.co = cs_coroutine.start(self.MM, self)
 
 
+    function TestT:MM() 
+        ...
+        coroutine.yield(Yielders.EndOfFrame)
+        ...
+    end
 
 
+# 如何实现: yield return Aclass.Func();
+static 协程函数:
+
+    function Aclass:MM() 
+        ...
+        cs_coroutine.yield_return(Aclass.Func())
+        ...
+    end
+
+    function Aclass:Func() 
+        ...
+        coroutine.yield(Yielders.EndOfFrame)
+        ...
+    end
 
 
+# 如何实现: yield return instance.Func();
+协程方法:
+
+    function Aclass:MM() 
+        ...
+        cs_coroutine.yield_return(self:Func())
+        ...
+    end
+
+    function Aclass:Func() 
+        ...
+        coroutine.yield(Yielders.EndOfFrame)
+        ...
+    end
 
 
 

@@ -74,5 +74,12 @@ depth texture.
 
 
 
+# ----------------------------------------------#
+# The animation state could not be played because it couldn’t be found!
+# ----------------------------------------------#
+
+https://www.unity3dtips.com/zh/the-animation-state-could-not-be-played-because-it-couldnt-be-found/
+
+
 
 

@@ -116,7 +116,12 @@ https://blog.csdn.net/qq_42385019/article/details/108962978
     end 
     ---
     去遍历这个 ary, 因为它不是 lua 的 table; 
-    只能老老实实用 c# 方式去遍历;
+    只能老老实实用 c# 方式去遍历; 比如:
+
+    for i=0, ary.Length-1 do 
+        local e = ary[i]
+        ...
+    end
 
 
 
