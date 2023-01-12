@@ -18,6 +18,30 @@
 
 
 
+# --------------------------- #
+#   角色在相机中偏左偏右时, 会导致 运动方向 偏航
+#   free look camera 
+#        配合 Binding Mode = Simple Follow With World Up
+#        配合 Aim- Screen x 偏移
+# --------------------------- #
+
+手动实现一个 角色控制, 使用 free look camera + Binding Mode = Simple Follow With World Up 模式,
+此时如果将 Aim- Screen x 值远离 0.5, 
+会导致 角色位于 画面的 左侧 或 右侧;
+
+此时 角色的 forward 向量 和 camera 的 forward 向量 是不在一个轴线上的;
+
+如果此时通过 camera forward 来驱动 角色向前运动, 会发现 角色会偏航;
+
+# 最简解法:
+    在 角色控制代码中, 直接修正读取到的 camera forward 向量, 向左向右旋转一个角度后使用;
+    一般能直接解决此问题;
+
+
+
+
+
+
 
 
 
