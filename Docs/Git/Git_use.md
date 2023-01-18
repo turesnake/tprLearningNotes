@@ -268,6 +268,9 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
     $ git branch <name1> 创建名为 name1 的新分支
 
+    $ git branch -a 
+        查看 本机 和 远程 的所有分支
+
 
 # =====================================|
                 checkout

@@ -400,7 +400,15 @@ project settings -- Player -- Other settings -- "Auto Graphic API"
 
 
 
+# ----------------------------------------------#
+#   自定义脚本, 如何在 inspector 上开放 event 绑定
+# ----------------------------------------------#
+https://forum.unity.com/threads/how-to-select-a-callback-function-for-your-script-from-the-editor.295550/
 
+
+# UnityEvent 
+更简单一些, 缺点是无法传参数
+https://blog.csdn.net/qq_39735878/article/details/105863133
 
 
 
