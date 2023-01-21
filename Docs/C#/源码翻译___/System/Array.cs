@@ -118,9 +118,22 @@ namespace System
 
 
         /*
+            自定义 数组 初始值:
             将一个数组的所有元素, 设为一个指定值 value;
                 int[] ary = new int[9];
                 Array.Fill( ary, -1 );
+
+            !!!!!!!! 坑 !!!!!!!!!
+            假设存在: 
+                List<int>[] datas = new List<int>[9];
+
+            不能写:
+                Array.Fill( datas, new List<int>() );
+            !!!!!!
+
+            因为在这个过程中, 其实只创建了一个 List<int> 对象, 并将它的引用分发给了每一个 datas 的成员...
+            在后续操作中, 操作 datas[0] 还是操作 datas[1], 其实都是在操作同一个对象.....
+
         */
         public static void Fill<T>(T[] array, T value);
         public static void Fill<T>(T[] array, T value, int startIndex, int count);

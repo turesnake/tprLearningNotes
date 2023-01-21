@@ -115,6 +115,20 @@ namespace System.Collections.Generic
         public void RemoveAt(int index);
         public void RemoveRange(int index, int count);
 
+        /*
+            反转 list 中的元素的顺序;
+
+            !!!! 注意 !!!!!
+                IList<int> ary = new List<int>(){ 1,2,3 };
+                ary.Reverse(); 
+            上面这么调用并不能让 ary 体内元素翻转...
+
+            https://stackoverflow.com/questions/4673136/why-does-ilist-reverse-not-work-like-list-reverse
+
+            
+
+        */
+
         public void Reverse(int index, int count);
         public void Reverse();
 
