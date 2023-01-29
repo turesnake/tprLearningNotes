@@ -8,7 +8,11 @@ namespace System.Collections.Generic
 {
 
     /*
-        For a thread safe alternative to SortedSet<T>, see ImmutableSortedSet<T>
+        For a thread safe alternative to SortedSet<T>, see ImmutableSortedSet<T>;
+
+        不允许塞入重复元素, 
+        不能修改已经放入的元素的值, 会得到未定义行为;
+
 
     */
     public class SortedSet<T> : 
@@ -45,6 +49,7 @@ namespace System.Collections.Generic
         public void CopyTo(T[] array, int index, int count);
         public void CopyTo(T[] array);
         public void CopyTo(T[] array, int index);
+
 
         // 从本容器中, 移除掉所有同样位于参数 other 中的元素; (不需要是同一个元素, 通过比大小函数得到相同 就可以了)
         // 如果某个元素位于 other 中, 但不位于本容器中, 则不处理这个元素; 

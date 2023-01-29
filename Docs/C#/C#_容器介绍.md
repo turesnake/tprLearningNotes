@@ -65,7 +65,7 @@ https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic?redirecte
 # ------------------------------- #
    c++:     map<K,V>
 #  c#:      SortedDictionary<K,V>
-#  c#:      SortedList<K,V>          -- 没错, 这也是个 dic...
+#  c#:      SortedList<K,V>          -- be implemented as an array of key/value pairs, sorted by the key
 # ------------------------------- #
 元素按照 K 升序排序;
 本质是一颗 二叉搜索树; O(log n) 
@@ -86,6 +86,28 @@ The SortedDictionary class is assigned a IComparer<T> when it is constructed, an
 默认使用 Comparer<T>.Default;
 
 https://stackoverflow.com/questions/931891/reverse-sorted-dictionary-in-net
+
+
+# 两容器的检索效率都是   O(log n)
+   
+# 区别在于 内存占用, insert 和 remove 的耗时:
+
+-- SortedList 占用内存更少;
+
+-- 若想 insert,remove 任意数据(非排序数据), SortedDictionary 更快;
+   SortedDictionary 耗时 O(log n)
+   SortedList       耗时 O(n)
+
+-- 若从一份已经排序好的数据里 一次性初始化一个容器, SortedList 更快;
+
+-- 若想使用 idx 来直接访问 keys 或 vals, 则 SortedList 更快; 因为它体内的 keys 和 vals 本身就是一个数组...
+   比如:
+      string v = mySortedList.Values[3];
+
+
+
+# 从上可知, SortedList 真的是一个 数组, SortedDictionary 真的是一个 map...
+
 
 
 

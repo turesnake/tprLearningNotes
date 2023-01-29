@@ -20,7 +20,14 @@ namespace System.Collections.Generic
     */
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy("System.Collections.Generic.HashSetDebugView<T>")]
-    public class HashSet<T> : ICollection<T>, IEnumerable<T>, IEnumerable, IReadOnlyCollection<T>, ISet<T>, IDeserializationCallback, ISerializable
+    public class HashSet<T> : 
+                            ICollection<T>, 
+                            IEnumerable<T>, 
+                            IEnumerable, 
+                            IReadOnlyCollection<T>, 
+                            ISet<T>, 
+                            IDeserializationCallback, 
+                            ISerializable
     {
         public HashSet();
         public HashSet(IEnumerable<T> collection);
@@ -34,7 +41,11 @@ namespace System.Collections.Generic
         public int Count { get; }
 
         public static IEqualityComparer<HashSet<T>> CreateSetComparer();
+
+        // 若元素 item 已经存在, 返回 false;
+        // 不停的插入元素会导致撞到 capacity, 此时的行为大致和 List 一样, 会自己扩容, 为避免反复扩容, 最好一开始就定好 capacity
         public bool Add(T item);
+
         public void Clear();
         public bool Contains(T item);
         public void CopyTo(T[] array, int arrayIndex);

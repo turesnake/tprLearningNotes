@@ -38,26 +38,40 @@ namespace System.Collections.Generic
                                         ICollection, 
                                         IDictionary
     {
+
         public SortedDictionary();
         public SortedDictionary(IComparer<TKey> comparer);
         public SortedDictionary(IDictionary<TKey, TValue> dictionary);
         public SortedDictionary(IDictionary<TKey, TValue> dictionary, IComparer<TKey> comparer);
 
+
         public TValue this[TKey key] { get; set; }
 
         public ValueCollection Values { get; }
         public KeyCollection Keys { get; }
+
         public IComparer<TKey> Comparer { get; }
         public int Count { get; }
 
+
+
         public void Add(TKey key, TValue value);
+
         public void Clear();
+
         public bool ContainsKey(TKey key);
+
         public bool ContainsValue(TValue value);
+
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index);
+
+
         public Enumerator GetEnumerator();
+
         public bool Remove(TKey key);
+
         public bool TryGetValue(TKey key, out TValue value);
+        
 
         public struct Enumerator : 
                                     IEnumerator<KeyValuePair<TKey, TValue>>, 

@@ -40,6 +40,7 @@ namespace System
         // 返回 维度值, 一维二维 这种;
         public int Rank { get; }
 
+
         public static ReadOnlyCollection<T> AsReadOnly<T>(T[] array);
 
         /*
@@ -89,7 +90,22 @@ namespace System
         */
         public static void ConstrainedCopy(Array sourceArray, int sourceIndex, Array destinationArray, int destinationIndex, int length);
 
-        // Converts an array of one type to an array of another type.
+
+        /*
+            Converts an array of one type to an array of another type.
+            举例:
+                class A 
+                {
+                    public int age;
+                    public int w;
+                }
+
+                A[] words = new A[5];
+                ...
+                int[] retAry = Array.ConvertAll( words, (x)=>{ return x.age; } );
+
+            感觉这个函数很实用...
+        */
         public static TOutput[] ConvertAll<TInput, TOutput>(TInput[] array, Converter<TInput, TOutput> converter);
         
         
@@ -107,13 +123,21 @@ namespace System
         public static Array CreateInstance(Type elementType, int length1, int length2); // 二维
         public static Array CreateInstance(Type elementType, int length1, int length2, int length3); // 三维
         public static Array CreateInstance(Type elementType, params int[] lengths); // 多维, 指定了每个维度的 length
+
         // lowerBounds:
         //      A one-dimensional array that contains the lower bound (starting index) of each dimension of the Array to create.
         public static Array CreateInstance(Type elementType, int[] lengths, int[] lowerBounds);
         public static Array CreateInstance(Type elementType, params long[] lengths);
 
 
+        // 仅仅就是得到一个 空数组...
         public static T[] Empty<T>();
+
+        /*
+            Determines whether the specified array contains elements that match the conditions defined by the specified predicate.
+            ---
+            只要 array 中有一个元素满足 谓语 match 的要求, 本函数就返回 true;
+        */
         public static bool Exists<T>(T[] array, Predicate<T> match);
 
 
@@ -138,16 +162,24 @@ namespace System
         public static void Fill<T>(T[] array, T value);
         public static void Fill<T>(T[] array, T value, int startIndex, int count);
 
-
+        // 返回第一个符合 谓语match 的 元素(本身);
         public static T Find<T>(T[] array, Predicate<T> match);
+
         public static T[] FindAll<T>(T[] array, Predicate<T> match);
+
+        // 返回第一个符合 谓语match 的 元素的 idx 值;
         public static int FindIndex<T>(T[] array, Predicate<T> match);
         public static int FindIndex<T>(T[] array, int startIndex, int count, Predicate<T> match);
         public static int FindIndex<T>(T[] array, int startIndex, Predicate<T> match);
+        
+        // 返回最后一个符合 谓语match 的 元素(本身)
         public static T FindLast<T>(T[] array, Predicate<T> match);
+
+        // 返回最后一个符合 谓语match 的 元素的 idx 值
         public static int FindLastIndex<T>(T[] array, int startIndex, int count, Predicate<T> match);
         public static int FindLastIndex<T>(T[] array, int startIndex, Predicate<T> match);
         public static int FindLastIndex<T>(T[] array, Predicate<T> match);
+
 
         public static void ForEach<T>(T[] array, Action<T> action);
 
@@ -171,11 +203,19 @@ namespace System
         public static int LastIndexOf(Array array, object value);
 
 
+        /* 
+            重新设置一个 一维数组的 size
+            本质上, 它重新分配一块内存, 将旧数组内元素复制到了新内存中;
+        */
         public static void Resize<T>(ref T[] array, int newSize);
 
         /*
             ---------------------------------------------------
             反转 array;
+
+            This method is an O(n) operation, where n is length.
+
+            个人猜测是 双指针法
         */
         public static void Reverse<T>(T[] array, int index, int length);// 反转某一段
         public static void Reverse<T>(T[] array);
@@ -185,6 +225,39 @@ namespace System
 
         /*
             -----------------------------------------------------------------------
+            完整的 比较器 实现方式:
+
+            public class A 
+            {
+                public int age;
+                public int w; 
+                public A( int age_, int w_ ) 
+                {
+                    age = age_;
+                    w = w_;
+                }
+            }
+
+            public class WComparer : IComparer
+            {
+                public int Compare(System.Object x, System.Object y)
+                {
+                    return ( ((A)x).w - ((A)y).w );
+                }
+            }
+
+            public static void Main() 
+            {
+                IComparer revComparer = new WComparer();
+
+                A[] ents = {
+                    new A( 1, 7 ),
+                    new A( 4, 5 ),
+                    new A( 2, 1 )
+                };
+
+                Array.Sort( ents, revComparer );
+            }
         */
         public static void Sort<T>(T[] array, int index, int length, IComparer<T> comparer);
         public static void Sort<T>(T[] array, IComparer<T> comparer);
@@ -207,14 +280,25 @@ namespace System
 
         /*
             -----------------------------------------------------------------------
-        */
+            是否所有条件都符合 谓语要求;
+            public delegate bool Predicate<in T>(T obj);
 
+            案例:
+                bool isAll = Array.TrueForAll( ents, (x)=>{ return (x.age > 1); } );
+        */
         public static bool TrueForAll<T>(T[] array, Predicate<T> match);
 
-        // Creates a shallow copy 浅拷贝 of the Array.
-        // 就是只拷贝 array 里的浅层元素, 如果元素是引用, 不拷贝这个引用对应的 对象本身;
+        /*
+            Creates a shallow copy 浅拷贝 of the Array.
+            就是只拷贝 array 里的浅层元素, 如果元素是引用, 不拷贝这个引用对应的 对象本身;
+
+            返回值记得转换为 数组类型:
+            A[] newAry = (A[])oldAry.Clone();
+        */
         public object Clone();
 
+        // Copies all the elements of the current one-dimensional array to the specified one-dimensional array starting at the specified destination array index. 
+        // The index is specified as a 32-bit integer.
         public void CopyTo(Array array, long index);
         public void CopyTo(Array array, int index);
 
@@ -267,7 +351,7 @@ namespace System
         /*
             Initializes every element of the value-type Array by calling the parameterless constructor of the value type.
             ---
-            无序为一个新建的 array 调用本函数;
+            无需为一个新建的 array 调用本函数;
             比如:
                 int[] ary = new int[9];
 
