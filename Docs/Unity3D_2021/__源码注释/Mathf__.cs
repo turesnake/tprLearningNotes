@@ -483,6 +483,8 @@ namespace UnityEngine
             Generate 2D Perlin noise.
 
             参数 x,y 可以取任意值;
+
+            返回值区间可能为 [0,1]
         
         // 参数:
         //   x:
