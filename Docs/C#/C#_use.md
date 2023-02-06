@@ -578,8 +578,21 @@ public class A
 }
 
 
+# ---------------------------------------------- #
+#     as 运算符 返回值
+# ---------------------------------------------- #
 
+	class Base{}
+	class CC : Base{}
+	class DD : Base{}
+	//---
+	CC c = new CC();
+	Base cb = c;
 
+	var ret = cb as DD;
+
+上例中, ret 值为 null, 因为它无法被转换为 DD 类型;
+可用此方法来做一些检测;
 
 
 
