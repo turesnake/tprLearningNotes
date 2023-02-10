@@ -414,3 +414,22 @@ https://blog.csdn.net/qq_39735878/article/details/105863133
 
 
 
+# ----------------------------------------------#
+#   将 world-space 物体坐标, 投影到 screen-space 上
+#   同时克服 cinemachine 带来的晃动问题
+# ----------------------------------------------#
+
+# -1-
+	Camera.WorldToScreenPoint() 执行坐标系转换;
+
+# -2-
+	上述计算放在 LateUpdate() 中;
+
+# -3-
+	同时 在 project settings - Script Execution Order 面板中, 添加本脚本, 
+	将本脚本时序排在 cinemachine 的后面;
+
+这样依赖转换得到的 坐标就不晃动了
+
+
+

@@ -782,7 +782,14 @@ namespace UnityEngine
 
     
         /*
+            FOV:
             The vertical field-of-view (of the Camera, in degrees);
+
+
+            FOV: 侧面观察相机, 上下开口组成的夹角;
+                通过这个, 可以计算出 从 camera.up 向下观察相机, 左右开口组成的夹角;
+
+
 
             若 camera 为正交透视模式, 将忽视本值;
 
