@@ -278,15 +278,43 @@ https://www.khanacademy.org/math/multivariable-calculus/applications-of-multivar
 
 
 # -----------------------------------------------
+# Quadratic approximation   - 二次近似
+
+其实是 local linearization 的升级版, 不再是用一个 切平面去逼近点 (x0,y0), 而是用一个 二次方平面去逼近;
+
+https://www.khanacademy.org/math/multivariable-calculus/applications-of-multivariable-derivatives/quadratic-approximations/a/quadratic-approximation
+
 
 
 
 # -----------------------------------------------
+# second partial derivative test   -  二阶偏导数检验
 
+用来检测一个点是否为 saddle point (马鞍点)
+此点的切平面为 f(x,y..) = 0, 且此点并不是 局部最低点 or 局部最高点
+
+https://www.khanacademy.org/math/multivariable-calculus/applications-of-multivariable-derivatives/optimizing-multivariable-functions-videos/v/second-partial-derivative-test
+
+
+# 更深一段的解释:
+https://www.khanacademy.org/math/multivariable-calculus/applications-of-multivariable-derivatives/optimizing-multivariable-functions/a/reasoning-behind-the-second-partial-derivative-test
 
 
 
 # -----------------------------------------------
+# divergence  - 散度
+
+
+# 深入解释了公式构成:
+https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/divergence-and-curl-articles/a/intuition-for-divergence-formula
+
+但是依然没有解释为啥只是 线性加法: a+b, 不是三角函数加法: sqrt(a^2+b^2)
+
+
+
+# -----------------------------------------------
+# 3D Curl   - 3D旋度
+https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/divergence-and-curl-articles/a/curl
 
 
 
