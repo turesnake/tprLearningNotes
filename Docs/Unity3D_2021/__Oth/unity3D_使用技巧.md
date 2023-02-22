@@ -428,8 +428,63 @@ https://blog.csdn.net/qq_39735878/article/details/105863133
 # -3-
 	同时 在 project settings - Script Execution Order 面板中, 添加本脚本, 
 	将本脚本时序排在 cinemachine 的后面;
+	---
+	这个修改会出现在目标 cs脚本对应的 meta 文件里, 变量为 executionOrder;
+	---
+	(也可通过添加 [DefaultExecutionOrder(115)] attribute 来实现 )
+
 
 这样依赖转换得到的 坐标就不晃动了
+
+
+
+# ----------------------------------------------#
+#   Animation 界面不显示 sample 信息
+# ----------------------------------------------#
+https://answers.unity.com/questions/1642306/dont-have-sample-on-animation-windows.html
+
+右上角 设置里可开启
+
+
+
+
+# ----------------------------------------------#
+#   非递归地遍历 gameobj 的 子 gameobjs
+# ----------------------------------------------#
+
+	GetComponentsInChildren() 会递归所有 子孙节点
+
+	若只想遍历 子节点, 可使用:
+	---
+	foreach (Transform tf in someGameObj.transform)
+    {
+		...
+	}
+	---
+
+	注意, 必须使用 Transform, 不能使用 var
+
+
+# Transform.Find() 也有相似的 功能
+
+
+# ----------------------------------------------#
+#    使用 LoadSceneAsync 异步加载场景时,  new GameObject 可能存在的问题
+# ----------------------------------------------#
+
+LoadSceneAsync() 不回立刻返回新场景, 但新场景内的脚本可能已经调用了 new GameObject();
+
+如果 new go 没有设置自己的 parent, 则它可能被创建在 old scene 中.
+然后如果你在新建场景后, 删除掉 old scene, 则可能把 new go 连带删除掉...
+
+
+
+
+
+
+
+
+
 
 
 

@@ -45,6 +45,7 @@
 # -3-
     同时 在 project settings - Script Execution Order 面板中, 添加本脚本, 
 	将本脚本时序排在 cinemachine 的后面;
+    ( 也可以修改 meta 文件, 或添加 [DefaultExecutionOrder(115)] attribute 来实现 )
 
 
 

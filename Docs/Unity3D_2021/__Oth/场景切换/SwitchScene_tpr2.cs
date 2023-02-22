@@ -71,6 +71,18 @@ public class SwitchScene_tpr2 : MonoBehaviour
         var newSceneStr = sceneNames[idx];
         Debug.Log( "old: " + oldSceneStr + "; new: " + newSceneStr );
 
+
+        // !!!!!!!
+        /*
+            此实现目前存在问题:
+            如果 新场景里有脚本在 Start() 阶段 new GameObject, 且未设置这个 new go 的 parent
+            那么这个 new go 会默认被创建在 旧的 scene 中....
+
+            然后新场景 完成异步加载, 然后删除 old scene, 连带把那些 new go 也都删除了...
+        */
+
+        
+
         // 加载 新场景, 并设为 active
         AsyncOperation ret = SceneManager.LoadSceneAsync(newSceneStr, LoadSceneMode.Additive);
         while( ret.isDone == false )

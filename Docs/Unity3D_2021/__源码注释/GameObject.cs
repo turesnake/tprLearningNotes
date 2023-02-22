@@ -200,14 +200,19 @@ namespace UnityEngine
         //     The type of primitive object to create.
         [FreeFunctionAttribute("GameObjectBindings::CreatePrimitive")]
         public static GameObject CreatePrimitive(PrimitiveType type);
-        //
-        // 摘要:
-        //     Finds a GameObject by name and returns it.
-        //
-        // 参数:
-        //   name:
+
+
+        /*
+            Finds a GameObject by name and returns it.
+
+            查看: "如何查找GameObjects" 文件
+
+
+        */
         [FreeFunctionAttribute(Name = "GameObjectBindings::Find")]
         public static GameObject Find(string name);
+
+
         //
         // 摘要:
         //     Returns an array of active GameObjects tagged tag. Returns empty array if no
@@ -405,7 +410,7 @@ namespace UnityEngine
 
 
         /*
-            遍历自己的所有 子孙 gos, 也包含 根go 自己; 
+            遍历自己的所有 子孙 gos, 也包含 根go 自己;  递归
         */
         public void GetComponentsInChildren<T>(List<T> results);
         public T[] GetComponentsInChildren<T>();

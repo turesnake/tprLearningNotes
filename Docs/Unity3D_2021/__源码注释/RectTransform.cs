@@ -53,9 +53,12 @@ namespace UnityEngine
         //     The 3D position of the pivot of this RectTransform relative to the anchor reference
         //     point.
         public Vector3 anchoredPosition3D { get; set; }
-        //
-        // 摘要:
-        //     The size of this RectTransform relative to the distances between the anchors.
+
+        /*
+            The size of this RectTransform relative to the distances between the anchors.
+
+            就是界面上的 width, height
+        */
         public Vector2 sizeDelta { get; set; }
         //
         // 摘要:

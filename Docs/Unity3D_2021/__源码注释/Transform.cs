@@ -152,16 +152,20 @@ namespace UnityEngine
         //     Unparents all children.
         [FreeFunctionAttribute("DetachChildren", HasExplicitThis = true)]
         public void DetachChildren();
-        //
-        // 摘要:
-        //     Finds a child by name n and returns it.
-        //
-        // 参数:
-        //   n:
-        //     Name of child to be found.
-        //
-        // 返回结果:
-        //     The returned child transform or null if no child is found.
+
+
+        /* 
+            Finds a child by name n and returns it.
+
+            查看: "如何查找GameObjects" 文件
+            
+            参数:
+            n:
+                Name of child to be found.
+            
+            返回结果:
+                The returned child transform or null if no child is found.
+        */
         public Transform Find(string n);
 
 

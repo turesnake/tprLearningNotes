@@ -11,6 +11,8 @@ namespace UnityEngine
 
         Touch touch = Input.GetTouch(i);
 
+        Touch 是个 struct, 不存在 null 状态, 可检测 touch.phase 来确认它的状态
+
     */
     [NativeHeaderAttribute("Runtime/Input/InputBindings.h")]
     public struct Touch

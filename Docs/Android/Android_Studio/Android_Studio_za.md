@@ -24,6 +24,12 @@ A problem occurred evaluating project ':launcher'.
 
 
 
+# -------------------------- #
+#     Android Studio 显示手机程序的 debug 信息
+# -------------------------- #
+将手机连接电脑, 打开 Android Studio, 点开中下角的 Logcat 窗口, 
+打开程序, 就能看到 debug 信息;
+
 
 
 

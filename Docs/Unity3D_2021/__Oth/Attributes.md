@@ -93,6 +93,15 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attrib
 
 
 # ----------------------------------------------#
+# [DefaultExecutionOrder(115)]
+
+可以指定这个脚本的 script execution order
+其效果和在 -1-: project settings 面板中; -2-: meta文件设置中 是一样的;
+
+唯一缺点是, 使用本 attribute 来设置, 无法被登记到 script execution order 表中去, 有点不透明;
+
+
+# ----------------------------------------------#
 # ExecuteInEditMode
 
 在 editor 模式下 本脚本也能起效;

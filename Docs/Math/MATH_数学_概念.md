@@ -320,15 +320,33 @@ https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivative
 
 
 # -----------------------------------------------
+#  spectral radius  - 谱半径
+
+https://www.youtube.com/watch?v=K-yDVqijSYw
+
+一个矩阵的所有 eigenvalues 组成的集合, 叫做: spectrum of matrix A  -- (矩阵的光谱)
+
+这其中, 最大的那个绝对值, 就是 矩阵的 谱半径; (它一定是个 非负数)
+
+如果一个矩阵的 谱半径 小于1, 说明这个矩阵在把原空间缩小; 在解线性系统时常用到, 用来收敛 
 
 
 
 
 # -----------------------------------------------
+#    explicit euler    显式积分
+#    implicit euler    隐式积分
 
+https://zhuanlan.zhihu.com/p/479327351
 
+# 显式积分 
+	无法估计步长对精度的影响, 如果步长设置得太小, 会导致迭代次数过多
 
-# -----------------------------------------------
+# 隐式积分 
+	能很好解决 显式积分 的问题, 而且更稳定, 有时候就算物理错误了, 依然能保持稳定...
+	--
+	缺点就是求解困难;
+
 
 
 

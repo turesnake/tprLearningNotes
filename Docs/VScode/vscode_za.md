@@ -43,4 +43,3 @@ VSCode - setting - text editor - files - exclude - add pattern
 
 
 
-

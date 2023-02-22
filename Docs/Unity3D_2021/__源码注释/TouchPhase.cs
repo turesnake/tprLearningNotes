@@ -4,9 +4,12 @@
 
 namespace UnityEngine
 {
-    //
-    // 摘要:
-    //     Describes phase of a finger touch.
+    /*
+        Describes phase of a finger touch.
+
+        由于 Touch 是个 struct, 不存在 null 状态, 所以改检测其 phase 来确认是否为有效值
+
+    */
     public enum TouchPhase
     {
         //
