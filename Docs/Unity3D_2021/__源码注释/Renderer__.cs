@@ -263,6 +263,11 @@ namespace UnityEngine
                 {
                     meshRenderer.material = null;
                 }
+                或:
+                void OnDisable()
+                {
+                    m_material = null;
+                }
 
             Resources.UnloadUnusedAssets() 也能销毁 materials, 不过此函数仅在加载新 level 时才会被调用;
 
