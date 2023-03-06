@@ -46,10 +46,20 @@
 # 注意 (tpr):
     需要和 OnDisable() 配套使用;
 
+# 在游戏运行时:
+    if( "组件所在go_变成_active" && "组件自己变成_enalbe" ) 
+    {
+        OnEnable();
+    }
 
-# 在游戏运行后:
-    只有这个 component 组件被 active 时, OnEnable() 才会被调用;
-    -- 当 组件自己维持 disactive, 而它 的 go 被 active/disactive 时, 是不会调用 OnEnable() 的;
+    但反过来:
+
+    if( "组件所在go_变成_disactive" || "组件自己变成_not_enalbe" ) 
+    {
+        OnDisable();
+    }
+
+
 
 
 # ---------------------------------------------- #
@@ -274,6 +284,21 @@ https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
 and can be used for any cleanup code. 
 When scripts are reloaded after compilation has finished, OnDisable will be called, 
 followed by an OnEnable after the script has been loaded.
+
+
+# 在游戏运行时:
+    if( "组件所在go_变成_active" && "组件自己变成_enalbe" ) 
+    {
+        OnEnable();
+    }
+
+    但反过来:
+
+    if( "组件所在go_变成_disactive" || "组件自己变成_not_enalbe" ) 
+    {
+        OnDisable();
+    }
+    
 
 
 # ----------------------------------------------#

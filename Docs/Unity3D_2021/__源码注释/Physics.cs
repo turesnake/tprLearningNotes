@@ -64,10 +64,15 @@ namespace UnityEngine
         //     The maximum default velocity needed to move a Rigidbody's collider out of another
         //     collider's surface penetration. Must be positive.
         public static float defaultMaxDepenetrationVelocity { get; set; }
-        //
-        // 摘要:
-        //     Specifies whether queries (raycasts, spherecasts, overlap tests, etc.) hit Triggers
-        //     by default.
+
+        /*
+            Specifies whether queries (raycasts, spherecasts, overlap tests, etc.) hit Triggers by default.
+            This can be overridden on a per-query level by specifying the QueryTriggerInteraction parameter.
+
+            指定了当调用 各种 Physics.xxxCast() 函数时, 碰撞检测是否要相应那些 trigger collider;
+
+            本处是全局配置, 其实还可以在各个 cast() 函数内指定本次检测的 设置;
+        */
         public static bool queriesHitTriggers { get; set; }
         //
         // 摘要:
@@ -360,6 +365,8 @@ namespace UnityEngine
         [ExcludeFromDocs]
         public static bool CapsuleCast(Vector3 point1, Vector3 point2, float radius, Vector3 direction);
         public static bool CapsuleCast(Vector3 point1, Vector3 point2, float radius, Vector3 direction, out RaycastHit hitInfo, [Internal.DefaultValue("Mathf.Infinity")] float maxDistance, [Internal.DefaultValue("DefaultRaycastLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
+        
+        
         [ExcludeFromDocs]
         public static RaycastHit[] CapsuleCastAll(Vector3 point1, Vector3 point2, float radius, Vector3 direction, float maxDistance, int layerMask);
         [ExcludeFromDocs]
