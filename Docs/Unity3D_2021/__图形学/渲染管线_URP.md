@@ -321,8 +321,19 @@ ray marching -- 光线步进
 
 
 
+# ----------------------------------------------#
+#       RenderTexture.ResolveAA
+# ----------------------------------------------#
+这是在 Frame Debug 面板里能看到的一个 pass
 
+猜测是用来解析 类似 msaa rt 用的;
 
+当关闭 msaa 后, 这个 pass 就会消失;
 
+# https://forum.unity.com/threads/how-to-avoid-rendertexture-resolveaa-when-intercepting-image-with-commandbuffer.729641/
+On tiled rendering architectures, the CurrentActive Render Target exists only temporarily and cannot be read from (other than via frame buffer fetch) so in order to copy from it, it needs to be resolved to physical memory.
+Also when you blit, it sets the target texture as the active render target in tiled memory, so you have to resolve out the current active render before the blit if you do not want to overwrite it.
+
+# https://blog.csdn.net/Jaihk662/article/details/126752896
 
 

@@ -81,13 +81,18 @@ namespace UnityEngine
         //     The array that corners are filled into.
         public void GetLocalCorners(Vector3[] fourCornersArray);
         
-        //
-        // 摘要:
-        //     Get the corners of the calculated rectangle in world space.
-        //
-        // 参数:
-        //   fourCornersArray:
-        //     The array that corners are filled into.
+
+        /*
+            Get the corners of the calculated rectangle in world space.
+
+            每个 ui 元素都是一个 长方形, 本函数返回这个 长方形4个顶点在 ws 中的 posWS;
+
+            而且实践发现, 这个 长方体, 就在 ws 的那个 ui面板 平面上;
+            
+            参数:
+              fourCornersArray:
+                The array that corners are filled into.
+        */
         public void GetWorldCorners(Vector3[] fourCornersArray);
 
         public void SetInsetAndSizeFromParentEdge(Edge edge, float inset, float size);

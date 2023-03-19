@@ -515,14 +515,46 @@ LoadSceneAsync() 不回立刻返回新场景, 但新场景内的脚本可能已�
 
 
 
+# ----------------------------------------------#
+#      Behaviour.isActiveAndEnabled
+# ----------------------------------------------#
+
+Reports whether a GameObject and its associated Behaviour is active and enabled.
+
+A GameObject can be active or inactive. Similarly, a Behaviour can be enabled or disabled. 
+If a GameObject is active and has an enabled behaviour then isActiveAndEnabled will return true. Otherwise false is returned.
+
+Note: value is ReadOnly.
+To determine whether GameObject is active, isActiveAndEnabled uses the equivalent of activeInHierarchy.
 
 
 
 
 
+# ----------------------------------------------#
+#    如何在 inspector 中暴露 interface
+# ----------------------------------------------#
+
+https://stackoverflow.com/questions/64122920/how-to-work-around-unity-not-displaying-interfaces-in-the-inspector
 
 
+	public abstract class BaseTool : MonoBehaviour 
+	{ 
+		public abstract void Use(); 
+	} 
 
+
+	public class Equipment : BaseTool 
+	{ 
+		public override void Use()
+		{ 
+			...
+		}
+	} 
+
+# 就是将一个普通的 MonoBehaviour class 实现为 抽象类, 这样就能要求一些需要被强制实现的 函数,
+	用这个办法来模拟一个 interface,
+	同时还支持被暴露在 inspector 中.....
 
 
 

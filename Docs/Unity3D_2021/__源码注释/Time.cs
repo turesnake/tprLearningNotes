@@ -43,6 +43,15 @@ namespace UnityEngine
             缩放游戏运动时间的 缩放因子. 
             若为1, 游戏正常运行, 若为0.5, 游戏世界运动速度慢一倍
             将影响 deltaTime
+
+            When timeScale is set to zero your application acts as if paused if all your functions are frame rate independent. Negative values are ignored.
+
+            Note that changing the timeScale only takes effect on the following frames. 
+            How often MonoBehaviour.FixedUpdate is executed per frame depends on the timeScale. 
+            Therefore, to keep the number of FixedUpdate callbacks per frame constant, you must also multiply Time.fixedDeltaTime by timeScale. 
+            Whether this adjustment is desirable is game-specific.
+
+            FixedUpdate functions and suspended Coroutines with WaitForSeconds are not called when timeScale is set to zero.
         */
         public static float timeScale { get; set; }
 

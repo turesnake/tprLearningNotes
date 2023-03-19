@@ -57,7 +57,7 @@ namespace UnityEngine
             and setting keys copies them into the curve.
             ---
             如果传入的 keys 不是按照时间排序的, 那么传入后, 在对本容器元素进行真正的生成时, 会自动执行排序;
-            至于, 针对本变量的读写是 "值传递", 传入的值将被复制到本变量出, 拿出的值也是 copy 版;
+            注意, 针对本变量的读写是 "值传递", 传入的值将被复制到本变量出, 拿出的值也是 copy 版;
         */
         public Keyframe[] keys { get; set; }
 
