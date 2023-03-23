@@ -559,3 +559,15 @@ https://stackoverflow.com/questions/64122920/how-to-work-around-unity-not-displa
 
 
 
+# ----------------------------------------------#
+#   当 shader 找不到 hlsl 文件 时
+# ----------------------------------------------#
+但明明那个文件存在在那里,
+
+# 此时右键 shader 文件, "Reimport" 即可
+
+
+
+
+
+

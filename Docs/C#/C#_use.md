@@ -597,3 +597,38 @@ public class A
 
 
 
+# ---------------------------------------------- #
+#              is
+# ---------------------------------------------- #
+
+# --1--
+	if (value is Transform )
+	{
+		//...
+	}
+	---
+	is 判断 左侧表达式的返回值的类型 是否与 右侧类型 "匹配" (compatible)
+	The is operator checks if the result of an expression is compatible with a given type.
+
+
+# --2--
+	if ( iBoxed is int a )
+	{
+		Console.WriteLine(a);
+	}
+	---
+	不关做判断, 如果为 true, 还会初始化变量 a, 
+	关键词:
+		Declaration and type patterns
+		Declaration pattern
+
+	https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/patterns#declaration-and-type-patterns
+	https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/type-testing-and-cast#is-operator
+
+
+
+
+
+
+
+
