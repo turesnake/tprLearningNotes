@@ -1,5 +1,6 @@
 # =============================================== #
 #              Easy Touch
+#              ETC
 # =============================================== #
 
 
@@ -80,8 +81,36 @@
 
 
 
+# ----------------------------- #
+#   bug:
+#      当把 joystick 放到 camera-canvas 下时, 操作响应会异常
+# ----------------------------- #
 
+原因和修改:
 
+    在 ETCJoystick.OnDrag() 中, if (isNoOffsetThumb) 分支下, 只实现了 overlay-canvas 这一模式;
+    改为:
+
+    if (isNoOffsetThumb)
+    {
+
+        /// <summary>
+        /// 原插件实现并未考虑过 ScreenSpaceCamera-canvas 这个情况, 皮卡丘 完善了这个缺陷:
+        /// </summary>
+            
+        Vector2 screenPos = Vector2.zero;
+        if( cachedRootCanvas.renderMode == RenderMode.ScreenSpaceOverlay )
+        { 
+            screenPos = (Vector2)cachedRectTransform.position / cachedRootCanvas.rectTransform().localScale.x;
+        }
+        else if( cachedRootCanvas.renderMode == RenderMode.ScreenSpaceCamera ) 
+        {
+            screenPos = (Vector2)cachedRootCanvas.worldCamera.WorldToScreenPoint( cachedRectTransform.position );
+        }
+        thumbPosition = eventData.position - screenPos;
+    }
+
+    即可;
 
 
 
