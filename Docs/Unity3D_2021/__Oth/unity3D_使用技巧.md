@@ -570,4 +570,19 @@ https://stackoverflow.com/questions/64122920/how-to-work-around-unity-not-displa
 
 
 
+# ----------------------------------------------#
+#   当场景在运行时 被修改后, 如何保存这个场景
+# ----------------------------------------------#
+
+https://www.bilibili.com/video/BV1QM411W7Jb/?vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+这个方法目前暂没走通, 有点问题
+
+
+
+
+
+
+
+
 

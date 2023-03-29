@@ -1429,6 +1429,9 @@ shader_feature_local_vertex
 
 
 
+# _DITHERENABLED_ON
+    20230326: 晚穹遭遇的bug指出, 这是 unity 自用 keyword, 请不要用到 multi_compile 里作为自己的 keyword...
+
 
 
 大部分 内建缩写指令 生成多个 variants. 如果你知道你的项目 不需要它们, 可使用:
