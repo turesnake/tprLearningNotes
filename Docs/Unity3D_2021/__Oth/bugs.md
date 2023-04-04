@@ -82,4 +82,13 @@ https://www.unity3dtips.com/zh/the-animation-state-could-not-be-played-because-i
 
 
 
+# ----------------------------------------------#
+#        不管开啥场景, 都不停地报 "null..." (空引用错误)
+# ----------------------------------------------#
+
+# 可能是 Animator 窗口挂了,  此时重启此窗口, 或者重启 unity 就好了;
+
+
+
+
 

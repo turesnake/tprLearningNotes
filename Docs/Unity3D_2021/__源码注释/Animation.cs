@@ -19,6 +19,17 @@ namespace UnityEngine
     {
         public Animation();
 
+        /* 
+            可以遍历 inspector 中 Animations 槽绑定的所有 clips 信息:
+
+            foreach (AnimationState state in changeModeAnimation)
+            {
+                AnimationClip clip = state.clip;
+                Debug.Log(
+                    "name: " + state.name + ",  clip time = " + clip.length
+                );
+            }
+        */
         public AnimationState this[string name] { get; }
 
         //
@@ -34,9 +45,13 @@ namespace UnityEngine
         // 摘要:
         //     Controls culling of this Animation component.
         public AnimationCullingType cullingType { get; set; }
-        //
-        // 摘要:
-        //     The default animation.
+
+
+        /*
+            The default animation.
+            inspector 上 "Animation" 槽绑定的对象, 调用 Play() 之后, 此值是不会改变的;
+
+        */
         public AnimationClip clip { get; set; }
         //
         // 摘要:

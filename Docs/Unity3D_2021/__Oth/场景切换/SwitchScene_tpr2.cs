@@ -83,13 +83,21 @@ public class SwitchScene_tpr2 : MonoBehaviour
 
         
 
-        // 加载 新场景, 并设为 active
+        // 加载 新场景:
         AsyncOperation ret = SceneManager.LoadSceneAsync(newSceneStr, LoadSceneMode.Additive);
         while( ret.isDone == false )
         {
             yield return null;
         }
         ret.allowSceneActivation = true;
+
+
+        // 切换 Active Scene:
+        Scene newScene = SceneManager.GetSceneByName(newSceneStr);
+        Debug.Assert( newScene.IsValid() );
+        SceneManager.SetActiveScene( newScene );
+        print( "active scene = " + SceneManager.GetActiveScene().name );
+
 
         // 卸载旧场景
         for( int i=SceneManager.sceneCount-1; i>=0; i-- )

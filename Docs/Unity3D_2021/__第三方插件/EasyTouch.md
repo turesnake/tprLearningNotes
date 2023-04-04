@@ -115,6 +115,24 @@
 
 
 
+# ----------------------------- #
+#   如何在 pc 端使用 wsad 键来映射 左摇杆
+# ----------------------------- #
+
+开启: Axes properties - Enable Unity axes
+
+如果觉得映射后, 使用 wsad 控制摇杆时, 摇杆移动慢, 可将下方的
+    Horizontal axis - General settings - Dead length
+    Vertical axis   - General settings - Dead length
+    --
+这两个值都设置为 0.02
+
+
+
+
+
+
+
 
 
 

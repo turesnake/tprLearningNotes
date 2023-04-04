@@ -582,6 +582,25 @@ https://www.bilibili.com/video/BV1QM411W7Jb/?vd_source=df0fa6bb68b75a198c4c3f59c
 
 
 
+# ----------------------------------------------#
+#     tag layer 修改后存储在哪:
+# ----------------------------------------------#
+
+TagManager.asset
+
+
+
+
+# ----------------------------------------------#
+#         Alpha Is Transparency
+# ----------------------------------------------#
+
+https://zhuanlan.zhihu.com/p/340754532
+
+https://zhuanlan.zhihu.com/p/344751308
+
+
+
 
 
 
