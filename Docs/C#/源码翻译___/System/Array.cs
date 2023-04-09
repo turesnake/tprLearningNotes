@@ -108,7 +108,9 @@ namespace System
         */
         public static TOutput[] ConvertAll<TInput, TOutput>(TInput[] array, Converter<TInput, TOutput> converter);
         
-        
+        /*
+            如果  destinationArray 容量不够, 会报错
+        */
         public static void Copy(Array sourceArray, int sourceIndex, Array destinationArray, int destinationIndex, int length);
         public static void Copy(Array sourceArray, long sourceIndex, Array destinationArray, long destinationIndex, long length);
         public static void Copy(Array sourceArray, Array destinationArray, int length);
@@ -156,7 +158,7 @@ namespace System
             !!!!!!
 
             因为在这个过程中, 其实只创建了一个 List<int> 对象, 并将它的引用分发给了每一个 datas 的成员...
-            在后续操作中, 操作 datas[0] 还是操作 datas[1], 其实都是在操作同一个对象.....
+            在后续操作中, 不管是操作 datas[0] 还是操作 datas[1], 其实都是在操作同一个对象.....
 
         */
         public static void Fill<T>(T[] array, T value);
@@ -297,8 +299,13 @@ namespace System
         */
         public object Clone();
 
-        // Copies all the elements of the current one-dimensional array to the specified one-dimensional array starting at the specified destination array index. 
-        // The index is specified as a 32-bit integer.
+        /*
+            Copies all the elements of the current one-dimensional array to the specified one-dimensional array starting at the specified destination array index. 
+            The index is specified as a 32-bit integer.
+
+            参数为 dst array;
+            若 dst array 容量不够, 会报错;
+        */
         public void CopyTo(Array array, long index);
         public void CopyTo(Array array, int index);
 

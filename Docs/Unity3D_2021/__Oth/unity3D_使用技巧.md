@@ -601,7 +601,11 @@ https://zhuanlan.zhihu.com/p/344751308
 
 
 
+# ----------------------------------------------#
+#  代码访问 当前 平台:
+# ----------------------------------------------#
+访问 buildSettings - platform 这个变量:
 
-
+# BuildTarget tgt = EditorUserBuildSettings.activeBuildTarget;
 
 

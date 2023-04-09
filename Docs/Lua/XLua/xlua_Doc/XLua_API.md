@@ -106,7 +106,7 @@
 
 描述：
 
-    把该table转成一个T指明的类型，可以是一个加了CSharpCallLua声明的interface，一个有默认构造函数的class或者struct，一个Dictionary，List等等。
+    把该table转成一个T指明的类型，可以是一个加了 CSharpCallLua 声明的interface，一个有默认构造函数的class或者struct，一个Dictionary，List等等。
 
 #### void SetMetaTable(LuaTable metaTable)
 

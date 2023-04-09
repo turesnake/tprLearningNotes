@@ -68,8 +68,10 @@ void OnDrawGizmos()
 
 
 
-
-
+# ----------------------------------------------#
+#   如何获得 inspector 中 选中高亮的 对象 (比如一个变量)
+# ----------------------------------------------#
+https://answers.unity.com/questions/728071/inspector-current-highlighted-element.html
 
 
 

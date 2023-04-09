@@ -42,7 +42,7 @@
 ### C#访问Lua
 
 这里指的是C#主动发起对Lua数据结构的访问。
-本章涉及到的例子都可以在XLua\Tutorial\CSharpCallLua下找到。
+本章涉及到的例子都可以在 XLua\Tutorial\CSharpCallLua 下找到。
 
 1. 获取一个全局基本数据类型
     访问LuaEnv.Global就可以了，上面有个模版Get方法，可指定返回的类型。
@@ -204,7 +204,7 @@ Lua调用侧的返回值处理规则：C#函数的返回值（如果有的话）
 
 ##### 泛化（模版）方法
 
-不直接支持，可以通过Extension methods功能进行封装后调用。
+不直接支持，可以通过 Extension methods 功能进行封装后调用。
 
 ##### 枚举类型
 
