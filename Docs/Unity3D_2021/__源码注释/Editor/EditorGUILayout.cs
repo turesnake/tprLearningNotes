@@ -441,7 +441,9 @@ namespace UnityEditor
         
         /*
             Make a field for editing an AnimationCurve.
-            画一个 曲线调节窗口
+            画一个 曲线调节窗口;
+
+            注意, 和其它同功能函数不同, 本函数的数据修改是 延迟的, 需要本地缓存 oldCurve 来识别 curve 是否被改写了 ...
         
         参数:
           property:

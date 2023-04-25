@@ -76,6 +76,30 @@ https://answers.unity.com/questions/728071/inspector-current-highlighted-element
 
 
 
+# ----------------------------------------------#
+#     EditorGUILayout  如何控制一行的 前/中/后 空白空间
+# ----------------------------------------------#
+
+    EditorGUILayout.BeginHorizontal();
+
+        GUILayout.FlexibleSpace(); // Fill Space Beginning
+
+        .......
+
+        GUILayout.FlexibleSpace(); // Fill Space End
+
+        .......
+
+        GUILayout.FlexibleSpace(); // Fill Space End
+
+
+    EditorGUILayout.EndHorizontal();
+    ----
+
+它可以把 头部 或 尾部 空间留出来;
+尤其是你希望设置一组 右对齐 '+','-' 按钮时;
+
+
 
 
 

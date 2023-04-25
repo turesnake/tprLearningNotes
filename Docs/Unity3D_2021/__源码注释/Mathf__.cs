@@ -206,7 +206,7 @@ namespace UnityEngine
 
         /*
             摘要:
-            Returns the cosine of angle f.
+            Returns the cosine of angle f. 参数 弧度
 
             注意:
                 本函数的参数 存在一个接收区间, 每个平台的区间定义都不同;
@@ -655,6 +655,7 @@ namespace UnityEngine
 
 
         // Returns the tangent of angle f in radians.
+        // 参数 弧度
         public static float Tan(float f);
     }
 }

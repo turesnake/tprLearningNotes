@@ -455,8 +455,20 @@ https://answers.unity.com/questions/1642306/dont-have-sample-on-animation-window
 	GetComponentsInChildren() 会递归所有 子孙节点
 
 	若只想遍历 子节点, 可使用:
+# -1-:	
+	for (int i = 0; i < transform.childCount; i++)
+	{
+		Transform currentChild = transform.GetChild(i);
+		...
+	}
+
+	比较推荐的写法, 写到 lua 里也是可以的
+
+
+# -2-:
+	
 	---
-	foreach (Transform tf in someGameObj.transform)
+	foreach (Transform tf in someGameObj.transform) // --- 别看它长这么奇怪, 但它真的管用...
     {
 		...
 	}
@@ -465,7 +477,11 @@ https://answers.unity.com/questions/1642306/dont-have-sample-on-animation-window
 	注意, 必须使用 Transform, 不能使用 var
 
 
+
 # Transform.Find() 也有相似的 功能
+
+
+
 
 
 
@@ -607,5 +623,32 @@ https://zhuanlan.zhihu.com/p/344751308
 访问 buildSettings - platform 这个变量:
 
 # BuildTarget tgt = EditorUserBuildSettings.activeBuildTarget;
+
+
+	material.SetFloat( vrayLightMapOnId,
+        (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android) ? 0 : (vrayLightMapOn?1:0) 
+    );
+
+
+# ----------------------------------------------#
+#  System.Type.GetType("UnityEngine.Transform") 为什么得到 null ? 
+# ----------------------------------------------#
+https://nodachisoft.com/common/en/article/en000182/
+
+因为类型 Transform 不在当前 dll 中, 可改为:
+
+	System.Type transformType = System.Type.GetType("UnityEngine.Transform,UnityEngine.CoreModule");
+
+就成功了...
+
+	注意, 字符串中, 逗号之后允许有空格...
+
+
+
+
+
+
+
+
 
 

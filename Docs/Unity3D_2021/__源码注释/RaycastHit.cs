@@ -9,6 +9,12 @@ namespace UnityEngine
 {
     /*
         Structure used to get information back from a raycast();
+
+
+        因为是 struct, 所以不可能为 null;
+        判断是否为空的办法:
+
+            if( raycastHit.collider == null ){}
         
     */
     [NativeHeaderAttribute("Runtime/Interfaces/IRaycast.h")]

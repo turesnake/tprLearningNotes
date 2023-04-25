@@ -603,8 +603,10 @@ namespace UnityEngine
         public static void IgnoreLayerCollision(int layer1, int layer2, [Internal.DefaultValue("true")] bool ignore);
         [ExcludeFromDocs]
         public static void IgnoreLayerCollision(int layer1, int layer2);
-        [ExcludeFromDocs]
-        public static bool Linecast(Vector3 start, Vector3 end);
+
+
+
+        
         //
         // 摘要:
         //     Returns true if there is any collider intersecting the line between start and
@@ -622,6 +624,8 @@ namespace UnityEngine
         //
         //   queryTriggerInteraction:
         //     Specifies whether this query should hit Triggers.
+        [ExcludeFromDocs]
+        public static bool Linecast(Vector3 start, Vector3 end);
         public static bool Linecast(Vector3 start, Vector3 end, [Internal.DefaultValue("DefaultRaycastLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
         [ExcludeFromDocs]
         public static bool Linecast(Vector3 start, Vector3 end, out RaycastHit hitInfo, int layerMask);
@@ -630,8 +634,11 @@ namespace UnityEngine
         [ExcludeFromDocs]
         public static bool Linecast(Vector3 start, Vector3 end, int layerMask);
         public static bool Linecast(Vector3 start, Vector3 end, out RaycastHit hitInfo, [Internal.DefaultValue("DefaultRaycastLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
-        [ExcludeFromDocs]
-        public static Collider[] OverlapBox(Vector3 center, Vector3 halfExtents, Quaternion orientation, int layerMask);
+        
+        
+        
+        
+        
         //
         // 摘要:
         //     Find all colliders touching or inside of the given box.
@@ -654,11 +661,15 @@ namespace UnityEngine
         //
         // 返回结果:
         //     Colliders that overlap with the given box.
+        [ExcludeFromDocs]
+        public static Collider[] OverlapBox(Vector3 center, Vector3 halfExtents, Quaternion orientation, int layerMask);
         public static Collider[] OverlapBox(Vector3 center, Vector3 halfExtents, [Internal.DefaultValue("Quaternion.identity")] Quaternion orientation, [Internal.DefaultValue("AllLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
         [ExcludeFromDocs]
         public static Collider[] OverlapBox(Vector3 center, Vector3 halfExtents);
         [ExcludeFromDocs]
         public static Collider[] OverlapBox(Vector3 center, Vector3 halfExtents, Quaternion orientation);
+
+
         //
         // 摘要:
         //     Find all colliders touching or inside of the given box, and store them into the
@@ -694,10 +705,10 @@ namespace UnityEngine
         public static int OverlapBoxNonAlloc(Vector3 center, Vector3 halfExtents, Collider[] results);
         [ExcludeFromDocs]
         public static int OverlapBoxNonAlloc(Vector3 center, Vector3 halfExtents, Collider[] results, Quaternion orientation, int mask);
-        [ExcludeFromDocs]
-        public static Collider[] OverlapCapsule(Vector3 point0, Vector3 point1, float radius);
-        [ExcludeFromDocs]
-        public static Collider[] OverlapCapsule(Vector3 point0, Vector3 point1, float radius, int layerMask);
+
+
+
+        
         //
         // 摘要:
         //     Check the given capsule against the physics world and return all overlapping
@@ -721,11 +732,15 @@ namespace UnityEngine
         //
         // 返回结果:
         //     Colliders touching or inside the capsule.
+        [ExcludeFromDocs]
+        public static Collider[] OverlapCapsule(Vector3 point0, Vector3 point1, float radius);
+        [ExcludeFromDocs]
+        public static Collider[] OverlapCapsule(Vector3 point0, Vector3 point1, float radius, int layerMask);
         public static Collider[] OverlapCapsule(Vector3 point0, Vector3 point1, float radius, [Internal.DefaultValue("AllLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
-        [ExcludeFromDocs]
-        public static int OverlapCapsuleNonAlloc(Vector3 point0, Vector3 point1, float radius, Collider[] results);
-        [ExcludeFromDocs]
-        public static int OverlapCapsuleNonAlloc(Vector3 point0, Vector3 point1, float radius, Collider[] results, int layerMask);
+        
+        
+        
+        
         //
         // 摘要:
         //     Check the given capsule against the physics world and return all overlapping
@@ -752,11 +767,15 @@ namespace UnityEngine
         //
         // 返回结果:
         //     The amount of entries written to the buffer.
+        [ExcludeFromDocs]
+        public static int OverlapCapsuleNonAlloc(Vector3 point0, Vector3 point1, float radius, Collider[] results);
+        [ExcludeFromDocs]
+        public static int OverlapCapsuleNonAlloc(Vector3 point0, Vector3 point1, float radius, Collider[] results, int layerMask);
         public static int OverlapCapsuleNonAlloc(Vector3 point0, Vector3 point1, float radius, Collider[] results, [Internal.DefaultValue("AllLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
-        [ExcludeFromDocs]
-        public static Collider[] OverlapSphere(Vector3 position, float radius);
-        [ExcludeFromDocs]
-        public static Collider[] OverlapSphere(Vector3 position, float radius, int layerMask);
+        
+        
+        
+        
         //
         // 摘要:
         //     Computes and stores colliders touching or inside the sphere.
@@ -776,11 +795,17 @@ namespace UnityEngine
         //
         // 返回结果:
         //     Returns an array with all colliders touching or inside the sphere.
+        [ExcludeFromDocs]
+        public static Collider[] OverlapSphere(Vector3 position, float radius);
+        [ExcludeFromDocs]
+        public static Collider[] OverlapSphere(Vector3 position, float radius, int layerMask);
         public static Collider[] OverlapSphere(Vector3 position, float radius, [Internal.DefaultValue("AllLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
-        [ExcludeFromDocs]
-        public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results, int layerMask);
-        [ExcludeFromDocs]
-        public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results);
+        
+        
+        
+        
+        
+        
         //
         // 摘要:
         //     Computes and stores colliders touching or inside the sphere into the provided
@@ -804,6 +829,10 @@ namespace UnityEngine
         //
         // 返回结果:
         //     Returns the amount of colliders stored into the results buffer.
+        [ExcludeFromDocs]
+        public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results, int layerMask);
+        [ExcludeFromDocs]
+        public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results);
         public static int OverlapSphereNonAlloc(Vector3 position, float radius, Collider[] results, [Internal.DefaultValue("AllLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
         
         
@@ -927,6 +956,9 @@ namespace UnityEngine
         public static RaycastHit[] RaycastAll(Ray ray);
         [ExcludeFromDocs]
         public static RaycastHit[] RaycastAll(Ray ray, float maxDistance);
+
+
+        
         [ExcludeFromDocs]
         public static int RaycastNonAlloc(Vector3 origin, Vector3 direction, RaycastHit[] results, float maxDistance);
         //
@@ -1111,6 +1143,8 @@ namespace UnityEngine
         public static RaycastHit[] SphereCastAll(Vector3 origin, float radius, Vector3 direction, [Internal.DefaultValue("Mathf.Infinity")] float maxDistance, [Internal.DefaultValue("DefaultRaycastLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
         [ExcludeFromDocs]
         public static RaycastHit[] SphereCastAll(Ray ray, float radius, float maxDistance, int layerMask);
+
+
         //
         // 摘要:
         //     Cast sphere along the direction and store the results into buffer.
@@ -1178,6 +1212,9 @@ namespace UnityEngine
         public static int SphereCastNonAlloc(Ray ray, float radius, RaycastHit[] results);
         [ExcludeFromDocs]
         public static int SphereCastNonAlloc(Vector3 origin, float radius, Vector3 direction, RaycastHit[] results, float maxDistance);
+
+
+        
         //
         // 摘要:
         //     Apply Transform changes to the physics engine.

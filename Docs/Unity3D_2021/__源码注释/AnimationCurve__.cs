@@ -72,59 +72,65 @@ namespace UnityEngine
 
         /*
             Creates a constant "curve" starting at timeStart, ending at timeEnd and with the value value.
-        // 参数:
-        //   timeStart:
-        //     The start time for the constant curve.
-        //   timeEnd:
-        //     The end time for the constant curve.
-        //   value:
-        //     The value for the constant curve.
-        // 返回结果:
-        //     The constant curve created from the specified values.
+
+            画一条平直线:
+                curve = AnimationCurve.Constant( 0f, 1f, 1f );
+
+            参数:
+            timeStart:
+                The start time for the constant curve.
+            timeEnd:
+                The end time for the constant curve.
+            value:
+                The value for the constant curve.
+            返回结果:
+                The constant curve created from the specified values.
         */
         public static AnimationCurve Constant(float timeStart, float timeEnd, float value);
 
         /*
             Creates an ease-in and out curve starting at timeStart, valueStart and ending at timeEnd, valueEnd.
             缓入缓出曲线;
-        // 参数:
-        //   timeStart:
-        //     The start time for the ease curve.
-        //   valueStart:
-        //     The start value for the ease curve.
-        //   timeEnd:
-        //     The end time for the ease curve.
-        //   valueEnd:
-        //     The end value for the ease curve.
-        // 返回结果:
-        //     The ease-in and out curve generated from the specified values.
+
+            参数:
+            timeStart:
+                The start time for the ease curve.
+            valueStart:
+                The start value for the ease curve.
+            timeEnd:
+                The end time for the ease curve.
+            valueEnd:
+                The end value for the ease curve.
+            返回结果:
+                The ease-in and out curve generated from the specified values.
         */
         public static AnimationCurve EaseInOut(float timeStart, float valueStart, float timeEnd, float valueEnd);
 
         /*
             A straight Line starting at timeStart, valueStart and ending at timeEnd, valueEnd.
-        // 参数:
-        //   timeStart:
-        //     The start time for the linear curve.
-        //   valueStart:
-        //     The start value for the linear curve.
-        //   timeEnd:
-        //     The end time for the linear curve.
-        //   valueEnd:
-        //     The end value for the linear curve.
-        // 返回结果:
-        //     The linear curve created from the specified values.
+
+            参数:
+            timeStart:
+                The start time for the linear curve.
+            valueStart:
+                The start value for the linear curve.
+            timeEnd:
+                The end time for the linear curve.
+            valueEnd:
+                The end value for the linear curve.
+            返回结果:
+                The linear curve created from the specified values.
         */
         public static AnimationCurve Linear(float timeStart, float valueStart, float timeEnd, float valueEnd);
 
         /*
             Add a new key to the curve.
 
-        // 参数:
-        //   key:
-        //     The key to add to the curve.
-        //
-        // 返回结果:
+            参数:
+            key:
+                The key to add to the curve.
+            
+            返回结果:
             The index of the added key, or -1 if the key could not be added.
             If no key could be added because there is already another keyframe at the same time 
             -1 will be returned.
@@ -136,14 +142,14 @@ namespace UnityEngine
 
             Smooth tangents are automatically computed for the key.
             
-        // 参数:
-        //   time:
-        //     The time at which to add the key (horizontal axis in the curve graph). x轴值
-        //
-        //   value:
-        //     The value for the key (vertical axis in the curve graph). y轴值
-        //
-        // 返回结果:
+            参数:
+            time:
+                The time at which to add the key (horizontal axis in the curve graph). x轴值
+            
+            value:
+                The value for the key (vertical axis in the curve graph). y轴值
+            
+            返回结果:
             The index of the added key, or -1 if the key could not be added.
             If no key could be added because there is already another keyframe at the same time -1 will be returned.
         */
@@ -151,6 +157,9 @@ namespace UnityEngine
         public int AddKey(float time, float value);
 
 
+        /*
+            深度比较, 只要 曲线发生变化, 都会返回 false;
+        */
         public override bool Equals(object o);
         public bool Equals(AnimationCurve other);
 
@@ -159,11 +168,11 @@ namespace UnityEngine
             Evaluate the curve at time.
             传入 x值, 求解 y 值;
 
-        // 参数:
-        //   time:
-        //     The time within the curve you want to evaluate (the horizontal axis in the curve graph).
-        // 返回结果:
-        //     The value of the curve, at the point in time specified.
+            参数:
+            time:
+                The time within the curve you want to evaluate (the horizontal axis in the curve graph).
+            返回结果:
+                The value of the curve, at the point in time specified.
         */
         [ThreadSafeAttribute]
         public float Evaluate(float time);
@@ -178,15 +187,15 @@ namespace UnityEngine
             will be used instead. 
             This is the desired behaviour for dragging keyframes in a curve editor.
             ---
-        // 参数:
-        //   index:
-        //     The index of the key to move.
-        //
-        //   key:
-        //     The key (with its new time) to insert.
-        //
-        // 返回结果:
-        //     The index of the keyframe after moving it.
+            参数:
+            index:
+                The index of the key to move.
+            
+            key:
+                The key (with its new time) to insert.
+            
+            返回结果:
+                The index of the keyframe after moving it.
         */
         [FreeFunctionAttribute("AnimationCurveBindings::MoveKey", HasExplicitThis = true, IsThreadSafe = true)]
         [NativeThrowsAttribute]
@@ -209,11 +218,11 @@ namespace UnityEngine
             A weight of 0 evens out tangents. (没看懂)
             evens out: 拉平;
         
-        // 参数:
-        //   index:
-        //     The index of the keyframe to be smoothed.
-        //   weight:
-        //     The smoothing weight to apply to the keyframe's tangents.
+            参数:
+            index:
+                The index of the keyframe to be smoothed.
+            weight:
+                The smoothing weight to apply to the keyframe's tangents.
         */
         [FreeFunctionAttribute("AnimationCurveBindings::SmoothTangents", HasExplicitThis = true, IsThreadSafe = true)]
         [NativeThrowsAttribute]

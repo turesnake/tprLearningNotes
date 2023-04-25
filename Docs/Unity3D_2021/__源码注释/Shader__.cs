@@ -19,6 +19,17 @@ namespace UnityEngine
         -- 检查 一个 shader 是否可在 用户硬件上运行 (本类的 isSupported property),
         -- 设置 global shader properties and keywords
         -- finding shaders by name (本类的: Find method).
+
+
+
+
+
+        int _K_Id = Shader.PropertyToID("_K_Id");
+
+
+
+
+
     */
     [NativeHeaderAttribute("Runtime/Shaders/Shader.h")]
     [NativeHeaderAttribute("Runtime/Shaders/GpuPrograms/ShaderVariantCollection.h")]

@@ -8,6 +8,9 @@ namespace UnityEngine
     /*
         Specifies Layers to use in a Physics.Raycast.
 
+
+
+
         
     */
     [NativeClassAttribute("BitField", "struct BitField;")]
@@ -21,18 +24,31 @@ namespace UnityEngine
         //     Converts a layer mask value to an integer value.
         public int value { get; set; }
 
-        //
-        // 摘要:
-        //     Given a set of layer names as defined by either a Builtin or a User Layer in
-        //     the, returns the equivalent layer mask for all of them.
-        //
-        // 参数:
-        //   layerNames:
-        //     List of layer names to convert to a layer mask.
-        //
-        // 返回结果:
-        //     The layer mask created from the layerNames.
+
+        /*
+                Given a set of layer names as defined by either a Builtin or a User Layer in
+                the, returns the equivalent layer mask for all of them.
+                ---
+
+                LayerMask.GetMask("Default")  可得到想要的 int 值
+
+                !!! GetMask() 和 NameToLayer() 的区别:
+                    假设 layer "CameraCollision" 位于第 21 个, 则:
+                    GetMask()     得到 2097152
+                    NameToLayer() 得到 21
+            
+                    使用 GetMask() 那个值可用到 碰撞检测函数中
+
+            参数:
+            layerNames:
+                List of layer names to convert to a layer mask.
+            
+            返回结果:
+                The layer mask created from the layerNames.
+        */
         public static int GetMask(params string[] layerNames);
+
+
         //
         // 摘要:
         //     Given a layer number, returns the name of the layer as defined in either a Builtin
@@ -43,6 +59,8 @@ namespace UnityEngine
         [NativeMethodAttribute("LayerToString")]
         [StaticAccessorAttribute("GetTagManager()", Bindings.StaticAccessorType.Dot)]
         public static string LayerToName(int layer);
+
+
         //
         // 摘要:
         //     Given a layer name, returns the layer index as defined by either a Builtin or

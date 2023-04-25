@@ -281,6 +281,13 @@ namespace System
                 此时可用 可选参数:
                 StringSplitOptions.RemoveEmptyEntries 来过滤掉它们
 
+            # ==:
+                string ss = "";   
+                string[] words = ss.Split(',');
+                --
+                此时得到的  words 的元素个数为 1, words[0] 内容为 "";
+                即: 无论如何都会得到一个元素
+
         */
         [ComVisible(false)]
         public String[] Split(char[] separator, StringSplitOptions options);
