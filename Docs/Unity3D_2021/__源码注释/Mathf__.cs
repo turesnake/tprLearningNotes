@@ -516,6 +516,8 @@ namespace UnityEngine
             Returns f raised to power p.
             如:
                 Pow( 2f, 3f ) = 8f;
+
+                Pow(f,p ) = f^p
          参数:
            f: 底数
            p: 指数
@@ -640,6 +642,9 @@ namespace UnityEngine
             和线性插值 Lerp() 类似, 不过是圆滑过度, 不那么生硬;
 
             猜测插值曲线为: 3t^2-2t^3
+
+            当参数 t 小于 0 时, 会被当成 0 来使用, 此时函数返回 from;
+            当参数 t 大于 1 时, 会被当成 1 来使用, 此时函数返回 to;
         
         */
         public static float SmoothStep(float from, float to, float t);

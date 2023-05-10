@@ -52,7 +52,7 @@
         isMoving = true;
         for( float t = 0f; t<=1.0f;  t += speed * Time.deltaTime )
         {
-            double travel = computer.Travel(0.0, splineLength * t, Spline.Direction.Forward); // t 值
+            double travel = computer.Travel(0.0, splineLength * t, Spline.Direction.Forward); // t 值 [0,1]
             Vector3 pos = computer.EvaluatePosition(travel);
             transform.position = pos;
             yield return null;
@@ -100,7 +100,21 @@
 
 能查找一个点到曲线的最短路径
 
+SplineProjector
 
+
+# -- 用法
+将 投射者   绑定到组件的 projectTarget 上,
+将 被投射者 绑定到组件的 targetObject 上,
+
+这样一样,当 projectTarget 运动时, 就能实时计算出 曲线上的最短点, 然后把 targetObject 放到这个 最短点上;
+
+
+# -- 代码用法: 直接改用 SplineComputer.Project() 来求, 非常简单:
+
+    SplineSample sample = new SplineSample(); 
+    splineComputer.Project( srcPoint.position, ref sample );
+    dstPoint.position = sample.position;
 
 
 

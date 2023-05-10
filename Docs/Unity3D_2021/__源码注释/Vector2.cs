@@ -100,14 +100,18 @@ namespace UnityEngine
         // 返回结果:
         //     The unsigned angle in degrees between the two vectors.
         public static float Angle(Vector2 from, Vector2 to);
-        //
-        // 摘要:
-        //     Returns a copy of vector with its magnitude clamped to maxLength.
-        //
-        // 参数:
-        //   vector:
-        //
-        //   maxLength:
+
+
+        /*
+            Returns a copy of vector with its magnitude clamped to maxLength.
+
+            !!! 注意, 本函数只能将 向量缩短, 不能定制向量的长度....
+            
+            参数:
+            vector:
+            
+            maxLength:
+        */
         public static Vector2 ClampMagnitude(Vector2 vector, float maxLength);
         //
         // 摘要:

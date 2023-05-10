@@ -645,8 +645,14 @@ https://nodachisoft.com/common/en/article/en000182/
 
 
 
+# ----------------------------------------------#
+#     frame 帧率 帧数  
+# ----------------------------------------------#
 
+Application.targetFrameRate = 1000;
 
+# 注意, targetFrameRate 值可能为 -1, 表示遵从平台设置;
+	所以不要鲁莽地直接访问它的值...
 
 
 

@@ -51,6 +51,14 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attrib
 
 
 # ----------------------------------------------#
+# [TagField]   
+# public string canTriggerTag;
+
+会在 inspector 上变成一个 tag 选择器, 然后本质上还是拿的 string 值
+
+
+
+# ----------------------------------------------#
 # [ContextMenu("tpr3")]   
 # void CustomContext(){}
 作用于一个 非静态方法上，且这个方法，在一个 comp script 中( MonoBehaviour )

@@ -83,6 +83,18 @@ namespace UnityEngine
             猜测: 
                 方法调用者, 那个 collider 实例, 可以是 "被爆炸击中的一个物体"; 传入的参数就是 爆心pos,
                 计算得到 本物体身上, 离爆心pos 最近的一个点; (球形扩散)
+
+            !!!!! 非常强大 !!!!!!
+
+            举例:
+                var newPos = boxCollider.ClosestPointOnBounds( srcPos );
+
+                就能得到 srcPos 在 boxCollider 表面的投影点; (投射点);
+
+                支持各种 collider;
+
+                当 srcPos 就在 collider 体内时, 计算得到的 pos 等于 srcPos;
+                 
             
 
         // 参数:

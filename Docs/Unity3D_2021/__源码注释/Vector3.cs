@@ -161,6 +161,8 @@ namespace UnityEngine
             Returns a copy of vector with its magnitude clamped to maxLength.
             ---
             很常用 !!!
+
+            !!! 注意, 本函数只能将 向量缩短, 不能定制向量的长度....
             
             参数:
             vector:
@@ -335,6 +337,11 @@ namespace UnityEngine
             
             maxMagnitudeDelta:
                 The maximum allowed change in vector magnitude for this rotation.
+
+                假设 current 和 target 两个方向向量模长不一样, 那么本函数生成的向量的模长, 可以从 current.mag 慢慢增长为 target.mag 的,
+                但是, 实际体验下来, maxRadiansDelta 和 maxMagnitudeDelta 两个参数是彻底独立的, 单纯地设置这两个值可能出现 各跑各的效果, 很不理想;
+                也许应该用代码手动估算 实际模长;
+
             
             返回结果:
                 The location that RotateTowards generates.

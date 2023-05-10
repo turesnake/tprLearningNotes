@@ -315,7 +315,7 @@ print(dic:TryGetValue('a'))
 
 ~~~lua
 -- local List_String = CS.System.Collections.Generic['List<>'](CS.System.String) -- another way
-local List_String = CS.System.Collections.Generic.List(CS.System.String)
+local List_String    = CS.System.Collections.Generic.List(CS.System.String)
 local lst = List_String()
 
 local Dictionary_String_Vector3 = CS.System.Collections.Generic.Dictionary(CS.System.String, CS.UnityEngine.Vector3)

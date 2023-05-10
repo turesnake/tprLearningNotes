@@ -212,6 +212,17 @@ The type userdata is provided to allow arbitrary C data to be stored in Lua vari
 
 
 
+# ----------------------------------------------#
+#               位运算  位
+# ----------------------------------------------#
+Bitwise AND: &
+Bitwise OR: |
+Bitwise XOR: ~
+Bitwise NOT (complement): ~
+Bitwise left shift: <<
+Bitwise right shift: >>
+Arithmetic right shift: >>>
+
 
 
 # ----------------------------------------------#

@@ -10,7 +10,6 @@ namespace UnityEngine
 
 
 
-
         
     */
     [NativeClassAttribute("BitField", "struct BitField;")]
