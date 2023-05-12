@@ -39,19 +39,40 @@
 
 
 
+# ----------------------------------- #
+#     得到当前 正在使用的 CinemachineBrain
+# ----------------------------------- #
+
+var brain = CinemachineCore.Instance.GetActiveBrain(0);
+
+
+# ----------------------------------- #
+#     得到当前 正在使用的 虚拟相机
+# ----------------------------------- #
+
+cinemachineBrain.ActiveVirtualCamera
 
 
 
+# ----------------------------------- #
+#   freelook 相机的三个 rigs  
+# ----------------------------------- #
+
+    CinemachineFreeLook vcam;
+    CinemachineOrbitalTransposer[] orbital = new CinemachineOrbitalTransposer[3];
+    CinemachineVirtualCamera[] rigs = new CinemachineVirtualCamera[3];
+    CinemachineComposer[] composers = new CinemachineComposer[3];
+
+    for (int i = 0; i < 3; ++i)
+    {
+        rigs[i] = vcam.GetRig(i);
+        orbital[i] = rigs[i].GetCinemachineComponent<CinemachineOrbitalTransposer>();
+        composers[i] = rigs[i].GetCinemachineComponent<CinemachineComposer>();
+    }
 
 
-
-
-
-
-
-
-
-
+#  打印得到: 三个 rig, 名字分别为 TopRig, MiddleRig, BottomRig, 
+    且它们的 pos, 就位于 freelook 同位置;
 
 
 

@@ -61,22 +61,11 @@ namespace UnityEngine
         //     The material used by the collider.
         public PhysicMaterial material { get; set; }
 
-        //
-        // 摘要:
-        //     Returns a point on the collider that is closest to a given location.
-        //
-        // 参数:
-        //   position:
-        //     Location you want to find the closest point to.
-        //
-        // 返回结果:
-        //     The point on the collider that is closest to the specified location.
-        public Vector3 ClosestPoint(Vector3 position);
+
 
 
         /*
-            The closest point to the bounding box of the attached collider.
-            This can be used to calculate hit points when applying explosion damage.
+            Returns a point on the collider that is closest to a given location.
 
             传入的参数一般为 爆心点; 
 
@@ -85,24 +74,44 @@ namespace UnityEngine
                 计算得到 本物体身上, 离爆心pos 最近的一个点; (球形扩散)
 
             !!!!! 非常强大 !!!!!!
-
             举例:
-                var newPos = boxCollider.ClosestPointOnBounds( srcPos );
+                var newPos = boxCollider.ClosestPoint( srcPos );
 
                 就能得到 srcPos 在 boxCollider 表面的投影点; (投射点);
 
                 支持各种 collider;
 
                 当 srcPos 就在 collider 体内时, 计算得到的 pos 等于 srcPos;
-                 
             
+            参数:
+            position:
+                Location you want to find the closest point to.
+            
+            返回结果:
+                The point on the collider that is closest to the specified location.
+        */
+        public Vector3 ClosestPoint(Vector3 position);
 
+
+        /*
+            The closest point to the bounding box of the attached collider.
+            This can be used to calculate hit points when applying explosion damage.
+            
+            和 ClosestPoint() 相似, 不过落点落在 AABB 盒上, 
+            估计计算成本会低一些;
+        
         // 参数:
         //   position:
         */
         public Vector3 ClosestPointOnBounds(Vector3 position);
 
 
+        /*
+            Casts a Ray that ignores all Colliders except this one.
+
+            专门用来打 本collider 的...
+
+        */
         public bool Raycast(Ray ray, out RaycastHit hitInfo, float maxDistance);
     }
 }
