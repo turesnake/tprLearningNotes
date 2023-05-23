@@ -23,9 +23,11 @@ namespace UnityEngine
     [UsedByNativeCodeAttribute]
     public struct RaycastHit
     {
-        //
-        // 摘要:
-        //     The Collider that was hit.
+        /*
+            The Collider that was hit.
+
+            !!! 如果 new RaycastHit() 实例化一个, 它的 collider 为 null
+        */
         public Collider collider { get; }
         //
         // 摘要:

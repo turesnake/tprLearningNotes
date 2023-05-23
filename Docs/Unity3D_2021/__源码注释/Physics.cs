@@ -1029,31 +1029,35 @@ namespace UnityEngine
 
         
         
-        //
-        // 摘要:
-        //     Cast a ray through the Scene and store the hits into the buffer.
-        //
-        // 参数:
-        //   origin:
-        //     The starting point and direction of the ray.
-        //
-        //   results:
-        //     The buffer to store the hits into.
-        //
-        //   direction:
-        //     The direction of the ray.
-        //
-        //   maxDistance:
-        //     The max distance the rayhit is allowed to be from the start of the ray.
-        //
-        //   queryTriggerInteraction:
-        //     Specifies whether this query should hit Triggers.
-        //
-        //   layerMask:
-        //     A that is used to selectively ignore colliders when casting a ray.
-        //
-        // 返回结果:
-        //     The amount of hits stored into the results buffer.
+        /*
+                Cast a ray through the Scene and store the hits into the buffer.
+
+                The raycast query ends when there are no more hits and/or the results buffer is full. 
+                The order of the results is undefined. When a full buffer is returned it is not guaranteed that the results are the closest hits and the length of the buffer is returned. 
+                If a null buffer is passed in, no results are returned and no errors or exceptions are thrown.
+            
+            参数:
+            origin:
+                The starting point and direction of the ray.
+            
+            results:
+                The buffer to store the hits into.
+            
+            direction:
+                The direction of the ray.
+            
+            maxDistance:
+                The max distance the rayhit is allowed to be from the start of the ray.
+            
+            queryTriggerInteraction:
+                Specifies whether this query should hit Triggers.
+            
+            layerMask:
+                A that is used to selectively ignore colliders when casting a ray.
+            
+            返回结果:
+                The amount of hits stored into the results buffer.
+        */
         [ExcludeFromDocs]
         public static int RaycastNonAlloc(Vector3 origin, Vector3 direction, RaycastHit[] results, float maxDistance);
         public static int RaycastNonAlloc(Vector3 origin, Vector3 direction, RaycastHit[] results, [Internal.DefaultValue("Mathf.Infinity")] float maxDistance, [Internal.DefaultValue("DefaultRaycastLayers")] int layerMask, [Internal.DefaultValue("QueryTriggerInteraction.UseGlobal")] QueryTriggerInteraction queryTriggerInteraction);
