@@ -259,12 +259,12 @@ namespace UnityEngine
             本函数会自动将 materials 实例化, 并让这些返回的 materials 成为你这个 物体(renderer) 的专属物;
             当你这个 go 被销毁时, 用户有责任把本函数返回的这些 materials 也销毁掉;
             比如:
-                void OnDisable()
+                void OnDestroy()
                 {
                     meshRenderer.material = null;
                 }
                 或:
-                void OnDisable()
+                void OnDestroy()
                 {
                     m_material = null;
                 }

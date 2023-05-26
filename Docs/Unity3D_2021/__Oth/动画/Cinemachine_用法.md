@@ -76,7 +76,17 @@ cinemachineBrain.ActiveVirtualCamera
 
 
 
+# ----------------------------------- #
+#     2D VCam
+# ----------------------------------- #
 
+其实就是传统的 VCam, 改了两个配置:
+    body 选择了 Framing Transposer
+    Aim 选择了 Do Nothing -- (毕竟是 2d cam, 不需要对齐啥)
+
+
+# Body -- X/Y/Z Damping:
+    值越小, 相机跟随 follow 的速度越快, 比如设置为 0.5
 
 
 
