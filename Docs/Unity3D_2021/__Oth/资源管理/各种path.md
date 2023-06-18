@@ -12,6 +12,7 @@
 # Application.dataPath              // E:/unity_projects/_urp_1/Assets
     就是传统 项目/Assets/ 目录
 
+
 # Application.consoleLogPath        // C:/Users/_tpr_/AppData/Local/Unity/Editor/Editor.log
 
 

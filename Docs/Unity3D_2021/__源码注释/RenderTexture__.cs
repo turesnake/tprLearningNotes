@@ -557,6 +557,8 @@ namespace UnityEngine
             This function releases the hardware resources used by the render texture. 
             The texture itself is not destroyed, and will be automatically created again when being used.
 
+            !!! 如果是用 rt = new RenderTexture(desc); 创建的, 就改用本函数来释放 
+
             和其它 "native engine object" 一样, 需要注意 rt 的生命周期, 然后在你使用完毕后, 就及时释放它们;
             这样, 它们就不会向常规类型那样, 被 垃圾回收 掉;
         */

@@ -553,19 +553,35 @@ namespace UnityEditor
         // 返回结果:
         //     The asset path name, or null, or an empty string if the asset does not exist.
         public static string GetAssetPath(UnityEngine.Object assetObject);
-        //
-        // 摘要:
-        //     Returns the path name relative to the project folder where the asset is stored.
-        //
-        // 参数:
-        //   instanceID:
-        //     The instance ID of the asset.
-        //
-        //   assetObject:
-        //     A reference to the asset.
-        //
-        // 返回结果:
-        //     The asset path name, or null, or an empty string if the asset does not exist.
+
+
+        /*
+            摘要:
+                Returns the path name relative to the project folder where the asset is stored.
+
+                !!! 如在 editor 脚本中:
+                var selectedPath = AssetDatabase.GetAssetPath( Selection.activeObject.GetInstanceID() );
+                得到:
+                    selectedPath = Assets/000_tpr/40_fbx_optimize/cube001.fbx  -- 当选中一个资源文件时
+                    selectedPath = Assets/000_tpr/40_fbx_optimize/fbxs         -- 当选中一个目录时
+
+                此时可继续得到 full path:
+
+                    string fullPath = Path.Combine( Application.dataPath, selectedPath ); // 注意, 此处用的结合符是 "\\", 而参数 path 中则用了 "/"
+                    fullPath = fullPath.Replace("/", "\\");
+
+
+            
+            参数:
+            instanceID:
+                The instance ID of the asset.
+            
+            assetObject:
+                A reference to the asset.
+            
+            返回结果:
+                The asset path name, or null, or an empty string if the asset does not exist.
+        */
         public static string GetAssetPath(int instanceID);
         //
         // 摘要:
@@ -810,18 +826,13 @@ namespace UnityEditor
         //   path:
         [NativeThrowsAttribute]
         public static string[] GetSubFolders([NotNullAttribute("ArgumentNullException")] string path);
-        //
-        // 摘要:
-        //     Gets the path to the text .meta file associated with an asset.
-        //
-        // 参数:
-        //   path:
-        //     The path to the asset.
-        //
-        // 返回结果:
-        //     The path to the .meta text file or empty string if the file does not exist.
-        [Obsolete("GetTextMetaDataPathFromAssetPath has been renamed to GetTextMetaFilePathFromAssetPath (UnityUpgradable) -> GetTextMetaFilePathFromAssetPath(*)")]
-        public static string GetTextMetaDataPathFromAssetPath(string path);
+
+
+
+        // [Obsolete("GetTextMetaDataPathFromAssetPath has been renamed to GetTextMetaFilePathFromAssetPath (UnityUpgradable) -> GetTextMetaFilePathFromAssetPath(*)")]
+        // public static string GetTextMetaDataPathFromAssetPath(string path);
+
+
         //
         // 摘要:
         //     Gets the path to the text .meta file associated with an asset.
@@ -1368,19 +1379,30 @@ namespace UnityEditor
         //   target:
         [ExcludeFromDocs]
         public static bool OpenAsset(UnityEngine.Object target);
+
+
+
+        
+        /*
+            摘要:
+                Import any changed assets.
+                This will import any assets that have changed their content modification data or have been added-removed to the project folder.
+                This method implicitly triggers an asset garbage collection (see Resources.UnloadUnusedAssets).
+
+            
+            参数:
+            options:
+        */
         [ExcludeFromDocs]
         public static void Refresh();
-        //
-        // 摘要:
-        //     Import any changed assets.
-        //
-        // 参数:
-        //   options:
         public static void Refresh([UnityEngine.Internal.DefaultValue("ImportAssetOptions.Default")] ImportAssetOptions options);
-        [Obsolete("Please use AssetDatabase.Refresh instead", true)]
-        public static void RefreshDelayed(ImportAssetOptions options);
-        [Obsolete("Please use AssetDatabase.Refresh instead", true)]
-        public static void RefreshDelayed();
+
+
+
+        // [Obsolete("Please use AssetDatabase.Refresh instead", true)]public static void RefreshDelayed(ImportAssetOptions options);
+        // [Obsolete("Please use AssetDatabase.Refresh instead", true)]public static void RefreshDelayed();
+
+
         //
         // 摘要:
         //     Apply pending Editor Settings changes to the Asset pipeline.
@@ -1535,12 +1557,16 @@ namespace UnityEditor
         public static bool TryGetGUIDAndLocalFileIdentifier<T>(LazyLoadReference<T> assetRef, out string guid, out long localId) where T : UnityEngine.Object;
         public static bool TryGetGUIDAndLocalFileIdentifier(int instanceID, out string guid, out long localId);
         public static bool TryGetGUIDAndLocalFileIdentifier(UnityEngine.Object obj, out string guid, out long localId);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Please use the overload of this function that uses a long data type for the localId parameter, because this version can return a localID that has overflowed. This can happen when called on objects that are part of a Prefab.", true)]
-        public static bool TryGetGUIDAndLocalFileIdentifier(int instanceID, out string guid, out int localId);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Please use the overload of this function that uses a long data type for the localId parameter, because this version can return a localID that has overflowed. This can happen when called on objects that are part of a Prefab.", true)]
-        public static bool TryGetGUIDAndLocalFileIdentifier(UnityEngine.Object obj, out string guid, out int localId);
+
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Please use the overload of this function that uses a long data type for the localId parameter, because this version can return a localID that has overflowed. This can happen when called on objects that are part of a Prefab.", true)]
+        // public static bool TryGetGUIDAndLocalFileIdentifier(int instanceID, out string guid, out int localId);
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Please use the overload of this function that uses a long data type for the localId parameter, because this version can return a localID that has overflowed. This can happen when called on objects that are part of a Prefab.", true)]
+        // public static bool TryGetGUIDAndLocalFileIdentifier(UnityEngine.Object obj, out string guid, out int localId);
+
+
         //
         // 摘要:
         //     Removes custom dependencies that match the prefixFilter.
@@ -1576,8 +1602,10 @@ namespace UnityEditor
         // 参数:
         //   path:
         public static bool WriteImportSettingsIfDirty(string path);
-        [Obsolete("Method GetAssetBundleNames has been deprecated. Use GetAllAssetBundleNames instead.")]
-        public string[] GetAssetBundleNames();
+
+
+        // [Obsolete("Method GetAssetBundleNames has been deprecated. Use GetAllAssetBundleNames instead.")]
+        // public string[] GetAssetBundleNames();
 
         //
         // 摘要:
