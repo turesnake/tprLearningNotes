@@ -55,7 +55,7 @@ Both methods have their strengths and weaknesses and are suitable for different 
 
 
 
-# 将矩阵正定化, 半正定化
+# 将矩阵正定化, 半正定化  positive-definite
 
 
 # 了解 matrix norm 这个运算
