@@ -54,6 +54,12 @@ print(dic:TryGetValue('a')) -- !!!!!!!!!
     来遍历 Dictionary, SortedDictionary;
 
 
+# !!!! 注意:
+    LinkList.First 这种返回类型为 LinkedListNode<T> 的属性, 暂时不知道怎么取到它的值; 
+    所以几乎是废的...
+
+
+
 # ----------------------------- #
 #   支持 嵌套容器
 # ----------------------------- #
