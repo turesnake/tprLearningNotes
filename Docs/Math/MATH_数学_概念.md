@@ -224,7 +224,7 @@ left-hand horizontal asymptote --
 
 
 # -----------------------------------------------
-# Hessian  -- 梯度的推广
+# Hessian  -- (梯度的推广)
 本质上是 "scalar-valued function" 的 二阶导函数
 也是 梯度 的 一阶导函数, 
 
@@ -238,6 +238,33 @@ https://www.khanacademy.org/math/multivariable-calculus/applications-of-multivar
 # 有时候, "Hessian" 也被用来指代  "Hessian 矩阵的行列式"
 
 # 观察可得, Hessian矩阵 对角线两侧的元素是线性对称的 (忘记叫啥术语了..)
+
+# 求 min/max 值:
+	在 f(x) 函数中, 如果某点处的 二阶导数为正, 表示曲线在此点为 开口向上的弧 (碗), 如果恰好此时 一阶导数为0, 则此点为一个 min 值;
+	反之还有 二阶导数为负 的情况...
+
+	---
+	这可以推广到 Hessian 矩阵上, 因为 Hessian 是 f(x,y,...) 的 二阶导数;
+	但是要用到 det(Hessian), 就是它的 行列式值;
+
+	若 det(Hessian) > 0, (且此点的 一阶导数(梯度)为0向量), 则此点要么是 min 要么是 max;
+		若 det(Hessian) 的对角线元素都为正, 说明此点为 min
+		若 det(Hessian) 的对角线元素都为负, 说明此点为 max
+		---
+		这里的对角线元素恰好是 d(f)^2/dx^2, d(f)^2/dy^2 ...
+	
+	若 det(Hessian) < 0, (且此点的 一阶导数(梯度)为0向量), 则此点为 马鞍点
+
+	若 det(Hessian) == 0, 此时还需更多信息才能做判断
+
+
+# 涉及:
+--	对称矩阵(方阵) 的 determinant (det(H)) 的分析
+
+-- 正定矩阵 里的 (x^t A x > 0) 这个规则很像	
+
+
+
 
 
 
