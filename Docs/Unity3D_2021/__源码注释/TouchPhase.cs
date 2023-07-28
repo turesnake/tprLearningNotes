@@ -9,6 +9,10 @@ namespace UnityEngine
 
         由于 Touch 是个 struct, 不存在 null 状态, 所以改检测其 phase 来确认是否为有效值
 
+
+        !!! 在 pc 上, 有些正在滑动手指的帧, 会被判定为 Stationary
+        !!! 但是在 安卓上, 这些帧会被判定为 Moved, 所以两者都要包含
+
     */
     public enum TouchPhase
     {

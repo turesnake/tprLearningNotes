@@ -378,15 +378,30 @@ https://zhuanlan.zhihu.com/p/479327351
 
 
 # -----------------------------------------------
+# Conjugate Gradient 
+
+# https://www.youtube.com/watch?v=NzOwaimDYog   -- Steepest Descend Method
+# https://www.youtube.com/watch?v=h4cG8jLGmKg   -- Conjugate Gradient Method
+# https://www.youtube.com/watch?v=zjzOYL4fhrQ   -- Preconditioned Conjugate Gradient Descent (ILU)
+
 
 
 
 # -----------------------------------------------
+#  complex derivative
+#  复数 的 导数
+
+https://www.youtube.com/watch?v=b8_3PFjiJvY
+
+
+ 
 
 
 
 # -----------------------------------------------
+# Conformal Map
 
+https://www.youtube.com/watch?v=48aerHs9wL0
 
 
 

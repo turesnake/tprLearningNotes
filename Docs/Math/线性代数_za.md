@@ -76,7 +76,7 @@
 # ------------------------------------ #
 #     trace
 # ------------------------------------ #
-举证 对角线元素之和  (也等于矩阵 eigenvalues 之和)
+方阵 对角线元素之和  (也等于矩阵 eigenvalues 之和)
 
 
 
@@ -182,13 +182,19 @@ The matrix is Hermitian, meaning it is equal to its own conjugate transpose.
     如果 A 里元素是复数, 则再考虑一层共轭+
 
 
+# ------------------------------------ #
+#    矩阵如何求导
+# ------------------------------------ #
+涉及的 知识叫啥
+
+# Derivative of a Matrix:
+https://www.youtube.com/watch?v=e73033jZTCI&t=22s
 
 
-
-
-
-
-
+# linear form of a matrix
+# bilinear forms of a matrix
+# quadratic form of a matrix
+https://zief0002.github.io/matrix-algebra/quadratic-form-of-a-matrix.html
 
 
 

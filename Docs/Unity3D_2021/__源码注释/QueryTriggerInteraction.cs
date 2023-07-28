@@ -7,7 +7,7 @@ namespace UnityEngine
     /*
         Overrides the global Physics.queriesHitTriggers.
 
-        指定了当调用 各种 Physics.xxxCast() 函数时, 碰撞检测是否要相应那些 trigger collider;
+        指定了当调用 各种 Physics.xxxCast() 函数时, 碰撞检测是否要响应那些 trigger collider;
 
     */
     public enum QueryTriggerInteraction

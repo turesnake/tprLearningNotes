@@ -34,12 +34,36 @@ A problem occurred evaluating project ':launcher'.
 
 
 
+# -------------------------- #
+#    lua 本地改代码调试    old 
+# -------------------------- #
+
+Game/Main/XGraphicSetup.lua
+
+手机上有个暗门
+
+https://tool.oschina.net/encrypt?type=3
 
 
 
 
+# -------------------------- #
+#    lua 本地改代码调试  (新版)
+# -------------------------- #
+
+# 本方法仅适用于 国服:
+
+# -1-
+  本地修改 lua 代码, 然后点击 copy to streamasseets -> lua
+  然后用 project 窗口搜索那个修改的 lua 字节码文件, 它以 .byte 结尾
 
 
+# -2-
+  打开安卓机内 com.funtoy ... 目录, 在 files - Product -> Lua -> Game
+  内, 找到对应的 lua bytes 文件, 替换之
+
+# -3- 
+  在手机上重启游戏, 就能看到变化了
 
 
 

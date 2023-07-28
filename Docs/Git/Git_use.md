@@ -446,13 +446,26 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
 
 
+# ================================================================
+#      todo  yajie 用的
+# ----------------------------------------------------------------
+
+git co --theirs filepath
+git add filepath
 
 
 
 
+# ================================================================
+#     bug:
+#   fatal: unable to access 'aaa/bbb/': Failed to connect to xxx.net port 8888 after 2081 ms: Couldn't connect to server
+# ----------------------------------------------------------------
 
+此时是域名错了, 
 
+可在项目的 .git/config 文件内修改, 
 
+此时可以到 gitlab 的工程里, 找到 clone 位置 (想想 github 里的 clone) 找到 clone 的 ssh 地址, 换用下
 
 
 
