@@ -406,8 +406,21 @@ https://www.youtube.com/watch?v=48aerHs9wL0
 
 
 # -----------------------------------------------
+# Variational Calculus
+
+	寻找一个 function 的最值解, 它的解是一个 path or function
+	---
+	和微分方程不同, 微分方程 虽然也求最值解, 但是它的解是一个 值; (而不是一个方程)
 
 
+
+brachistochrone problem - 最速降线问题
+
+Euler-Lagrange equations
+
+
+# 非常好的解释:
+https://www.youtube.com/watch?v=VCHFCXgYdvY
 
 
 # -----------------------------------------------
