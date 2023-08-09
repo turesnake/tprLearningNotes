@@ -82,6 +82,9 @@ namespace UnityEngine
             Compares two floating point values and returns true if they are similar.
 
             只要比较的两值之间的差值 小于 Mathf.Epsilon, 就认定这两个 float值 相等;
+
+            !!!!!  常用   !!!!!
+            
         */
         public static bool Approximately(float a, float b);
 
