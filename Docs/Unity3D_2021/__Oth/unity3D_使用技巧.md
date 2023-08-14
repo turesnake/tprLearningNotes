@@ -323,6 +323,11 @@ Gradient gradient;
     	// ...
 	}
 
+# 等价于:
+	Application.platform 等于 RuntimePlatform.WindowsEditor, RuntimePlatform.OSXEditor, RuntimePlatform.LinuxEditor 
+
+
+
 
 # ----------------------------------------------#
 #      shader 被哪些 materials 使用了 ?

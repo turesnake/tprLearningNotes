@@ -80,6 +80,7 @@ depth texture.
 
 https://www.unity3dtips.com/zh/the-animation-state-could-not-be-played-because-it-couldnt-be-found/
 
+在 debug 模式下打开 animationclip 文件, 勾选 legacy, 就可以了
 
 
 # ----------------------------------------------#
