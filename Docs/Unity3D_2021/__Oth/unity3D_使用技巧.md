@@ -454,7 +454,7 @@ https://answers.unity.com/questions/1642306/dont-have-sample-on-animation-window
 
 
 # ----------------------------------------------#
-#   非递归地遍历 gameobj 的 子 gameobjs
+#   非递归地遍历 gameobj 的 子 gameobjsh
 # ----------------------------------------------#
 
 	GetComponentsInChildren() 会递归所有 子孙节点

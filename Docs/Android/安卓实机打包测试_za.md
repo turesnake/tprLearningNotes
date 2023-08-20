@@ -28,6 +28,7 @@ https://www.bilibili.com/video/BV1GY4y1Y7uB?spm_id_from=333.337.search-card.all.
     上网站: https://tool.lu/ip
     在 "请输入IP或网站域名" 后面输入: dl.google.com
     然后复制下方的: IP 地址：比如: 220.181.174.225
+    120.253.255.161
 
 -2- 
     本机查找: C:\Windows\System32\drivers\etc 的 hosts 文件,

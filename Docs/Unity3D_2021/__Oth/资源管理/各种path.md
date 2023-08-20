@@ -9,7 +9,7 @@
 # ----------------------------------------------------------- #
 假设 项目源码路径为:E:/unity_projects/_urp_1
 
-# Application.dataPath              // E:/unity_projects/_urp_1/Assets
+#                 // E:/unity_projects/_urp_1/Assets
     就是传统 项目/Assets/ 目录
 
 

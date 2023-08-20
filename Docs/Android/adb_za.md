@@ -94,6 +94,15 @@ https://developer.aliyun.com/article/666214
 
 
 
+# -------------------- #
+#    在手机中新建目录
+# -------------------- #
+https://blog.csdn.net/u013168615/article/details/128448260
+
+# adb shell mkdir /newfolder
+    ---
+    在手机根目录下新建目录 "newfolder"
+
 
 
 
