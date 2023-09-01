@@ -24,9 +24,16 @@
 
 
 
+# ----------------------------- #
+#      新建 文件夹 / 文件
+# ----------------------------- #
+
+# New-Item -Path “C:\FFF\” -Name “AA” -ItemType Directory
+    在  C:\FFF\ 下 新建一个目录 AA
 
 
-
+# New-Item -Path . -Name “BB.txt” -ItemType "file"
+    在 当前目录 (".") 新建文件 “BB.txt”
 
 
 

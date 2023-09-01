@@ -826,42 +826,56 @@ namespace UnityEngine
         // 返回结果:
         //     True if the parameter is controlled by a curve, false otherwise.
         public bool IsParameterControlledByCurve(int id);
+        
 
-        public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime, [Internal.DefaultValue("1")] float targetNormalizedTime, [Internal.DefaultValue("true")] bool completeMatch);
-        public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime);
-        //
-        // 摘要:
-        //     Automatically adjust the GameObject position and rotation.
-        //
-        // 参数:
-        //   matchPosition:
-        //     The position we want the body part to reach.
-        //
-        //   matchRotation:
-        //     The rotation in which we want the body part to be.
-        //
-        //   targetBodyPart:
-        //     The body part that is involved in the match.
-        //
-        //   weightMask:
-        //     Structure that contains weights for matching position and rotation.
-        //
-        //   startNormalizedTime:
-        //     Start time within the animation clip (0 - beginning of clip, 1 - end of clip).
-        //
-        //   targetNormalizedTime:
-        //     End time within the animation clip (0 - beginning of clip, 1 - end of clip),
-        //     values greater than 1 can be set to trigger a match after a certain number of
-        //     loops. Ex: 2.3 means at 30% of 2nd loop.
-        //
-        //   completeMatch:
-        //     Allows you to specify what should happen if the MatchTarget function is interrupted.
-        //     A value of true causes the GameObject to immediately move to the matchPosition
-        //     if interrupted. A value of false causes the GameObject to stay at its current
-        //     position if interrupted.
+
+        
+        /*
+            摘要:
+                Automatically adjust the GameObject position and rotation.
+
+                Adjust the GameObject position and rotation so that the AvatarTarget reaches the matchPosition when the current state is at the specified progress. 
+                Target matching only works on the base layer (index 0). 
+                You can only queue one match target at a time and you must wait for the first one to finish, 
+                otherwise your target matching will be discarded. 
+                If you call a MatchTarget with a start time lower than the clip's normalized time and the clip can loop, MatchTarget will adjust the time to match the next clip loop. 
+                For example, start time= 0.2 normalized time = 0.3, start time will be 1.2. Animator.applyRootMotion must be enabled for MatchTarget to take effect.
+            
+
+            参数:
+            matchPosition:
+                The position we want the body part to reach.
+            
+            matchRotation:
+                The rotation in which we want the body part to be.
+            
+            targetBodyPart:
+                The body part that is involved in the match.
+            
+            weightMask:
+                Structure that contains weights for matching position and rotation.
+            
+            startNormalizedTime:
+                Start time within the animation clip (0 - beginning of clip, 1 - end of clip).
+            
+            targetNormalizedTime:
+                End time within the animation clip (0 - beginning of clip, 1 - end of clip),
+                values greater than 1 can be set to trigger a match after a certain number of
+                loops. Ex: 2.3 means at 30% of 2nd loop.
+            
+            completeMatch:
+                Allows you to specify what should happen if the MatchTarget function is interrupted.
+                A value of true causes the GameObject to immediately move to the matchPosition
+                if interrupted. A value of false causes the GameObject to stay at its current
+                position if interrupted.
+        */
         public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime, [Internal.DefaultValue("1")] float targetNormalizedTime);
         
-        
+        public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime, [Internal.DefaultValue("1")] float targetNormalizedTime, [Internal.DefaultValue("true")] bool completeMatch);
+        public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget targetBodyPart, MatchTargetWeightMask weightMask, float startNormalizedTime);
+
+
+
         
         public void Play(string stateName, int layer);
         //

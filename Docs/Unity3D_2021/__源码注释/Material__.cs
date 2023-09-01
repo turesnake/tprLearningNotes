@@ -19,6 +19,20 @@ namespace UnityEngine
         ( 比如矩阵 )
 
         使用 Renderer.material 来得到一个物体所用的 material 实例;
+
+        !!!!! ----------  shader 中的 全局变量 / 局部变量 ----------- !!!!!!!
+        --
+            Global properties are used if a shader needs them but the material does not have them defined 
+            (for example, if the shader does not expose them in Properties block).
+            ---
+        也就是说,  只要不在 material Properties{} 中的变量, 都是全局变量;
+        ---
+        这些变量 可以被 Shader.SetGlobal...() 改写, 也能被 material.Set...() 改写;
+        但是, 
+            当使用 material.Set...()    来改写时,  只有对一次对这个值的写入 是起效的;
+            当使用 hader.SetGlobal...() 来改写时,  每次写入都是起效的
+
+            
     */
     [NativeHeaderAttribute("Runtime/Graphics/ShaderScriptBindings.h")]
     [NativeHeaderAttribute("Runtime/Shaders/Material.h")]

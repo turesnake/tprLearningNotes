@@ -19,11 +19,13 @@ namespace UnityEngine
         // 摘要:
         //     The full path hash for this state.
         public int fullPathHash { get; }
-        //
-        // 摘要:
-        //     The hashed name of the State.
-        [Obsolete("AnimatorStateInfo.nameHash has been deprecated. Use AnimatorStateInfo.fullPathHash instead.")]
-        public int nameHash { get; }
+
+        // //
+        // // 摘要:
+        // //     The hashed name of the State.
+        // [Obsolete("AnimatorStateInfo.nameHash has been deprecated. Use AnimatorStateInfo.fullPathHash instead.")]
+        // public int nameHash { get; }
+
         //
         // 摘要:
         //     The hash is generated using Animator.StringToHash. The hash does not include

@@ -73,11 +73,24 @@ https://blog.csdn.net/xitongzhijianet/article/details/128675637
 
 
 
+# ----------------------------- #
+#   路径太长
+# ----------------------------- #
+https://www.youtube.com/watch?v=FOBI6r9JxTU
 
 
+# -1- 注册表
+    HKEY_LOCAL_MACHINE \ SYSTEM \ CurrentControlSet \ Control \ FileSystem
+    LongPathsEnabled  设为 1
+
+# -2- Group Policy
 
 
+# -3- 7-zip
+    https://www.7-zip.org/
 
+    如果是在解压缩复制得过程中遇到这个问题
+    直接用 7zip 去 解压缩+移动
 
 
 

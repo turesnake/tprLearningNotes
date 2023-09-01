@@ -59,6 +59,14 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attrib
 
 
 # ----------------------------------------------#
+# [Tooltip("注释")]
+# public float m_MinTime;
+
+鼠标放到 inspector 的变量上后, 自动显示的注释
+
+
+
+# ----------------------------------------------#
 # [ContextMenu("tpr3")]   
 # void CustomContext(){}
 作用于一个 非静态方法上，且这个方法，在一个 comp script 中( MonoBehaviour )
