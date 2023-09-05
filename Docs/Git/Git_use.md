@@ -447,11 +447,30 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
 
 # ================================================================
-#      todo  yajie 用的
+#      在两个分支之间 移动 文件
 # ----------------------------------------------------------------
 
-git co --theirs filepath
-git add filepath
+# 如何将 分支:master 的文件 aaa.txt 复制到 分支:Beta
+
+    git checkout Beta                               -- 切到 分支:Beta
+    git checkout master aaa.txt                     -- 将 分支:master 的文件 aaa.txt 复制过来
+    git commit -m 'xxxxxxxxx'                       -- 提交 commit
+    git push                                        -- push
+    ---
+
+
+# git checkout --theirs foo
+
+    记得 yajie 使用了:
+        git co --theirs filepath
+        git add filepath
+    ---
+    suppose you are on branchA and you want to merge branchB into it, but there is a conflict in a file named foo. 
+    To resolve the conflict by keeping the version of foo from branchB, you can use this command;
+    This will overwrite the file foo in your working directory with the version from branchB. You still need to add and commit the file to complete the merge.
+    ---
+    "--theirs" option 意味着当发生 conflict 时, 使用 "对方" 分支的文件, 类似的还有 "--ours" 选项 (使用本分支的)
+
 
 
 
@@ -466,6 +485,12 @@ git add filepath
 可在项目的 .git/config 文件内修改, 
 
 此时可以到 gitlab 的工程里, 找到 clone 位置 (想想 github 里的 clone) 找到 clone 的 ssh 地址, 换用下
+
+
+
+
+
+
 
 
 

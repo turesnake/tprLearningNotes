@@ -714,6 +714,14 @@ Time.timeScale = 0.0f;
 
 
 
+# ----------------------------------------------#
+#      unity editor 中 package 的本地存储位置
+# ----------------------------------------------#
+D:\Unity_1_editors\Unity 2021.3.14f1\Editor\Data\Resources\PackageManager
+
+
+
+
 
 
 

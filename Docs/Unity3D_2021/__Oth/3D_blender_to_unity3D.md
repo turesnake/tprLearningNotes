@@ -112,7 +112,7 @@ unity 中曾记录支持 constrains 信息 的导入
 #  尝试该用 .blender 文件
 #  .blender 文件的修改 和导入 unity 
 # ---------------------------------------- #
--1- .blender 文件也需要自信 fbx 文件那样的 坐标系调整
+-1- .blender 文件也需要执行 fbx 文件那样的 坐标系调整
 	也就是让所有 mesh 和 armature，rotation 都变成 (90,0,0)
 	scale 为 (1,1,1)
 
