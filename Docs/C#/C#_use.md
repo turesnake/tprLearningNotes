@@ -458,6 +458,13 @@ using System;
 
 
 
+# 如何得到一个 enum class 元素个数:
+	using System;
+	enum Fruits { Apple, Orange, Peach }
+	public int FruitCount = Enum.GetNames(typeof(Fruits)).Length;
+
+
+
 # ---------------------------------------------- #
 #   c#8.0   using var
 # ---------------------------------------------- #

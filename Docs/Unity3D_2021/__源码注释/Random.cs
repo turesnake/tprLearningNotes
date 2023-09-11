@@ -51,6 +51,7 @@ namespace UnityEngine
         //     Returns a random point inside or on a sphere with radius 1.0 (Read Only).
         public static Vector3 insideUnitSphere { get; }
 
+
         //
         // 摘要:
         //     Generates a random color from HSV and alpha ranges.
@@ -84,138 +85,12 @@ namespace UnityEngine
         //     A random color with HSV and alpha values in the (inclusive) input ranges. Values
         //     for each component are derived via linear interpolation of value.
         public static Color ColorHSV(float hueMin, float hueMax, float saturationMin, float saturationMax, float valueMin, float valueMax, float alphaMin, float alphaMax);
-        //
-        // 摘要:
-        //     Generates a random color from HSV and alpha ranges.
-        //
-        // 参数:
-        //   hueMin:
-        //     Minimum hue [0..1].
-        //
-        //   hueMax:
-        //     Maximum hue [0..1].
-        //
-        //   saturationMin:
-        //     Minimum saturation [0..1].
-        //
-        //   saturationMax:
-        //     Maximum saturation [0..1].
-        //
-        //   valueMin:
-        //     Minimum value [0..1].
-        //
-        //   valueMax:
-        //     Maximum value [0..1].
-        //
-        //   alphaMin:
-        //     Minimum alpha [0..1].
-        //
-        //   alphaMax:
-        //     Maximum alpha [0..1].
-        //
-        // 返回结果:
-        //     A random color with HSV and alpha values in the (inclusive) input ranges. Values
-        //     for each component are derived via linear interpolation of value.
         public static Color ColorHSV();
-        //
-        // 摘要:
-        //     Generates a random color from HSV and alpha ranges.
-        //
-        // 参数:
-        //   hueMin:
-        //     Minimum hue [0..1].
-        //
-        //   hueMax:
-        //     Maximum hue [0..1].
-        //
-        //   saturationMin:
-        //     Minimum saturation [0..1].
-        //
-        //   saturationMax:
-        //     Maximum saturation [0..1].
-        //
-        //   valueMin:
-        //     Minimum value [0..1].
-        //
-        //   valueMax:
-        //     Maximum value [0..1].
-        //
-        //   alphaMin:
-        //     Minimum alpha [0..1].
-        //
-        //   alphaMax:
-        //     Maximum alpha [0..1].
-        //
-        // 返回结果:
-        //     A random color with HSV and alpha values in the (inclusive) input ranges. Values
-        //     for each component are derived via linear interpolation of value.
         public static Color ColorHSV(float hueMin, float hueMax);
-        //
-        // 摘要:
-        //     Generates a random color from HSV and alpha ranges.
-        //
-        // 参数:
-        //   hueMin:
-        //     Minimum hue [0..1].
-        //
-        //   hueMax:
-        //     Maximum hue [0..1].
-        //
-        //   saturationMin:
-        //     Minimum saturation [0..1].
-        //
-        //   saturationMax:
-        //     Maximum saturation [0..1].
-        //
-        //   valueMin:
-        //     Minimum value [0..1].
-        //
-        //   valueMax:
-        //     Maximum value [0..1].
-        //
-        //   alphaMin:
-        //     Minimum alpha [0..1].
-        //
-        //   alphaMax:
-        //     Maximum alpha [0..1].
-        //
-        // 返回结果:
-        //     A random color with HSV and alpha values in the (inclusive) input ranges. Values
-        //     for each component are derived via linear interpolation of value.
         public static Color ColorHSV(float hueMin, float hueMax, float saturationMin, float saturationMax);
-        //
-        // 摘要:
-        //     Generates a random color from HSV and alpha ranges.
-        //
-        // 参数:
-        //   hueMin:
-        //     Minimum hue [0..1].
-        //
-        //   hueMax:
-        //     Maximum hue [0..1].
-        //
-        //   saturationMin:
-        //     Minimum saturation [0..1].
-        //
-        //   saturationMax:
-        //     Maximum saturation [0..1].
-        //
-        //   valueMin:
-        //     Minimum value [0..1].
-        //
-        //   valueMax:
-        //     Maximum value [0..1].
-        //
-        //   alphaMin:
-        //     Minimum alpha [0..1].
-        //
-        //   alphaMax:
-        //     Maximum alpha [0..1].
-        //
-        // 返回结果:
-        //     A random color with HSV and alpha values in the (inclusive) input ranges. Values
-        //     for each component are derived via linear interpolation of value.
         public static Color ColorHSV(float hueMin, float hueMax, float saturationMin, float saturationMax, float valueMin, float valueMax);
+
+
         //
         // 摘要:
         //     Initializes the random number generator state with a seed.

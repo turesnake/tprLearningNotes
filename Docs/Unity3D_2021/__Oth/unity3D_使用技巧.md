@@ -721,6 +721,13 @@ D:\Unity_1_editors\Unity 2021.3.14f1\Editor\Data\Resources\PackageManager
 
 
 
+# ----------------------------------------------#
+#     限制 / 约束 float 小数点精度
+# ----------------------------------------------#
+# float newVal = (float)Math.Round((double)oldVal, 3),
+	这能将 0.12345f 约束为 0.123f
+
+
 
 
 
