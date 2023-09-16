@@ -25,8 +25,7 @@ namespace UnityEditor
             This bundle option uses LZMA Format compression, which is a single compressed LZMA stream of serialized data files. 
             LZMA compression requires that the entire bundle is decompressed before it’s used. 
             This results in the smallest possible file size but a slightly longer load time due to the decompression. 
-            It is worth noting that when using this BuildAssetBundleOptions, 
-            in order to use any assets from the bundle the entire bundle must be uncompressed initially.
+            It is worth noting that when using this BuildAssetBundleOptions, in order to use any assets from the bundle the entire bundle must be uncompressed initially.
             ---
             使用 LZMA 压缩模式, 会把整个 ab资源压缩到一起,
             ---

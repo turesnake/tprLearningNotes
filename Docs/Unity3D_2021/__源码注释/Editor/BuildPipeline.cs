@@ -23,8 +23,10 @@ namespace UnityEditor
         //     Is a player currently being built?
         public static bool isBuildingPlayer { get; }
 
-        [Obsolete("BuildAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static bool BuildAssetBundle(UnityEngine.Object mainAsset, UnityEngine.Object[] assets, string pathName, out uint crc, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+        // [Obsolete("BuildAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static bool BuildAssetBundle(UnityEngine.Object mainAsset, UnityEngine.Object[] assets, string pathName, out uint crc, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+
+
         //
         // 摘要:
         //     Builds an asset bundle.
@@ -50,8 +52,10 @@ namespace UnityEditor
         //     The optional crc output parameter can be used to get a CRC checksum for the generated
         //     AssetBundle, which can be used to verify content when downloading AssetBundles
         //     using UnityWebRequestAssetBundle.GetAssetBundle.
-        [Obsolete("BuildAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static bool BuildAssetBundle(UnityEngine.Object mainAsset, UnityEngine.Object[] assets, string pathName, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+        // [Obsolete("BuildAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static bool BuildAssetBundle(UnityEngine.Object mainAsset, UnityEngine.Object[] assets, string pathName, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+
+
         //
         // 摘要:
         //     Builds an asset bundle, with custom names for the assets.
@@ -79,15 +83,18 @@ namespace UnityEditor
         //   crc:
         //     An optional output parameter used to get a CRC checksum for the generated AssetBundle.
         //     (Used to verify content when downloading AssetBundles using UnityWebRequestAssetBundle.GetAssetBundle().)
-        [Obsolete("BuildAssetBundleExplicitAssetNames has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static bool BuildAssetBundleExplicitAssetNames(UnityEngine.Object[] assets, string[] assetNames, string pathName, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
-        [Obsolete("BuildAssetBundleExplicitAssetNames has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static bool BuildAssetBundleExplicitAssetNames(UnityEngine.Object[] assets, string[] assetNames, string pathName, out uint crc, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+        // [Obsolete("BuildAssetBundleExplicitAssetNames has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static bool BuildAssetBundleExplicitAssetNames(UnityEngine.Object[] assets, string[] assetNames, string pathName, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+        // [Obsolete("BuildAssetBundleExplicitAssetNames has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static bool BuildAssetBundleExplicitAssetNames(UnityEngine.Object[] assets, string[] assetNames, string pathName, out uint crc, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
         
         
+
+
         /*
             Build AssetBundles from a building map.
 
+            变种:
             This variant of the function lets you specify the names and contents of the bundles using a "build map" 
             rather than with the details set in the editor. 
             The map is simply an array of AssetBundleBuild objects, 
@@ -111,6 +118,8 @@ namespace UnityEditor
         */
         public static AssetBundleManifest BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
         
+
+
         /*
             Build all AssetBundles specified in the editor.
 
@@ -140,6 +149,8 @@ namespace UnityEditor
             This contains a list of all the assets included in the AssetBundle. Null is returned if any problems occur.
         */
         public static AssetBundleManifest BuildAssetBundles(string outputPath, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+
+
 
 
 
@@ -241,8 +252,10 @@ namespace UnityEditor
         //
         // 返回结果:
         //     String with an error message, empty on success.
-        [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target, BuildOptions options);
+        // [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target, BuildOptions options);
+
+
         //
         // 摘要:
         //     Builds one or more Scenes and all their dependencies into a compressed asset
@@ -266,12 +279,14 @@ namespace UnityEditor
         //
         // 返回结果:
         //     String with an error message, empty on success.
-        [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target);
-        [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target, out uint crc, BuildOptions options);
-        [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target, out uint crc);
+        // [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target);
+        // [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target, out uint crc, BuildOptions options);
+        // [Obsolete("BuildStreamedSceneAssetBundle has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target, out uint crc);
+
+
         [FreeFunctionAttribute(IsThreadSafe = true)]
         public static BuildTargetGroup GetBuildTargetGroup(BuildTarget platform);
         //
@@ -346,20 +361,24 @@ namespace UnityEditor
         //     build target
         [FreeFunctionAttribute]
         public static bool IsBuildTargetSupported(BuildTargetGroup buildTargetGroup, BuildTarget target);
+
+
         //
         // 摘要:
         //     Lets you manage cross-references and dependencies between different asset bundles
         //     and player builds.
-        [FreeFunctionAttribute]
-        [Obsolete("PopAssetDependencies has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static void PopAssetDependencies();
-        //
-        // 摘要:
-        //     Lets you manage cross-references and dependencies between different asset bundles
-        //     and player builds.
-        [FreeFunctionAttribute]
-        [Obsolete("PushAssetDependencies has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public static void PushAssetDependencies();
+        // [FreeFunctionAttribute]
+        // [Obsolete("PopAssetDependencies has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static void PopAssetDependencies();
+        // //
+        // // 摘要:
+        // //     Lets you manage cross-references and dependencies between different asset bundles
+        // //     and player builds.
+        // [FreeFunctionAttribute]
+        // [Obsolete("PushAssetDependencies has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public static void PushAssetDependencies();
+
+
         //
         // 摘要:
         //     Set a 16-bytes key for AssetBundle Encryption. Set NULL will remove the key from

@@ -19,7 +19,7 @@ https://learn.unity.com/tutorial/assets-resources-and-assetbundles?_ga=2.1313866
 
     guid: d14234ab73cee47468a8184b025e73ed
 
-这个 guid 是这个资源的全局 唯一id; (安装某些说法, 这个 guid 甚至在不同的项目里也是不同的)
+这个 guid 是这个资源的全局 唯一id; (按照某些说法, 这个 guid 甚至在不同的项目里也是不同的)
 
 # --------------------------------------- #
 # -1- 当这个资源被移动到别的目录下时, guid 不会被改变;

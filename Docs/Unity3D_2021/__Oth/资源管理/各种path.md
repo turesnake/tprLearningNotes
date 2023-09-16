@@ -4,12 +4,16 @@
 # ================================================================ #
 
 
+unity 内部使用的 path 一律用 '/' 分隔符, 哪怕是在 win 平台;
+
+
+
 # ----------------------------------------------------------- #
 #     在项目未 build, 在 editor play 模式下打印出来的结果
 # ----------------------------------------------------------- #
 假设 项目源码路径为:E:/unity_projects/_urp_1
 
-#                 // E:/unity_projects/_urp_1/Assets
+# Application.dataPath              // E:/unity_projects/_urp_1/Assets
     就是传统 项目/Assets/ 目录
 
 
@@ -28,14 +32,18 @@
 
 
 
+
+
+
 # ----------------------------------------------------------- #
 #     打成 pc 包, 在pc 上运行 得到的结果:
 # ----------------------------------------------------------- #
 
-
 # Application.dataPath               E:/unity_projects/_urp_1/b_2/urp_1_Data
     打开 包体 目录, 就能见到的 urp_1_Data 目录:
     "{项目名}_Data"
+
+    
 
 # Application.consoleLogPath         C:/Users/_tpr_/AppData/LocalLow/tpr_tpr_test/urp_1/Player.log
 

@@ -9,7 +9,7 @@ namespace UnityEngine
         Manifest for all the AssetBundles in the build.
 
             ===
-            AssetBundle assetBundle = AssetBundle.LoadFromFile(manifestFilePath);
+            AssetBundle assetBundle      = AssetBundle.LoadFromFile(manifestFilePath);
             AssetBundleManifest manifest = assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
             ---
             像普通 ab包 那样将 .manifests 文件加载到内存,

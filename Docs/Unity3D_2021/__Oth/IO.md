@@ -142,7 +142,9 @@ Provides properties and instance methods for the creation, copying, deletion, mo
 # ------------------------ #
 # static string ProjectDirectory = new DirectoryInfo(Application.dataPath).Parent.FullName;
 
-    Application.dataPath 就是 "Assets" 这个目录 向上一层 得到工程的 path;
+    Application.dataPath 就是 "Assets" 这个目录;
+    
+    然得到 向上一层 得到工程的 path;
 
 
 
