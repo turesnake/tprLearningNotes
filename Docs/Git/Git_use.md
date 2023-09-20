@@ -271,6 +271,8 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
     $ git branch -a 
         查看 本机 和 远程 的所有分支
 
+    $ git branch -d <name3> 
+        删除名为name3 的分支
 
 # =====================================|
                 checkout
@@ -287,24 +289,14 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
 # =====================================|
                 merge
+                rebase
 # -------------------------------------|
-    $ git merge <name2> 将分支name2 的内容合并到当前分支
-                        默认fast forward模式，master指针将会直接指向name2的位置
-                        这种合并是扁平化的，旧的master位置会成为线轴上的一个点，无分支
-                        在历史中，ff是看不出曾经有过分支的。
-    $ git merge --no-ff -m "message" <name4> 将分支name4的内合并到当前分支
-                        不使用fast forward模式，
-                        将会在旧master和name2之外额外新建一个commit点，
-                        然后把合并后的内容放进那个新点，此时的master也指向这个点
-                        非扁平化，历史上的name2和旧master形成两个分支。
-
-    $ git branch -d <name3> 删除名为name3 的分支
+# 见文件: Git_Merge_Rebase.md
 
 
 # =====================================|
                 stash
 # -------------------------------------|
-
 # 见文件: Git_Stash.md
 
 ------------------------------------------------------------
