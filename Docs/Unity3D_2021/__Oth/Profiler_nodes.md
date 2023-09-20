@@ -133,8 +133,10 @@ Per Object large buffer部分，里面8个小方块就代表着8个小的 buffer
 
 
 
+# ============================== #
+# -- Update.ScriptRunBehaviourUpdate
 
-
+is a marker produced by Unity native code and represents an "update" stage.
 
 
 

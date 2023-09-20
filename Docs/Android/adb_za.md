@@ -55,6 +55,23 @@
 
 
 
+# -------------------- #
+# adb root
+    to restart the ADB daemon with root privileges. This command is only available on development builds with ro.debuggable=1 1.
+
+
+# -------------------- #
+# adb shell
+new bing:
+    to access the **Unix shell** of an Android device ¹. It allows you to run various commands on the device, such as installing and debugging apps ¹. 
+    When you execute `adb shell`, you gain access to an interactive Linux command-line shell on your device ³. You can then issue shell commands directly or start an interactive shell session ².
+
+    For example, you can use `adb shell` to run the command `ls` and list the files and directories on the device ³. 
+    The possibilities are vast, and it's a powerful tool for developers and advanced users who want to interact with their Android devices at a lower level.
+
+
+
+
 
 # ================================ #
 #          adb logcat

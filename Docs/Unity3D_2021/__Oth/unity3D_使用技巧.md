@@ -730,6 +730,12 @@ D:\Unity_1_editors\Unity 2021.3.14f1\Editor\Data\Resources\PackageManager
 
 
 
+# ----------------------------------------------#
+#      让手机震动
+# ----------------------------------------------#
+
+
+Handheld.Vibrate();
 
 
 

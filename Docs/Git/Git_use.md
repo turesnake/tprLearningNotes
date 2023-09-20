@@ -304,23 +304,8 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 # =====================================|
                 stash
 # -------------------------------------|
-    临时储藏工作现场：
 
-    $ git stash 将目前尚未add 或 commit 的工作现场 储藏起来。
-                等待恢复现场后继续工作。
-                可以多次git stash。会被存进: 
-                stash@{0} 
-                stash@{1} 这类长得像数组的东西里。
-
-    恢复方法一：
-    $ git stash apply 恢复储藏的工作现场，但是stash内容不删除
-    $ git stash drop 删除储藏的工作现场
-
-    恢复方法二：
-    $ git stash pop 恢复的同时把stash内容删除。
-
-    当多次git stash时，可以：
-    $ git stash apply stash@{0} 来恢复指定的某份储藏
+# 见文件: Git_Stash.md
 
 ------------------------------------------------------------
 

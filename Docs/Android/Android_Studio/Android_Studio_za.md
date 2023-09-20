@@ -70,6 +70,15 @@ https://tool.oschina.net/encrypt?type=3
 
 
 
+# -------------------------- #
+#    logcat 过滤
+# -------------------------- #
+
+# -1-:
+	tag:unity level:ERROR 
+	---
+两个关键词:
+
 
 
 

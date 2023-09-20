@@ -286,7 +286,9 @@ namespace UnityEngine
         public void GetComponents(Type type, List<Component> results);
         public void GetComponents<T>(List<T> results);
         public T[] GetComponents<T>();
-        public T[] GetComponentsInChildren<T>(bool includeInactive);
+
+
+        
         //
         // 摘要:
         //     Returns all components of Type type in the GameObject or any of its children
@@ -301,12 +303,17 @@ namespace UnityEngine
         //     decides which children of the GameObject will be searched. The GameObject that
         //     you call GetComponentsInChildren on is always searched regardless. Default is
         //     false.
+        public T[] GetComponentsInChildren<T>(bool includeInactive);
         public Component[] GetComponentsInChildren(Type t, bool includeInactive);
         [ExcludeFromDocs]
         public Component[] GetComponentsInChildren(Type t);
         public void GetComponentsInChildren<T>(List<T> results);
         public T[] GetComponentsInChildren<T>();
         public void GetComponentsInChildren<T>(bool includeInactive, List<T> result);
+
+
+
+
         public T[] GetComponentsInParent<T>();
         [ExcludeFromDocs]
         public Component[] GetComponentsInParent(Type t);

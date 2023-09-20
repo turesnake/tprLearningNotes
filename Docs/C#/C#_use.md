@@ -410,6 +410,40 @@ catlike 使用此语句来偷懒, 它是这么用的:
 
 
 
+
+
+# ---------------------------------------------- #
+#       internal
+# ---------------------------------------------- #
+	class AsyncOperation : YieldInstruction
+	{
+		internal IntPtr m_Ptr;
+	}
+	---
+	the internal keyword is an access modifier that specifies that a method or class is only accessible within the same assembly.
+	只能在本程序集内被访问
+
+
+
+# ---------------------------------------------- #
+#       extern
+# ---------------------------------------------- #
+	class AsyncOperation : YieldInstruction
+	{
+		public extern bool isDone
+		{
+			[MethodImpl(MethodImplOptions.InternalCall)]
+			[NativeMethod("IsDone")]
+			get;
+		}
+	}
+	---
+	 The extern keyword, on the other hand, is used to declare a method that is implemented externally
+	 本函数在外部被实现
+	When you use the extern keyword, you are telling the compiler that the method is implemented outside of C# code. 
+	This is useful when you are using Interop services to call into unmanaged code
+
+
 # ---------------------------------------------- #
 #      标准 Dispose 模式
 # ---------------------------------------------- #

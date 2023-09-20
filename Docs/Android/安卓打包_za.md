@@ -197,22 +197,6 @@ file - build settings, 开始 build:
 
 
 
-
-# ================================================== #
-#               杂乱的 bug
-# ================================================== #
-
-
-
-# -----
-mainTemplate.gradle file is using the old aaptOptions noCompress property definition which does not include types defined by unityStreamingAssets constant
-
-一种方案是, 直接将 Asset - Plugins - Android - mainTemplate.gradle 文件删掉
-让 unity 自己再新建一个
-
-
-
-
 # ================================================== #
 #         真机  profiler 测试
 # ================================================== #
@@ -252,6 +236,10 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 
         adb connect 192.168.2.65
 
+        红米 note 12t pro:
+            adb connect 192.168.2.120
+            
+
 
 
 
@@ -278,26 +266,66 @@ mainTemplate.gradle file is using the old aaptOptions noCompress property defini
 
 
 
-# ================================================== #
-#       项目单场景打包, 报错:
-#            vivo 应用程序安装异常 -25
-# ================================================== #
 
-# -25
-INSTALL_FAILED_VERSION_DOWNGRADE   新包具有比目前安装的软件包的较旧版本的代码
+# ------------------------------------------ #
+#   build 界面: autoconnect profiler 选项
+# ------------------------------------------ #
 
-
-
-
-
+# new bing:
+When this setting is enabled, the Unity Editor bakes its IP address into the built Player during the build process. 
+When you start the Player, it attempts to connect to the Profiler in the Editor located at the baked IP address. 
+If you additionally enable the Deep Profiling Support setting, Unity performs Deep Profiling when the built Player starts, 
+which means that the Profiler profiles every part of your code, and not just code timings explicitly wrapped in ProfilerMarkers¹. 
 
 
+To set up Autoconnect Profiler, you need to enable the Development Build setting in Build Settings and select your application's target platform. 
+When you enable this setting, two settings related to the Profiler become available: Autoconnect Profiler and Deep Profiling Support¹. 
+
+If you have already selected the Autoconnect Profiler checkbox in Build Settings, the profiler should connect automatically to your application on its target release platform 
+when you attach your device to your network or directly to your computer via cable². 
+
+I hope this helps!
+
+Source: Conversation with Bing, 2023/9/18
+(1) Unity - Manual: Profiling your application. https://docs.unity3d.com/Manual/profiler-profiling-applications.html.
+(2) Unity - Manual: Connect the profiler to UWP. https://docs.unity3d.com/Manual/windowsstore-profiler.html.
+(3) Autoconnect Profiler for Unity Pro. https://forum.unity.com/threads/autoconnect-profiler-for-unity-pro.275909/.
+(4) Unity - Manual: Profiling your application. https://docs.unity3d.com/2019.3/Documentation/Manual/profiler-profiling-applications.html.
+(5) Unity - Manual: Profiler overview. https://docs.unity3d.com/Manual/Profiler.html.
+
+# ---- 简单总结:
+开启 autoconnect profiler 后, 只要练到电脑的手机上的 app 一运行, unity editor 就能自动连接并获得数据了;
 
 
 
 
+# ------------------------------------------ #
+#   build 界面: Script Debugging 选项
+# ------------------------------------------ #
+
+# new bing:
+When this setting is enabled, it includes **scripting debug symbols** and allows you to debug script code running in a Unity Player. 
+You can use a debugger to inspect your source code while your application is running. Unity supports several code editors to debug C# code, including Visual Studio, Visual Studio for Mac, JetBrains Rider, and Visual Studio Code¹. 
+
+If you want to debug your application using Visual Studio or JetBrains Rider, you need to attach the debugger to the Unity Editor or Unity Player. To do this, you need to select the **Wait For Managed Debugger** checkbox in Build Settings. This will make the Player wait for a debugger to be attached before it executes any script code¹.
+
+I hope this helps! Let me know if there's anything else I can help you with.
+
+说白了就是支持各 编辑器 debug; 
 
 
+
+# ------------------------------------------ #
+#   build 界面: eep Profiling Support 选项
+# ------------------------------------------ #
+
+# new bing:
+When this setting is enabled, the Unity Profiler profiles every function call in your application, not just code timings explicitly wrapped in ProfilerMarkers ³⁵. 
+This is useful to get deep profiling information on your application's start-up times, but it adds a small amount of overhead to your build ³. 
+
+To enable Deep Profiling Support, you need to select the **Development Build** checkbox in Build Settings. Once you have enabled this option, the **Deep Profiling Support** checkbox will become available ¹³. 
+
+# 可以打出更细腻夸张的 性能信息, 
 
 
 

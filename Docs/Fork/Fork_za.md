@@ -228,3 +228,36 @@ https://blog.csdn.net/shaobo8910/article/details/106055164
 
 
 
+
+
+# -------------------------------------- #
+#      Full . Stash and reapply local changes
+# -------------------------------------- #
+new bing:
+the option "Stash and reapply local changes" refers to a feature that allows you to stash your local changes before pulling changes from a remote repository¹. 
+This option is useful when you have made local modifications that you want to save temporarily before updating your codebase with the latest changes from the remote repository¹.
+
+When you select "Stash and reapply local changes," **Fork** will automatically stash your local changes, pull the latest changes from the remote repository, 
+and then reapply your stashed changes on top of the updated codebase¹. This ensures that your local modifications are preserved while incorporating(并入) the new changes from the remote repository¹.
+
+By using this option, you can switch between branches or update your codebase without losing your local work¹. 
+It provides a convenient way to manage your changes and keep your code up to date with the latest developments in the remote repository.
+
+Source: Conversation with Bing, 2023/9/20
+(1) [Feature request] Add `Stash and reapply` option to the ... - GitHub. https://github.com/fork-dev/TrackerWin/issues/1311.
+(2) . https://bing.com/search?q=Stash+and+reapply+local+changes+in+app+Fork%27s+Pull+button.
+(3) git - How to stash the changes between local repository and remote .... https://stackoverflow.com/questions/33069752/how-to-stash-the-changes-between-local-repository-and-remote-repository.
+(4) git pull: keeps telling me to stash local changes before pulling. https://stackoverflow.com/questions/20568971/git-pull-keeps-telling-me-to-stash-local-changes-before-pulling.
+(5) undefined. https://www.atlassian.com/git/tutorials/saving-changes/git-stash.
+(6) undefined. https://www.freecodecamp.org/news/git-stash-explained/.
+
+
+
+
+
+
+
+
+
+
+

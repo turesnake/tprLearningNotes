@@ -8,6 +8,8 @@ using System.Text;
 
 
 
+// !!!! 目前有问题, 在 安卓上无法新建和写文件
+
 /// <summary>
 ///  通用 txt 文件 log 系统;
 ///  

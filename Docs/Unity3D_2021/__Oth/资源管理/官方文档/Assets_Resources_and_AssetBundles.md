@@ -179,7 +179,7 @@ manifest 是个 lookup table, 每个 entry 以 obj 的 name 为 key; 其值为�
 # -- AssetBundle.LoadFromFile()  异步
 从硬盘和sd卡中加载 LZ4 或 未压缩的 assetbundle 的高性能 api;
 
-在 桌面主机, pc, 和移动端, 本 api 只会加载 assetbundle 的 header 数据, 然后让剩余数据留在 硬盘中; 只有当 AssetBundle.Load() 这种加载函数被调用时, obj 资源才会被加载; (另一种触发条件是: 这个 obj 的 instance id 被 dereferenced 时, (取消引用))
+在 桌面主机, pc, 和移动端, 本 api 只会加载 assetbundle 的 header 数据, 然后让剩余数据留在 硬盘中; 只有当 AssetBundle.LoadXXX() 这种加载函数被调用时, obj 资源才会被加载; (另一种触发条件是: 这个 obj 的 instance id 被 dereferenced 时, (取消引用))
 
 这种模式不会消耗多余的内存;
 在 unity editor 模式中, 本 api 会将 assetbundle 的所有资源都加载到内存, 
@@ -301,6 +301,12 @@ https://docs.unity3d.com/Manual/AssetBundles-Dependencies.html?_ga=2.91118746.10
 它只包含了一个类型为 "AssetBundleManifest" 的 obj;
 
 这个 .manifests ab包 可以像普通 ab包一样被 loaded, cached 或 unloaded;
+
+
+
+https://docs.unity3d.com/2021.3/Documentation/Manual/AssetBundles-Native.html
+# !!! 注意, 不是任意一个 ab 文件都能通过 上述网页里的方法 访问到它的 manifests 信息, 必须去访问那个 root ab 文件的;
+
 
 "AssetBundleManifest" 包含: 
 

@@ -12,15 +12,15 @@ namespace UnityEngine
 {
     /*
         AssetBundles let you stream additional assets via the UnityWebRequest class and instantiate them at runtime. 
-        AssetBundles are created via BuildPipeline.BuildAssetBundle. (废弃)
+        AssetBundles are created via BuildPipeline.BuildAssetBundles()
         ---
         AssetBundles 允许你通过 UnityWebRequest class 流式地传输 其他资源 (additional assets), 并在运行时实例化它们;
-        通过 BuildPipeline.BuildAssetBundle (已废弃) 来创建 AssetBundles; 
+        通过 BuildPipeline.BuildAssetBundles() 来创建 AssetBundles; 
 
         Note that bundles are not compatible between platforms. A bundle built for any of the standalone platforms can only be loaded on that platform but not others. 
         Further example, a bundle built for iOS is not compatible with Android and vice versa. One difference is shaders which are different between devices, as are textures.
-
-
+        ---
+        ab包 并不跨平台,  比如, shader 就不夸平台,  texture 也不夸平台(因为压缩格式不同)
 
     */
     [ExcludeFromPreset]
@@ -42,8 +42,10 @@ namespace UnityEngine
         // 摘要:
         //     Controls the size of the shared AssetBundle loading cache. Default value is 1MB.
         public static uint memoryBudgetKB { get; set; }
-        [Obsolete("mainAsset has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
-        public Object mainAsset { get; }
+
+        // [Obsolete("mainAsset has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
+        // public Object mainAsset { get; }
+
         //
         // 摘要:
         //     Return true if the AssetBundle is a streamed Scene AssetBundle.
@@ -57,18 +59,20 @@ namespace UnityEngine
         //   path:
         //     Path of the file on disk See Also: UnityWebRequestAssetBundle.GetAssetBundle,
         //     DownloadHandlerAssetBundle.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Method CreateFromFile has been renamed to LoadFromFile (UnityUpgradable) -> LoadFromFile(*)", true)]
-        public static AssetBundle CreateFromFile(string path);
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Method CreateFromFile has been renamed to LoadFromFile (UnityUpgradable) -> LoadFromFile(*)", true)]
+        // public static AssetBundle CreateFromFile(string path);
+
         //
         // 摘要:
         //     Asynchronously create an AssetBundle from a memory region.
         //
         // 参数:
         //   binary:
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Method CreateFromMemory has been renamed to LoadFromMemoryAsync (UnityUpgradable) -> LoadFromMemoryAsync(*)", true)]
-        public static AssetBundleCreateRequest CreateFromMemory(byte[] binary);
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Method CreateFromMemory has been renamed to LoadFromMemoryAsync (UnityUpgradable) -> LoadFromMemoryAsync(*)", true)]
+        // public static AssetBundleCreateRequest CreateFromMemory(byte[] binary);
+
         //
         // 摘要:
         //     Synchronously create an AssetBundle from a memory region.
@@ -76,9 +80,11 @@ namespace UnityEngine
         // 参数:
         //   binary:
         //     Array of bytes with the AssetBundle data.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Method CreateFromMemoryImmediate has been renamed to LoadFromMemory (UnityUpgradable) -> LoadFromMemory(*)", true)]
-        public static AssetBundle CreateFromMemoryImmediate(byte[] binary);
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Method CreateFromMemoryImmediate has been renamed to LoadFromMemory (UnityUpgradable) -> LoadFromMemory(*)", true)]
+        // public static AssetBundle CreateFromMemoryImmediate(byte[] binary);
+
+
         //
         // 摘要:
         //     To use when you need to get a list of all the currently loaded Asset Bundles.
@@ -92,7 +98,16 @@ namespace UnityEngine
         /*
             Synchronously loads an AssetBundle from a file on disk.
             从 ab包资源文件中, 加载一个 ab包信息(通常是它的head) 到内存中; 完成这步之后, 可从返回的 AssetBundle 实例中加载某个具体的 obj资源 到内存中;
+
+            new bing:
+                To use AssetBundle.LoadFromFile in Unity, you can load an asset bundle from a file on disk. 
+                This API is highly efficient when loading uncompressed bundles from local storage. 
+                If the bundle is uncompressed or chunk (LZ4) compressed, LoadFromFile will load the bundle directly from disk. 
+                However, if the bundle is fully compressed (LZMA), it will first decompress the bundle before loading it into memory;
+                ---
+                就是从本地硬盘 直接读取 ab包资源;
             
+
             参数:
             path:
                 Path of the file on disk.
@@ -116,26 +131,27 @@ namespace UnityEngine
 
 
         
-        //
-        // 摘要:
-        //     Asynchronously loads an AssetBundle from a file on disk.
-        //
-        // 参数:
-        //   path:
-        //     Path of the file on disk.
-        //
-        //   crc:
-        //     An optional CRC-32 checksum of the uncompressed content. If this is non-zero,
-        //     then the content will be compared against the checksum before loading it, and
-        //     give an error if it does not match.
-        //
-        //   offset:
-        //     An optional byte offset. This value specifies where to start reading the AssetBundle
-        //     from.
-        //
-        // 返回结果:
-        //     Asynchronous create request for an AssetBundle. Use AssetBundleCreateRequest.assetBundle
-        //     property to get an AssetBundle once it is loaded.
+        /*
+            摘要:
+                Asynchronously loads an AssetBundle from a file on disk.
+            
+            参数:
+            path:
+                Path of the file on disk.
+            
+            crc:
+                An optional CRC-32 checksum of the uncompressed content. If this is non-zero,
+                then the content will be compared against the checksum before loading it, and
+                give an error if it does not match.
+            
+            offset:
+                An optional byte offset. This value specifies where to start reading the AssetBundle
+                from.
+            
+            返回结果:
+                Asynchronous create request for an AssetBundle. Use AssetBundleCreateRequest.assetBundle
+                property to get an AssetBundle once it is loaded.
+        */
         public static AssetBundleCreateRequest LoadFromFileAsync(string path);
         public static AssetBundleCreateRequest LoadFromFileAsync(string path, uint crc);
         public static AssetBundleCreateRequest LoadFromFileAsync(string path, uint crc, ulong offset);
@@ -286,6 +302,7 @@ namespace UnityEngine
         //   password:
         [FreeFunctionAttribute("SetAssetBundleDecryptKey")]
         public static void SetAssetBundleDecryptKey(string password);
+
         //
         // 摘要:
         //     Unloads all currently loaded AssetBundles.
@@ -294,10 +311,11 @@ namespace UnityEngine
         //   unloadAllObjects:
         //     Determines whether the current instances of objects loaded from AssetBundles
         //     will also be unloaded.
-        [FreeFunctionAttribute("UnloadAllAssetBundles")]
-        public static void UnloadAllAssetBundles(bool unloadAllObjects);
-        [Obsolete("This method is deprecated.Use GetAllAssetNames() instead.", false)]
-        public string[] AllAssetNames();
+        // [FreeFunctionAttribute("UnloadAllAssetBundles")]
+        // public static void UnloadAllAssetBundles(bool unloadAllObjects);
+        // [Obsolete("This method is deprecated.Use GetAllAssetNames() instead.", false)]
+        // public string[] AllAssetNames();
+
         //
         // 摘要:
         //     Check if an AssetBundle contains a specific object.
@@ -316,18 +334,24 @@ namespace UnityEngine
         //     Return all the Scene asset paths (paths to *.unity assets) in the AssetBundle.
         [NativeMethodAttribute("GetAllScenePaths")]
         public string[] GetAllScenePaths();
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Method Load has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAsset instead and check the documentation for details.", true)]
-        public Object Load(string name);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Method Load has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAsset instead and check the documentation for details.", true)]
-        public Object Load<T>(string name);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Method LoadAll has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAllAssets instead and check the documentation for details.", true)]
-        public Object[] LoadAll();
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Method LoadAll has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAllAssets instead and check the documentation for details.", true)]
-        public T[] LoadAll<T>() where T : Object;
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Method Load has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAsset instead and check the documentation for details.", true)]
+        // public Object Load(string name);
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Method Load has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAsset instead and check the documentation for details.", true)]
+        // public Object Load<T>(string name);
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Method LoadAll has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAllAssets instead and check the documentation for details.", true)]
+        // public Object[] LoadAll();
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Method LoadAll has been deprecated. Script updater cannot update it as the loading behaviour has changed. Please use LoadAllAssets instead and check the documentation for details.", true)]
+        // public T[] LoadAll<T>() where T : Object;
+
+
         //
         // 摘要:
         //     Loads all assets contained in the asset bundle that inherit from type T.
@@ -423,13 +447,41 @@ namespace UnityEngine
 
 
         /*
-        // 摘要:
-        //     Unloads an AssetBundle freeing its data.
-        //
-        // 参数:
-        //   unloadAllLoadedObjects:
-        //     Determines whether the current instances of objects loaded from the AssetBundle
-        //     will also be unloaded.
+            摘要:
+                Unloads an AssetBundle freeing its data.
+
+
+            When unloadAllLoadedObjects is false, compressed file data inside the bundle itself will be freed, but any instances of objects loaded from this bundle will remain intact. 
+            After calling UnloadAsync on an AssetBundle, you cannot load any more objects from that bundle and other operations on the bundle 
+            will throw InvalidOperationException.After calling UnloadAsync on an AssetBundle, 
+            you cannot load any more objects from that bundle and other operations on the bundle will throw InvalidOperationException.
+
+
+            When unloadAllLoadedObjects is true, all objects that were loaded from this bundle will be destroyed as well. 
+            If there are GameObjects in your Scene referencing those assets, the references to them will become missing.
+
+
+            !!! 建议本文档内查找: "5.1 Managing loaded Assets"
+
+
+            参数为 false:
+                加载到的 内存中的 ab包 会被卸载;
+                但是从这个 ab包中加载出来的那些 objs 资源, 不会被卸载, 它们还可以被继续使用;
+                ---
+                但是这会使得这些被加载出来的 objs 和它们的 ab包 脱绑;
+                如果再次加载这个 ab包, unity 不会在旧的 objs 和 新的 ab包 之间建立联系;
+                如果此时, 调用 AssetBundle.LoadAsset() 从新的 ab包中加载 obj资源, 此时 unity不会意识到 内存中已经存在一份 目标obj 资源了, 而会重新加载一份, 从而造成 资源的重复;
+
+            参数为 true:
+                加载到内存中的 ab包, 以及从这个 ab包中加载出来的 objs资源, 都会被卸载掉;
+                使用不当会出问题;
+                ---
+                但是这种使用 比 AssetBundle.Unload( false ) 更安全, 至少不会导致 obj资源的重复导入;
+
+            参数:
+            unloadAllLoadedObjects:
+                Determines whether the current instances of objects loaded from the AssetBundle
+                will also be unloaded.
         */
         [NativeMethodAttribute("Unload")]
         [NativeThrowsAttribute]
