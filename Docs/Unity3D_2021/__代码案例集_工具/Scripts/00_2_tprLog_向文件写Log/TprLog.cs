@@ -8,8 +8,6 @@ using System.Text;
 
 
 
-// !!!! 目前有问题, 在 安卓上无法新建和写文件
-
 /// <summary>
 ///  通用 txt 文件 log 系统;
 ///  
@@ -21,8 +19,6 @@ using System.Text;
 /// </summary>
 public class TprLog
 {
-    // if run in Editor: 存储在: "Assets"   + 上一级 +  "/_tprLogs_/" 中
-    // if run in Player: 存储在: app所在目录 + 上一级 +  "/_tprLogs_/" 中
     string outFilePath;
 
     static TprLog _instance;
@@ -37,22 +33,32 @@ public class TprLog
 
     TprLog() 
     {
-        Debug.Log("koko-[Log]: Create Instance");
         //-- file path:
         string timeData = DateTime.Now.ToString("yyyy_MMdd_HH_mm_ss"); // "2023_0927_1725"
         string outFileName = "tprLog_" + timeData + ".txt"; // like: "tprLog_2023_0927_1725.txt"
 
+        bool isMobile = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
+
         //-- folder path:
-        // if Editor:  "Assets"   + 上一级 +  "/_tprLogs_/"
-        // if Player:  app所在目录 + 上一级 +  "/_tprLogs_/"
-        string outFolderPath = Application.dataPath + "/../__tprLogs__/";
+        // if Editor:           "Assets"   + 上一级                                    +  "/__tprLogs__/"
+        // if PC-Player:        app所在目录 + 上一级                                    +  "/__tprLogs__/"
+        // if Android-Player:   "/storage/emulated/0/Android/data/com.xxx.xxxx/files"  + "/__tprLogs__/"
+        // if iPhone-Player:    未试验...
+        string outFolderPath = isMobile ?
+                    Path.Combine(Application.persistentDataPath, "__tprLogs__") : 
+                    Path.Combine(Application.dataPath,           "../__tprLogs__");
+        outFolderPath = outFolderPath.Replace("\\", "/");
+                    
         if (!Directory.Exists(outFolderPath))
         {
             Directory.CreateDirectory(outFolderPath);
         }
         //--
-        outFilePath = outFolderPath + "/" + outFileName;
+        outFilePath = Path.Combine(outFolderPath, outFileName).Replace("\\", "/");
+        Debug.Log( "koko-[Log]: Create Instance Success; path:" + outFilePath );
     }
+
+    
 
     // =============================================================================:
 
@@ -74,4 +80,25 @@ public class TprLog
             writer.Write( Encoding.UTF8.GetBytes(data) );
 		}
 	}
+
+
+
+    public static string ReadLogFile()
+    {
+        TprLog tprLog = Instance();
+        FileInfo fInfo = new FileInfo(tprLog.outFilePath);
+        if (fInfo.Exists)
+        {
+            StreamReader r = File.OpenText(tprLog.outFilePath);
+            string logData = r.ReadToEnd();
+            r.Close();
+            return logData;
+        }
+        else
+        {
+            Debug.LogError( "koko - file not found: " + tprLog.outFilePath );
+            return "";
+        }
+
+    }
 }

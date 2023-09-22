@@ -11,6 +11,16 @@ using System.Text;
 
 namespace System.Diagnostics
 {
+    /*
+
+        new bing:
+            ProcessStartInfo is a class in Unity that is used to start a new process, such as an external application or a command-line tool. 
+            It is typically used in conjunction with the Process class. By using ProcessStartInfo, you can have better control over the process you start.
+
+
+
+
+    */
     public sealed class ProcessStartInfo
     {
         public ProcessStartInfo();

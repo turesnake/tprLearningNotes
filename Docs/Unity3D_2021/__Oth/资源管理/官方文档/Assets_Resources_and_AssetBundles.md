@@ -7,6 +7,9 @@
 https://learn.unity.com/tutorial/assets-resources-and-assetbundles?_ga=2.131386636.20088139.1655605355-597440040.1625213567#
 
 
+https://zhuanlan.zhihu.com/p/530341540
+
+
 # =================================== #
 #               GUID
 # =================================== #

@@ -733,9 +733,18 @@ D:\Unity_1_editors\Unity 2021.3.14f1\Editor\Data\Resources\PackageManager
 # ----------------------------------------------#
 #      让手机震动
 # ----------------------------------------------#
-
-
 Handheld.Vibrate();
+
+
+
+# ----------------------------------------------#
+#   如何知道 一个 go/component 是否属于某个 prefab
+# ----------------------------------------------#
+PrefabUtility.GetNearestPrefabInstanceRoot()
+
+
+
+
 
 
 

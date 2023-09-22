@@ -88,7 +88,7 @@ namespace UnityEditor
         // [Obsolete("BuildAssetBundleExplicitAssetNames has been made obsolete. Please use the new AssetBundle build system introduced in 5.0 and check BuildAssetBundles documentation for details.")]
         // public static bool BuildAssetBundleExplicitAssetNames(UnityEngine.Object[] assets, string[] assetNames, string pathName, out uint crc, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
         
-        
+
 
 
         /*
@@ -99,6 +99,16 @@ namespace UnityEditor
             rather than with the details set in the editor. 
             The map is simply an array of AssetBundleBuild objects, 
             each of which contains a bundle name and a list of the names of asset files to be added to the named bundle.
+
+            !!!! 使用细节:
+            -1-  
+            	builds 中元素间的顺序无关,  (假设分别建立一个 texture 的 ab包 和 material 的ab包, 本函数会自动将 texture的ab包 指向给 mat的ab包 )
+
+            -2- 
+				只需配置 AssetBundleBuild 的 assetBundleName 和 assetNames; (tpr经验)
+				-- assetBundleName 就写 ab包 名字, 比如: "brickmat_33"
+				-- assetNames      放入 ab包 的所有 一级资源, 比如一个 mat: "Assets/Materials/UseTexture.mat"
+										无需关心这个 mat 自己引用的别的资源, 比如某个 texture 的, 不要管;
         
         参数:
           outputPath:
@@ -129,6 +139,8 @@ namespace UnityEditor
             if the build was successful and false otherwise. 
             
             Additionally, error messages are shown in the console to explain most common build failures such as incorrect target folder paths.
+
+            !!!! tpr: 本函数应该基于 editor 中右下角 Asset Labels 一栏手动标记的方式来自动划分 ab包; 推荐用上一个函数变种
         
         参数:
           outputPath:
@@ -256,6 +268,8 @@ namespace UnityEditor
         // public static string BuildStreamedSceneAssetBundle(string[] levels, string locationPath, BuildTarget target, BuildOptions options);
 
 
+
+
         //
         // 摘要:
         //     Builds one or more Scenes and all their dependencies into a compressed asset
@@ -289,6 +303,9 @@ namespace UnityEditor
 
         [FreeFunctionAttribute(IsThreadSafe = true)]
         public static BuildTargetGroup GetBuildTargetGroup(BuildTarget platform);
+
+
+
         //
         // 摘要:
         //     Given a BuildTarget will return the well known string representation for the

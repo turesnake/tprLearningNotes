@@ -35,7 +35,10 @@ namespace UnityEditor
             Asset names which belong to the given AssetBundle.
             Please use the asset path relative to the project folder, for example "Assets/MyPrefab.prefab".
             ---
-            其实是个 相对path
+            本 ab 包包含的资源的 相对 path;
+            如: 
+                "Assets/Textures/brick_albedo.jpg"
+
         */
         public string[] assetNames;
         

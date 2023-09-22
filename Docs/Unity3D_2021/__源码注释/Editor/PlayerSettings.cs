@@ -52,21 +52,25 @@ namespace UnityEditor
         //     Specifies whether the application requires OpenGL ES 3.2 support.
         [NativePropertyAttribute(TargetType = UnityEngine.Bindings.TargetType.Field)]
         public static bool openGLRequireES32 { get; set; }
+
         //
         // 摘要:
         //     The image to display in the Resolution Dialog window.
-        [Obsolete("resolutionDialogBanner has been removed.", false)]
-        public static Texture2D resolutionDialogBanner { get; set; }
+        // [Obsolete("resolutionDialogBanner has been removed.", false)]
+        // public static Texture2D resolutionDialogBanner { get; set; }
+
         //
         // 摘要:
         //     Virtual Reality specific splash screen.
         [StaticAccessorAttribute("GetPlayerSettings().GetSplashScreenSettings()")]
         public static Texture2D virtualRealitySplashScreen { get; set; }
+
         //
         // 摘要:
         //     The bundle identifier of the iPhone application.
-        [Obsolete("iPhoneBundleIdentifier is deprecated. Use PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS) instead.")]
-        public static string iPhoneBundleIdentifier { get; set; }
+        // [Obsolete("iPhoneBundleIdentifier is deprecated. Use PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS) instead.")]
+        // public static string iPhoneBundleIdentifier { get; set; }
+
         //
         // 摘要:
         //     If enabled, allows the user to switch between full screen and windowed mode using
@@ -84,12 +88,14 @@ namespace UnityEditor
         // 摘要:
         //     Allow 'unsafe' C# code code to be compiled for predefined assemblies.
         public static bool allowUnsafeCode { get; set; }
+
         //
         // 摘要:
         //     Set to true to make Unity use Roslyn reference assemblies when compiling scripts.
         //     Enabled by default.
-        [Obsolete("Use of reference assemblies is always enabled")]
-        public static bool useReferenceAssemblies { get; set; }
+        // [Obsolete("Use of reference assemblies is always enabled")]
+        // public static bool useReferenceAssemblies { get; set; }
+
         //
         // 摘要:
         //     Allows you to enable or disable incremental mode for garbage collection.
@@ -102,18 +108,23 @@ namespace UnityEditor
         // 摘要:
         //     Password for the key used for signing an Android application.
         public static string keyaliasPass { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static string xboxTitleId { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static string xboxImageXexFilePath { get; }
+
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static string xboxTitleId { get; set; }
+
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static string xboxImageXexFilePath { get; }
+
         //
         // 摘要:
         //     The scripting runtime version setting. Change this to set the version the Editor
         //     uses and restart the Editor to apply the change.
-        [Obsolete("ScriptingRuntimeVersion has been deprecated in 2019.3 due to the removal of legacy mono")]
-        public static ScriptingRuntimeVersion scriptingRuntimeVersion { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static string xboxSpaFilePath { get; }
+        // [Obsolete("ScriptingRuntimeVersion has been deprecated in 2019.3 due to the removal of legacy mono")]
+        // public static ScriptingRuntimeVersion scriptingRuntimeVersion { get; set; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static string xboxSpaFilePath { get; }
+
+
         //
         // 摘要:
         //     On Windows, show the application in the background if Fullscreen Windowed mode
@@ -157,69 +168,88 @@ namespace UnityEditor
         //     The number of bits in each color channel for swap chain buffers. (Direct3D 11
         //     and Direct3D 12 mode).
         public static D3DHDRDisplayBitDepth D3DHDRBitDepth { get; set; }
+
         //
         // 摘要:
         //     Define how to handle fullscreen mode in macOS standalones.
-        [Obsolete("macFullscreenMode is deprecated, use fullScreenMode instead")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static MacFullscreenMode macFullscreenMode { get; set; }
+        // [Obsolete("macFullscreenMode is deprecated, use fullScreenMode instead")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static MacFullscreenMode macFullscreenMode { get; set; }
+
         //
         // 摘要:
         //     Define how to handle fullscreen mode in Windows standalones (Direct3D 11 mode).
-        [Obsolete("d3d11FullscreenMode is deprecated, use fullScreenMode instead")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static D3D11FullscreenMode d3d11FullscreenMode { get; set; }
+        // [Obsolete("d3d11FullscreenMode is deprecated, use fullScreenMode instead")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static D3D11FullscreenMode d3d11FullscreenMode { get; set; }
+
+
         //
         // 摘要:
         //     Platform agnostic setting to define fullscreen behavior. Not all platforms support
         //     all modes.
         [NativePropertyAttribute("FullscreenMode")]
         public static FullScreenMode fullScreenMode { get; set; }
+
         //
         // 摘要:
         //     Enable Virtual Reality support on the current build target.
-        [Obsolete("This API is obsolete, and should no longer be used. Please use XRManagerSettings in the XR Management package instead.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static bool virtualRealitySupported { get; set; }
+        // [Obsolete("This API is obsolete, and should no longer be used. Please use XRManagerSettings in the XR Management package instead.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static bool virtualRealitySupported { get; set; }
+
+
         //
         // 摘要:
         //     Enable 360 Stereo Capture support on the current build target.
         public static bool enable360StereoCapture { get; set; }
+
         //
         // 摘要:
         //     Should Unity support single-pass stereo rendering?
-        [Obsolete("singlePassStereoRendering will be deprecated. Use stereoRenderingPath instead.")]
-        public static bool singlePassStereoRendering { get; set; }
+        // [Obsolete("singlePassStereoRendering will be deprecated. Use stereoRenderingPath instead.")]
+        // public static bool singlePassStereoRendering { get; set; }
+
+
         //
         // 摘要:
         //     Active stereo rendering path
         public static StereoRenderingPath stereoRenderingPath { get; set; }
+
         //
         // 摘要:
         //     Protect graphics memory.
-        [Obsolete("protectGraphicsMemory is deprecated. This field has no effect.", false)]
-        public static bool protectGraphicsMemory { get; set; }
+        // [Obsolete("protectGraphicsMemory is deprecated. This field has no effect.", false)]
+        // public static bool protectGraphicsMemory { get; set; }
+
         //
         // 摘要:
         //     Stops or allows audio from other applications to play in the background while
         //     your Unity application is running.
         public static bool muteOtherAudioSources { get; set; }
+
+
         //
         // 摘要:
         //     Define how to handle fullscreen mode in Windows standalones (Direct3D 9 mode).
-        [Obsolete("d3d9FullscreenMode is deprecated, use fullScreenMode instead")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static D3D9FullscreenMode d3d9FullscreenMode { get; set; }
+        // [Obsolete("d3d9FullscreenMode is deprecated, use fullScreenMode instead")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static D3D9FullscreenMode d3d9FullscreenMode { get; set; }
+
+
         //
         // 摘要:
         //     If enabled, the game will default to fullscreen mode.
-        [Obsolete("(defaultIsFullScreen is deprecated, use fullScreenMode instead")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static bool defaultIsFullScreen { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxGenerateSpa { get; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxDeployKinectResources { get; }
+        // [Obsolete("(defaultIsFullScreen is deprecated, use fullScreenMode instead")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static bool defaultIsFullScreen { get; set; }
+
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxGenerateSpa { get; }
+
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxDeployKinectResources { get; }
+
         //
         // 摘要:
         //     Remove unused Engine code from your build (IL2CPP-only).
@@ -258,13 +288,14 @@ namespace UnityEditor
         // 摘要:
         //     32-bit Display Buffer is used.
         public static bool use32BitDisplayBuffer { get; set; }
+
         //
         // 摘要:
         //     Deprecated. Use PlayerSettings.GetManagedStrippingLevel and PlayerSettings.SetManagedStrippingLevel
         //     instead.
-        [Obsolete("strippingLevel is deprecated, Use PlayerSettings.GetManagedStrippingLevel()/PlayerSettings.SetManagedStrippingLevel() instead. StripByteCode and UseMicroMSCorlib are no longer supported.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static StrippingLevel strippingLevel { get; set; }
+        // [Obsolete("strippingLevel is deprecated, Use PlayerSettings.GetManagedStrippingLevel()/PlayerSettings.SetManagedStrippingLevel() instead. StripByteCode and UseMicroMSCorlib are no longer supported.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static StrippingLevel strippingLevel { get; set; }
 
 
         /*
@@ -308,14 +339,17 @@ namespace UnityEditor
         // 摘要:
         //     Is multi-threaded rendering enabled?
         public static bool MTRendering { get; set; }
+
         //
         // 摘要:
         //     Deprecated. Use PlayerSettings.GetApiCompatibilityLevel and PlayerSettings.SetApiCompatibilityLevel
         //     instead.
-        [Obsolete("apiCompatibilityLevel is deprecated. Use PlayerSettings.GetApiCompatibilityLevel()/PlayerSettings.SetApiCompatibilityLevel() instead.")]
-        public static ApiCompatibilityLevel apiCompatibilityLevel { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxEnableGuest { get; }
+        // [Obsolete("apiCompatibilityLevel is deprecated. Use PlayerSettings.GetApiCompatibilityLevel()/PlayerSettings.SetApiCompatibilityLevel() instead.")]
+        // public static ApiCompatibilityLevel apiCompatibilityLevel { get; set; }
+
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxEnableGuest { get; }
+
         //
         // 摘要:
         //     Returns if status bar should be hidden. Supported on iOS only; on Android, the
@@ -326,22 +360,25 @@ namespace UnityEditor
         // 摘要:
         //     The application identifier for the currently selected build target.
         public static string applicationIdentifier { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxDeployKinectHeadOrientation { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxDeployKinectHeadPosition { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static Texture2D xboxSplashScreen { get; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static int xboxAdditionalTitleMemorySize { get; set; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxEnableKinect { get; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxEnableKinectAutoTracking { get; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static bool xboxEnableSpeech { get; }
-        [Obsolete("Xbox 360 has been removed in >=5.5")]
-        public static uint xboxSpeechDB { get; }
+
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxDeployKinectHeadOrientation { get; set; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxDeployKinectHeadPosition { get; set; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static Texture2D xboxSplashScreen { get; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static int xboxAdditionalTitleMemorySize { get; set; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxEnableKinect { get; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxEnableKinectAutoTracking { get; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static bool xboxEnableSpeech { get; }
+        // [Obsolete("Xbox 360 has been removed in >=5.5")]
+        // public static uint xboxSpeechDB { get; }
+
+
         //
         // 摘要:
         //     Application bundle version shared between iOS & Android platforms.
@@ -383,11 +420,14 @@ namespace UnityEditor
         // 摘要:
         //     Enable graphics jobs (multi threaded rendering).
         public static bool graphicsJobs { get; set; }
+
         //
         // 摘要:
         //     Defines the behaviour of the Resolution Dialog on product launch.
-        [Obsolete("displayResolutionDialog has been removed.", false)]
-        public static ResolutionDialogSetting displayResolutionDialog { get; set; }
+        // [Obsolete("displayResolutionDialog has been removed.", false)]
+        // public static ResolutionDialogSetting displayResolutionDialog { get; set; }
+
+
         //
         // 摘要:
         //     Default vertical dimension of web player window.
@@ -400,11 +440,15 @@ namespace UnityEditor
         // 摘要:
         //     Applies the display rotation during rendering.
         public static bool vulkanEnablePreTransform { get; set; }
+
+
         //
         // 摘要:
         //     Use software command buffers for building rendering commands on Vulkan.
-        [Obsolete("Vulkan SW command buffers are deprecated, vulkanUseSWCommandBuffers will be ignored.")]
-        public static bool vulkanUseSWCommandBuffers { get; set; }
+        // [Obsolete("Vulkan SW command buffers are deprecated, vulkanUseSWCommandBuffers will be ignored.")]
+        // public static bool vulkanUseSWCommandBuffers { get; set; }
+
+
         //
         // 摘要:
         //     Delays acquiring the swapchain image until after the frame is rendered.
@@ -417,50 +461,61 @@ namespace UnityEditor
         // 摘要:
         //     Enables Graphics.SetSRGBWrite() on Vulkan renderer.
         public static bool vulkanEnableSetSRGBWrite { get; set; }
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use PlayerSettings.applicationIdentifier instead (UnityUpgradable) -> UnityEditor.PlayerSettings.applicationIdentifier", true)]
-        public static string bundleIdentifier { get; set; }
-        [Obsolete("mobileRenderingPath is ignored, use UnityEditor.Rendering.TierSettings with UnityEditor.Rendering.SetTierSettings/GetTierSettings instead", false)]
-        public static RenderingPath mobileRenderingPath { get; set; }
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Use PlayerSettings.applicationIdentifier instead (UnityUpgradable) -> UnityEditor.PlayerSettings.applicationIdentifier", true)]
+        // public static string bundleIdentifier { get; set; }
+        // [Obsolete("mobileRenderingPath is ignored, use UnityEditor.Rendering.TierSettings with UnityEditor.Rendering.SetTierSettings/GetTierSettings instead", false)]
+        // public static RenderingPath mobileRenderingPath { get; set; }
+
         //
         // 摘要:
         //     Which rendering path is enabled?
-        [Obsolete("renderingPath is ignored, use UnityEditor.Rendering.TierSettings with UnityEditor.Rendering.SetTierSettings/GetTierSettings instead", false)]
-        public static RenderingPath renderingPath { get; set; }
+        // [Obsolete("renderingPath is ignored, use UnityEditor.Rendering.TierSettings with UnityEditor.Rendering.SetTierSettings/GetTierSettings instead", false)]
+        // public static RenderingPath renderingPath { get; set; }
+
         //
         // 摘要:
         //     Describes the reason for access to the user's location data.
-        [Obsolete("Use PlayerSettings.iOS.locationUsageDescription instead (UnityUpgradable) -> UnityEditor.PlayerSettings/iOS.locationUsageDescription", false)]
-        public static string locationUsageDescription { get; set; }
-        [Obsolete("targetIOSGraphics is ignored, use SetGraphicsAPIs/GetGraphicsAPIs APIs", false)]
-        public static TargetIOSGraphics targetIOSGraphics { get; set; }
+        // [Obsolete("Use PlayerSettings.iOS.locationUsageDescription instead (UnityUpgradable) -> UnityEditor.PlayerSettings/iOS.locationUsageDescription", false)]
+        // public static string locationUsageDescription { get; set; }
+
+        // [Obsolete("targetIOSGraphics is ignored, use SetGraphicsAPIs/GetGraphicsAPIs APIs", false)]
+        // public static TargetIOSGraphics targetIOSGraphics { get; set; }
+
         //
         // 摘要:
         //     Should Direct3D 11 be used when available?
-        [Obsolete("Use UnityEditor.PlayerSettings.SetGraphicsAPIs/GetGraphicsAPIs instead")]
-        public static bool useDirect3D11 { get; set; }
-        [Obsolete("targetGlesGraphics is ignored, use SetGraphicsAPIs/GetGraphicsAPIs APIs", false)]
-        public static TargetGlesGraphics targetGlesGraphics { get; set; }
+        // [Obsolete("Use UnityEditor.PlayerSettings.SetGraphicsAPIs/GetGraphicsAPIs instead")]
+        // public static bool useDirect3D11 { get; set; }
+
+        // [Obsolete("targetGlesGraphics is ignored, use SetGraphicsAPIs/GetGraphicsAPIs APIs", false)]
+        // public static TargetGlesGraphics targetGlesGraphics { get; set; }
+
         //
         // 摘要:
         //     First level to have access to all Resources.Load assets in Streamed Web Players.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use AssetBundles instead for streaming data", true)]
-        public static int firstStreamedLevelWithResources { get; set; }
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("The option alwaysDisplayWatermark is deprecated and is always false", true)]
-        public static bool alwaysDisplayWatermark { get; set; }
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Use AssetBundles instead for streaming data", true)]
+        // public static int firstStreamedLevelWithResources { get; set; }
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("The option alwaysDisplayWatermark is deprecated and is always false", true)]
+        // public static bool alwaysDisplayWatermark { get; set; }
+
         //
         // 摘要:
         //     Enables Metal API validation in the Editor.
         [NativePropertyAttribute("MetalAPIValidation")]
         public static bool enableMetalAPIValidation { get; set; }
+
         //
         // 摘要:
         //     Should player render in stereoscopic 3d on supported hardware?
-        [Obsolete("Use VREditor.GetStereoDeviceEnabled instead")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static bool stereoscopic3D { get; set; }
+        // [Obsolete("Use VREditor.GetStereoDeviceEnabled instead")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static bool stereoscopic3D { get; set; }
+
         //
         // 摘要:
         //     The name of your company.
@@ -485,24 +540,28 @@ namespace UnityEditor
 
 
         public static Guid productGUID { get; }
+
         //
         // 摘要:
         //     A unique cloud project identifier. It is unique for every project (Read Only).
-        [Obsolete("cloudProjectId is deprecated, use CloudProjectSettings.projectId instead")]
-        public static string cloudProjectId { get; }
+        // [Obsolete("cloudProjectId is deprecated, use CloudProjectSettings.projectId instead")]
+        // public static string cloudProjectId { get; }
+
         //
         // 摘要:
         //     The style to use for the builtin Unity splash screen.
-        [NativePropertyAttribute("SplashScreenLogoStyle")]
-        [Obsolete("Use PlayerSettings.SplashScreen.unityLogoStyle instead")]
-        [StaticAccessorAttribute("GetPlayerSettings().GetSplashScreenSettings()")]
-        public static SplashScreenStyle splashScreenStyle { get; set; }
+        // [NativePropertyAttribute("SplashScreenLogoStyle")]
+        // [Obsolete("Use PlayerSettings.SplashScreen.unityLogoStyle instead")]
+        // [StaticAccessorAttribute("GetPlayerSettings().GetSplashScreenSettings()")]
+        // public static SplashScreenStyle splashScreenStyle { get; set; }
+
         //
         // 摘要:
         //     Should the builtin Unity splash screen be shown?
-        [Obsolete("Use PlayerSettings.SplashScreen.show instead")]
-        [StaticAccessorAttribute("GetPlayerSettings().GetSplashScreenSettings()")]
-        public static bool showUnitySplashScreen { get; set; }
+        // [Obsolete("Use PlayerSettings.SplashScreen.show instead")]
+        // [StaticAccessorAttribute("GetPlayerSettings().GetSplashScreenSettings()")]
+        // public static bool showUnitySplashScreen { get; set; }
+
         //
         // 摘要:
         //     The name of your product.
@@ -698,8 +757,10 @@ namespace UnityEditor
         // 返回结果:
         //     The assets to be preloaded.
         public static UnityEngine.Object[] GetPreloadedAssets();
-        [Obsolete("Use explicit API instead.")]
-        public static bool GetPropertyBool(string name);
+
+        // [Obsolete("Use explicit API instead.")]
+        // public static bool GetPropertyBool(string name);
+
         //
         // 摘要:
         //     Returns a PlayerSettings named bool property (with an optional build target it
@@ -715,9 +776,10 @@ namespace UnityEditor
         //
         // 返回结果:
         //     The current value of the property.
-        [Obsolete("Use explicit API instead.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static bool GetPropertyBool(string name, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static bool GetPropertyBool(string name, BuildTargetGroup target);
+
         //
         // 摘要:
         //     Returns a PlayerSettings named int property (with an optional build target it
@@ -733,23 +795,24 @@ namespace UnityEditor
         //
         // 返回结果:
         //     The current value of the property.
-        [Obsolete("Use explicit API instead.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static int GetPropertyInt(string name, BuildTargetGroup target);
-        [Obsolete("Use explicit API instead.")]
-        public static int GetPropertyInt(string name);
-        [Obsolete("Use explicit API instead.")]
-        public static bool GetPropertyOptionalBool(string name, ref bool value);
-        [Obsolete("Use explicit API instead.")]
-        public static bool GetPropertyOptionalBool(string name, ref bool value, BuildTargetGroup target);
-        [Obsolete("Use explicit API instead.")]
-        public static bool GetPropertyOptionalInt(string name, ref int value);
-        [Obsolete("Use explicit API instead.")]
-        public static bool GetPropertyOptionalInt(string name, ref int value, BuildTargetGroup target);
-        [Obsolete("Use explicit API instead.")]
-        public static bool GetPropertyOptionalString(string name, ref string value, BuildTargetGroup target);
-        [Obsolete("Use explicit API instead.")]
-        public static bool GetPropertyOptionalString(string name, ref string value);
+        // [Obsolete("Use explicit API instead.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static int GetPropertyInt(string name, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static int GetPropertyInt(string name);
+        // [Obsolete("Use explicit API instead.")]
+        // public static bool GetPropertyOptionalBool(string name, ref bool value);
+        // [Obsolete("Use explicit API instead.")]
+        // public static bool GetPropertyOptionalBool(string name, ref bool value, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static bool GetPropertyOptionalInt(string name, ref int value);
+        // [Obsolete("Use explicit API instead.")]
+        // public static bool GetPropertyOptionalInt(string name, ref int value, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static bool GetPropertyOptionalString(string name, ref string value, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static bool GetPropertyOptionalString(string name, ref string value);
+
         //
         // 摘要:
         //     Returns a PlayerSettings named string property (with an optional build target
@@ -765,11 +828,14 @@ namespace UnityEditor
         //
         // 返回结果:
         //     The current value of the property.
-        [Obsolete("Use explicit API instead.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static string GetPropertyString(string name, BuildTargetGroup target);
-        [Obsolete("Use explicit API instead.")]
-        public static string GetPropertyString(string name);
+        // [Obsolete("Use explicit API instead.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static string GetPropertyString(string name, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static string GetPropertyString(string name);
+
+
+
         //
         // 摘要:
         //     Gets the scripting framework for a BuildTargetPlatformGroup.
@@ -780,16 +846,26 @@ namespace UnityEditor
         [StaticAccessorAttribute("GetPlayerSettings().GetEditorOnly()")]
         public static ScriptingImplementation GetScriptingBackend(BuildTargetGroup targetGroup);
         public static void GetScriptingDefineSymbolsForGroup(BuildTargetGroup targetGroup, out string[] defines);
-        //
-        // 摘要:
-        //     Get user-specified symbols for script compilation for the given build target
-        //     group.
-        //
-        // 参数:
-        //   targetGroup:
+
+        /*
+            摘要:
+                Get user-specified symbols for script compilation for the given build target group.
+
+                会得到类似:
+                    "ENABLE_CRIWARE_ADX;STEAMWORKS_NET;DREAMTECK_SPLINES" 的一串字符串,
+                    内涵了 程序代码中主动声明的 一些 宏
+
+
+            
+            参数:
+              targetGroup:
+        */
         [NativeMethodAttribute("GetUserScriptingDefineSymbolsForGroup")]
         [StaticAccessorAttribute("GetPlayerSettings().GetEditorOnly()")]
         public static string GetScriptingDefineSymbolsForGroup(BuildTargetGroup targetGroup);
+
+
+
         //
         // 摘要:
         //     Gets the active shader precision model.
@@ -833,6 +909,7 @@ namespace UnityEditor
         //     Should best available graphics API be used.
         [NativeMethodAttribute("GetPlatformAutomaticGraphicsAPIs")]
         public static bool GetUseDefaultGraphicsAPIs(BuildTarget platform);
+
         //
         // 摘要:
         //     Returns whether or not Virtual Reality Support is enabled for a given BuildTargetGroup.
@@ -843,8 +920,9 @@ namespace UnityEditor
         //
         // 返回结果:
         //     True if Virtual Reality Support is enabled.
-        [Obsolete("This API is deprecated and will be removed prior to shipping 2020.2", false)]
-        public static bool GetVirtualRealitySupported(BuildTargetGroup targetGroup);
+        // [Obsolete("This API is deprecated and will be removed prior to shipping 2020.2", false)]
+        // public static bool GetVirtualRealitySupported(BuildTargetGroup targetGroup);
+
         //
         // 摘要:
         //     Is virtual texturing enabled.
@@ -1059,10 +1137,13 @@ namespace UnityEditor
         // 参数:
         //   assets:
         public static void SetPreloadedAssets(UnityEngine.Object[] assets);
-        [Obsolete("Use explicit API instead.")]
-        public static void SetPropertyBool(string name, bool value, BuildTarget target);
-        [Obsolete("Use explicit API instead.")]
-        public static void SetPropertyBool(string name, bool value);
+
+        // [Obsolete("Use explicit API instead.")]
+        // public static void SetPropertyBool(string name, bool value, BuildTarget target);
+
+        // [Obsolete("Use explicit API instead.")]
+        // public static void SetPropertyBool(string name, bool value);
+
         //
         // 摘要:
         //     Sets a PlayerSettings named bool property.
@@ -1077,9 +1158,10 @@ namespace UnityEditor
         //   target:
         //     BuildTarget for which the property should apply (use default value BuildTargetGroup.Unknown
         //     to apply to all targets).
-        [Obsolete("Use explicit API instead.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static void SetPropertyBool(string name, bool value, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static void SetPropertyBool(string name, bool value, BuildTargetGroup target);
+
         //
         // 摘要:
         //     Sets a PlayerSettings named int property.
@@ -1094,13 +1176,13 @@ namespace UnityEditor
         //   target:
         //     BuildTarget for which the property should apply (use default value BuildTargetGroup.Unknown
         //     to apply to all targets).
-        [Obsolete("Use explicit API instead.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static void SetPropertyInt(string name, int value, BuildTargetGroup target);
-        [Obsolete("Use explicit API instead.")]
-        public static void SetPropertyInt(string name, int value);
-        [Obsolete("Use explicit API instead.")]
-        public static void SetPropertyInt(string name, int value, BuildTarget target);
+        // [Obsolete("Use explicit API instead.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static void SetPropertyInt(string name, int value, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static void SetPropertyInt(string name, int value);
+        // [Obsolete("Use explicit API instead.")]
+        // public static void SetPropertyInt(string name, int value, BuildTarget target);
         //
         // 摘要:
         //     Sets a PlayerSettings named string property.
@@ -1115,13 +1197,13 @@ namespace UnityEditor
         //   target:
         //     BuildTarget for which the property should apply (use default value BuildTargetGroup.Unknown
         //     to apply to all targets).
-        [Obsolete("Use explicit API instead.")]
-        [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
-        public static void SetPropertyString(string name, string value, BuildTargetGroup target);
-        [Obsolete("Use explicit API instead.")]
-        public static void SetPropertyString(string name, string value, BuildTarget target);
-        [Obsolete("Use explicit API instead.")]
-        public static void SetPropertyString(string name, string value);
+        // [Obsolete("Use explicit API instead.")]
+        // [StaticAccessorAttribute("PlayerSettingsBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]
+        // public static void SetPropertyString(string name, string value, BuildTargetGroup target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static void SetPropertyString(string name, string value, BuildTarget target);
+        // [Obsolete("Use explicit API instead.")]
+        // public static void SetPropertyString(string name, string value);
         //
         // 摘要:
         //     Sets the scripting framework for a BuildTargetPlatformGroup.
@@ -1201,6 +1283,7 @@ namespace UnityEditor
         //   automatic:
         //     Should best available graphics API be used?
         public static void SetUseDefaultGraphicsAPIs(BuildTarget platform, bool automatic);
+
         //
         // 摘要:
         //     Sets whether or not Virtual Reality Support is enabled for a given BuildTargetGroup.
@@ -1211,8 +1294,9 @@ namespace UnityEditor
         //
         //   value:
         //     The value to set, true to enable, false to disable.
-        [Obsolete("This API is deprecated and will be removed prior to shipping 2020.2", false)]
-        public static void SetVirtualRealitySupported(BuildTargetGroup targetGroup, bool value);
+        // [Obsolete("This API is deprecated and will be removed prior to shipping 2020.2", false)]
+        // public static void SetVirtualRealitySupported(BuildTargetGroup targetGroup, bool value);
+
         //
         // 摘要:
         //     Enable virtual texturing.
@@ -1438,44 +1522,44 @@ namespace UnityEditor
         //
         // 摘要:
         //     Windows Mixed Reality specific Player Settings.
-        [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
-        public static class VRWindowsMixedReality
-        {
-            //
-            // 摘要:
-            //     Set the requested depth buffer format to either 16Bit or 24Bit.
-            [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
-            public static DepthBufferFormat depthBufferFormat { get; set; }
-            //
-            // 摘要:
-            //     Toggle support for sharing the depth buffer between Unity and the OS. This allows
-            //     for stability improvements when running in Windows Mixed Reality. For immersive
-            //     headsets this allows the operating system to reproject the rendered scene when
-            //     there is a loss of accuracy in tracking. For Holographic headsets this allows
-            //     for the operating system to automatically set a focus point along the plane that
-            //     intersects the most content in your scene. See Also:
-            [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
-            public static bool depthBufferSharingEnabled { get; set; }
+        // [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
+        // public static class VRWindowsMixedReality
+        // {
+        //     //
+        //     // 摘要:
+        //     //     Set the requested depth buffer format to either 16Bit or 24Bit.
+        //     [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
+        //     public static DepthBufferFormat depthBufferFormat { get; set; }
+        //     //
+        //     // 摘要:
+        //     //     Toggle support for sharing the depth buffer between Unity and the OS. This allows
+        //     //     for stability improvements when running in Windows Mixed Reality. For immersive
+        //     //     headsets this allows the operating system to reproject the rendered scene when
+        //     //     there is a loss of accuracy in tracking. For Holographic headsets this allows
+        //     //     for the operating system to automatically set a focus point along the plane that
+        //     //     intersects the most content in your scene. See Also:
+        //     [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
+        //     public static bool depthBufferSharingEnabled { get; set; }
 
-            //
-            // 摘要:
-            //     Enumeration providing valid values for PlayerSettings.VRWindowsMixedReality.depthBufferFormat.
-            [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
-            public enum DepthBufferFormat
-            {
-                //
-                // 摘要:
-                //     Set the Windows Mixed Reality depth buffer to 16 bits of depth. This will decrease
-                //     the amount of memory (and possibly increase performance) at the expense of depth
-                //     testing and precision.
-                DepthBufferFormat16Bit = 0,
-                //
-                // 摘要:
-                //     Set the Windows Mixed Reality depth buffer to 24 bits of depth. This will improve
-                //     depth testing and precision at the expense of more memory.
-                DepthBufferFormat24Bit = 1
-            }
-        }
+        //     //
+        //     // 摘要:
+        //     //     Enumeration providing valid values for PlayerSettings.VRWindowsMixedReality.depthBufferFormat.
+        //     [Obsolete("This API is deprecated and will be removed in 2020.2.", false)]
+        //     public enum DepthBufferFormat
+        //     {
+        //         //
+        //         // 摘要:
+        //         //     Set the Windows Mixed Reality depth buffer to 16 bits of depth. This will decrease
+        //         //     the amount of memory (and possibly increase performance) at the expense of depth
+        //         //     testing and precision.
+        //         DepthBufferFormat16Bit = 0,
+        //         //
+        //         // 摘要:
+        //         //     Set the Windows Mixed Reality depth buffer to 24 bits of depth. This will improve
+        //         //     depth testing and precision at the expense of more memory.
+        //         DepthBufferFormat24Bit = 1
+        //     }
+        // }
         //
         // 摘要:
         //     tvOS specific player settings.
@@ -1497,8 +1581,8 @@ namespace UnityEditor
             //
             // 摘要:
             //     Deployment minimal version of tvOS.
-            [Obsolete("targetOSVersion is obsolete. Use targetOSVersionString instead.", false)]
-            public static tvOSTargetOSVersion targetOSVersion { get; set; }
+            // [Obsolete("targetOSVersion is obsolete. Use targetOSVersionString instead.", false)]
+            // public static tvOSTargetOSVersion targetOSVersion { get; set; }
             //
             // 摘要:
             //     Deployment minimal version of tvOS.
@@ -1523,9 +1607,9 @@ namespace UnityEditor
             public static bool isRuntimeAddOnContentInstallEnabled { get; set; }
             [NativePropertyAttribute("switchAllowsVideoCapturing", UnityEngine.Bindings.TargetType.Field)]
             public static bool isVideoCapturingEnabled { get; set; }
-            [NativePropertyAttribute("switchAllowsScreenshot", UnityEngine.Bindings.TargetType.Field)]
-            [Obsolete("isAllowsScreenshot was renamed to isScreenshotEnabled")]
-            public static bool isAllowsScreenshot { get; set; }
+            // [NativePropertyAttribute("switchAllowsScreenshot", UnityEngine.Bindings.TargetType.Field)]
+            // [Obsolete("isAllowsScreenshot was renamed to isScreenshotEnabled")]
+            // public static bool isAllowsScreenshot { get; set; }
             [NativePropertyAttribute("switchAllowsScreenshot", UnityEngine.Bindings.TargetType.Field)]
             public static bool isScreenshotEnabled { get; set; }
             [NativePropertyAttribute("switchParentalControl", UnityEngine.Bindings.TargetType.Field)]
@@ -1551,9 +1635,9 @@ namespace UnityEditor
             public static bool isDataLossConfirmationEnabled { get; set; }
             [NativePropertyAttribute("switchUserAccountLockEnabled", UnityEngine.Bindings.TargetType.Field)]
             public static bool isUserAccountLockEnabled { get; set; }
-            [NativePropertyAttribute("switchDataLossConfirmation", UnityEngine.Bindings.TargetType.Field)]
-            [Obsolete("isDataLossConfirmation was renamed to isDataLossConfirmationEnabled")]
-            public static bool isDataLossConfirmation { get; set; }
+            // [NativePropertyAttribute("switchDataLossConfirmation", UnityEngine.Bindings.TargetType.Field)]
+            // [Obsolete("isDataLossConfirmation was renamed to isDataLossConfirmationEnabled")]
+            // public static bool isDataLossConfirmation { get; set; }
             [NativePropertyAttribute("switchSupportedNpadStyles", UnityEngine.Bindings.TargetType.Field)]
             public static SupportedNpadStyle supportedNpadStyles { get; set; }
             [NativePropertyAttribute("switchPlayerConnectionEnabled", UnityEngine.Bindings.TargetType.Field)]

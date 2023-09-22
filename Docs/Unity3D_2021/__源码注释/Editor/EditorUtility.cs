@@ -26,8 +26,8 @@ namespace UnityEditor
         //     True if there are any compilation error messages in the log.
         public static bool scriptCompilationFailed { get; }
 
-        [Obsolete("Use BuildPipeline.BuildAssetBundle instead")]
-        public static bool BuildResourceFile(UnityEngine.Object[] selection, string pathName);
+        // [Obsolete("Use BuildPipeline.BuildAssetBundle instead")]
+        // public static bool BuildResourceFile(UnityEngine.Object[] selection, string pathName);
         //
         // 摘要:
         //     Clears the default parent GameObject from either a specific Scene or the active
@@ -73,6 +73,8 @@ namespace UnityEditor
         // 返回结果:
         //     Array of objects heirarchically attached to the search array.
         public static UnityEngine.Object[] CollectDeepHierarchy(UnityEngine.Object[] roots);
+
+
         //
         // 摘要:
         //     Calculates and returns a list of all assets the assets listed in roots depend
@@ -82,8 +84,11 @@ namespace UnityEditor
         //   roots:
         [NativeThrowsAttribute]
         public static UnityEngine.Object[] CollectDependencies(UnityEngine.Object[] roots);
-        [Obsolete("Use UnityEditor.Compilation.AssemblyBuilder instead", true)]
-        public static string[] CompileCSharp(string[] scripts, string[] references, string[] defines, string outputAssembly);
+
+
+        // [Obsolete("Use UnityEditor.Compilation.AssemblyBuilder instead", true)]
+        // public static string[] CompileCSharp(string[] scripts, string[] references, string[] defines, string outputAssembly);
+
         //
         // 摘要:
         //     Compress a cubemap texture.
@@ -159,8 +164,10 @@ namespace UnityEditor
         //     The object to copy data to.
         [FreeFunctionAttribute("CopyScriptSerialized")]
         public static void CopySerializedManagedFieldsOnly([NotNullAttribute("ArgumentNullException")] object source, [NotNullAttribute("ArgumentNullException")] object dest);
-        [Obsolete("The concept of creating a completely empty Prefab has been discontinued. You can however use PrefabUtility.SaveAsPrefabAsset with an empty GameObject.", false)]
-        public static UnityEngine.Object CreateEmptyPrefab(string path);
+
+        // [Obsolete("The concept of creating a completely empty Prefab has been discontinued. You can however use PrefabUtility.SaveAsPrefabAsset with an empty GameObject.", false)]
+        // public static UnityEngine.Object CreateEmptyPrefab(string path);
+
         //
         // 摘要:
         //     Creates a game object with HideFlags and specified components.
@@ -335,14 +342,18 @@ namespace UnityEditor
         //   progress:
         [FreeFunctionAttribute("DisplayProgressbarLegacy")]
         public static void DisplayProgressBar(string title, string info, float progress);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("ExtractOggFile has no effect anymore", false)]
-        public static bool ExtractOggFile(UnityEngine.Object obj, string path);
-        [FreeFunctionAttribute("FindAssetWithKlass", ThrowsException = true)]
-        [Obsolete("Use AssetDatabase.LoadAssetAtPath", false)]
-        public static UnityEngine.Object FindAsset(string path, Type type);
-        [Obsolete("Use PrefabUtility.GetOutermostPrefabInstanceRoot if source is a Prefab instance or source.transform.root.gameObject if source is a Prefab Asset object.", false)]
-        public static GameObject FindPrefabRoot(GameObject source);
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("ExtractOggFile has no effect anymore", false)]
+        // public static bool ExtractOggFile(UnityEngine.Object obj, string path);
+
+        // [FreeFunctionAttribute("FindAssetWithKlass", ThrowsException = true)]
+        // [Obsolete("Use AssetDatabase.LoadAssetAtPath", false)]
+        // public static UnityEngine.Object FindAsset(string path, Type type);
+
+        // [Obsolete("Use PrefabUtility.GetOutermostPrefabInstanceRoot if source is a Prefab instance or source.transform.root.gameObject if source is a Prefab Asset object.", false)]
+        // public static GameObject FindPrefabRoot(GameObject source);
+
         //
         // 摘要:
         //     Brings the project window to the front and focuses it.
@@ -408,10 +419,13 @@ namespace UnityEditor
         //   target:
         [FreeFunctionAttribute("GetObjectEnabled")]
         public static int GetObjectEnabled(UnityEngine.Object target);
-        [Obsolete("Use PrefabUtility.GetCorrespondingObjectFromSource.", false)]
-        public static UnityEngine.Object GetPrefabParent(UnityEngine.Object source);
-        [Obsolete("Use PrefabUtility.GetPrefabAssetType and PrefabUtility.GetPrefabInstanceStatus to get the full picture about Prefab types.", false)]
-        public static PrefabType GetPrefabType(UnityEngine.Object target);
+
+        // [Obsolete("Use PrefabUtility.GetCorrespondingObjectFromSource.", false)]
+        // public static UnityEngine.Object GetPrefabParent(UnityEngine.Object source);
+
+        // [Obsolete("Use PrefabUtility.GetPrefabAssetType and PrefabUtility.GetPrefabInstanceStatus to get the full picture about Prefab types.", false)]
+        // public static PrefabType GetPrefabType(UnityEngine.Object target);
+
         //
         // 摘要:
         //     Translates an instance ID to a reference to an object.
@@ -419,10 +433,13 @@ namespace UnityEditor
         // 参数:
         //   instanceID:
         public static UnityEngine.Object InstanceIDToObject(int instanceID);
-        [Obsolete("Use PrefabUtility.InstantiatePrefab", false)]
-        public static UnityEngine.Object InstantiatePrefab(UnityEngine.Object target);
-        [FreeFunctionAttribute("InvokeDiffTool")]
-        public static string InvokeDiffTool(string leftTitle, string leftFile, string rightTitle, string rightFile, string ancestorTitle, string ancestorFile);
+
+        // [Obsolete("Use PrefabUtility.InstantiatePrefab", false)]
+        // public static UnityEngine.Object InstantiatePrefab(UnityEngine.Object target);
+
+        // [FreeFunctionAttribute("InvokeDiffTool")]
+        // public static string InvokeDiffTool(string leftTitle, string leftFile, string rightTitle, string rightFile, string ancestorTitle, string ancestorFile);
+
         //
         // 摘要:
         //     Gets a boolean value that indicates whether the specified object has changed
@@ -523,12 +540,16 @@ namespace UnityEditor
         public static void OpenPropertyEditor(UnityEngine.Object obj);
         [FreeFunctionAttribute("OpenWithDefaultApp")]
         public static void OpenWithDefaultApp(string fileName);
-        [Obsolete("Use PrefabUtility.RevertPrefabInstance.", false)]
-        public static bool ReconnectToLastPrefab(GameObject go);
-        [Obsolete("Use PrefabUtility.SaveAsPrefabAsset or PrefabUtility.SaveAsPrefabAssetAndConnect with a path instead.", false)]
-        public static GameObject ReplacePrefab(GameObject go, UnityEngine.Object targetPrefab);
-        [Obsolete("Use PrefabUtility.SaveAsPrefabAsset with a path instead.", false)]
-        public static GameObject ReplacePrefab(GameObject go, UnityEngine.Object targetPrefab, ReplacePrefabOptions options);
+
+        // [Obsolete("Use PrefabUtility.RevertPrefabInstance.", false)]
+        // public static bool ReconnectToLastPrefab(GameObject go);
+
+        // [Obsolete("Use PrefabUtility.SaveAsPrefabAsset or PrefabUtility.SaveAsPrefabAssetAndConnect with a path instead.", false)]
+        // public static GameObject ReplacePrefab(GameObject go, UnityEngine.Object targetPrefab);
+
+        // [Obsolete("Use PrefabUtility.SaveAsPrefabAsset with a path instead.", false)]
+        // public static GameObject ReplacePrefab(GameObject go, UnityEngine.Object targetPrefab, ReplacePrefabOptions options);
+
         //
         // 摘要:
         //     The Unity Editor reloads script assemblies asynchronously on the next frame.
@@ -536,8 +557,10 @@ namespace UnityEditor
         //     that has changed since the previous compilation.
         [StaticAccessorAttribute("GetApplication()", UnityEngine.Bindings.StaticAccessorType.Dot)]
         public static void RequestScriptReload();
-        [Obsolete("Use PrefabUtility.RevertObjectOverride.", false)]
-        public static bool ResetToPrefabState(UnityEngine.Object source);
+
+        // [Obsolete("Use PrefabUtility.RevertObjectOverride.", false)]
+        // public static bool ResetToPrefabState(UnityEngine.Object source);
+
         [FreeFunctionAttribute("RevealInFinder")]
         public static void RevealInFinder(string path);
         //
@@ -669,6 +692,7 @@ namespace UnityEditor
         //
         //   renderState:
         public static void SetSelectedRenderState(Renderer renderer, EditorSelectedRenderState renderState);
+
         //
         // 摘要:
         //     Sets whether the selected Renderer's wireframe will be hidden when the GameObject
@@ -678,12 +702,15 @@ namespace UnityEditor
         //   renderer:
         //
         //   enabled:
-        [Obsolete("Use EditorUtility.SetSelectedRenderState", false)]
-        public static void SetSelectedWireframeHidden(Renderer renderer, bool enabled);
-        [Obsolete("Use EditorUtility.UnloadUnusedAssetsImmediate instead", false)]
-        public static void UnloadUnusedAssets();
-        [Obsolete("Use EditorUtility.UnloadUnusedAssetsImmediate instead", false)]
-        public static void UnloadUnusedAssetsIgnoreManagedReferences();
+        // [Obsolete("Use EditorUtility.SetSelectedRenderState", false)]
+        // public static void SetSelectedWireframeHidden(Renderer renderer, bool enabled);
+
+        // [Obsolete("Use EditorUtility.UnloadUnusedAssetsImmediate instead", false)]
+        // public static void UnloadUnusedAssets();
+
+        // [Obsolete("Use EditorUtility.UnloadUnusedAssetsImmediate instead", false)]
+        // public static void UnloadUnusedAssetsIgnoreManagedReferences();
+
         //
         // 摘要:
         //     Unloads assets that are not used.

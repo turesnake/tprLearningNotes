@@ -681,6 +681,8 @@ namespace UnityEditor
         //     Returns a string representation of the current Cache Server IP address.
         [FreeFunctionAttribute]
         public static string GetCurrentCacheServerIp();
+
+
         //
         // 摘要:
         //     Returns an array of all the assets that are dependencies of the asset at the
@@ -701,26 +703,9 @@ namespace UnityEditor
         // 返回结果:
         //     The paths of all assets that the input depends on.
         public static string[] GetDependencies(string pathName);
-        //
-        // 摘要:
-        //     Returns an array of all the assets that are dependencies of the asset at the
-        //     specified pathName. Note: GetDependencies() gets the Assets that are referenced
-        //     by other Assets. For example, a Scene could contain many GameObjects with a Material
-        //     attached to them. In this case, GetDependencies() will return the path to the
-        //     Material Assets, but not the GameObjects as those are not Assets on your disk.
-        //
-        // 参数:
-        //   pathName:
-        //     The path to the asset for which dependencies are required.
-        //
-        //   recursive:
-        //     Controls whether this method recursively checks and returns all dependencies
-        //     including indirect dependencies (when set to true), or whether it only returns
-        //     direct dependencies (when set to false).
-        //
-        // 返回结果:
-        //     The paths of all assets that the input depends on.
         public static string[] GetDependencies(string pathName, bool recursive);
+
+
         //
         // 摘要:
         //     Returns an array of the paths of assets that are dependencies of all the assets
@@ -742,27 +727,9 @@ namespace UnityEditor
         // 返回结果:
         //     The paths of all assets that the input depends on.
         public static string[] GetDependencies(string[] pathNames);
-        //
-        // 摘要:
-        //     Returns an array of the paths of assets that are dependencies of all the assets
-        //     in the list of pathNames that you provide. Note: GetDependencies() gets the Assets
-        //     that are referenced by other Assets. For example, a Scene could contain many
-        //     GameObjects with a Material attached to them. In this case, GetDependencies()
-        //     will return the path to the Material Assets, but not the GameObjects as those
-        //     are not Assets on your disk.
-        //
-        // 参数:
-        //   pathNames:
-        //     The path to the assets for which dependencies are required.
-        //
-        //   recursive:
-        //     Controls whether this method recursively checks and returns all dependencies
-        //     including indirect dependencies (when set to true), or whether it only returns
-        //     direct dependencies (when set to false).
-        //
-        // 返回结果:
-        //     The paths of all assets that the input depends on.
         public static string[] GetDependencies(string[] pathNames, bool recursive);
+
+
         //
         // 摘要:
         //     Returns the name of the AssetBundle that a given asset belongs to.
