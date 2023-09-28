@@ -41,6 +41,15 @@ Matrix4x4 mt = new Matrix4x4(
 4, 8, 12, 16
 并不如第一种方法直观...
 
+# 方法 3:
+Matrix4x4 mt = new Matrix4x4(
+    new Vector4( 1,  2,  3,  4  ),
+    new Vector4( 5,  6,  7,  8  ),
+    new Vector4( 9,  10, 11, 12 ),
+    new Vector4( 13, 14, 15, 16 ));
+).transpose;
+# 就是 方法2 的转置, 其实成本也还行;
+
 
 
 # ---------------------------------------------- #

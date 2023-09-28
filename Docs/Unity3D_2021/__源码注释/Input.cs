@@ -107,9 +107,14 @@ namespace UnityEngine
         // 摘要:
         //     Returns default gyroscope.
         public static Gyroscope gyro { get; }
-        //
-        // 摘要:
-        //     The current mouse scroll delta. (Read Only)
+
+
+        /*
+            The current mouse scroll delta. (Read Only)
+
+            滚轮 前滚时, y = -1.0;
+                后滚时,  y =  1.0;
+        */
         [NativeThrowsAttribute]
         public static Vector2 mouseScrollDelta { get; }
 

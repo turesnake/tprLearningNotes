@@ -744,6 +744,15 @@ PrefabUtility.GetNearestPrefabInstanceRoot()
 
 
 
+# ----------------------------------------------#
+#    从 .fbx 文件中导出  .anim 文件
+# ----------------------------------------------#
+
+https://stackoverflow.com/questions/22662008/how-to-create-anim-file-from-fbx-file-in-unity
+没看过, 晚点试试;
+
+
+
 
 
 
