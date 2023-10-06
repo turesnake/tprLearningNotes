@@ -61,16 +61,15 @@ https://docs.unity3d.com/2021.3/Documentation/ScriptReference/GameObject.Find.ht
 
 
 
+# -------------------------------------------- #
+#       如何找到 场景中的 inactive 的 go
+# -------------------------------------------- #
 
 
-
-
-
-
-
-
-
-
+# -1-: 找到场景中所有携带了 component: TT 的 go, 包含 inactive 的
+    var allTTs = UnityEngine.Object.FindObjectsOfType<TT>(true);
+    ---
+    然后在其中继续查找;
 
 
 
