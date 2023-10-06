@@ -16,10 +16,23 @@ namespace System.IO
         public static DirectoryInfo CreateDirectory(string path);
         [SecuritySafeCritical]
         public static DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity);
+
+
+        /*
+
+
+            params:
+                recursive:  Deletes the specified directory and, if indicated, any subdirectories and files in the directory.
+
+
+        */
         [SecuritySafeCritical]
         public static void Delete(string path);
         [SecuritySafeCritical]
         public static void Delete(string path, bool recursive);
+
+
+
         public static IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption);
         public static IEnumerable<string> EnumerateDirectories(string path, string searchPattern, EnumerationOptions enumerationOptions);
         public static IEnumerable<string> EnumerateDirectories(string path);

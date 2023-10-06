@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json.Bson;
 using UnityEngine;
 
 
@@ -10,16 +9,13 @@ using UnityEngine;
 
     此版本 实现了 预计算, 适合静态曲线, 运行时基于 t 值算平滑值 成本很低;
 
-
     https://www.youtube.com/watch?v=jvPPXbo87ds&list=PLeUKbKrkDo84cfuiE1UG_3K-ALVOA6b4L
     目前支持两种曲线:
     --  Catmull-Rom:    可穿过每个节点, 已经很平滑了, 但在运动速度上没有 B-Spline 平滑
     --  B-Spline        不能保证穿过每个节点, 但不管是形状还是运动速度, 都是最平滑的
 
-
     本类生成的是一条单一的 曲线线段, t:[0f,1f], 外部只需传入一个匀速递增的 t值, 就能遇到曲线上对应点的数据;
     ( 哪怕初始参数 nodes_ 的节点分布并不均匀, Catmull-Rom 和  B-Spline 也能让 t值对应点的运动速度足够平滑 )
-
 */
 
 
@@ -40,12 +36,12 @@ public enum SplinesType
 }
 
 
-// 静态曲线: Catmull-Rom, B-Spline
+// 曲线工具本体:
 public class SplinesGeneric<T> 
                                 where T:ISplinesData<T>, new()
 {
     
-    class CatmullRomNode
+    class CurveNode
     {
         public float t = 0f; // [0f,1f]
         public T data;
@@ -61,14 +57,14 @@ public class SplinesGeneric<T>
         public T a0, a1, a2, a3;
     }
     
-    List<CatmullRomNode> catmullRomNodes = new List<CatmullRomNode>(); // totalNum+2 个
+    List<CurveNode> curveNodes = new List<CurveNode>(); // totalNum+2 个
     List<NodeParams> preCalcNodeParams = new List<NodeParams>(); // totalNum 个
 
 
     public float min_t = 0f;
     public float max_t = 1f;
 
-    SplinesType curveType;
+    SplinesType splinesType;
 
 
     static Matrix4x4 CatmullRomMatrix = new Matrix4x4(
@@ -86,32 +82,32 @@ public class SplinesGeneric<T>
     ).transpose;
 
 
-    public SplinesGeneric( List<T> nodes_, SplinesType curveType_ )
+    public SplinesGeneric( List<T> nodes_, SplinesType splinesType_ )
     {
         Debug.Assert( nodes_.Count >= 3 );
         int totalNum = nodes_.Count;
-        curveType = curveType_;
+        splinesType = splinesType_;
 
         T prefixData = nodes_[0].Add(  nodes_[0].Minus(nodes_[1]) );    // 额外的 前面一个点
         T suffixData = nodes_[totalNum-1].Add( nodes_[totalNum-1].Minus(nodes_[totalNum-2]) );  // 额外的 后面一个点
 
-        catmullRomNodes.Add( new CatmullRomNode(){ data = prefixData, t = -1 } ); // 这个的 t 值无需精确
+        curveNodes.Add( new CurveNode(){ data = prefixData, t = -1 } ); // 这个的 t 值无需精确
         for( int i=0; i<totalNum; i++ )
         {
-            catmullRomNodes.Add( new CatmullRomNode(){ data = nodes_[i], t = i/(float)(totalNum-1) } );
+            curveNodes.Add( new CurveNode(){ data = nodes_[i], t = i/(float)(totalNum-1) } );
         }
-        catmullRomNodes.Add( new CatmullRomNode(){ data = suffixData, t = 2 } ); // 这个的 t 值无需精确
+        curveNodes.Add( new CurveNode(){ data = suffixData, t = 2 } ); // 这个的 t 值无需精确
 
             // --- debug:
-            // Debug.Log( "----- catmullRomNodes: ------ min_t:" + min_t + ", max_t:" + max_t );
-            // foreach( var e in catmullRomNodes ) 
+            // Debug.Log( "----- curveNodes: ------ min_t:" + min_t + ", max_t:" + max_t );
+            // foreach( var e in curveNodes ) 
             // {
             //     Debug.Log( e.ToString() );
             // }
             // Debug.Log( "--------" );
 
         // ======
-        for( int i=1; i<catmullRomNodes.Count-2; i++ ) // l,r
+        for( int i=1; i<curveNodes.Count-2; i++ ) // l,r
         {
             preCalcNodeParams.Add( PreCalc(i) );
         }
@@ -123,11 +119,11 @@ public class SplinesGeneric<T>
     {
         Debug.Assert( t_ >= min_t && t_ <= max_t );
 
-        int catmullRomNodesNum = catmullRomNodes.Count;
+        int catmullRomNodesNum = curveNodes.Count;
         for( int i=1; i<catmullRomNodesNum-2; i++ ) // l,r
         {
-            var lNode = catmullRomNodes[i];
-            var rNode = catmullRomNodes[i+1];
+            var lNode = curveNodes[i];
+            var rNode = curveNodes[i+1];
             if( t_ >= lNode.t && t_ < rNode.t ) 
             {
                 return DoCalc(i, t_);
@@ -141,7 +137,7 @@ public class SplinesGeneric<T>
  
     public T DoCalc( int i_, float t_ )
     {
-        t_= Remap( catmullRomNodes[i_].t, catmullRomNodes[i_+1].t, 0f, 1f, t_ );
+        t_= Remap( curveNodes[i_].t, curveNodes[i_+1].t, 0f, 1f, t_ );
 
         Debug.Log("i: " + i_ + ", t:" + t_);
 
@@ -156,12 +152,12 @@ public class SplinesGeneric<T>
 
     NodeParams PreCalc( int i_ )
     {
-        T p0 = catmullRomNodes[i_-1].data;
-        T p1 = catmullRomNodes[i_  ].data;
-        T p2 = catmullRomNodes[i_+1].data;
-        T p3 = catmullRomNodes[i_+2].data;
+        T p0 = curveNodes[i_-1].data;
+        T p1 = curveNodes[i_  ].data;
+        T p2 = curveNodes[i_+1].data;
+        T p3 = curveNodes[i_+2].data;
 
-        var mtx = ChooseMatrix(curveType);
+        var mtx = ChooseMatrix(splinesType);
         T a0 =   p0.Scale(mtx[0,0]).Add(  p1.Scale(mtx[0,1]),  p2.Scale(mtx[0,2]),  p3.Scale(mtx[0,3]) );
         T a1 =   p0.Scale(mtx[1,0]).Add(  p1.Scale(mtx[1,1]),  p2.Scale(mtx[1,2]),  p3.Scale(mtx[1,3]) );
         T a2 =   p0.Scale(mtx[2,0]).Add(  p1.Scale(mtx[2,1]),  p2.Scale(mtx[2,2]),  p3.Scale(mtx[2,3]) );
@@ -170,14 +166,14 @@ public class SplinesGeneric<T>
     }
 
 
-    static Matrix4x4 ChooseMatrix( SplinesType curveType_ ) 
+    static Matrix4x4 ChooseMatrix( SplinesType splinesType_ ) 
     {
-        switch(curveType_)
+        switch(splinesType_)
         {
             case SplinesType.CatmullRom:   return CatmullRomMatrix;
             case SplinesType.BSpline:      return BSplineMatrix;
             default:
-                Debug.LogError("参数类型异常: " + curveType_.ToString() );
+                Debug.LogError("参数类型异常: " + splinesType_.ToString() );
                 return CatmullRomMatrix;
         }
     }

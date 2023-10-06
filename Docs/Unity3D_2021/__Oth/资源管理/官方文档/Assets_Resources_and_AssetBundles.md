@@ -10,19 +10,73 @@ https://learn.unity.com/tutorial/assets-resources-and-assetbundles?_ga=2.1313866
 https://zhuanlan.zhihu.com/p/530341540
 
 
+
+# =================================== #
+
+# Objects: (本文里的)
+The data this guide calls `Objects` are called `Assets` in many public Unity APIs, such as AssetBundle.LoadAsset and Resources.UnloadUnusedAssets. 
+
+# Assets: (本文里的)
+The files this guide calls `Assets` are rarely exposed(暴露) to any public APIs. When they are exposed, it is generally only in build-related code, such as "AssetDatabase" and "BuildPipeline". 
+In these cases, they are called `files` in public APIs.
+
+An `Asset` is a file on disk, stored in the Assets folder of a Unity project. 
+    (Textures, 3D models, or audio clips are common types of Assets.) 
+    Some `Assets` contain data in formats native to Unity, such as materials.   -- unity 自定义编码格式
+    Other `Assets` need to be processed into native formats, such as FBX files. -- 通用格式
+
+# UnityEngine.Object:
+A `UnityEngine.Object`, or Object with a capitalized 'O', is a set of serialized data collectively describing a specific `instance` of a resource. 
+    This can be any type of resource which the Unity Engine uses, such as a mesh, sprite, AudioClip or AnimationClip. 
+    All Objects are subclasses of the UnityEngine.Object base class.
+    ----
+    !!! `UnityEngine.Object` 是一个资源的 instance;
+
+
+While most Object types are built-in, there are two special types.
+    ---
+        A `ScriptableObject` provides a convenient system for developers to define their own data types. 
+        These types can be natively serialized and deserialized by Unity, and manipulated in the Unity Editor's Inspector window.
+    ---
+        A `MonoBehaviour` provides a wrapper that links to a MonoScript. 
+        A MonoScript is an internal data type that Unity uses to hold a `reference` to a specific scripting class within a specific assembly and namespace. 
+        The MonoScript does not contain any actual executable code.
+        只是一个引用
+
+
+There is a one-to-many relationship between `Assets` and `Objects`; that is, any given Asset file contains one or more Objects.
+
+
+
+
+
+
 # =================================== #
 #               GUID
 # =================================== #
 
+When serialized, these references consist of two separate pieces of data: a File `GUID` and a `Local ID`. 
+    --
+        The File `GUID` identifies the Asset file where the target resource is stored. 
+
+        File `GUIDs` are stored in .meta files. These .meta files are generated when Unity first imports an Asset, and are stored in the same directory as the Asset.
+    --
+        A locally unique `Local ID` identifies each Object within an Asset file because an Asset file may contain multiple Objects. 
+        (Note: AA Local ID is unique from all the other Local IDs for the same Asset file.)
+
+
+
+# GUID:
 # Globally Unique Identifier, 全局唯一标识符;
-这个概念和通用, 以下仅介绍 unity 中的 guid;
+这个概念很通用, 以下仅介绍 unity 中的 guid;
 
 当一个项目资源 asset, 比如一个 texture 文件, 被导入 unity 项目时, unity 会自动为它新建一个 .meta 文件;
 然后在这个 .meta 文件中, 会自动新建一个 guid, 比如这样:
 
     guid: d14234ab73cee47468a8184b025e73ed
 
-这个 guid 是这个资源的全局 唯一id; (按照某些说法, 这个 guid 甚至在不同的项目里也是不同的)
+这个 guid 是这个资源的全局 唯一id; (按照某些说法, 这个 guid 甚至在不同的项目里也是不同的) 
+(当然, 如果你直接把一个 资源+.meta 文件移植到另一个项目里, 也是可以的, 这样就能保留一样的 guid 了 )
 
 # --------------------------------------- #
 # -1- 当这个资源被移动到别的目录下时, guid 不会被改变;
@@ -67,7 +121,7 @@ If the .meta file is lost while the Unity Editor is closed, or the Asset's path 
 
 
 # =================================== #
-#          Local ID
+#          Local ID   (不是 instanceID)
 # =================================== #
 
 # 指的是一个 object 在一个 asset 资源内部的 局部id;
@@ -85,17 +139,56 @@ If the .meta file is lost while the Unity Editor is closed, or the Asset's path 
 
 
 # =================================== #
-#         Instance ID
+#         InstanceID     (Instance ID)
 # =================================== #
+# tpr 部分总结:
+
+# 每一个 `UnityEngine.Object` 实例 都有自己的 InstanceID;
+    比如一个 transform, 一个 gameobject, 一个 meshrenderer, 都是一个独立的 `UnityEngine.Object` 实例, 都有自己的 InstanceID;
+    可通过 Object.GetInstanceID() 访问这个 id值;
+
+
+# prefab 这种 origin Object (及其组件) 的 InstanceID 都是 正值;  instance Object(场景里的实例) 的 InstanceID 都是 负值;
+
+# InstanceID 永不为 0;
+
+# 在 editor / runtime, InstanceID 大概率是不同的; 
+(但是在 editor 周期内, 不管你用 editorwindow 工具脚本去访问, 还是在 editor player 阶段去访问, InstanceID 好像就是维持不变的 )
+The ID changes between player runtime and Editor sessions. 
+As such, the ID is not reliable for performing actions between the Editor and runtime sessions, for example, loading an object state from a save file.
+
+
+# !!!! 注意, 2022 中规则改了:
+https://docs.unity3d.com/ScriptReference/Object.GetInstanceID.html
+Objects loaded from file will be assigned a positive Instance ID. 
+Newly created objects will have a negative Instance ID, and retain that negative value even if the object is later saved to file. 
+Therefore the sign of the InstanceID value is not a safe indicator for whether or not the object is persistent.
+
+
+
+# ---------------------
+# InstanceID 何时会更换
+
+
+
+# 回到本篇大文章:
 运行时倚重 guid 的成本有点高, 因为 guid 之间的比较的运算的负担很重;
-在运行时, unity 维护一个 cache, 来讲改用了 Instance ID 系统; 
 在运行时, 此系统 维护一个 cache, 能将 guid + local id 转换为一种 整型值: Instance ID;
 
 在内部, 这个 cache 被称为 PersistentManager;
 
 并在新对象注册到 cache 时以简单的、单调递增的顺序分配 (id);
 
-cache 维护一个 map, 一边连接 Instance ID, guid 和 local id, 另一边连接当前内存中的 obj 实例本体; 这使得 UnityEngine.Objects 之间可以方便地相互关联;
+The cache maintains mappings between a given Instance ID, File GUID and Local ID defining the location of the Object's source data, and the instance of the Object in memory (if any)
+This allows UnityEngine.Objects to robustly maintain references to each other.
+---
+cache 维护一个 map映射, 关于: Instance ID, guid 和 local id (对应 obj 源数据的地址), 以及  当前内存中的 obj 的一个 instance (如果有的话) 
+这使得 UnityEngine.Objects 之间可以方便地相互关联;
+
+
+
+
+
 
 解析一个 instance id 引用, 可快速地获得对应的 已经加载到内存中的 obj实例;
 万一这个实例尚未被加载到内存中, 那也能通过关联的 guid 和 local id 快速获得相关 assets,

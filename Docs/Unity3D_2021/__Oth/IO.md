@@ -136,6 +136,31 @@ Provides properties and instance methods for the creation, copying, deletion, mo
 
 
 
+# ---------------------------------- #
+#  判断并新建一个 folder
+# ---------------------------------- #
+
+    if( !System.IO.Directory.Exists( path1 ) )
+    {
+        System.IO.Directory.CreateDirectory( path1 );
+    }
+
+# 能保证, 就算 path1 中多层 folder 都是不存在的, 也能给你全部新建出来;
+
+
+# ---------------------------------- #
+#  彻底清理一个 folder 
+# ---------------------------------- #
+
+    if (System.IO.Directory.Exists(fullPath))
+    {
+        System.IO.Directory.Delete(fullPath, true);
+    }
+    System.IO.Directory.CreateDirectory(fullPath);
+    ---
+    就是将它删除后, 再重建一个;
+
+
 
 # ------------------------ #
 #   unity 工程 本身的 path
@@ -234,6 +259,14 @@ assetPath 就是我们要的 相对path;
 # ------------------------------------ #
 
 Path.GetFileNameWithoutExtension()
+
+
+# ------------------------------------ #
+#   从一个 full file path 上获得 folder path
+# ------------------------------------ #
+
+return System.IO.Path.GetDirectoryName(fullFilePath_.Replace("\\", "/"));
+
 
 
 # ------------------------------------ #

@@ -687,6 +687,7 @@ Time.timeScale = 0.0f;
 
 当一个 prefab 被创建到 场景, 它分配一个 id, 然后将它销毁, 然后再将它 拖进场景, 此时新的实例的 InstanceID 是新的, 永远不会重复;
 
+# 建议查找 Assets_Resources_and_AssetBundles 文件内的 详细说明
 
 
 
@@ -750,6 +751,14 @@ PrefabUtility.GetNearestPrefabInstanceRoot()
 
 https://stackoverflow.com/questions/22662008/how-to-create-anim-file-from-fbx-file-in-unity
 没看过, 晚点试试;
+
+
+
+
+# ----------------------------------------------#
+#    无法实现 相互引用的 prefab
+# ----------------------------------------------#
+新建两个 prefab, 然后尝试相互嵌套, 会发现 unity 会当场阻止你;
 
 
 

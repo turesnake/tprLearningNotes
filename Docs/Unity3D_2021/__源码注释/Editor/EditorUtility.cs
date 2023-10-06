@@ -75,13 +75,13 @@ namespace UnityEditor
         public static UnityEngine.Object[] CollectDeepHierarchy(UnityEngine.Object[] roots);
 
 
-        //
-        // 摘要:
-        //     Calculates and returns a list of all assets the assets listed in roots depend
-        //     on.
-        //
-        // 参数:
-        //   roots:
+        /*
+            Calculates and returns a list of all assets the assets listed in roots depend on.
+            详见 unity_资源管理_za 文件
+            
+            参数:
+            roots:
+        */
         [NativeThrowsAttribute]
         public static UnityEngine.Object[] CollectDependencies(UnityEngine.Object[] roots);
 

@@ -36,8 +36,10 @@ namespace UnityEditor
             摘要:
                 The actual unfiltered selection from the Scene.
 
-            !!! 若是在 Project 面板中选择的对象, 本容器支持: 单选/多选 - gameobjs / 资源文件(比如.fbx) / 目录
+            !!! 若是在 Project 面板中选择的对象, 本容器支持: 单选/多选 - gameobjs / 资源文件(比如.fbx, 当然这其实是个prefab...) / .unity 场景文件 / texture文件 / material / mesh / 等 / 目录
                 可看作是 activeObject 的多选版
+
+                说白了就是可以选 Project 中一切 UnityEngine.Object 类型的对象;
 
         */
         [StaticAccessorAttribute("SelectionBindings", UnityEngine.Bindings.StaticAccessorType.DoubleColon)]

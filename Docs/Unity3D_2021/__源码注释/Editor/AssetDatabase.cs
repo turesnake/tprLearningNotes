@@ -571,6 +571,9 @@ namespace UnityEditor
                     fullPath = fullPath.Replace("/", "\\");
 
 
+                如果 instanceID 是负值( 即场景中的 instance obj 的 id ), 则返回 ""
+
+
             
             参数:
             instanceID:

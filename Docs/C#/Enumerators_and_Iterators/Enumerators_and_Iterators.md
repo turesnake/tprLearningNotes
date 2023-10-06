@@ -68,4 +68,26 @@ Iterator 就是为了简化此工作 而诞生;
 
 
 
+# ---------------------------------------------- #
+#      使用 IEnumerator<T> 来遍历容器
+# ---------------------------------------------- #
+
+
+    List<int> myList = new List<int> { 1, 2, 3, 4, 5 };
+    IEnumerator<int> enumerator = myList.GetEnumerator();
+
+    while (enumerator.MoveNext())
+    {
+        int current = enumerator.Current;
+        print( "-- " + current);
+    }
+
+# 尤其是某些 linq 返回的容器
+
+
+
+
+
+
+
 
