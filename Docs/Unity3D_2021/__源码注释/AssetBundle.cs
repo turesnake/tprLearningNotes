@@ -463,6 +463,15 @@ namespace UnityEngine
 
             !!! 建议本文档内查找: "5.1 Managing loaded Assets"
 
+            !!! 注意:
+                下面不管参数是 true 还是 false, 释放的都是:  "ab包" 和 "ab包里的 objs 资源"  
+                !!! 而不是这个 "ab包里的 objs 资源"  的 instance !!!
+
+                比如我们加载了一个 prefab, 然后又实例化了这个 prefab;
+                那么此时调用 Unload,  这个场景中的实例 是一定不会被删除的;
+
+                但是, 它可能会变紫,  比如说它丢失了其他资源的绑定, 毕竟 "ab包里的 objs 资源" 中,  只有这个 prefab 被实例化了, 它的 材质球资源可没被实例化
+
 
             参数为 false:
                 加载到的 内存中的 ab包 会被卸载;

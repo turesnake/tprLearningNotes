@@ -90,6 +90,15 @@ new bing:
 
 
 # ------------------------------ #
+#   如何访问一个 资源 object 的 asset path
+# ------------------------------ #
+
+
+string path = AssetDatabase.GetAssetPath( obj.GetInstanceID() );
+
+
+
+# ------------------------------ #
 #   string path = AssetDatabase.GetAssetPath( int instanceID )
 # ------------------------------ #
 
@@ -146,6 +155,93 @@ new bing:
 # ------------------------------------- #
 #     如何管理 .timeline 文件的 打包
 # ------------------------------------- #
+
+
+
+
+
+# ------------------------------------- #
+#     在 editor 模式, 如何根据一个 asset path 同步加载一个 prefab 到场景
+# ------------------------------------- #
+
+# -1-: PrefabUtility.LoadPrefabContents()
+GameObject prefabGO = PrefabUtility.LoadPrefabContents( path );
+GameObject editorRootGO  = GameObject.Instantiate(prefabGO);
+
+    !!! 注意:
+        此处的 prefabGO 被加载到了一个 isolate scene 中 (一个不可见的孤立的场景)
+        此时你修改这个 prefabGO, 就能直接修改原本的 prefab 本体;
+
+        而 editorRootGO 则是 prefabGO 的一个实例, 而且不同于我们手动拖到场景中的实例,
+        此处的这个 editorRootGO 不是绿色/蓝色的, 它和 prefab 本体解绑了
+    ---
+    is used to load the entire contents of a prefab, including its GameObject and all its components. 
+    It returns the root GameObject of the prefab, allowing you to modify its properties and hierarchy. 
+    This method is useful when you want to make changes to the prefab itself, such as modifying its components or child objects.
+    ---
+    本函数特别适合来 修改一个 prefab 文件的内容;
+
+
+# -2-: AssetDatabase.LoadAssetAtPath<T>()
+var prefabGO = AssetDatabase.LoadAssetAtPath<GameObject>( path );
+var editorRootGO  = GameObject.Instantiate(prefabGO);
+
+    is used to load any asset at a given path, not just prefabs. 
+    It returns the asset of the specified type (T) at the given path. 
+    This method is useful when you want to load an asset, such as a texture, audio clip, or scriptable object, and use it in your code.
+    ---
+    本函数特别适合来 简单加载一个 asset 文件 (不仅包括 prefab)
+
+
+
+
+
+
+# ============================================================ #
+#               ab包  打包目录 放哪儿
+# ============================================================ #
+
+
+# 一律放在 "/Assets/StreamingAssets/" 下, 即:   Application.streamingAssetsPath 下方;
+    load ab包的代码中,  也访问这个 Application.streamingAssetsPath;
+
+这样一来, 不管在:
+    -- editor play mode
+    -- windows app
+    -- android app
+
+    都能访问到这些 ab 包资源;
+
+
+
+
+# ------------------------------------- #
+#    .json 文件的 ab包化  和  load
+# ------------------------------------- #
+
+# -1-
+    准备一个 json 文件
+
+# -2- 
+    把这个文件打成 ab包,
+
+# -3- 
+    通过 AssetBundle assetBundle = AssetBundle.LoadFromFile(abFilePath);  拿到 assetBundle
+
+# -4-   
+    通过 TextAsset jsonTextAsset = assetBundle.LoadAsset<TextAsset>(assetBundle.GetAllAssetNames()[0]);  拿到 json文件的 obj 对象, (它是一个 TextAsset 类型的)
+    现在, jsonTextAsset.text 就是 json string 本体了
+
+# -5-
+    通过 Pesist p = JsonUtility.FromJson<Pesist>(jsonTextAsset.text);
+    得到这个 json 文件的 数据格式
+    (比如在这里, 它最初是从一个 Pesist class 序列化而来的)
+
+
+
+
+
+
 
 
 

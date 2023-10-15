@@ -34,7 +34,7 @@ public class TprLog
     TprLog() 
     {
         //-- file path:
-        string timeData = DateTime.Now.ToString("yyyy_MMdd_HH_mm_ss"); // "2023_0927_1725"
+        string timeData = DateTime.Now.ToString("yyyy_MMdd_HH_mm_ss_ff"); // "2023_0927_1725"
         string outFileName = "tprLog_" + timeData + ".txt"; // like: "tprLog_2023_0927_1725.txt"
 
         bool isMobile = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;

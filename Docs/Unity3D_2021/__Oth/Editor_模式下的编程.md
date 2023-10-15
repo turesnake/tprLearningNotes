@@ -103,6 +103,36 @@ https://answers.unity.com/questions/728071/inspector-current-highlighted-element
 
 
 
+# ----------------------------------------------#
+#   如何 一键 运行当前场景
+# ----------------------------------------------#
+
+
+EditorApplication.ExecuteMenuItem("Edit/Play");
+
+
+
+
+# ----------------------------------------------#
+#   如何 将 场景中的一个 gameobj focus (高亮显示)
+# ----------------------------------------------#
+
+# -1-
+    EditorGUIUtility.PingObject(newgo);
+    ---
+    这个效果 比 下面的好
+
+# -2-
+    Selection.activeGameObject = newgo;
+
+
+
+# ----------------------------------------------#
+#   在 Asset 中新建一个文件后(比如 json), 如何生成它的 meta 文件
+# ----------------------------------------------#
+
+// Refresh the AssetDatabase to create the meta file
+AssetDatabase.Refresh();
 
 
 

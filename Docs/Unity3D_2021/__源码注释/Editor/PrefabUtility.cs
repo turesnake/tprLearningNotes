@@ -3515,17 +3515,20 @@ public sealed class PrefabUtility
         return PrefabAssetType.Regular;
     }
 
-    //
-    // Summary:
-    //     Loads a Prefab Asset at a given path into an isolated Scene and returns the root
-    //     GameObject of the Prefab.
-    //
-    // Parameters:
-    //   assetPath:
-    //     The path of the Prefab Asset to load the contents of.
-    //
-    // Returns:
-    //     The root of the loaded contents.
+    /*
+        Summary:
+            Loads a Prefab Asset at a given path into an isolated Scene and returns the root
+            GameObject of the Prefab.
+
+            详情查看 unity_资源管理_za.ma 文件内的描述
+        
+        Parameters:
+        assetPath:
+            The path of the Prefab Asset to load the contents of.
+        
+        Returns:
+            The root of the loaded contents.
+    */
     public static GameObject LoadPrefabContents(string assetPath)
     {
         if (string.IsNullOrEmpty(assetPath))

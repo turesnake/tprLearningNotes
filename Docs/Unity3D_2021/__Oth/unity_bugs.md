@@ -91,5 +91,19 @@ https://www.unity3dtips.com/zh/the-animation-state-could-not-be-played-because-i
 
 
 
+# ----------------------------------------------#
+#   Resolve of invalid GC handle
+# ----------------------------------------------#
+
+Resolve of invalid GC handle. The handle is from a previous domain. The resolve operation is skipped.
+UnityEngine.GUILayout:Window (int,UnityEngine.Rect,UnityEngine.GUI/WindowFunction,string,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])
+
+
+
+https://blog.terresquall.com/2023/03/how-to-fix-the-resolve-of-invalid-gc-handle-error-in-unity/
+
+
+
+
 
 

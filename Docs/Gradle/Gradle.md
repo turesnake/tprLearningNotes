@@ -40,6 +40,23 @@ https://gradle.org/install/
 
 
 
+# ====================================== #
+#      unity 的 build.gradle 文件在哪 ?
+# ====================================== #
+
+The `build.gradle` file in a Unity Android project is located in the `Assets/Plugins/Android` folder . If you don't see the `Android` folder, you can create it manually. 
+
+
+# ====================================== #
+#       AAR (Android Archive) 
+# ====================================== #
+
+An **AAR (Android Archive)** is a file format used to package an Android library project. It contains the compiled code and resources of the library, along with an Android manifest file and other metadata required by the build system. 
+
+An AAR file can be added to an Android app project as a dependency, allowing the app to use the code and resources provided by the library. 
+
+To create an AAR file, you can use the **Gradle build system**. The `com.android.library` plugin provides support for building Android libraries in Gradle. 
+
 
 
 

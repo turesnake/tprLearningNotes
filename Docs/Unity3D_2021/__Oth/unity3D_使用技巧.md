@@ -468,6 +468,9 @@ https://answers.unity.com/questions/1642306/dont-have-sample-on-animation-window
 	}
 
 	比较推荐的写法, 写到 lua 里也是可以的
+	---
+
+	目前来看, 能保证 遍历出来的 子节点的顺序, 是按照 场景中顺序放的 (runtime )
 
 
 # -2-:
