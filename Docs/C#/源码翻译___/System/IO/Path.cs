@@ -49,8 +49,16 @@ namespace System.IO
         public static string GetDirectoryName(string path);
 
 
+        /*
+            假设传入 "AA/aa.txt.backup"
+            本函数只会返回 ".backup"
+
+        */
         public static ReadOnlySpan<char> GetExtension(ReadOnlySpan<char> path);
         public static string GetExtension(string path);
+
+
+
 
         public static string GetFileName(string path);
         public static ReadOnlySpan<char> GetFileName(ReadOnlySpan<char> path);
