@@ -164,7 +164,13 @@ namespace System
         public static void Fill<T>(T[] array, T value);
         public static void Fill<T>(T[] array, T value, int startIndex, int count);
 
-        // 返回第一个符合 谓语match 的 元素(本身);
+
+        /*
+            返回第一个符合 谓语match 的 元素(本身);
+
+            ret:
+            The first element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type T.
+        */
         public static T Find<T>(T[] array, Predicate<T> match);
 
         public static T[] FindAll<T>(T[] array, Predicate<T> match);

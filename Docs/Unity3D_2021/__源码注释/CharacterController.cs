@@ -90,8 +90,9 @@ namespace UnityEngine
         public bool detectCollisions { get; set; }
         //
         // 摘要:
-        //     Enables or disables overlap recovery. Enables or disables overlap recovery. Used
-        //     to depenetrate character controllers from static objects when an overlap is detected.
+        //     Enables or disables overlap recovery. 
+        //     Used to depenetrate 去渗透 character controllers from static objects when an overlap is detected.
+        // 用于在检测到重叠时从静态对象中解除角色控制器的穿透。
         public bool enableOverlapRecovery { get; set; }
 
 

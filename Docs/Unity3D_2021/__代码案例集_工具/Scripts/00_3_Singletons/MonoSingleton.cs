@@ -17,15 +17,14 @@ public class MonoSingleton : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindObjectOfType<MonoSingleton>();
-
                 if (_instance == null)
                 {
+                    Debug.LogError("需手动在场景中配置 MonoSingleton 实例"); // !!! 若有需要的话
                     GameObject newgo = new GameObject();
                     _instance = newgo.AddComponent<MonoSingleton>();
                     newgo.name = "(MonoSingleton) " + typeof(MonoSingleton).ToString();
                 }
             }
-
             return _instance;
         }
     }
@@ -39,6 +38,7 @@ public class MonoSingleton : MonoBehaviour
         }
         else
         {
+            Debug.LogError("禁止重复的 MonoSingleton 实例");
             Destroy(gameObject);
         }
     }

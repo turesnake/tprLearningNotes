@@ -2,6 +2,20 @@
 #               Cinemachine  用法
 # ==================================================== #
 
+https://docs.unity3d.com/Packages/com.unity.cinemachine@2.9/manual/CinemachineUsing.html
+
+
+# --------------------------- #
+#   body
+# --------------------------- #
+to specify how to move it in the Scene
+
+
+# --------------------------- #
+#   aim
+# --------------------------- #
+to specify how to rotate it.
+
 
 
 # --------------------------- #
@@ -91,12 +105,110 @@ cinemachineBrain.ActiveVirtualCamera
 
 
 
+# ----------------------------------- #
+#    vcam 的 优先级 
+# ----------------------------------- #
+
+vcam.Priority
+
+
+
+
+# ----------------------------------- #
+#    如何得知 当前 vcam 是否为 live 相机 (正在被使用的那个相机)
+# ----------------------------------- #
+
+bool isLive = CinemachineCore.Instance.IsLive(vcam);
+
+# 假设从 vcam1 转换到 vcam2, 历时 1 秒;
+-1-
+    转换开始前:
+        vcam1 live = true
+        vcam1 live = false
+-2- 
+    转换中:
+        vcam1 live = true
+        vcam1 live = true
+-3-
+    转换完成时:
+        vcam1 live = false
+        vcam1 live = true
+    ---------------------------
+
+# --- 如果转换模式为 cut,  
+    那么上一帧还是 { true, false } 
+    下一帧就变成了 { false, true }
+
+
+
+# ============================================= #
+#        Body: 3rd Person Follow
+# ============================================= #
+
+# Damping:
+    The responsiveness of the camera in tracking the target. Each axis can have its own setting. 
+    The value is the approximate time it takes the camera to catch up to the target's new position. 
+    Small numbers make the camera more responsive. Larger numbers make the camera respond more slowly.
+    ---
+    object-space 的三个轴值, 代表在三个轴方向上, 分别花费 多少秒 来让 vcam 运动到目标位置;
+    若全设 0, 则 vcam 将和预定位置 完全同步;
+    ---
+    y轴值可以适当设一个, 这样当角色被地面石头绊到时,  相机不会上下抖动;
+
+    ===
+    z值 最好为 0, 这样当角色前进时, 相机不会前后抖动;
+
+
+# Rig - Shoulder Offset:
+    越肩模式, 一般全为 0
+
+# Rig - Vertical Arm Length
+    Vertical offset of the hand in relation to the shoulder. 
+    Arm length affects the follow target's screen position when the camera rotates vertically.
+
+# Rig - Camera Side
+    Specifies which shoulder the camera is on (left, right, or somewhere in-between).
+
+# Rig - Camera Distance
+    Specifies the distance from the hand to the camera.
+
+# Obstacles - Camera Collision Filter
+    Specifies which layers will be included or excluded from collision resolution.
+    ---
+    相机碰撞 层管理
+
+# Obstacles - Ignore Tag
+    Obstacles with this tag will be ignored by collision resolution. 
+    It is recommended to set this field to the target's tag.
+
+# Obstacles - Camera Radius
+    Specifies how close the camera can get to collidable obstacles without adjusting its position.
+    ---
+    指定相机 在不调整其位置的情况下 可以接近 可碰撞障碍物 的距离。
+
+# Obstacles - Damping Into Collision
+    Specifies how gradually the camera moves to correct for an occlusion. 
+    Higher numbers move the camera more gradually.
+    ----
+    指定相机移动以校正遮挡的逐渐程度。数字越大，相机移动的速度就越缓慢。
+
+# Obstacles - Damping From Collision
+    Specifies how gradually the camera returns to its normal position after having been corrected by the built-in collision resolution system. 
+    Higher numbers move the camera more gradually back to normal.
+    ---
+    指定相机在经过内置碰撞解决系统纠正后如何逐渐恢复到正常位置。数字越大，相机就越逐渐恢复正常。
 
 
 
 
 
 
+# ----------------------------------- #
+#   如何修改 brain 的 默认 blend 模式
+# ----------------------------------- #
+
+// Set the blend mode to "Cube"
+cinemachineBrain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
 
 
 

@@ -136,4 +136,55 @@ AssetDatabase.Refresh();
 
 
 
+# ----------------------------------------------#
+#      打开一个 文件选择窗口,  目录选择窗口
+# ----------------------------------------------#
+
+# EditorUtility.OpenFilePanel()
+# EditorUtility.OpenFolderPanel()
+
+
+    ==== 例如:
+    string SelectFile()
+    {
+        string dataPath = Application.dataPath;
+        string selectedPath = EditorUtility.OpenFilePanel("Path", dataPath, "");
+        if (!string.IsNullOrEmpty(selectedPath))
+        {
+            if (selectedPath.StartsWith(dataPath))
+            {
+                return "Assets/" + selectedPath.Substring(dataPath.Length + 1);
+            }
+            else
+            {
+                ShowNotification(new GUIContent("不能在Assets目录之外!"));
+            }
+        }
+        return null;
+    }
+
+
+    string SelectFolder()
+    {
+        string dataPath = Application.dataPath;
+        string selectedPath = EditorUtility.OpenFolderPanel("Path", dataPath, "");
+        if (!string.IsNullOrEmpty(selectedPath))
+        {
+            if (selectedPath.StartsWith(dataPath))
+            {
+                return "Assets/" + selectedPath.Substring(dataPath.Length + 1);
+            }
+            else
+            {
+                ShowNotification(new GUIContent("不能在Assets目录之外!"));
+            }
+        }
+
+        return null;
+    }
+
+
+
+
+
 

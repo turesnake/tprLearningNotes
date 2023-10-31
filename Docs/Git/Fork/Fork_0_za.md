@@ -219,6 +219,15 @@ https://blog.csdn.net/shaobo8910/article/details/106055164
 
 
 # -------------------------------------- #
+#   Cherry-Pick 了一个提交, 但没有合到 总库, 如何撤销这个本地的 Cherry-Pick
+# -------------------------------------- #
+
+不要提交, 调用 git reset  ( Reset 'dev' to here ) 来回退到 Cherry-Pick 前的一条提交;
+然后那个 Cherry-Pick 就消失了;
+
+
+
+# -------------------------------------- #
 #      查看一个文件的所有提交记录
 # -------------------------------------- #
 在这个文件上随意修改一行
@@ -231,7 +240,7 @@ https://blog.csdn.net/shaobo8910/article/details/106055164
 
 
 # -------------------------------------- #
-#      Full . Stash and reapply local changes
+#      Pull . Stash and reapply local changes
 # -------------------------------------- #
 new bing:
 the option "Stash and reapply local changes" refers to a feature that allows you to stash your local changes before pulling changes from a remote repository¹. 
@@ -250,6 +259,36 @@ Source: Conversation with Bing, 2023/9/20
 (4) git pull: keeps telling me to stash local changes before pulling. https://stackoverflow.com/questions/20568971/git-pull-keeps-telling-me-to-stash-local-changes-before-pulling.
 (5) undefined. https://www.atlassian.com/git/tutorials/saving-changes/git-stash.
 (6) undefined. https://www.freecodecamp.org/news/git-stash-explained/.
+
+
+
+
+# -------------------------------------- #
+#   如何用  git  指令来模拟  fork 中的 Pull 
+#   (同时勾选了  "rebase instead of merge"  和  "stash and reapply local changes"  )
+# -------------------------------------- #
+
+# -1-
+git stash
+
+# -2-
+git pull --rebase
+
+# -3-
+git stash apply
+
+
+# 实测, 速度比 fork 快很多....
+
+
+
+
+
+
+
+
+
+
 
 
 

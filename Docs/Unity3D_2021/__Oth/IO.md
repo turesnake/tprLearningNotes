@@ -187,6 +187,7 @@ Opens a text file, reads all the text in the file into a string, and then closes
 
 # ------------------------------------ #
 #   如何从 完整path 中获得 相对 path
+#   full path -> asset path
 # ------------------------------------ #
 
 -- 完整path: 从 D: 开始的这种
@@ -201,6 +202,14 @@ Opens a text file, reads all the text in the file into a string, and then closes
     }
 
 assetPath 就是我们要的 相对path;
+
+
+
+# ------------------------------------ #
+#   如何从 相对 path 中获得 完整 path
+#   asset path -> full path
+# ------------------------------------ #
+
 
 
 

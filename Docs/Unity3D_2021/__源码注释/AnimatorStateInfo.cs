@@ -18,6 +18,9 @@ namespace UnityEngine
         //
         // 摘要:
         //     The full path hash for this state.
+        //
+        //     通常用此值是否变了, 来判断 animator 有没有切换自己的 state
+        //
         public int fullPathHash { get; }
 
         // //

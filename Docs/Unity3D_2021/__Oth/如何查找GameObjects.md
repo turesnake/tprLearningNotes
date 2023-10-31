@@ -22,10 +22,13 @@ https://docs.unity3d.com/2021.3/Documentation/ScriptReference/GameObject.Find.ht
         若把第一个 disactive, 则会返回第二个 (哪怕第二个在嵌套层)
 
 
---  若参数为 "/Dog":
+# --  若参数为 "/Dog":
     则只会找 root 层的 gos;
 
     此时函数的行为是 非递归的;
+
+#   若存在数个场景, 则会在每个场景的 root 层查找目标;
+
 
 
 --  若参数为 "/KKK/Dog":
@@ -33,6 +36,8 @@ https://docs.unity3d.com/2021.3/Documentation/ScriptReference/GameObject.Find.ht
 
 
 # 在 Awake() 和 Start() 阶段都可使用   GameObject.Find() 来查找目标对象
+
+
 
 
 

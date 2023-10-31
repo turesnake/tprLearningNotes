@@ -690,6 +690,24 @@ public class A
 
 
 
+# ---------------------------------------------- #
+#  在 基类 里如何得知 派生类 的名字
+# ---------------------------------------------- #
+
+# this.GetType().Name
+
+	public class MyBaseClass
+	{
+		public string GetDerivedClassName()
+		{
+			return this.GetType().Name;
+		}
+	}
+
+	public class MyDerivedClass : MyBaseClass
+	{
+	}
+
 
 
 
