@@ -78,5 +78,34 @@ https://docs.unity3d.com/2021.3/Documentation/ScriptReference/GameObject.Find.ht
 
 
 
+# -------------------------------------------- #
+#      在 runtime, 遍历一个场景的 所有 顶层 gameobjs
+# -------------------------------------------- #
+
+# Scene.GetRootGameObjects() 
+
+    // Find the scene by name
+    Scene targetScene = SceneManager.GetSceneByName("a");
+
+    // Check if the scene is valid and loaded
+    if (targetScene.IsValid() && targetScene.isLoaded)
+    {
+        // Get all root GameObjects in the scene
+        GameObject[] rootObjects = targetScene.GetRootGameObjects();
+
+        // Loop through each root GameObject and its children
+        foreach (GameObject rootObject in rootObjects)
+        {
+            // Do something with the GameObject
+            Debug.Log("Found GameObject in scene 'a': " + rootObject.name);
+        }
+    }
+    else
+    {
+        Debug.Log("Scene 'a' is not loaded or does not exist.");
+    }
+
+
+
 
 

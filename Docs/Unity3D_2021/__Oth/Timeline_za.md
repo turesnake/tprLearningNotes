@@ -41,11 +41,21 @@ https://levelup.gitconnected.com/how-to-assign-a-cinemachine-brain-to-timeline-d
 
 
 
+# -------------------------------------- #
+#    timeline + cinemachint  如何修改 Cinemachine Shot 里的 vcam
+# -------------------------------------- #
+
+比如, 一个 timeline 里用到了 角色相机,
+但是这个 角色需要在 runtime 才会被加载出来, 在此之前, timeline 不知道自己要绑的相机是哪个;
 
 
+https://forum.unity.com/threads/replace-cinemachine-shot-in-timeline-during-runtime.702977/
 
 
+https://forum.unity.com/threads/replace-cinemachine-shot-in-timeline-during-runtime.702650/
 
+
+https://forum.unity.com/threads/how-to-set-the-virtual-camera-in-a-cinemachineshot-from-code.497593/
 
 
 

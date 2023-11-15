@@ -110,6 +110,7 @@ https://wiki.luatos.com/_static/luatos-emulator/lua.html
 #     -- xxxx
       单行注释
 
+# !!!!!!!
 #     --[[  xxxx
 #           xxxx
 #     --]]  

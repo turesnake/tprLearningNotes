@@ -259,7 +259,7 @@ namespace UnityEngine
         public static T Instantiate<T>(T original, Vector3 position, Quaternion rotation, Transform parent) where T : Object;
 
         [TypeInferenceRule(TypeInferenceRules.TypeOfFirstArgument)]
-        public static Object Instantiate(Object original, Transform parent);
+        public static Object  (Object original, Transform parent);
 
 
 

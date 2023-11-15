@@ -107,8 +107,13 @@ https://www.youtube.com/watch?v=FOBI6r9JxTU
 
 
 
+# ----------------------------- #
+#   目前会将 文件 强制存储为 utf-8 格式, 如何生成 ansi 格式的文件 ?
+# ----------------------------- #
 
+https://www.zhihu.com/question/394048030/answer/2070331917
 
+这个问题暂时没搞定
 
 
 

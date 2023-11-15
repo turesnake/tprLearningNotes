@@ -16,6 +16,18 @@ https://docs.unity3d.com/2021.3/Documentation/Manual/gui-Controls.html
 
 
 
+
+
+# ------------------------------------ #
+#          Debug 方法
+# ------------------------------------ #
+
+可以在 EventSystem.RaycastAll()  里面断点, 看看有没有响应 我们触发的事件
+
+# todo 待学习
+
+
+
 # ------------------------------------ #
 #       绘制一个 区域
 # ------------------------------------ #
@@ -230,6 +242,15 @@ https://docs.unity3d.com/2021.3/Documentation/Manual/gui-Layout.html
 # BeginGroup 组 是可以层层嵌套的;
 
 
+
+
+# ------------------------------------ #
+#   固定的一组 ui 元素 列表
+#     GridLayoutGroup
+# ------------------------------------ #
+
+只要准备一个 root 节点, 绑定 GridLayoutGroup 组件, 配置好参数;
+然后运行时往这个节点下面塞 node, 这些 node 就能被自动排列
 
 
 

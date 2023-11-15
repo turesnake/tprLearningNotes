@@ -200,7 +200,7 @@ Object.Instantiate( goTransform );
 
 
 # ---------------------------------------------- #
-#       VSync (垂直同步) in Game 窗口
+#       VSync (垂直同步) in Editor Game 窗口
 # ---------------------------------------------- #
 可单独设置 Game 窗口运行时的垂直同步,
 
@@ -214,6 +214,8 @@ Object.Instantiate( goTransform );
 # ---------------------------------------------- #
 Project Settings - Quality - Other - VSync Count;
 
+# 垂直同步 主要是用来避免 "画面撕裂" 问题的,  它无法解决 帧率波动 问题; -- 详情请搜索文档: `unity_帧率_fps.md` 文件
+
 # -- Dont VSync
 	关闭垂直同步
 
@@ -222,6 +224,10 @@ Project Settings - Quality - Other - VSync Count;
 
 # -- Every Second V Blank
 	每两帧垂直同步一次, 例如在 60HZ显示器上, fps 会被锁为 30;
+
+
+# 注意!!! 安卓端配置它是无效的, 因为 安卓端永远自动开启 垂直同步;
+
 
 
 
@@ -751,6 +757,20 @@ https://stackoverflow.com/questions/22662008/how-to-create-anim-file-from-fbx-fi
 #    无法实现 相互引用的 prefab
 # ----------------------------------------------#
 新建两个 prefab, 然后尝试相互嵌套, 会发现 unity 会当场阻止你;
+
+
+
+
+# ----------------------------------------------#
+#    如何改变 transform 下 各个子节点的排序
+# ----------------------------------------------#
+
+
+# Transform.childCount     -- 找到节点的儿子个数
+
+# Transform.SetSiblingIndex(3) -- 设置一个子节点的 idx
+
+
 
 
 

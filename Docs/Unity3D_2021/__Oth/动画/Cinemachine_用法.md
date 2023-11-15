@@ -145,6 +145,8 @@ bool isLive = CinemachineCore.Instance.IsLive(vcam);
 #        Body: 3rd Person Follow
 # ============================================= #
 
+Cinemachine3rdPersonFollow.cs
+
 # Damping:
     The responsiveness of the camera in tracking the target. Each axis can have its own setting. 
     The value is the approximate time it takes the camera to catch up to the target's new position. 
@@ -209,6 +211,22 @@ bool isLive = CinemachineCore.Instance.IsLive(vcam);
 
 // Set the blend mode to "Cube"
 cinemachineBrain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
+
+
+
+
+
+# ----------------------------------- #
+#    如何知道 brain 当前帧 是否在 blend 两个 vcams
+# ----------------------------------- #
+
+# CinemachineBrain.IsBlending
+
+    if (cinemachineBrain.IsBlending && 
+        (cinemachineBrain.ActiveVirtualCamera == cameraA || cinemachineBrain.ActiveVirtualCamera == cameraB))
+    {
+        Debug.Log("Blending between Camera A and Camera B");
+    }
 
 
 
