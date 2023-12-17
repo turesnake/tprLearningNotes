@@ -70,18 +70,21 @@ namespace UnityEngine
         // 摘要:
         //     Specifies the update mode of the Animator.
         public AnimatorUpdateMode updateMode { get; set; }
+
         //
         // 摘要:
         //     When turned on, animations will be executed in the physics loop. This is only
         //     useful in conjunction with kinematic rigidbodies.
-        [Obsolete("Animator.animatePhysics has been deprecated. Use Animator.updateMode instead.")]
-        public bool animatePhysics { get; set; }
+        // [Obsolete("Animator.animatePhysics has been deprecated. Use Animator.updateMode instead.")]
+        // public bool animatePhysics { get; set; }
+
         //
         // 摘要:
         //     When linearVelocityBlending is set to true, the root motion velocity and angular
         //     velocity will be blended linearly.
-        [Obsolete("Animator.linearVelocityBlending is no longer used and has been deprecated.")]
-        public bool linearVelocityBlending { get; set; }
+        // [Obsolete("Animator.linearVelocityBlending is no longer used and has been deprecated.")]
+        // public bool linearVelocityBlending { get; set; }
+
         //
         // 摘要:
         //     Should root motion be applied?
@@ -209,9 +212,13 @@ namespace UnityEngine
         // 摘要:
         //     The AnimatorControllerParameter list used by the animator. (Read Only)
         public AnimatorControllerParameter[] parameters { get; }
-        //
-        // 摘要:
-        //     The runtime representation of AnimatorController that controls the Animator.
+
+        /*
+            摘要:
+                The runtime representation of AnimatorController that controls the Animator.
+
+                可以在运行时 加载一个 .overrideController 文件, 然后运行时绑定到此变量上;
+        */
         public RuntimeAnimatorController runtimeAnimatorController { get; set; }
         //
         // 摘要:
@@ -451,6 +458,7 @@ namespace UnityEngine
         // 返回结果:
         //     The value of the parameter.
         public bool GetBool(int id);
+
         //
         // 摘要:
         //     Gets the list of AnimatorClipInfo currently played by the current state.
@@ -458,9 +466,10 @@ namespace UnityEngine
         // 参数:
         //   layerIndex:
         //     The layer's index.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("GetCurrentAnimationClipState is obsolete. Use GetCurrentAnimatorClipInfo instead (UnityUpgradable) -> GetCurrentAnimatorClipInfo(*)", true)]
-        public AnimationInfo[] GetCurrentAnimationClipState(int layerIndex);
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("GetCurrentAnimationClipState is obsolete. Use GetCurrentAnimatorClipInfo instead (UnityUpgradable) -> GetCurrentAnimatorClipInfo(*)", true)]
+        // public AnimationInfo[] GetCurrentAnimationClipState(int layerIndex);
+
         //
         // 摘要:
         //     Returns an array of all the AnimatorClipInfo in the current state of the given
@@ -475,16 +484,20 @@ namespace UnityEngine
         [FreeFunctionAttribute(Name = "AnimatorBindings::GetCurrentAnimatorClipInfo", HasExplicitThis = true)]
         public AnimatorClipInfo[] GetCurrentAnimatorClipInfo(int layerIndex);
         public void GetCurrentAnimatorClipInfo(int layerIndex, List<AnimatorClipInfo> clips);
-        //
-        // 摘要:
-        //     Returns the number of AnimatorClipInfo in the current state.
-        //
-        // 参数:
-        //   layerIndex:
-        //     The layer index.
-        //
-        // 返回结果:
-        //     The number of AnimatorClipInfo in the current state.
+
+        /*    
+            摘要:
+                Returns the number of AnimatorClipInfo in the current state.
+                --
+                returns the number of currently active animation clips that are being played by the Animator.
+            
+            参数:
+            layerIndex:
+                The layer index.
+            
+            返回结果:
+                The number of AnimatorClipInfo in the current state.
+        */
         public int GetCurrentAnimatorClipInfoCount(int layerIndex);
 
 
@@ -661,6 +674,7 @@ namespace UnityEngine
         // 返回结果:
         //     The layer weight.
         public float GetLayerWeight(int layerIndex);
+
         //
         // 摘要:
         //     Gets the list of AnimatorClipInfo currently played by the next state.
@@ -668,22 +682,30 @@ namespace UnityEngine
         // 参数:
         //   layerIndex:
         //     The layer's index.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("GetNextAnimationClipState is obsolete. Use GetNextAnimatorClipInfo instead (UnityUpgradable) -> GetNextAnimatorClipInfo(*)", true)]
-        public AnimationInfo[] GetNextAnimationClipState(int layerIndex);
-        public void GetNextAnimatorClipInfo(int layerIndex, List<AnimatorClipInfo> clips);
-        //
-        // 摘要:
-        //     Returns an array of all the AnimatorClipInfo in the next state of the given layer.
-        //
-        // 参数:
-        //   layerIndex:
-        //     The layer index.
-        //
-        // 返回结果:
-        //     An array of all the AnimatorClipInfo in the next state.
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("GetNextAnimationClipState is obsolete. Use GetNextAnimatorClipInfo instead (UnityUpgradable) -> GetNextAnimatorClipInfo(*)", true)]
+        // public AnimationInfo[] GetNextAnimationClipState(int layerIndex);
+
+
+        
+        /*
+            摘要:
+                Returns an array of all the AnimatorClipInfo in the next state of the given layer.
+                
+            
+            参数:
+            layerIndex:
+                The layer index.
+            
+            返回结果:
+                An array of all the AnimatorClipInfo in the next state.
+        */
         [FreeFunctionAttribute(Name = "AnimatorBindings::GetNextAnimatorClipInfo", HasExplicitThis = true)]
         public AnimatorClipInfo[] GetNextAnimatorClipInfo(int layerIndex);
+
+        public void GetNextAnimatorClipInfo(int layerIndex, List<AnimatorClipInfo> clips);
+
+
         //
         // 摘要:
         //     Returns the number of AnimatorClipInfo in the next state.
@@ -713,6 +735,7 @@ namespace UnityEngine
         // 参数:
         //   index:
         public AnimatorControllerParameter GetParameter(int index);
+
         //
         // 摘要:
         //     Gets the value of a quaternion parameter.
@@ -720,8 +743,9 @@ namespace UnityEngine
         // 参数:
         //   id:
         //     The id of the parameter. The id is generated using Animator::StringToHash.
-        [Obsolete("GetQuaternion is deprecated.")]
-        public Quaternion GetQuaternion(int id);
+        // [Obsolete("GetQuaternion is deprecated.")]
+        // public Quaternion GetQuaternion(int id);
+
         //
         // 摘要:
         //     Gets the value of a quaternion parameter.
@@ -729,8 +753,9 @@ namespace UnityEngine
         // 参数:
         //   name:
         //     The name of the parameter.
-        [Obsolete("GetQuaternion is deprecated.")]
-        public Quaternion GetQuaternion(string name);
+        // [Obsolete("GetQuaternion is deprecated.")]
+        // public Quaternion GetQuaternion(string name);
+
         //
         // 摘要:
         //     Gets the value of a vector parameter.
@@ -738,8 +763,9 @@ namespace UnityEngine
         // 参数:
         //   name:
         //     The name of the parameter.
-        [Obsolete("GetVector is deprecated.")]
-        public Vector3 GetVector(string name);
+        // [Obsolete("GetVector is deprecated.")]
+        // public Vector3 GetVector(string name);
+
         //
         // 摘要:
         //     Gets the value of a vector parameter.
@@ -747,8 +773,9 @@ namespace UnityEngine
         // 参数:
         //   id:
         //     The id of the parameter. The id is generated using Animator::StringToHash.
-        [Obsolete("GetVector is deprecated.")]
-        public Vector3 GetVector(int id);
+        // [Obsolete("GetVector is deprecated.")]
+        // public Vector3 GetVector(int id);
+
         //
         // 摘要:
         //     Returns true if the state exists in this layer, false otherwise.
@@ -777,6 +804,7 @@ namespace UnityEngine
         // 参数:
         //   completeMatch:
         public void InterruptMatchTarget();
+
         //
         // 摘要:
         //     Returns true if the transform is controlled by the Animator\.
@@ -784,9 +812,10 @@ namespace UnityEngine
         // 参数:
         //   transform:
         //     The transform that is queried.
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Use mask and layers to control subset of transfroms in a skeleton.", true)]
-        public bool IsControlled(Transform transform);
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Use mask and layers to control subset of transfroms in a skeleton.", true)]
+        // public bool IsControlled(Transform transform);
+
         //
         // 摘要:
         //     Returns true if there is a transition on the given layer, false otherwise.
@@ -1279,6 +1308,7 @@ namespace UnityEngine
         //     he's completely clamped (look at becomes impossible), and 0.5 means he'll be
         //     able to move on half of the possible range (180 degrees).
         public void SetLookAtWeight(float weight);
+
         //
         // 摘要:
         //     Sets the value of a quaternion parameter.
@@ -1289,8 +1319,9 @@ namespace UnityEngine
         //
         //   value:
         //     The new value for the parameter.
-        [Obsolete("SetQuaternion is deprecated.")]
-        public void SetQuaternion(int id, Quaternion value);
+        // [Obsolete("SetQuaternion is deprecated.")]
+        // public void SetQuaternion(int id, Quaternion value);
+
         //
         // 摘要:
         //     Sets the value of a quaternion parameter.
@@ -1301,8 +1332,9 @@ namespace UnityEngine
         //
         //   value:
         //     The new value for the parameter.
-        [Obsolete("SetQuaternion is deprecated.")]
-        public void SetQuaternion(string name, Quaternion value);
+        // [Obsolete("SetQuaternion is deprecated.")]
+        // public void SetQuaternion(string name, Quaternion value);
+
         //
         // 摘要:
         //     Sets an AvatarTarget and a targetNormalizedTime for the current state.
@@ -1336,6 +1368,7 @@ namespace UnityEngine
         //   id:
         //     The parameter ID.
         public void SetTrigger(string name);
+
         //
         // 摘要:
         //     Sets the value of a vector parameter.
@@ -1346,8 +1379,9 @@ namespace UnityEngine
         //
         //   value:
         //     The new value for the parameter.
-        [Obsolete("SetVector is deprecated.")]
-        public void SetVector(string name, Vector3 value);
+        // [Obsolete("SetVector is deprecated.")]
+        // public void SetVector(string name, Vector3 value);
+
         //
         // 摘要:
         //     Sets the value of a vector parameter.
@@ -1358,8 +1392,9 @@ namespace UnityEngine
         //
         //   value:
         //     The new value for the parameter.
-        [Obsolete("SetVector is deprecated.")]
-        public void SetVector(int id, Vector3 value);
+        // [Obsolete("SetVector is deprecated.")]
+        // public void SetVector(int id, Vector3 value);
+
         //
         // 摘要:
         //     Sets the animator in playback mode.
@@ -1375,9 +1410,11 @@ namespace UnityEngine
         //     recording will continue until the user calls StopRecording. The maximum value
         //     for frameCount is 10000.
         public void StartRecording(int frameCount);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Stop is obsolete. Use Animator.enabled = false instead", true)]
-        public void Stop();
+
+        // [EditorBrowsable(EditorBrowsableState.Never)]
+        // [Obsolete("Stop is obsolete. Use Animator.enabled = false instead", true)]
+        // public void Stop();
+
         //
         // 摘要:
         //     Stops the animator playback mode. When playback stops, the avatar resumes getting

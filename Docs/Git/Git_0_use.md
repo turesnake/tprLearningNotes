@@ -197,6 +197,22 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
 
 
+# =====================================|
+       分支 不同步 问题
+# -------------------------------------|
+
+如果在 main 分支中, commit-a 删除了资源, 然后又回退了这条 commit (revert), 记做 commit-b
+然后在 beta 分支中, 只拉取了 commit-a;
+
+最后, 我们又希望在 main 分支中, 也和beta一样, 该怎么做:
+#:
+    把 beta 中的 commit-a, 再 cherry-pick 回 main 分支; 就好了
+
+
+
+
+
+
 # ================================================================
                       如何 访问 github
 # ----------------------------------------------------------------
@@ -430,7 +446,7 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 # 如何将 分支:master 的文件 aaa.txt 复制到 分支:Beta
 
     git checkout Beta                               -- 切到 分支:Beta
-    git checkout master aaa.txt                     -- 将 分支:master 的文件 aaa.txt 复制过来
+    git checkout master aaa.txt                     -- 将 分支:master 的文件 aaa.txt 复制过来 (如果本地有同路径文件, 则取代本地文件)
     git commit -m 'xxxxxxxxx'                       -- 提交 commit
     git push                                        -- push
     ---

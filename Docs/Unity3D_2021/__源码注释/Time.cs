@@ -128,6 +128,12 @@ namespace UnityEngine
         /*     
             The interval in seconds from the last frame to the current one (Read Only).
             会受到 Time.timeScale 的影响; 
+
+            !!!!!!  实践证明:
+            !!!!!!  在 Update() 中访问它, 它就是 Update() 里的 deltaTime
+            !!!!!!  在 FixedUpdate() 中访问它, 它就是 FixedUpdate() 里的 deltaTime
+            在官方论坛里也说明了这一点
+
         */
         public static float deltaTime { get; }
 

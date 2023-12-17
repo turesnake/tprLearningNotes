@@ -263,6 +263,18 @@ https://www.bilibili.com/video/BV1fq4y1Y7Sz/?spm_id_from=pageDriver&vd_source=df
 
 
 
+# ============================================================ #
+#     得到一个 animator 中完整的 clip 数据
+# ============================================================ #
+https://stackoverflow.com/questions/41709325/retrieve-all-animator-states-and-set-them-manually-in-code
+
+
+
+
+
+
+
+
 
 
 

@@ -580,7 +580,27 @@ namespace UnityEngine
 
 
         /*
-            计算 渗透率 ? 
+            (渗透率)
+
+            判断两个 collider 是否相互内嵌, 如果是, 则可使用本函数来得知 相嵌信息, 进而可以将 它们 回退到相切的状态 (不内嵌);
+
+            看起来 返回参数 direction 是从 B 指向 A;
+
+            gpt-3.5:
+                Collider collider1 = // get the first collider
+                Collider collider2 = // get the second collider
+
+                if (Physics.ComputePenetration(collider1, collider1.transform.position, collider1.transform.rotation,
+                                            collider2, collider2.transform.position, collider2.transform.rotation,
+                                            out Vector3 direction, out float distance))
+                {
+                    // If there is penetration, resolve the collision
+                    Vector3 penetrationVector = direction * distance;
+                    collider1.transform.position += penetrationVector / 2f;
+                    collider2.transform.position -= penetrationVector / 2f;
+                }
+            ---------
+            使用这个方法, 可以把两个相互 内嵌的 collider 回退到相切的状态;
         */
         public static bool ComputePenetration(Collider colliderA, Vector3 positionA, Quaternion rotationA, Collider colliderB, Vector3 positionB, Quaternion rotationB, out Vector3 direction, out float distance);
         

@@ -41,9 +41,26 @@ So, while both words imply limitations, "constraint" is more of a noun that desc
 
 
 
+# ----------------------- #
+#   区别: status , state
+# ----------------------- #
+
+gpt-3.5:
+
+"Status" and "state" are two different terms with distinct meanings.
+
+"Status" typically refers to the current condition or situation of something. In the context of software development and version control systems like Git, the "git status" command is used to display the current state of the working directory and staging area, showing which files have been modified, added, or deleted.
+
+"State," on the other hand, generally refers to the overall condition or mode of something at a particular point in time. 
+In the context of software or systems, "state" can refer to the current configuration, settings, or data of a program or a system. 
+In the context of version control, "state" could refer to the overall condition of the repository, including the state of various branches, commits, and files.
+
+In summary, 
+"status" typically refers to the current condition of specific elements, 
+"state" refers to the overall condition or configuration of a system or entity.
 
 
-
+没搞懂...
 
 
 

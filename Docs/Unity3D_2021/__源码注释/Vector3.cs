@@ -279,9 +279,12 @@ namespace UnityEngine
         public static Vector3 Normalize(Vector3 value);
         public static void OrthoNormalize(ref Vector3 normal, ref Vector3 tangent, ref Vector3 binormal);
         public static void OrthoNormalize(ref Vector3 normal, ref Vector3 tangent);
+
+
         //
         // 摘要:
         //     Projects a vector onto another vector.
+        //     将参数 vector 投影到 onNormal 身上,  最终得到一个沿着 onNormal 方向的 新向量
         //
         // 参数:
         //   vector:

@@ -51,22 +51,22 @@ namespace UnityEngine
             摘要:
             Creates a new RenderTexture object.
 
-        // 参数:
-        //   width:
-        //     Texture width in pixels.
-        //
-        //   height:
-        //     Texture height in pixels.
-        //
-        //   depth:
-        //     Number of bits in depth buffer (0, 16 or 24). Note that only 24 bit depth has
-        //     stencil buffer.
-        //
-        //   format:
-        //     Texture color format.
-        //
-        //   readWrite:
-        //     How or if color space conversions should be done on texture read/write.
+            参数:
+            width:
+                Texture width in pixels.
+            
+            height:
+                Texture height in pixels.
+            
+            depth:
+                Number of bits in depth buffer (0, 16 or 24). Note that only 24 bit depth has
+                stencil buffer.
+            
+            format:
+                Texture color format.
+            
+            readWrite:
+                How or if color space conversions should be done on texture read/write.
 
                 在 Linear 工作流中, 如果想用本 render texture 存储 线性数据, (比如 非颜色值, 或 hdr颜色)
                 可在此变量中选用: RenderTextureReadWrite.Linear;
@@ -81,11 +81,11 @@ namespace UnityEngine
                     此时, 本变量默认值 "Default", 意思是 不转换 (详细解释看这个 enum 翻译文件)
                     且, "RenderTexture.sRGB" 为 false;
         
-        //   desc:
-        //     Create the RenderTexture with the settings in the RenderTextureDescriptor.
-        //
-        //   textureToCopy:
-        //     Copy the settings from another RenderTexture.
+            desc:
+                Create the RenderTexture with the settings in the RenderTextureDescriptor.
+            
+            textureToCopy:
+                Copy the settings from another RenderTexture.
         */
         public RenderTexture(RenderTexture textureToCopy);
         public RenderTexture(RenderTextureDescriptor desc);

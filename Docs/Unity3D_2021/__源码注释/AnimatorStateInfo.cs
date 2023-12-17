@@ -29,10 +29,14 @@ namespace UnityEngine
         // [Obsolete("AnimatorStateInfo.nameHash has been deprecated. Use AnimatorStateInfo.fullPathHash instead.")]
         // public int nameHash { get; }
 
-        //
-        // 摘要:
-        //     The hash is generated using Animator.StringToHash. The hash does not include
-        //     the name of the parent layer.
+
+        /*            
+            摘要:
+                The hash is generated using Animator.StringToHash(). The hash does not include
+                the name of the parent layer.
+
+                比如 animator 中有个 clip 叫 "AA", 那就通过 Animator.StringToHash("AA")
+        */
         public int shortNameHash { get; }
 
 

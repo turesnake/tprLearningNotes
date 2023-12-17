@@ -59,6 +59,13 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attrib
 
 
 # ----------------------------------------------#
+# [Header("角色名字")]
+# public float m_name;
+
+变量上方的黑体文字
+
+
+# ----------------------------------------------#
 # [Tooltip("注释")]
 # public float m_MinTime;
 

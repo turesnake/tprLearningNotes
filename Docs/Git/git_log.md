@@ -163,8 +163,12 @@ https://blog.csdn.net/u012260238/article/details/81673853
 
     
 
+# ----- 
+<CATCG-禁止合并>深度交互演示素材   
+这个提交中的内容要删除
 
-
+# -----
+记得把 home 角色 prefab 删除
 
 
 
