@@ -774,6 +774,28 @@ https://stackoverflow.com/questions/22662008/how-to-create-anim-file-from-fbx-fi
 
 
 
+# ---------------------------------------------- #
+#         常用 数学库
+# ---------------------------------------------- #
+
+Unity Math Library (com.unity.mathematics): This is a lightweight and high-performance mathematics library provided by Unity for use in Unity scripts and shaders.
+
+Mathf class: Unity's built-in Mathf class provides a wide range of mathematical functions and constants for common operations such as trigonometry, exponentiation, and interpolation.
+
+Numerics namespace: Unity's System.Numerics namespace provides support for advanced mathematical operations, including complex numbers, big integers, and numerical algorithms.
+
+Vector3 and Quaternion classes: Unity's built-in Vector3 and Quaternion classes provide functionality for 3D vector and quaternion operations, including rotation, transformation, and interpolation.
+
+
+# Unity.Mathematics
+如果上了 ECS, DOTS, 它有特殊优化
+
+# MathNet.Numerics
+比较范用, 对 ECS, DOTS 无加成; 验证阶段可以用;
+
+
+
+
 
 
 

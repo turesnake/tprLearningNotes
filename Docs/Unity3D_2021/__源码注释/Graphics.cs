@@ -907,41 +907,41 @@ namespace UnityEngine
 
             "CommandBuffer.DrawProcedural()" 和本函数相似;
 
-        // 参数:
-        //   material:
-        //     Material to use.
-        //
-        //   bounds:
-        //     The bounding volume surrounding the instances you intend to draw.
-        //
-        //   topology:
-        //     Topology of the procedural geometry.
-        //
-        //   indexBuffer:
-        //     Index buffer used to submit vertices to the GPU.
-        //
-        //   instanceCount:
-        //     Instance count to render.  实例数量
-        //
-        //   indexCount:
-        //     Index count to render. 
-        //
-        //   camera:
-        //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
-        //     rendered in the given Camera only.
-        //
-        //   properties:
-        //     Additional material properties to apply onto material just before this mesh will
-        //     be drawn. See MaterialPropertyBlock.
-        //
-        //   castShadows:
-        //     Determines whether the mesh can cast shadows.
-        //
-        //   receiveShadows:
-        //     Determines whether the mesh can receive shadows.
-        //
-        //   layer:
-        //     Layer to use.
+          参数:
+            material:
+              Material to use.
+          
+            bounds:
+              The bounding volume surrounding the instances you intend to draw.
+          
+            topology:
+              Topology of the procedural geometry.
+          
+            indexBuffer:
+              Index buffer used to submit vertices to the GPU.
+          
+            instanceCount:
+              Instance count to render.  实例数量
+          
+            indexCount:
+              Index count to render. 
+          
+            camera:
+              If null (default), the mesh will be drawn in all cameras. Otherwise it will be
+              rendered in the given Camera only.
+          
+            properties:
+              Additional material properties to apply onto material just before this mesh will
+              be drawn. See MaterialPropertyBlock.
+          
+            castShadows:
+              Determines whether the mesh can cast shadows.
+          
+            receiveShadows:
+              Determines whether the mesh can receive shadows.
+          
+            layer:
+              Layer to use.
         */
         public static void DrawProcedural(Material material, Bounds bounds, MeshTopology topology, GraphicsBuffer indexBuffer, int indexCount, int instanceCount = 1, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);
         public static void DrawProcedural(Material material, Bounds bounds, MeshTopology topology, int vertexCount, int instanceCount = 1, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);
@@ -981,41 +981,41 @@ namespace UnityEngine
 
             本函数和 "CommandBuffer.DrawProceduralIndirect.()" 类似;
 
-        // 参数:
-        //   material:
-        //     Material to use.
-        //
-        //   bounds:
-        //     The bounding volume surrounding the instances you intend to draw.
-        //
-        //   topology:
-        //     Topology of the procedural geometry.
-        //
-        //   indexBuffer:
-        //     Index buffer used to submit vertices to the GPU.
-        //
-        //   camera:
-        //     If null (default), the mesh will be drawn in all cameras. Otherwise it will be
-        //     rendered in the given Camera only.
-        //
-        //   bufferWithArgs:
-        //     Buffer with draw arguments.
-        //
-        //   argsOffset:
-        //     Byte offset where in the buffer the draw arguments are.
-        //
-        //   properties:
-        //     Additional material properties to apply onto material just before this mesh will
-        //     be drawn. See MaterialPropertyBlock.
-        //
-        //   castShadows:
-        //     Determines whether the mesh can cast shadows.
-        //
-        //   receiveShadows:
-        //     Determines whether the mesh can receive shadows.
-        //
-        //   layer:
-        //     to use.
+          参数:
+            material:
+              Material to use.
+          
+            bounds:
+              The bounding volume surrounding the instances you intend to draw.
+          
+            topology:
+              Topology of the procedural geometry.
+          
+            indexBuffer:
+              Index buffer used to submit vertices to the GPU.
+          
+            camera:
+              If null (default), the mesh will be drawn in all cameras. Otherwise it will be
+              rendered in the given Camera only.
+          
+            bufferWithArgs:
+              Buffer with draw arguments.
+          
+            argsOffset:
+              Byte offset where in the buffer the draw arguments are.
+          
+            properties:
+              Additional material properties to apply onto material just before this mesh will
+              be drawn. See MaterialPropertyBlock.
+          
+            castShadows:
+              Determines whether the mesh can cast shadows.
+          
+            receiveShadows:
+              Determines whether the mesh can receive shadows.
+          
+            layer:
+              to use.
         */
         public static void DrawProceduralIndirect(Material material, Bounds bounds, MeshTopology topology, GraphicsBuffer indexBuffer, ComputeBuffer bufferWithArgs, int argsOffset = 0, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);
         public static void DrawProceduralIndirect(Material material, Bounds bounds, MeshTopology topology, ComputeBuffer bufferWithArgs, int argsOffset = 0, Camera camera = null, MaterialPropertyBlock properties = null, ShadowCastingMode castShadows = ShadowCastingMode.On, bool receiveShadows = true, int layer = 0);

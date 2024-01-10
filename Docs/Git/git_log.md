@@ -56,7 +56,14 @@ https://blog.csdn.net/u012260238/article/details/81673853
 
 
 
-# ================== 赛选方式 ===================:
+# ================== 筛选方式 ===================:
+
+# 查看某个文件的 提交记录:
+    git log --follow filePath
+
+    比如:
+    git log --follow Assets/BundleResources/Prefabs/SpringFestival121401/SpringFestivalMazeMainDialog.prefab
+
 
 # 按作者   --- 查看某个人的所有 提交记录:
     --author="XXX"
@@ -155,11 +162,7 @@ https://blog.csdn.net/u012260238/article/details/81673853
 
 
 
-# 查看某个文件的 提交记录:
-    git log --follow filePath
 
-    比如:
-    git log --follow Assets/BundleResources/Prefabs/SpringFestival121401/SpringFestivalMazeMainDialog.prefab
 
     
 
