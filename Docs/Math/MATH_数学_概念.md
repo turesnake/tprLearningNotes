@@ -424,6 +424,19 @@ https://www.youtube.com/watch?v=VCHFCXgYdvY
 
 
 # -----------------------------------------------
+#     Verlet integration
+
+gpt-3.5:
+Verlet integration is a numerical method used to solve equations of motion in physics and engineering. 
+
+The Verlet integration step refers to the process of updating the position and velocity of a particle or system at each time step using the Verlet integration algorithm. 
+
+This algorithm is often used in molecular dynamics(分子动力) simulations and other simulations of physical systems. It is known for its accuracy and stability in simulating the behavior of complex systems over time.
+
+感觉啥也没讲
+
+
+
 
 
 
