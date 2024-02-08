@@ -441,7 +441,19 @@ This algorithm is often used in molecular dynamics(分子动力) simulations and
 
 
 # -----------------------------------------------
+#          Cosserat rods
 
+感觉是一种描述 绳子的方法;
+
+https://www.cosseratrods.org/cosserat_rods/theory/
+
+
+Cosserat rods are a generalization of Kirchhoff rods, which model 1-d, slender rods incorporating only bend and twist. 
+Cosserat rods add the ability to consider stretching and shearing, allowing all the possible modes of deformation of the system to be considered.
+
+
+Kirchhoff rods 是一种只包含 弯曲和扭曲的 绳的 数学模型;
+Cosserat rods 在此基础上增加了 拉伸 和 剪切;
 
 
 

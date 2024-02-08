@@ -15,6 +15,16 @@
 
 # 说白了就是程序自动识别并配置的 shape matching groups;
 
+# shape matching 在 xpbd 主流程内扮演一个 约束器 的功能, 
+shape matching 提供 target pos 和 target orientation:
+    group 内的每个质点基于自己的 stiffness 靠近 target pos;
+    group main质点 的朝向, 则直接被改写为 shape matching 提供的 target orientation:
+
+# shape matchin 自己的计算是不依赖 质点的朝向的, 所以这里 xpbd 质点的朝向信息, 可能更多是用来处理 mesh 问题 或进阶问题(比如扭曲阻力); 
+这意味着在最开始, 我们也许不用处理 朝向信息;
+
+
+
 This data structure is simulated by defining one shape matching group per particle. 
 A group contains the corresponding particle and all the particles connected to it via a single edge. 
 In sparse regions of the mesh, regular shape matching would become immediately unstable in this setting while in our case there are no limitations to the connectivity structure.
@@ -22,7 +32,7 @@ In sparse regions of the mesh, regular shape matching would become immediately u
 和传动的 Shape Matching 方法不同, 本方法不是将整个 物体当作单个 Shape Matching, 而是为每个 Oriented Particle, 准备一个专属的 Shape Matching group;
 这个 group 中, 主体是本质点, 外加数条连线, 连接相邻的质点;
 
-
+---------------------------------
 After the prediction step, the solver iterates multiple times through all shape match constraints in a Gauss-Seidel type fashion. 
 For each constraint the goal positions are computed using Eq. (4). 
 All the particles of the group are then moved towards their goal position by the same fraction stiffness which mimics stiffness as in [M¨uller et al. 2006]. 
@@ -55,6 +65,12 @@ All situations in between smoothly interpolate these two cases. In case of a cha
 (2) group 中存在数个质点, 且它们的位置分散在 3d空间中, 那么核心质点的朝向取决于 group 的朝向;
 
 其它情况则是上述两种情况的混合, 
+
+
+
+
+
+
 
 
 # -------------------- #
@@ -93,6 +109,19 @@ However, if the shape matching stiffness is set to zero, shape matching still ha
 如果用户想单独操作它们, 比如单独降低 弯曲阻力 (这样更容易弯曲, 但依然保持足够的形状维持), 可以降低 shape matching 系数, 然后再额外施加 pbd 风格的 distance constraints;
 
 注意, 就算把 shape matching 影响降为 0 了, shape matching 运算也不能被省略, 因为直接它可以修改每个粒子的 朝向信息;
+
+
+
+# ============================== #
+#           todo
+# ============================== #
+
+
+
+
+
+
+
 
 
 

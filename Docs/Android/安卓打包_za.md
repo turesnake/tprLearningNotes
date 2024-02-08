@@ -58,6 +58,7 @@ https://www.bilibili.com/video/av636239950?from=search&seid=11271291752060957577
     搜索 "清华大学 tuna", 选择 "adpotOpenJDK" - "8" - "jdk" - "x64" - "windows" - "OpenJDK8U-jdk_x64_windows_hotspot_8u322b06.zip"
     下载它, 放到一个 目录中, 记下它的路劲:
         C:\Program Files\Java\jdk8u322-b06
+        C:\Program Files\Java\jdk8u402-b06 -- 20240207
     (此处一定要选择 jdk8, 因为 unity 目前只支持这个)
 
 # 设置 系统变量

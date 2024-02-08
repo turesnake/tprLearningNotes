@@ -3,6 +3,17 @@
 # ================================================================ #
 
 
+
+# -------------------------- #
+#    安装
+# -------------------------- #
+https://blog.csdn.net/qq_45108200/article/details/124900539
+
+# 详细安装在 "安卓打包_za.md" 文件内 
+
+
+
+
 # 如何设置 sdk
 打开 file - settings
 左侧, "Appearance & Behaviour" - "System Settings" - "Android SDK"
