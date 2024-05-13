@@ -354,7 +354,18 @@ directly accessible without fully qualifying them.
 -3- Students?.Count 获得非空值, 直接返回这个值
 
 
+# ----------:
+# HasValue:
+# Value 
 
+int? kk;
+if( kk.HasValue == false )
+{
+	kk = 123;
+}
+
+# If a value of type T has not been assigned to the Nullable<T> object, you can compare it to null and retrieve its `HasValue` property, 
+# but you cannot access its `Value` property or call its other members.
 
 
 
@@ -710,8 +721,11 @@ public class A
 
 
 
+# ---------------------------------------------- #
+#        NaN
+# ---------------------------------------------- #
 
-
+# 一个浮点数 减去一个 NaN, 得到的还是 NaN;
 
 
 

@@ -65,6 +65,14 @@
 
 
 # ------------------ #
+# cos 
+# sin
+
+注意, 这些函数的参数是 弧度 radian
+
+
+
+# ------------------ #
 # int   asint   ( T x );
 # float asfloat ( T x );
 - hlsl

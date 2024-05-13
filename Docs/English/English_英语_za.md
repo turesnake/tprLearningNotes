@@ -65,9 +65,14 @@ In summary,
 
 
 
+# ----------------------- #
+#   区别: catch , capture
+# ----------------------- #
 
+The main difference between "catch" and "capture" is that "catch" refers to the act of grabbing or seizing something that is moving or in motion, while "capture" refers to the act of catching or seizing something that is not necessarily in motion, such as an idea or a moment. "Catch" is often used in the context of physical objects or living beings, while "capture" is often used in the context of abstract concepts or intangible things. Additionally, "catch" can also mean to intercept or stop something from falling or escaping, while "capture" does not have this connotation.
 
-
+# catch 适合表达 "捉住活物"
+# capture 可以表达 "捉住想法"
 
 
 

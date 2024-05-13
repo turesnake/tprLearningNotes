@@ -139,25 +139,32 @@ namespace UnityEngine
         //   rotation:
         [FreeFunctionAttribute(IsThreadSafe = true)]
         public static Quaternion Inverse(Quaternion rotation);
-        //
-        // 摘要:
-        //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
-        //     t is clamped to the range [0, 1].
-        //
-        // 参数:
-        //   a:
-        //     Start value, returned when t = 0.
-        //
-        //   b:
-        //     End value, returned when t = 1.
-        //
-        //   t:
-        //     Interpolation ratio.
-        //
-        // 返回结果:
-        //     A quaternion interpolated between quaternions a and b.
+
+
+        /*
+            摘要:
+                Interpolates between a and b by t and normalizes the result afterwards. The parameter
+                t is clamped to the range [0, 1].
+                ---
+                gpt 推荐使用 Slerp()
+            
+            参数:
+              a:
+                Start value, returned when t = 0.
+            
+              b:
+                End value, returned when t = 1.
+            
+              t:
+                Interpolation ratio.
+            
+            返回结果:
+                A quaternion interpolated between quaternions a and b.
+        */
         [FreeFunctionAttribute("QuaternionScripting::Lerp", IsThreadSafe = true)]
         public static Quaternion Lerp(Quaternion a, Quaternion b, float t);
+
+
         //
         // 摘要:
         //     Interpolates between a and b by t and normalizes the result afterwards. The parameter
@@ -216,25 +223,29 @@ namespace UnityEngine
         //   maxDegreesDelta:
         public static Quaternion RotateTowards(Quaternion from, Quaternion to, float maxDegreesDelta);
 
-        //
-        // 摘要:
-        //     Spherically interpolates between quaternions a and b by ratio t. The parameter
-        //     t is clamped to the range [0, 1].
-        //
-        // 参数:
-        //   a:
-        //     Start value, returned when t = 0.
-        //
-        //   b:
-        //     End value, returned when t = 1.
-        //
-        //   t:
-        //     Interpolation ratio.
-        //
-        // 返回结果:
-        //     A quaternion spherically interpolated between quaternions a and b.
+        /*
+            摘要:
+                Spherically interpolates between quaternions a and b by ratio t. The parameter
+                t is clamped to the range [0, 1].
+                ---
+                gpt 说它比 Lerp() 好;
+            
+            参数:
+            a:
+                Start value, returned when t = 0.
+            
+            b:
+                End value, returned when t = 1.
+            
+            t:
+                Interpolation ratio.
+            
+            返回结果:
+                A quaternion spherically interpolated between quaternions a and b.
+        */
         [FreeFunctionAttribute("QuaternionScripting::Slerp", IsThreadSafe = true)]
         public static Quaternion Slerp(Quaternion a, Quaternion b, float t);
+
         //
         // 摘要:
         //     Spherically interpolates between a and b by t. The parameter t is not clamped.

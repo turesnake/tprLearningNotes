@@ -74,6 +74,14 @@ namespace UnityEngine
             摘要:
             Matrix that transforms a point from world space into local space (Read Only).
 
+            !! 用法:
+                localPos = transform.worldToLocalMatrix * (sonTF.position - transform.position);
+                ...
+                sonTF.position = transform.position + (Vector3)(transform.localToWorldMatrix * localPos);
+                ---
+                注意上面的写法, 其实这两个矩阵不关心平移信息;
+
+
             注意:
                 如果你正在设置 shader parameter, 
                 不能使用 Transform.worldToLocalMatrix; (本变量)
@@ -276,16 +284,21 @@ namespace UnityEngine
         //   worldUp:
         //     Vector specifying the upward direction.
         public void LookAt(Transform target, [DefaultValue("Vector3.up")] Vector3 worldUp);
-        //
-        // 摘要:
-        //     Rotates the transform so the forward vector points at worldPosition.
-        //
-        // 参数:
-        //   worldPosition:
-        //     Point to look at.
-        //
-        //   worldUp:
-        //     Vector specifying the upward direction.
+
+
+        /*
+            摘要:
+                Rotates the transform so the forward vector points at worldPosition.
+                ---
+                !!! 注意, worldPosition 是一个实际的点,  不要传入方向 dir;
+            
+            参数:
+            worldPosition:
+                Point to look at.
+            
+            worldUp:
+                Vector specifying the upward direction.
+        */
         public void LookAt(Vector3 worldPosition, [DefaultValue("Vector3.up")] Vector3 worldUp);
         //
         // 摘要:

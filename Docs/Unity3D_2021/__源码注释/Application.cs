@@ -170,10 +170,28 @@ namespace UnityEngine
         // 摘要:
         //     Returns false if application is altered in any way after it was built.
         public static bool genuine { get; }
-        //
-        // 摘要:
-        //     Priority of background loading thread.
+
+
+        /*
+            摘要:
+                Priority of background loading thread.
+                unity 用子线程加载资源, 再在 主线程 integration (集成处理) 这些资源;
+                本变量定义了在加载流程中, 主线程在一帧内能使用的时长:
+
+                - ThreadPriority.Low - 2ms
+                - ThreadPriority.BelowNormal - 4ms
+                - ThreadPriority.Normal - 10ms
+                - ThreadPriority.High - 50ms
+                ------
+                当选择 High 时, 在一帧内, 所有的加载任务消耗的 主线程的时间, 不会大于 50ms;
+
+            如果你希望 读条加载, 可以使用 High, 它会导致 帧率波动
+            如果你想要 一边游戏一边默默地慢慢地无缝加载, 可以使用 Low
+
+        */
         public static ThreadPriority backgroundLoadingPriority { get; set; }
+
+
         //
         // 摘要:
         //     Returns the path to the console log file, or an empty string if the current platform

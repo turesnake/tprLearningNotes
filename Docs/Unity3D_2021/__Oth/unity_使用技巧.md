@@ -794,6 +794,18 @@ Vector3 and Quaternion classes: Unity's built-in Vector3 and Quaternion classes 
 比较范用, 对 ECS, DOTS 无加成; 验证阶段可以用;
 
 
+# ---------------------------------------------- #
+#         搜索资源 被 哪些 prefabs 使用了
+# ---------------------------------------------- #
+
+先对着资源,比如一张图, 右键: Copy Asset GUID, 
+然后将 prefabs 目录塞到一个 vscode 工程中, 搜索这个 guid,  查看它被哪些 prefab 用到了;
+
+
+
+
+
+
 
 
 

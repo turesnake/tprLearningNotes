@@ -24,10 +24,18 @@ namespace UnityEngine.Playables
         // 摘要:
         //     The time at which the Playable should start when first played.
         public double initialTime { get; set; }
-        //
-        // 摘要:
-        //     The component's current time. This value is incremented according to the PlayableDirector.timeUpdateMode
-        //     when it is playing. You can also change this value manually.
+
+        /*
+            摘要:
+                The component's current time. This value is incremented according to the PlayableDirector.timeUpdateMode
+                when it is playing. You can also change this value manually.
+
+            time 会从 initialTime 这个值开始递增, 当 initialTime == 0 时, time 一开始就是 0;
+
+            当 initialTime == 0 时, 本值会在 [0,duration] 之间循环;
+            如果 WrapMode 不是 Loop, 当一遍播放完毕后, 本值始终为 0f;
+            当为 Loop 时, 每一轮循环, 本值都在 [0,duration] 之间反复;
+        */
         public double time { get; set; }
 
         //
@@ -49,18 +57,30 @@ namespace UnityEngine.Playables
         // 摘要:
         //     The PlayableAsset that is used to instantiate a playable for playback.
         public PlayableAsset playableAsset { get; set; }
-        //
-        // 摘要:
-        //     Controls how the time is incremented when it goes beyond the duration of the
-        //     playable.
+
+
+        /*
+            摘要:
+                Controls how the time is incremented when it goes beyond the duration of the
+                playable.
+
+            time_ = time - initialTime;
+            Hold: 当 time_ 达到 duration 后, 会始终为 duration  
+            Loop: 当 time_ 达到 duration 后, 会变为 0 然后重复 [0->duration] 一直反复下去
+                在每一遍, 不能保证第一帧为 0, 也不保证最后一帧值为duration
+
+            None: 当 time_ 达到 duration 后, 会变成0 然后一直为 0;
+        */
         public DirectorWrapMode extrapolationMode { get; set; }
+
+
         //
         // 摘要:
         //     The current playing state of the component. (Read Only)
         public PlayState state { get; }
 
         public event Action<PlayableDirector> stopped;
-        public event Action<PlayableDirector> played;
+        public event Action<PlayableDirector> played; // loop 一圈后, 本 cb 不会被调用
         public event Action<PlayableDirector> paused;
 
         //
