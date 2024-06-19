@@ -23,7 +23,7 @@ https://nerdschalk.com/how-to-install-and-use-git-on-windows-11/
     这里的 "-b dev" 就制定了 dev 分支;
     
 
-- git add file
+- git add <file>
   git add dir/
   git add .
     第三句最实用，add 全部 文件
@@ -163,6 +163,23 @@ git存在三个空间
         然后用： $ git reset --hard commit_id 来跳回某个版本号的状态。
 
 
+#  git reset --hard
+
+命令的功能是将 Git 仓库中的 HEAD 指向指定的 commit，并且重置暂存区（index）和工作目录，使它们与指定的 commit 一致。这个命令会强制性地丢弃所有未提交的更改，包括在工作目录和暂存区中的更改，因此在运行该命令前需要谨慎。
+
+具体来说，git reset --hard 的功能包括：
+
+-- 撤销暂存区中的更改：将暂存区中的更改回退到指定 commit 的状态。
+-- 撤销工作目录中的更改：丢弃工作目录中已修改的文件，使其恢复到指定 commit 的状态。
+-- 移动 HEAD 指针：将 HEAD 指向指定 commit，表示当前所在的分支头指针移动到了这个 commit。
+
+请注意，git reset --hard 是一个潜在危险的命令，因为它会永久地删除未提交的更改，且无法撤销。在运行这个命令之前，请确保已备份任何重要的更改，以免数据丢失。
+
+希望这可以帮助解释 git reset --hard 命令的功能！
+
+
+
+
 # =====================================|
         git cherry-pick
 # -------------------------------------|
@@ -290,6 +307,18 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
     $ git branch -d <name3> 
         删除名为name3 的分支
 
+    $ git branch -u <upstream>
+        这条命令会将当前所在的分支与指定的远程分支 <upstream> 进行关联。关联后，Git 将会跟踪远程分支的变化，并允许你使用 git pull 和 git push 命令自动同步本地分支和远程分支。
+        如果你想要查看当前分支与哪个远程分支进行了关联，可以使用 git branch -vv 命令来查看。
+
+        例如:
+            git branch -u origin/oversea
+
+        git branch -u 是 git branch --set-upstream-to 的简写，
+        用于将当前分支与指定的上游（远程）分支进行关联。这有助于Git知道当前分支应该跟踪哪个远程分支，从而简化 git pull 和 git push 操作。
+
+
+
 # =====================================|
                 checkout
 # -------------------------------------|
@@ -301,6 +330,11 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
                                     远程版本库已经存在这个名为name2的分支
                                     现在创建一个本地的分支，这个分支是从这个远程分支
                                     分过来的。
+
+
+# git checkout -b oversea && git branch -u origin/oversea
+手动创建并关联分支：如果以上步骤无法解决问题，你可以尝试手动创建分支并关联到远程分支，例如 git checkout -b oversea && git branch -u origin/oversea。
+
 
 
 # =====================================|
@@ -415,6 +449,8 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 
 -- git rm --cached .DS_Store
 
+运行git rm --cached .DS_Store命令后，.DS_Store文件将被从Git的暂存区中移除，但仍然存在于你的工作目录中，不再被Git跟踪。
+
 
 
 # ================================================================
@@ -478,6 +514,9 @@ http://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html
 可在项目的 .git/config 文件内修改, 
 
 此时可以到 gitlab 的工程里, 找到 clone 位置 (想想 github 里的 clone) 找到 clone 的 ssh 地址, 换用下
+
+
+
 
 
 

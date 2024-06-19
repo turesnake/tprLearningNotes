@@ -1450,18 +1450,18 @@ namespace UnityEngine
                 The z position is in world units from the camera.
 
 
-        // 参数:
-        //   position:
-        //      posSS (often mouse x, y), 
-                plus a z position for depth (for example, a camera clipping plane).
-        
-        //   eye:
-        //     By default, Camera.MonoOrStereoscopicEye.Mono. Can be set to Camera.MonoOrStereoscopicEye.Left
-        //     or Camera.MonoOrStereoscopicEye.Right for use in stereoscopic rendering (e.g.,
-        //     for VR).
-        //
-        // 返回结果:
-        //     The posWS created by converting the posSS at the provided distance z from the camera plane.
+            参数:
+            position:
+                posSS (often mouse x, y), 
+                    plus a z position for depth (for example, a camera clipping plane).
+            
+            eye:
+                By default, Camera.MonoOrStereoscopicEye.Mono. Can be set to Camera.MonoOrStereoscopicEye.Left
+                or Camera.MonoOrStereoscopicEye.Right for use in stereoscopic rendering (e.g.,
+                for VR).
+            
+            返回结果:
+                The posWS created by converting the posSS at the provided distance z from the camera plane.
         */
         public Vector3 ScreenToWorldPoint(Vector3 position);
         public Vector3 ScreenToWorldPoint(Vector3 position, MonoOrStereoscopicEye eye);//vr

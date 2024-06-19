@@ -65,14 +65,20 @@ namespace UnityEngine.SceneManagement
         //     A reference to the new Scene that was created, or an invalid Scene if creation
         //     failed.
         public static Scene CreateScene(string sceneName);
-        //
-        // 摘要:
-        //     Gets the currently active Scene.
-        //
-        // 返回结果:
-        //     The active Scene.
+
+
+        /*
+            摘要:
+                Gets the currently active Scene.
+                !! 在非运行时, editor 代码中, 也能指向当前场景
+            
+            返回结果:
+                The active Scene.
+        */
         [StaticAccessorAttribute("SceneManagerBindings", Bindings.StaticAccessorType.DoubleColon)]
         public static Scene GetActiveScene();
+
+
         //
         // 摘要:
         //     Returns an array of all the Scenes currently open in the hierarchy.

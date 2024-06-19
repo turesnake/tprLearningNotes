@@ -125,3 +125,13 @@ https://www.zhihu.com/question/394048030/answer/2070331917
 
 
 
+
+# ----------------------------- #
+#         %TEMP%
+# ----------------------------- #
+
+文件夹地址输入 %TEMP%
+能直接导航到目录:
+    "C:\Users\Administrator\AppData\Local\Temp"
+
+

@@ -58,12 +58,20 @@ namespace System.Collections.Generic
         // key 已经存在时, 抛出异常: ArgumentException
         public void Add(TKey key, TValue value);
         public void Clear();
+
         public bool ContainsKey(TKey key);
         public bool ContainsValue(TValue value);
+        
         public int EnsureCapacity(int capacity);
         public Enumerator GetEnumerator();
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context);
         public virtual void OnDeserialization(object sender);
+
+        /*
+            return:
+                true if the element is successfully found and removed; otherwise, false. 
+                This method returns false if key is not found in the Dictionary<TKey,TValue>.
+        */
         public bool Remove(TKey key, out TValue value);
         public bool Remove(TKey key);
 

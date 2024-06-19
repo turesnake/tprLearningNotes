@@ -16,9 +16,11 @@ namespace UnityEngine.Playables
     {
         public PlayableDirector();
 
-        //
-        // 摘要:
-        //     The duration of the Playable in seconds.
+        /*
+            摘要:
+                The duration of the Playable in seconds.
+                本段 timeline 的总时长
+        */
         public double duration { get; }
         //
         // 摘要:
@@ -34,6 +36,7 @@ namespace UnityEngine.Playables
 
             当 initialTime == 0 时, 本值会在 [0,duration] 之间循环;
             如果 WrapMode 不是 Loop, 当一遍播放完毕后, 本值始终为 0f;
+
             当为 Loop 时, 每一轮循环, 本值都在 [0,duration] 之间反复;
         */
         public double time { get; set; }

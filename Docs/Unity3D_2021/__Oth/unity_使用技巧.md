@@ -804,6 +804,14 @@ Vector3 and Quaternion classes: Unity's built-in Vector3 and Quaternion classes 
 
 
 
+# ---------------------------------------------- #
+#    Physics.Raycast  无法检测到物体
+# ---------------------------------------------- #
+
+请把 settings - Phsics - auto simulation 打开;
+
+具体原因未知...
+
 
 
 

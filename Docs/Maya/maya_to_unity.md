@@ -29,13 +29,14 @@ https://www.youtube.com/watch?v=6ogqHJJR_5M&list=PLeUKbKrkDo85p1VDOFu-2oVLkv3j-P
 -3-
     maya:
     --
-        "窗口" - "设置/首选项" - "首选项" - "设置" - "工作单位"
-        选择 "米"
+        设置 "米":
+            "窗口" - "设置/首选项" - "首选项" - "设置" - "工作单位"
+            选择 "米"
     --
         设置 远平面:
-        在 "大纲视图" 中找到 "persp" 相机, 打开右侧的 "属性编辑器"
-        将 近平面 设置为 0.01
-        将 远平面 设置为 100000
+            在 "大纲视图" 中找到 "persp" 相机, 打开右侧的 "属性编辑器"
+            将 近平面 设置为 0.01
+            将 远平面 设置为 100000
 
 -4-
     maya:
@@ -49,7 +50,7 @@ https://www.youtube.com/watch?v=6ogqHJJR_5M&list=PLeUKbKrkDo85p1VDOFu-2oVLkv3j-P
     ==
         "文件" - "发送到 unity" - "选择" (此时会导出 选中的那些物体)
         --
-            在 导出目录上, 找到 Asset 下面的 "Meshes", 
+            在 导出目录上, 找到 想要放入的 unity 目录;
         --
             为导出模型 设置名字, 比如 "mayaCube_01"
         --

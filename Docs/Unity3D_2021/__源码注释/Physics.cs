@@ -932,6 +932,10 @@ namespace UnityEngine
                 但是如果我们通过 tag 来区分不同的 collider, 而不是通过 layer 来区分;
                 此时就需改用 RaycastAll(), 拿到全部数据后手动选出 "合格 且 最近" 的那个 collider;
 
+
+            !! 若发现 go 移动后就检测不到, 记得开启 settings - Phsics - auto simulation 开关;
+ 
+
             
             参数:
             ray:
@@ -991,6 +995,8 @@ namespace UnityEngine
                 See Also: Raycast.
 
                 !!! 若起点在某 collider 体内, 此 collider 不会被算作 hit, 
+
+                !! 若发现 go 移动后就检测不到, 记得开启 settings - Phsics - auto simulation 开关;
             
             参数:
             origin:
@@ -1055,6 +1061,8 @@ namespace UnityEngine
                 The raycast query ends when there are no more hits and/or the results buffer is full. 
                 The order of the results is undefined. When a full buffer is returned it is not guaranteed that the results are the closest hits and the length of the buffer is returned. 
                 If a null buffer is passed in, no results are returned and no errors or exceptions are thrown.
+
+                !! 若发现 go 移动后就检测不到, 记得开启 settings - Phsics - auto simulation 开关;
             
             参数:
             origin:

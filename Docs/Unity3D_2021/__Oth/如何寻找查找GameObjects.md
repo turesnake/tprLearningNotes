@@ -64,20 +64,6 @@ https://docs.unity3d.com/2021.3/Documentation/ScriptReference/GameObject.Find.ht
 
 
 
-
-
-# -------------------------------------------- #
-#       如何找到 场景中的 inactive 的 go
-# -------------------------------------------- #
-
-
-# -1-: 找到场景中所有携带了 component: TT 的 go, 包含 inactive 的
-    var allTTs = UnityEngine.Object.FindObjectsOfType<TT>(true);
-    ---
-    然后在其中继续查找;
-
-
-
 # -------------------------------------------- #
 #      在 runtime, 遍历一个场景的 所有 顶层 gameobjs
 # -------------------------------------------- #
@@ -104,6 +90,78 @@ https://docs.unity3d.com/2021.3/Documentation/ScriptReference/GameObject.Find.ht
     {
         Debug.Log("Scene 'a' is not loaded or does not exist.");
     }
+
+
+
+
+# -------------------------------------------- #
+#       如何找到 场景中的 inactive 的 go
+# -------------------------------------------- #
+
+
+# -1-: 找到场景中所有携带了 component: TT 的 go, 包含 inactive 的
+    var allTTs = UnityEngine.Object.FindObjectsOfType<TT>(true);
+    ---
+    然后在其中继续查找;
+
+
+# UnityEngine.Object.FindObjectOfType()
+
+Returns the first active loaded object of Type type.
+
+
+
+
+# === 有效代码:
+# 可在 非运行状态下执行
+public static GameObject FindGameObjectByPath(string path)
+{
+    string[] parts = path.Split('/');
+    if (parts.Length == 0)
+    {
+        return null;
+    }
+
+    // 从场景根节点遍历查找
+    Transform current = null;
+    GameObject[] rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+
+    foreach (GameObject rootObject in rootObjects)
+    {
+        if (rootObject.name == parts[0])
+        {
+            current = rootObject.transform;
+            break;
+        }
+    }
+
+    // 递归查找子对象
+    for (int i = 1; i < parts.Length; i++)
+    {
+        if (current == null)
+        {
+            return null;
+        }
+        current = current.Find(parts[i]);
+    }
+    return current ? current.gameObject : null;
+}
+
+
+
+# ---
+这个函数 FindGameObjectByPath 将根据提供的路径递归查找场景中的 GameObject。注意事项如下：
+
+path 变量中指定的路径中，各个部分必须用 / 分隔。
+该函数假设路径的根节点是场景中的一个根对象。
+如果找不到对象，函数将返回 null。
+你可以将这个函数放在你的任何脚本中，并在需要查找 GameObject 时调用它。
+
+
+
+
+
+
 
 
 
