@@ -27,21 +27,16 @@
             end
 
             if string.lower(track.name) == "tpr_marker" then
-
                 local markerNum = track:GetMarkerCount() 
                 printError("markerNum = " .. tostring(markerNum))
-
                 for i=0, markerNum-1 do 
                     local marker = track:GetMarker(i)
-
-                    if isNotNull(marker) and isNotNull(marker.msg) then 
-
-                        printError("i:"..tostring(i).."; time = " ..tostring(marker.time).."; msg = " .. tostring(marker.msg))
-
+                    if isNotNull(marker) then 
+                        printError("i:"..tostring(i).."; time = " ..tostring(marker.time).."; name = " .. tostring(marker.name))
                     end
                 end
-
             end
+            
         end
     end
     if isBindTrackAnimator ~= true then 

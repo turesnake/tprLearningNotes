@@ -9,7 +9,7 @@ public interface IMarker
 {
     double time { get; set; }
 
-    TrackAsset parent { get; }
+    TrackAsset parent { get; }  // 自己所属的 tarck 轨道的名字,  不是 marker 自己的名字
 
     void Initialize(TrackAsset parent);
 }

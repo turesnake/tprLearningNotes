@@ -127,11 +127,11 @@ namespace UnityEngine
         // 摘要:
         //     An array containing all triangles in the Mesh.
         public int[] triangles { get; set; }
+
         //
         // 摘要:
         //     The BoneWeight for each vertex in the Mesh, which represents 4 bones per vertex.
         public BoneWeight[] boneWeights { get; set; }
-
 
 
         
@@ -335,6 +335,7 @@ namespace UnityEngine
         [FreeFunctionAttribute(Name = "MeshScripting::GetBlendShapeName", HasExplicitThis = true, ThrowsException = true)]
         public string GetBlendShapeName(int shapeIndex);
 
+
         //
         // 摘要:
         //     The number of non-zero bone weights for each vertex.
@@ -344,6 +345,7 @@ namespace UnityEngine
         public NativeArray<byte> GetBonesPerVertex();
 
         public void GetBoneWeights(List<BoneWeight> boneWeights);
+
 
         public void GetColors(List<Color> colors);
         public void GetColors(List<Color32> colors);

@@ -814,6 +814,16 @@ Vector3 and Quaternion classes: Unity's built-in Vector3 and Quaternion classes 
 
 
 
+# ---------------------------------------------- #
+#    在 c# 中可否对一张 texture 进行采样
+# ---------------------------------------------- #
+
+Texture2D class 中有 GetPixelBilinear() 系列函数; 
+
+
+
+
+
 
 
 
