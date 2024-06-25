@@ -8,7 +8,7 @@
     git log --follow filePath
 
     比如:
-    git log --follow Assets/BundleResources/Prefabs/SpringFestival121401/SpringFestivalMazeMainDialog.prefab
+    git log --follow Assets/BundleResources/Prefabs/SpringFestival121401/XXX.prefab
 
 
 注意 path 从哪开始;
@@ -63,10 +63,10 @@ git stash apply
 
 
 # ---------------------------------------- #
-#         
+#     使用 origin/oversea 中文件 替换本分支中的同文件
 # ---------------------------------------- #
 
-git checkout oversea Assets/BundleResources/Presets/IdolLive3D/BaseParams/12900250.json
+git checkout origin/oversea Assets/BundleResources/XXX.json
 
 
 

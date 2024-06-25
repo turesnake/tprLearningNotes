@@ -14,9 +14,20 @@ namespace UnityEngine
     {
         public SkinnedMeshRenderer();
 
-        //
-        // 摘要:
-        //     The maximum number of bones per vertex that are taken into account during skinning.
+        /*
+            摘要:
+                The maximum number of bones per vertex that are taken into account during skinning.
+
+                The maximum number of bones that affect a single vertex.
+
+                The value can be either One Bone, Two Bones, Four Bones or Unlimited.
+
+                This setting does not change the underlying mesh data; it only affects the number of bone weights that Unity uses when performing skinning. 
+                This means that a mesh can have bone weight data that is unused due to this setting. You can change this value at runtime.
+
+                You can set this value for all meshes in the project using QualitySettings.skinWeights. You can set the maximum number of bone weights that mesh data stores per vertex using ModelImporter.maxBonesPerVertex.
+
+        */
         public SkinQuality quality { get; set; }
         //
         // 摘要:

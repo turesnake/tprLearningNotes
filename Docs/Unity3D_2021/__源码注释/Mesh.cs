@@ -128,9 +128,23 @@ namespace UnityEngine
         //     An array containing all triangles in the Mesh.
         public int[] triangles { get; set; }
 
-        //
-        // 摘要:
-        //     The BoneWeight for each vertex in the Mesh, which represents 4 bones per vertex.
+        /*
+            !!!!!!
+            摘要:
+                The BoneWeight for each vertex in the Mesh, which represents 4 bones per vertex.
+
+                The bone weights for each vertex in the Mesh, up to a maximum of 4.
+
+                The size of this array is either Mesh.vertexCount or zero. The array is sorted by vertex index.
+
+                This property uses BoneWeight structs, which represent exactly 4 bone weights per vertex. 
+                Within each BoneWeight struct in the array, the bone weights are in descending order and add up to 1. 
+                If a vertex is affected by fewer than 4 bones, each of the remaining bone weights must be 0.
+
+                To work with more or fewer bone weights per vertex, use the newer Mesh.GetAllBoneWeights and Mesh.SetBoneWeights APIs, which use BoneWeight1 structs.
+
+
+        */
         public BoneWeight[] boneWeights { get; set; }
 
 
@@ -242,12 +256,20 @@ namespace UnityEngine
         [ExcludeFromDocs]public void CombineMeshes(CombineInstance[] combine, bool mergeSubMeshes);
         
         
-        //
-        // 摘要:
-        //     Gets the bone weights for the Mesh.
-        //
-        // 返回结果:
-        //     Returns all non-zero bone weights for the Mesh, in vertex index order.
+        /*
+            !!! 新版的 boneweights, 能 大于or小于 4个 bone
+            摘要:
+                Gets the bone weights for the Mesh.
+
+                一股脑返回所有顶点的 boneweights 信息, 每个顶点的信息紧密排列存储;
+                因为每个顶点的 bone weight 数量不同, 所以不能简单的 step 4 来访问每个顶点的信息;
+                
+                可配合 GetBonesPerVertex() 拿到数据, 具体查文档示例;
+
+            
+            返回结果:
+                Returns all non-zero bone weights for the Mesh, in vertex index order.
+        */
         public NativeArray<BoneWeight1> GetAllBoneWeights();
 
         
@@ -336,12 +358,20 @@ namespace UnityEngine
         public string GetBlendShapeName(int shapeIndex);
 
 
-        //
-        // 摘要:
-        //     The number of non-zero bone weights for each vertex.
-        //
-        // 返回结果:
-        //     Returns the number of non-zero bone weights for each vertex.
+        /*
+            !!! new boneweights
+            摘要:
+                The number of non-zero bone weights for each vertex.
+
+                一股脑返回 所有 顶点的 bones 信息, 按照顶点排列顺序放置;
+
+                可配合 GetAllBoneWeights() 一起使用;
+
+                具体看文档注释;
+            
+            返回结果:
+                Returns the number of non-zero bone weights for each vertex.
+        */
         public NativeArray<byte> GetBonesPerVertex();
 
         public void GetBoneWeights(List<BoneWeight> boneWeights);
@@ -637,6 +667,11 @@ namespace UnityEngine
         public void RecalculateUVDistributionMetrics(float uvAreaThreshold = 1E-09F);
 
 
+        /*
+            !!! 新版的, 能 大于or小于 4个 bone
+
+
+        */
         public void SetBoneWeights(NativeArray<byte> bonesPerVertex, NativeArray<BoneWeight1> weights);
 
 
