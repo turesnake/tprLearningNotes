@@ -1,0 +1,47 @@
+
+#pragma kernel CopyPos
+
+
+float4x4 _SrcBoneLocalToWorldMatrix;
+float4x4 _DstBoneMatrix;
+
+
+
+// 需符合 4x4-bytes 字节对齐:
+struct Vertex
+{
+    float4 pos;
+};
+
+
+
+ByteAddressBuffer _MeshVertexBuffer; // byte 为单位的 // !!! 目前必须使用此类型的才能正确接收
+//RWStructuredBuffer<MeshVertex> _MeshVertexBuffer;
+
+RWStructuredBuffer<Vertex> _VertexBuffer;
+
+
+
+
+[numthreads(256,1,1)]
+void CopyPos (uint3 id : SV_DispatchThreadID) 
+{
+    Vertex v = _VertexBuffer[id.x];
+
+        
+    float3 posOS = asfloat(_MeshVertexBuffer.Load3(id.x * 4 * 10)); //  !!! float3 pos, float3 normal, float4 tangent
+
+    //float3 posWS = mul(_SrcBoneLocalToWorldMatrix, float4(posOS, 1.0)).xyz;
+    float3 posWS = mul(_DstBoneMatrix, float4(posOS, 1.0)).xyz;
+
+    v.pos = float4( posWS.xyz, 1);
+    _VertexBuffer[id.x] = v;
+}
+
+
+
+
+
+
+
+

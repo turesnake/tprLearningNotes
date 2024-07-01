@@ -53,43 +53,49 @@ namespace UnityEngine
         //     Specifies whether skinned motion vectors should be used for this renderer.
         [NativePropertyAttribute("SkinnedMeshMotionVectors")]
         public bool skinnedMotionVectors { get; set; }
-        //
-        // 摘要:
-        //     The intended target usage of the skinned mesh GPU vertex buffer.
+
+
+        /*
+            !!! compute shader 想要访问这个 mesh 时, 会用到本接口
+            摘要:
+                The intended target usage of the skinned mesh GPU vertex buffer.
+
+                By default, skinned mesh renderer vertex buffers have GraphicsBuffer.Target.Vertex usage target. 
+                If you want to access the vertex buffer from a compute shader, additional targets need to be requested, for example GraphicsBuffer.Target.Raw.
+
+        */
         public GraphicsBuffer.Target vertexBufferTarget { get; set; }
 
-        //
-        // 摘要:
-        //     Creates a snapshot of SkinnedMeshRenderer and stores it in mesh.
-        //
-        // 参数:
-        //   mesh:
-        //     A static mesh that will receive the snapshot of the skinned mesh.
-        //
-        //   useScale:
-        //     Whether to use the SkinnedMeshRenderer's Transform scale when baking the Mesh.
-        //     If this is true, Unity bakes the Mesh using the position, rotation, and scale
-        //     values from the SkinnedMeshRenderer's Transform. If this is false, Unity bakes
-        //     the Mesh using the position and rotation values from the SkinnedMeshRenderer's
-        //     Transform, but without using the scale value from the SkinnedMeshRenderer's Transform.
-        //     The default value is false.
+
+        /*
+            摘要:
+                Creates a snapshot of SkinnedMeshRenderer and stores it in mesh.
+
+
+                The snapshot is still computed even when updateWhenOffscreen is set to false and the skinned mesh object is currently offscreen.
+                When this function is called the skinning process will always take place on the CPU, regardless of the GPU Skinning setting.
+            
+            参数:
+            mesh:
+                A static mesh that will receive the snapshot of the skinned mesh.
+            
+            useScale:
+                Whether to use the SkinnedMeshRenderer's Transform scale when baking the Mesh.
+                If this is true, Unity bakes the Mesh using the position, rotation, and scale
+                values from the SkinnedMeshRenderer's Transform. If this is false, Unity bakes
+                the Mesh using the position and rotation values from the SkinnedMeshRenderer's
+                Transform, but without using the scale value from the SkinnedMeshRenderer's Transform.
+                The default value is false.
+        */
         public void BakeMesh(Mesh mesh);
-        //
-        // 摘要:
-        //     Creates a snapshot of SkinnedMeshRenderer and stores it in mesh.
-        //
-        // 参数:
-        //   mesh:
-        //     A static mesh that will receive the snapshot of the skinned mesh.
-        //
-        //   useScale:
-        //     Whether to use the SkinnedMeshRenderer's Transform scale when baking the Mesh.
-        //     If this is true, Unity bakes the Mesh using the position, rotation, and scale
-        //     values from the SkinnedMeshRenderer's Transform. If this is false, Unity bakes
-        //     the Mesh using the position and rotation values from the SkinnedMeshRenderer's
-        //     Transform, but without using the scale value from the SkinnedMeshRenderer's Transform.
-        //     The default value is false.
         public void BakeMesh([NotNullAttribute("NullExceptionObject")] Mesh mesh, bool useScale);
+
+
+
+
+
+
+
         //
         // 摘要:
         //     Returns the weight of a BlendShape for this Renderer.
@@ -110,14 +116,25 @@ namespace UnityEngine
         // 返回结果:
         //     The skinned mesh vertex buffer as a GraphicsBuffer.
         public GraphicsBuffer GetPreviousVertexBuffer();
-        //
-        // 摘要:
-        //     Retrieves a GraphicsBuffer that provides direct access to the GPU vertex buffer
-        //     for this skinned mesh, for the current frame.
-        //
-        // 返回结果:
-        //     The skinned mesh vertex buffer as a GraphicsBuffer.
+
+
+        /*
+            !!! compute shader
+            摘要:
+                Retrieves a GraphicsBuffer that provides direct access to the GPU vertex buffer
+                for this skinned mesh, for the current frame.
+
+                官方推荐每帧都调用
+                !! 第一帧会反馈 null
+
+            
+            返回结果:
+                The skinned mesh vertex buffer as a GraphicsBuffer.
+        */
         public GraphicsBuffer GetVertexBuffer();
+
+
+
         //
         // 摘要:
         //     Sets the weight of a BlendShape for this Renderer.

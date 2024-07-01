@@ -380,13 +380,17 @@ namespace UnityEngine
         public void GetColors(List<Color> colors);
         public void GetColors(List<Color32> colors);
 
-        //
-        // 摘要:
-        //     Gets the index count of the given sub-mesh.  --  顶点个数
-        //     
-        // 参数:
-        //   submesh:
+
+        /*
+            摘要:
+                Gets the index count of the given sub-mesh.
+                index buffer 元素个数;  等于 三角形个数 * 3;
+                
+            参数:
+            submesh:
+        */
         public uint GetIndexCount(int submesh);
+
 
         /*
             Gets the starting index location within the Mesh's index buffer, for the given sub-mesh.
