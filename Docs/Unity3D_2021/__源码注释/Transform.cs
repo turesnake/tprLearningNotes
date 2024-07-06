@@ -75,11 +75,21 @@ namespace UnityEngine
             Matrix that transforms a point from world space into local space (Read Only).
 
             !! 用法:
-                localPos = transform.worldToLocalMatrix * (sonTF.position - transform.position);
-                ...
-                sonTF.position = transform.position + (Vector3)(transform.localToWorldMatrix * localPos);
-                ---
-                注意上面的写法, 其实这两个矩阵不关心平移信息;
+                !! 旧用法
+                    localPos = transform.worldToLocalMatrix * (sonTF.position - transform.position);            -- (1)
+                    sonTF.position = transform.position + (Vector3)(transform.localToWorldMatrix * localPos);   -- (2)
+                    ---
+                    !!! 注意, 其实 worldToLocalMatrix, localToWorldMatrix 都是仿射矩阵, 内涵 parent posWS 信息,
+                    !!! 只不过在上述计算中, 参与矩阵乘法的 vector3 被默认扩成了 vector4, 且它的 w 值默认为0;
+                    !!! 如果手动扩为 vector4, 且设置 w 为 1f, 就能利用到 偏移信息; 
+
+
+                    !!! 注意 Matrix4x4 中的 MultiplyPoint(), MultiplyPoint3x4(), MultiplyVector() 几个函数的区别
+
+                !! 新用法:
+                    Vector3 localPos = transform.worldToLocalMatrix * Vector4(sonTF.position.xyz, 1f);  -- (1) 差不多这个意思
+                    Vector3 posWS    = transform.localToWorldMatrix * Vector4(localPos.xyz, 1f);        -- (2) 差不多这个意思
+                    ---      
 
 
             注意:

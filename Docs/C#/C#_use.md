@@ -343,6 +343,14 @@ directly accessible without fully qualifying them.
 可以改写为:
 	handler?.Invoke(this, args);
 
+# 可空参数:
+	void KKK( int? expectSize_ = null )
+	{
+		...
+	}
+	---
+	以上函数的 expectSize_ 参数就是可以不用填的;
+
 
 
 # === 空条件运算符 与 空接合运算符 的联合使用 ==

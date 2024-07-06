@@ -127,6 +127,14 @@ namespace UnityEngine
                 官方推荐每帧都调用
                 !! 第一帧会反馈 null
 
+                通常, 元素内涵:
+                    float3 posOS;
+                    float3 normalOS;
+                    float4 tangentOS;
+                    ---
+                
+                不会包含 float2 uv; 因为 uv 信息并不会逐帧变化, 不需要每一帧都携带; 而是可以到 sharedMesh 里去获取静态的 uv 信息;
+
             
             返回结果:
                 The skinned mesh vertex buffer as a GraphicsBuffer.
