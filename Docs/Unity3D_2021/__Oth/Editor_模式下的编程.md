@@ -192,6 +192,15 @@ AssetDatabase.GetAssetPath()
 
 
 
+# ----------------------------------------------#
+#     让某个节点 在 编辑场景内 不可被选中
+# ----------------------------------------------#
+
+SceneVisibilityManager.instance.DisablePicking( vcam2, true );
+
+
+
+
 
 
 

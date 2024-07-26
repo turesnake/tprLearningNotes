@@ -57,5 +57,19 @@ https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-per
 
 
 
+# -- 访问某一列:
+float3 row_0 = myMatrix[0];
+
+
+# -- 计算逆矩阵:
+
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+float4x4 inverseMatrix = Inverse(myMatrix);
+
+
+
+
+
+
 
 

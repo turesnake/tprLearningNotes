@@ -291,59 +291,41 @@ namespace UnityEngine
         public void ApplyBuiltinRootMotion();
         public void CrossFade(int stateHashName, float normalizedTransitionDuration, int layer);
         public void CrossFade(string stateName, float normalizedTransitionDuration, int layer);
-        //
-        // 摘要:
-        //     Creates a crossfade from the current state to any other state using normalized
-        //     times.
-        //
-        // 参数:
-        //   stateName:
-        //     The name of the state.
-        //
-        //   stateHashName:
-        //     The hash name of the state.
-        //
-        //   normalizedTransitionDuration:
-        //     The duration of the transition (normalized).
-        //
-        //   layer:
-        //     The layer where the crossfade occurs.
-        //
-        //   normalizedTimeOffset:
-        //     The time of the state (normalized).
-        //
-        //   normalizedTransitionTime:
-        //     The time of the transition (normalized).
+
+        /*
+            摘要:
+                Creates a crossfade from the current state to any other state using normalized times.
+            
+
+
+            参数:
+            stateName:
+                The name of the state.
+            
+            stateHashName:
+                The hash name of the state.
+            
+            normalizedTransitionDuration:
+                The duration of the transition (normalized).
+            
+            layer:
+                The layer where the crossfade occurs.
+            
+            normalizedTimeOffset:
+                The time of the state (normalized).
+            
+            normalizedTransitionTime:
+                The time of the transition (normalized).
+        */
         [FreeFunctionAttribute(Name = "AnimatorBindings::CrossFade", HasExplicitThis = true)]
         public void CrossFade(int stateHashName, float normalizedTransitionDuration, [Internal.DefaultValue("-1")] int layer, [Internal.DefaultValue("0.0f")] float normalizedTimeOffset, [Internal.DefaultValue("0.0f")] float normalizedTransitionTime);
-        //
-        // 摘要:
-        //     Creates a crossfade from the current state to any other state using normalized
-        //     times.
-        //
-        // 参数:
-        //   stateName:
-        //     The name of the state.
-        //
-        //   stateHashName:
-        //     The hash name of the state.
-        //
-        //   normalizedTransitionDuration:
-        //     The duration of the transition (normalized).
-        //
-        //   layer:
-        //     The layer where the crossfade occurs.
-        //
-        //   normalizedTimeOffset:
-        //     The time of the state (normalized).
-        //
-        //   normalizedTransitionTime:
-        //     The time of the transition (normalized).
         public void CrossFade(string stateName, float normalizedTransitionDuration, [Internal.DefaultValue("-1")] int layer, [Internal.DefaultValue("float.NegativeInfinity")] float normalizedTimeOffset, [Internal.DefaultValue("0.0f")] float normalizedTransitionTime);
         public void CrossFade(string stateName, float normalizedTransitionDuration);
         public void CrossFade(int stateHashName, float normalizedTransitionDuration);
         public void CrossFade(string stateName, float normalizedTransitionDuration, int layer, float normalizedTimeOffset);
         public void CrossFade(int stateHashName, float normalizedTransitionDuration, int layer, float normalizedTimeOffset);
+
+
         //
         // 摘要:
         //     Creates a crossfade from the current state to any other state using times in
@@ -373,34 +355,16 @@ namespace UnityEngine
         public void CrossFadeInFixedTime(string stateName, float fixedTransitionDuration);
         public void CrossFadeInFixedTime(string stateName, float fixedTransitionDuration, int layer);
         public void CrossFadeInFixedTime(string stateName, float fixedTransitionDuration, int layer, float fixedTimeOffset);
-        //
-        // 摘要:
-        //     Creates a crossfade from the current state to any other state using times in
-        //     seconds.
-        //
-        // 参数:
-        //   stateName:
-        //     The name of the state.
-        //
-        //   stateHashName:
-        //     The hash name of the state.
-        //
-        //   fixedTransitionDuration:
-        //     The duration of the transition (in seconds).
-        //
-        //   layer:
-        //     The layer where the crossfade occurs.
-        //
-        //   fixedTimeOffset:
-        //     The time of the state (in seconds).
-        //
-        //   normalizedTransitionTime:
-        //     The time of the transition (normalized).
         public void CrossFadeInFixedTime(string stateName, float fixedTransitionDuration, [Internal.DefaultValue("-1")] int layer, [Internal.DefaultValue("0.0f")] float fixedTimeOffset, [Internal.DefaultValue("0.0f")] float normalizedTransitionTime);
         public void CrossFadeInFixedTime(int stateHashName, float fixedTransitionDuration, int layer, float fixedTimeOffset);
         public void CrossFadeInFixedTime(int stateHashName, float fixedTransitionDuration, int layer);
+
+
+        /*
         [Obsolete("ForceStateNormalizedTime is deprecated. Please use Play or CrossFade instead.")]
         public void ForceStateNormalizedTime(float normalizedTime);
+        */
+
         //
         // 摘要:
         //     Returns an AnimatorTransitionInfo with the informations on the current transition.
