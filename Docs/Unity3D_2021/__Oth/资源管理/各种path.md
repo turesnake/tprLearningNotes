@@ -91,6 +91,11 @@ unity 内部使用的 path 一律用 '/' 分隔符, 哪怕是在 win 平台;
         == 但是, unity editor console 里的 "Open Editor Log" 可以打开 log 文件, 里面能完整展示;
 
 
+iOS: Application.persistentDataPath points to /var/mobile/Containers/Data/Application/<guid>/Documents.
+
+Mac: Application.persistentDataPath points to the user Library folder. (This folder is often hidden.) In recent Unity releases user data is written into ~/Library/Application Support/company name/product name. Older versions of Unity wrote into the ~/Library/Caches folder, or ~/Library/Application Support/unity.company name.product name. These folders are all searched for by Unity. The application finds and uses the oldest folder with the required data on your system.
+
+
 # Application.streamingAssetsPath       jar:file:///data/app/~~XkcDG3oH0qdLJlV0fW-TpA==/com.snake.tpr-B9rbQ2yGvVJ3Dk4XfW7VJg==/base.apk!/assets
 
 

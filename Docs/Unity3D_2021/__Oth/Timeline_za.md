@@ -116,10 +116,20 @@ https://forum.unity.com/threads/how-to-set-the-virtual-camera-in-a-cinemachinesh
 
 
 
+# -------------------------------------- #
+#    timeline  里如何设置 播放速度
+# -------------------------------------- #
 
+# -1-
+添加 TimeDilationTrack 轨道
 
+# -2-
+问ai:
+可以使用 PlayableDirector 组件的 playableGraph 来实现
 
+在这个示例中，我们首先获取 PlayableDirector 组件的 PlayableGraph，然后遍历所有的 PlayableOutput 并设置它们的速度。playbackSpeed 是一个可调节的变量，你可以在运行时通过脚本或其他输入来修改它以改变 Timeline 的播放速度。
 
+请确保将此脚本附加到拥有 PlayableDirector 组件的游戏对象上，并在编辑器中将 PlayableDirector 组件拖到脚本的 director 字段中。
 
 
 

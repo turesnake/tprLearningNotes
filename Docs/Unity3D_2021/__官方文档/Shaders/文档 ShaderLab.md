@@ -1599,6 +1599,12 @@ ZTest [operation]
 # ---------- #
 # 参数 operation 可用值:
 
+# Disable:
+    禁用测试, ZTest Disable 和 ZWrite On 结合会是什么结果呢, 需要实践下...
+
+# Never:
+    永远不通过测试
+
 # Less
     只有当 几何体深度值 小于 "depth buffer 现有值", 此几何体才会被绘制 (靠近相机)
 # LEqual

@@ -106,4 +106,45 @@ print(dic:TryGetValue('a')) -- !!!!!!!!!
 
 
 
+# -------------------------------------- #
+#               新方法
+#         可搞定更加复杂的类型
+# -------------------------------------- #
+
+比如, 想要类型: List<KeyValuePair<AnimationClip,AnimationClip>>
+
+
+# -1-
+先在 c# 中写: 
+    Type dictType = typeof( KeyValuePair<AnimationClip, AnimationClip>);  
+    print( dictType.FullName );  
+
+得到:
+    'System.Collections.Generic.KeyValuePair`2[[UnityEngine.AnimationClip, UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null],[UnityEngine.AnimationClip, UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]'
+
+# -1-
+于是在 lua 中得到
+
+local KeyValuePair_T2 = CS.System.Type.GetType('System.Collections.Generic.KeyValuePair`2[[UnityEngine.AnimationClip, UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null],[UnityEngine.AnimationClip, UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]')
+
+
+# -1-
+然后继续:
+local KeyValuePair_List_T3   = CS.System.Collections.Generic.List( KeyValuePair_T2 ) 
+
+
+# -1- 如何单独使用: KeyValuePair<AnimationClip, AnimationClip> 这个类型去创建实例:
+
+local 看看= CS.System.Activator.CreateInstance(KeyValuePair_T2, clipA, clipB )
+
+
+
+
+
+
+
+
+
+
+
 

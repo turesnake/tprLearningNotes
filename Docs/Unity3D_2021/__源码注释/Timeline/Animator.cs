@@ -213,13 +213,19 @@ namespace UnityEngine
         //     The AnimatorControllerParameter list used by the animator. (Read Only)
         public AnimatorControllerParameter[] parameters { get; }
 
+
         /*
             摘要:
                 The runtime representation of AnimatorController that controls the Animator.
 
                 可以在运行时 加载一个 .overrideController 文件, 然后运行时绑定到此变量上;
+
+                通过这玩意可以在 runtime 动态切换 animator 上的一个 state 绑定的 animation clip
         */
         public RuntimeAnimatorController runtimeAnimatorController { get; set; }
+
+
+
         //
         // 摘要:
         //     Gets the mode of the Animator recorder.
