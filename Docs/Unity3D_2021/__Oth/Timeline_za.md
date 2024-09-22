@@ -67,7 +67,9 @@ https://forum.unity.com/threads/how-to-set-the-virtual-camera-in-a-cinemachinesh
 
 # -1-: c# 端已经有一个继承 Marker 的class (如 Custom Marker), 内涵内容: string msg, 用来传参;
 
-# -1-: timeline 里添加 轨道: Markers - Custom Marker Track,  取名为 "tpr_marker"
+# -1-: timeline 里添加 轨道: Markers - Custom Marker Track,  取名为 "marker"
+
+# -1-: 注意, 一定要在这个 "marker" 的轨道上面, 右键新建  Custom Marker 箭头,
 
 # -1-: 在 lua 代码里 init 阶段 一股脑拿到所有 markers 信息, 
     然后自己 update 中逐帧轮询:
