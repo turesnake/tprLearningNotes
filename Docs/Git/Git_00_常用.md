@@ -73,8 +73,12 @@ git checkout origin/oversea Assets/BundleResources/XXX.json
 
 
 # ---------------------------------------- #
-#         
+#      git checkout tw && git pull 
 # ---------------------------------------- #
+切入 tw 分支, 同时直接拉取到最新
+
+
+# 速度更快的是删除那个分支后, 重新 checkout 一个新的
 
 
 

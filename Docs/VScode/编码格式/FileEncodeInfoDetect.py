@@ -61,6 +61,8 @@ def CheckFileEncodingInfo(file_path):
 
  
 
+
+# ========================= IO =========================
 def GetCurrentFolderPath():  
     # 获取当前脚本文件的绝对路径  
     file_path = os.path.abspath(__file__)  
@@ -68,13 +70,13 @@ def GetCurrentFolderPath():
     directory_path = os.path.dirname(file_path)  
     return directory_path
 
-
 def CombinePath( folder_path, filename):  
     # 将路径中的反斜杠替换为正斜杠  
     folder_path = folder_path.replace("\\", "/")  
     # 组合路径和文件名  
     full_path = f"{folder_path}/{filename}"  
     return full_path  
+
 
 
 
