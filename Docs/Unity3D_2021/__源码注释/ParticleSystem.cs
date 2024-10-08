@@ -61,19 +61,6 @@ public sealed class ParticleSystem : Component
         [SerializeField]
         private float m_ConstantMax;
 
-        // [Obsolete("Please use MinMaxCurve.curveMultiplier instead. (UnityUpgradable) -> UnityEngine.ParticleSystem/MinMaxCurve.curveMultiplier", false)]
-        // public float curveScalar
-        // {
-        //     get
-        //     {
-        //         return m_CurveMultiplier;
-        //     }
-        //     set
-        //     {
-        //         m_CurveMultiplier = value;
-        //     }
-        // }
-
         //
         // Summary:
         //     Set the mode that the min-max curve uses to evaluate values.
@@ -342,22 +329,6 @@ public sealed class ParticleSystem : Component
     public struct MainModule
     {
         internal ParticleSystem m_ParticleSystem;
-
-        //
-        // Summary:
-        //     Cause some particles to spin in the opposite direction.
-        // [Obsolete("Please use flipRotation instead. (UnityUpgradable) -> UnityEngine.ParticleSystem/MainModule.flipRotation", false)]
-        // public float randomizeRotationDirection
-        // {
-        //     get
-        //     {
-        //         return flipRotation;
-        //     }
-        //     set
-        //     {
-        //         flipRotation = value;
-        //     }
-        // }
 
         //
         // Summary:
@@ -1467,53 +1438,6 @@ public sealed class ParticleSystem : Component
 
         //
         // Summary:
-        //     The emission type.
-        // [Obsolete("ParticleSystemEmissionType no longer does anything. Time and Distance based emission are now both always active.", false)]
-        // public ParticleSystemEmissionType type
-        // {
-        //     get
-        //     {
-        //         return ParticleSystemEmissionType.Time;
-        //     }
-        //     set
-        //     {
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     The rate at which the system spawns new particles.
-        // [Obsolete("rate property is deprecated. Use rateOverTime or rateOverDistance instead.", false)]
-        // public MinMaxCurve rate
-        // {
-        //     get
-        //     {
-        //         return rateOverTime;
-        //     }
-        //     set
-        //     {
-        //         rateOverTime = value;
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Change the rate multiplier.
-        // [Obsolete("rateMultiplier property is deprecated. Use rateOverTimeMultiplier or rateOverDistanceMultiplier instead.", false)]
-        // public float rateMultiplier
-        // {
-        //     get
-        //     {
-        //         return rateOverTimeMultiplier;
-        //     }
-        //     set
-        //     {
-        //         rateOverTimeMultiplier = value;
-        //     }
-        // }
-
-        //
-        // Summary:
         //     Specifies whether the EmissionModule is enabled or disabled.
         public bool enabled
         {
@@ -1725,53 +1649,6 @@ public sealed class ParticleSystem : Component
     {
         internal ParticleSystem m_ParticleSystem;
 
-        //
-        // Summary:
-        //     Scale of the box to emit particles from.
-        // [Obsolete("Please use scale instead. (UnityUpgradable) -> UnityEngine.ParticleSystem/ShapeModule.scale", false)]
-        // public Vector3 box
-        // {
-        //     get
-        //     {
-        //         return scale;
-        //     }
-        //     set
-        //     {
-        //         scale = value;
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Apply a scaling factor to the Mesh that emits the particles.
-        // [Obsolete("meshScale property is deprecated.Please use scale instead.", false)]
-        // public float meshScale
-        // {
-        //     get
-        //     {
-        //         return scale.x;
-        //     }
-        //     set
-        //     {
-        //         scale = new Vector3(value, value, value);
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Randomizes the starting direction of particles.
-        // [Obsolete("randomDirection property is deprecated. Use randomDirectionAmount instead.", false)]
-        // public bool randomDirection
-        // {
-        //     get
-        //     {
-        //         return randomDirectionAmount >= 0.5f;
-        //     }
-        //     set
-        //     {
-        //         randomDirectionAmount = (value ? 1f : 0f);
-        //     }
-        // }
 
         //
         // Summary:
@@ -2884,12 +2761,6 @@ public sealed class ParticleSystem : Component
 
         //
         // Summary:
-        //     The maximum number of planes it is possible to set as colliders.
-        // [Obsolete("The maxPlaneCount restriction has been removed. Please use planeCount instead to find out how many planes there are. (UnityUpgradable) -> UnityEngine.ParticleSystem/CollisionModule.planeCount", false)]
-        // public int maxPlaneCount => planeCount;
-
-        //
-        // Summary:
         //     Specifies whether the CollisionModule is enabled or disabled.
         public bool enabled
         {
@@ -3257,22 +3128,6 @@ public sealed class ParticleSystem : Component
         [NativeThrows]
         public int planeCount => get_planeCount_Injected(ref this);
 
-        //
-        // Summary:
-        //     Allow particles to collide when inside colliders.
-        // [Obsolete("enableInteriorCollisions property is deprecated and is no longer required and has no effect on the particle system.", false)]
-        // public bool enableInteriorCollisions
-        // {
-        //     get
-        //     {
-        //         return get_enableInteriorCollisions_Injected(ref this);
-        //     }
-        //     [NativeThrows]
-        //     set
-        //     {
-        //         set_enableInteriorCollisions_Injected(ref this, value);
-        //     }
-        // }
 
         internal CollisionModule(ParticleSystem particleSystem)
         {
@@ -3568,13 +3423,6 @@ public sealed class ParticleSystem : Component
 
         //
         // Summary:
-        //     The maximum number of collision shapes that can be attached to this Particle
-        //     System trigger.
-        // [Obsolete("The maxColliderCount restriction has been removed. Please use colliderCount instead to find out how many colliders there are. (UnityUpgradable) -> UnityEngine.ParticleSystem/TriggerModule.colliderCount", false)]
-        // public int maxColliderCount => colliderCount;
-
-        //
-        // Summary:
         //     Specifies whether the TriggerModule is enabled or disabled.
         public bool enabled
         {
@@ -3856,113 +3704,6 @@ public sealed class ParticleSystem : Component
     public struct SubEmittersModule
     {
         internal ParticleSystem m_ParticleSystem;
-
-        //
-        // Summary:
-        //     Sub-Particle System which spawns at the locations of the birth of the particles
-        //     from the parent system.
-        // [Obsolete("birth0 property is deprecated. Use AddSubEmitter, RemoveSubEmitter, SetSubEmitterSystem and GetSubEmitterSystem instead.", false)]
-        // public ParticleSystem birth0
-        // {
-        //     get
-        //     {
-        //         ThrowNotImplemented();
-        //         return null;
-        //     }
-        //     set
-        //     {
-        //         ThrowNotImplemented();
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Sub-Particle System which spawns at the locations of the birth of the particles
-        //     from the parent system.
-        // [Obsolete("birth1 property is deprecated. Use AddSubEmitter, RemoveSubEmitter, SetSubEmitterSystem and GetSubEmitterSystem instead.", false)]
-        // public ParticleSystem birth1
-        // {
-        //     get
-        //     {
-        //         ThrowNotImplemented();
-        //         return null;
-        //     }
-        //     set
-        //     {
-        //         ThrowNotImplemented();
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Sub-Particle System which spawns at the locations of the collision of the particles
-        //     from the parent system.
-        // [Obsolete("collision0 property is deprecated. Use AddSubEmitter, RemoveSubEmitter, SetSubEmitterSystem and GetSubEmitterSystem instead.", false)]
-        // public ParticleSystem collision0
-        // {
-        //     get
-        //     {
-        //         ThrowNotImplemented();
-        //         return null;
-        //     }
-        //     set
-        //     {
-        //         ThrowNotImplemented();
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Sub-Particle System which spawns at the locations of the collision of the particles
-        //     from the parent system.
-        // [Obsolete("collision1 property is deprecated. Use AddSubEmitter, RemoveSubEmitter, SetSubEmitterSystem and GetSubEmitterSystem instead.", false)]
-        // public ParticleSystem collision1
-        // {
-        //     get
-        //     {
-        //         ThrowNotImplemented();
-        //         return null;
-        //     }
-        //     set
-        //     {
-        //         ThrowNotImplemented();
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Sub-Particle System which spawns at the locations of the death of the particles
-        //     from the parent system.
-        // [Obsolete("death0 property is deprecated. Use AddSubEmitter, RemoveSubEmitter, SetSubEmitterSystem and GetSubEmitterSystem instead.", false)]
-        // public ParticleSystem death0
-        // {
-        //     get
-        //     {
-        //         ThrowNotImplemented();
-        //         return null;
-        //     }
-        //     set
-        //     {
-        //         ThrowNotImplemented();
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Sub-Particle System to spawn on death of the parent system's particles.
-        // [Obsolete("death1 property is deprecated. Use AddSubEmitter, RemoveSubEmitter, SetSubEmitterSystem and GetSubEmitterSystem instead.", false)]
-        // public ParticleSystem death1
-        // {
-        //     get
-        //     {
-        //         ThrowNotImplemented();
-        //         return null;
-        //     }
-        //     set
-        //     {
-        //         ThrowNotImplemented();
-        //     }
-        // }
 
         //
         // Summary:
@@ -4251,60 +3992,6 @@ public sealed class ParticleSystem : Component
     public struct TextureSheetAnimationModule
     {
         internal ParticleSystem m_ParticleSystem;
-
-        //
-        // Summary:
-        //     Flip the U coordinate on particles, causing them to appear mirrored horizontally.
-        // [Obsolete("flipU property is deprecated. Use ParticleSystemRenderer.flip.x instead.", false)]
-        // public float flipU
-        // {
-        //     get
-        //     {
-        //         return m_ParticleSystem.GetComponent<ParticleSystemRenderer>().flip.x;
-        //     }
-        //     set
-        //     {
-        //         ParticleSystemRenderer component = m_ParticleSystem.GetComponent<ParticleSystemRenderer>();
-        //         Vector3 flip = component.flip;
-        //         flip.x = value;
-        //         component.flip = flip;
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Flip the V coordinate on particles, causing them to appear mirrored vertically.
-        // [Obsolete("flipV property is deprecated. Use ParticleSystemRenderer.flip.y instead.", false)]
-        // public float flipV
-        // {
-        //     get
-        //     {
-        //         return m_ParticleSystem.GetComponent<ParticleSystemRenderer>().flip.y;
-        //     }
-        //     set
-        //     {
-        //         ParticleSystemRenderer component = m_ParticleSystem.GetComponent<ParticleSystemRenderer>();
-        //         Vector3 flip = component.flip;
-        //         flip.y = value;
-        //         component.flip = flip;
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     Use a random row of the Texture sheet for each particle emitted.
-        // [Obsolete("useRandomRow property is deprecated. Use rowMode instead.", false)]
-        // public bool useRandomRow
-        // {
-        //     get
-        //     {
-        //         return rowMode == ParticleSystemAnimationRowMode.Random;
-        //     }
-        //     set
-        //     {
-        //         rowMode = (value ? ParticleSystemAnimationRowMode.Random : ParticleSystemAnimationRowMode.Custom);
-        //     }
-        // }
 
         //
         // Summary:
@@ -4832,64 +4519,6 @@ public sealed class ParticleSystem : Component
 
         //
         // Summary:
-        //     The lifetime of the particle.
-        // [Obsolete("Please use Particle.remainingLifetime instead. (UnityUpgradable) -> UnityEngine.ParticleSystem/Particle.remainingLifetime", false)]
-        // public float lifetime
-        // {
-        //     get
-        //     {
-        //         return remainingLifetime;
-        //     }
-        //     set
-        //     {
-        //         remainingLifetime = value;
-        //     }
-        // }
-
-        //
-        // Summary:
-        //     The random value of the particle.
-        // [Obsolete("randomValue property is deprecated. Use randomSeed instead to control random behavior of particles.", false)]
-        // public float randomValue
-        // {
-        //     get
-        //     {
-        //         return BitConverter.ToSingle(BitConverter.GetBytes(m_RandomSeed), 0);
-        //     }
-        //     set
-        //     {
-        //         m_RandomSeed = BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
-        //     }
-        // }
-
-        // [Obsolete("size property is deprecated. Use startSize or GetCurrentSize() instead.", false)]
-        // public float size
-        // {
-        //     get
-        //     {
-        //         return startSize;
-        //     }
-        //     set
-        //     {
-        //         startSize = value;
-        //     }
-        // }
-
-        // [Obsolete("color property is deprecated. Use startColor or GetCurrentColor() instead.", false)]
-        // public Color32 color
-        // {
-        //     get
-        //     {
-        //         return startColor;
-        //     }
-        //     set
-        //     {
-        //         startColor = value;
-        //     }
-        // }
-
-        //
-        // Summary:
         //     The position of the particle.
         public Vector3 position
         {
@@ -5177,20 +4806,6 @@ public sealed class ParticleSystem : Component
             return system.GetParticleMeshIndex(ref this);
         }
     }
-
-    // [StructLayout(LayoutKind.Sequential, Size = 1)]
-    // [EditorBrowsable(EditorBrowsableState.Never)]
-    // [Obsolete("ParticleSystem.CollisionEvent has been deprecated. Use ParticleCollisionEvent instead (UnityUpgradable)", true)]
-    // public struct CollisionEvent
-    // {
-    //     public Vector3 intersection => default(Vector3);
-
-    //     public Vector3 normal => default(Vector3);
-
-    //     public Vector3 velocity => default(Vector3);
-
-    //     public Component collider => null;
-    // }
 
     //
     // Summary:
@@ -10962,301 +10577,6 @@ public sealed class ParticleSystem : Component
         private static extern void GetColor_Injected(ref CustomDataModule _unity_self, ParticleSystemCustomData stream, out MinMaxGradient ret);
     }
 
-    // [Obsolete("safeCollisionEventSize has been deprecated. Use GetSafeCollisionEventSize() instead (UnityUpgradable) -> ParticlePhysicsExtensions.GetSafeCollisionEventSize(UnityEngine.ParticleSystem)", false)]
-    // public int safeCollisionEventSize => ParticleSystemExtensionsImpl.GetSafeCollisionEventSize(this);
-
-    //
-    // Summary:
-    //     Start delay in seconds.
-    // [Obsolete("startDelay property is deprecated. Use main.startDelay or main.startDelayMultiplier instead.", false)]
-    // public float startDelay
-    // {
-    //     get
-    //     {
-    //         return main.startDelayMultiplier;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.startDelayMultiplier = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     Determines whether the Particle System is looping.
-    // [Obsolete("loop property is deprecated. Use main.loop instead.", false)]
-    // public bool loop
-    // {
-    //     get
-    //     {
-    //         return main.loop;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.loop = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     If set to true, the Particle System will automatically start playing on startup.
-    // [Obsolete("playOnAwake property is deprecated. Use main.playOnAwake instead.", false)]
-    // public bool playOnAwake
-    // {
-    //     get
-    //     {
-    //         return main.playOnAwake;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.playOnAwake = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The duration of the Particle System in seconds (Read Only).
-    // [Obsolete("duration property is deprecated. Use main.duration instead.", false)]
-    // public float duration => main.duration;
-
-    //
-    // Summary:
-    //     The playback speed of the Particle System. 1 is normal playback speed.
-    // [Obsolete("playbackSpeed property is deprecated. Use main.simulationSpeed instead.", false)]
-    // public float playbackSpeed
-    // {
-    //     get
-    //     {
-    //         return main.simulationSpeed;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.simulationSpeed = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     When set to false, the Particle System will not emit particles.
-    // [Obsolete("enableEmission property is deprecated. Use emission.enabled instead.", false)]
-    // public bool enableEmission
-    // {
-    //     get
-    //     {
-    //         return emission.enabled;
-    //     }
-    //     set
-    //     {
-    //         EmissionModule emissionModule = emission;
-    //         emissionModule.enabled = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The rate of particle emission.
-    // [Obsolete("emissionRate property is deprecated. Use emission.rateOverTime, emission.rateOverDistance, emission.rateOverTimeMultiplier or emission.rateOverDistanceMultiplier instead.", false)]
-    // public float emissionRate
-    // {
-    //     get
-    //     {
-    //         return emission.rateOverTimeMultiplier;
-    //     }
-    //     set
-    //     {
-    //         EmissionModule emissionModule = emission;
-    //         emissionModule.rateOverTime = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The initial speed of particles when emitted. When using curves, this value acts
-    //     as a scale on the curve.
-    // [Obsolete("startSpeed property is deprecated. Use main.startSpeed or main.startSpeedMultiplier instead.", false)]
-    // public float startSpeed
-    // {
-    //     get
-    //     {
-    //         return main.startSpeedMultiplier;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.startSpeedMultiplier = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The initial size of particles when emitted. When using curves, this value acts
-    //     as a scale on the curve.
-    // [Obsolete("startSize property is deprecated. Use main.startSize or main.startSizeMultiplier instead.", false)]
-    // public float startSize
-    // {
-    //     get
-    //     {
-    //         return main.startSizeMultiplier;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.startSizeMultiplier = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The initial color of particles when emitted.
-    // [Obsolete("startColor property is deprecated. Use main.startColor instead.", false)]
-    // public Color startColor
-    // {
-    //     get
-    //     {
-    //         return main.startColor.color;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.startColor = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The initial rotation of particles when emitted. When using curves, this value
-    //     acts as a scale on the curve.
-    // [Obsolete("startRotation property is deprecated. Use main.startRotation or main.startRotationMultiplier instead.", false)]
-    // public float startRotation
-    // {
-    //     get
-    //     {
-    //         return main.startRotationMultiplier;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.startRotationMultiplier = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The initial 3D rotation of particles when emitted. When using curves, this value
-    //     acts as a scale on the curves.
-    // [Obsolete("startRotation3D property is deprecated. Use main.startRotationX, main.startRotationY and main.startRotationZ instead. (Or main.startRotationXMultiplier, main.startRotationYMultiplier and main.startRotationZMultiplier).", false)]
-    // public Vector3 startRotation3D
-    // {
-    //     get
-    //     {
-    //         return new Vector3(main.startRotationXMultiplier, main.startRotationYMultiplier, main.startRotationZMultiplier);
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.startRotationXMultiplier = value.x;
-    //         mainModule.startRotationYMultiplier = value.y;
-    //         mainModule.startRotationZMultiplier = value.z;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The total lifetime in seconds that particles will have when emitted. When using
-    //     curves, this value acts as a scale on the curve. This value is set in the particle
-    //     when it is created by the Particle System.
-    // [Obsolete("startLifetime property is deprecated. Use main.startLifetime or main.startLifetimeMultiplier instead.", false)]
-    // public float startLifetime
-    // {
-    //     get
-    //     {
-    //         return main.startLifetimeMultiplier;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.startLifetimeMultiplier = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     Scale being applied to the gravity defined by Physics.gravity.
-    // [Obsolete("gravityModifier property is deprecated. Use main.gravityModifier or main.gravityModifierMultiplier instead.", false)]
-    // public float gravityModifier
-    // {
-    //     get
-    //     {
-    //         return main.gravityModifierMultiplier;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.gravityModifierMultiplier = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The maximum number of particles to emit.
-    // [Obsolete("maxParticles property is deprecated. Use main.maxParticles instead.", false)]
-    // public int maxParticles
-    // {
-    //     get
-    //     {
-    //         return main.maxParticles;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.maxParticles = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     This selects the space in which to simulate particles. It can be either world
-    //     or local space.
-    // [Obsolete("simulationSpace property is deprecated. Use main.simulationSpace instead.", false)]
-    // public ParticleSystemSimulationSpace simulationSpace
-    // {
-    //     get
-    //     {
-    //         return main.simulationSpace;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.simulationSpace = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     The scaling mode applied to particle sizes and positions.
-    // [Obsolete("scalingMode property is deprecated. Use main.scalingMode instead.", false)]
-    // public ParticleSystemScalingMode scalingMode
-    // {
-    //     get
-    //     {
-    //         return main.scalingMode;
-    //     }
-    //     set
-    //     {
-    //         MainModule mainModule = main;
-    //         mainModule.scalingMode = value;
-    //     }
-    // }
-
-    //
-    // Summary:
-    //     Does this system support Automatic Culling?
-    // [Obsolete("automaticCullingEnabled property is deprecated. Use proceduralSimulationSupported instead (UnityUpgradable) -> proceduralSimulationSupported", true)]
-    // public bool automaticCullingEnabled => proceduralSimulationSupported;
 
     // //
     // // Summary:
@@ -11487,38 +10807,6 @@ public sealed class ParticleSystem : Component
     //     Script interface for the CustomDataModule of a Particle System.
     public CustomDataModule customData => new CustomDataModule(this);
 
-    //
-    // Parameters:
-    //   position:
-    //
-    //   velocity:
-    //
-    //   size:
-    //
-    //   lifetime:
-    //
-    //   color:
-    // [Obsolete("Emit with specific parameters is deprecated. Pass a ParticleSystem.EmitParams parameter instead, which allows you to override some/all of the emission properties", false)]
-    // public void Emit(Vector3 position, Vector3 velocity, float size, float lifetime, Color32 color)
-    // {
-    //     Particle particle = default(Particle);
-    //     particle.position = position;
-    //     particle.velocity = velocity;
-    //     particle.lifetime = lifetime;
-    //     particle.startLifetime = lifetime;
-    //     particle.startSize = size;
-    //     particle.rotation3D = Vector3.zero;
-    //     particle.angularVelocity3D = Vector3.zero;
-    //     particle.startColor = color;
-    //     particle.randomSeed = 5u;
-    //     EmitOld_Internal(ref particle);
-    // }
-
-    // [Obsolete("Emit with a single particle structure is deprecated. Pass a ParticleSystem.EmitParams parameter instead, which allows you to override some/all of the emission properties", false)]
-    // public void Emit(Particle particle)
-    // {
-    //     EmitOld_Internal(ref particle);
-    // }
 
     [MethodImpl(MethodImplOptions.InternalCall)]
     [FreeFunction(Name = "ParticleSystemScriptBindings::GetParticleCurrentSize", HasExplicitThis = true)]
