@@ -10,7 +10,7 @@
 使用少量 drawcalls, 一次性的, 将一个 mesh 绘制很多份. 
 此技术适用于 建筑,树木,草, 或任何需要出府出现的 物体.
 
-一个 mesh 会被重复绘制很多次, 单每一次都可配置不同的 parameters
+一个 mesh 会被重复绘制很多次, 但每一次都可配置不同的 parameters
 (比如不同的颜色, scale, transform 变换矩阵 等 )
 
 
