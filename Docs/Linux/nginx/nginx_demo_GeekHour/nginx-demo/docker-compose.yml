@@ -1,0 +1,26 @@
+version: '3'
+services:
+  dz:
+    image: golang:1.20
+    volumes:
+      - ./dz:/go/src/dz
+    working_dir: /go/src/dz
+    ports:
+      - "8000:8000"
+    command: go run main.go
+  gz:
+    image: golang:1.20
+    volumes:
+      - ./gz:/go/src/gz
+    working_dir: /go/src/gz
+    ports:
+      - "8001:8001"
+    command: go run main.go
+  tb:
+    image: golang:1.20
+    volumes:
+      - ./tb:/go/src/tb
+    working_dir: /go/src/tb
+    ports:
+      - "8002:8002"
+    command: go run main.go
