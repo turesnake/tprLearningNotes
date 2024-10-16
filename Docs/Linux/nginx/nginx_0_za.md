@@ -3,6 +3,120 @@
 # ======================================== #
 
 
+
+
+# ----------------------------- #
+#        常用指令
+# ----------------------------- #
+
+
+
+# sudo systemctl start nginx
+# sudo systemctl stop nginx
+#  sudo systemctl restart nginx 
+    启动服务
+    停止服务
+    重启服务
+
+# sudo systemctl status nginx 
+# sudo systemctl status nginx.service
+    查看服务状况
+    ---
+    上面两句话是 等效的;
+    nginx 是服务的简写名称，systemctl 会自动将其解析为 nginx.service
+
+    
+
+
+# sudo journalctl -u nginx
+    check the nginx error logs
+
+# sudo systemctl enable nginx
+    将 nginx 加入 开机启动项     -- enable it to start automatically on boot
+
+# sudo systemctl disable nginx
+    将 nginx 移出 开机启动项
+    
+
+# sudo lsof -i :80
+    显示当前正在使用 80 端口的进程信息
+
+
+# sudo netstat -tuln | grep :80
+# sudo ss -tuln | grep :80
+
+
+# ps aux | grep nginx
+# ps -ef|grep nginx             -- 更实用点...
+    显示与 nginx 相关的进程信息
+    这个命令会列出所有与 nginx 相关的进程，包括主进程和工作进程。
+    ---
+    两句话的区别:
+        a：显示所有用户的进程，包括其他用户的进程。
+        u：以用户为中心的格式显示进程信息，包括用户、CPU 和内存使用情况等。
+        x：显示没有控制终端的进程。
+
+        输出格式
+        -e：显示所有进程。
+        -f：以完整格式显示进程信息，包括 UID、PID、PPID、C、STIME、TTY、TIME 和 CMD
+
+
+
+# sudo lsof -c nginx
+    使用 lsof 命令查看打开的文件和网络连接：
+    会列出所有与 nginx 相关的打开文件和网络连接
+
+
+
+# nginx -V
+nginx version: nginx/1.18.0 (Ubuntu)
+built with OpenSSL 3.0.2 15 Mar 2022
+TLS SNI support enabled
+configure arguments: --with-cc-opt='-g -O2 -ffile-prefix-map=/build/nginx-dSlJVq/nginx-1.18.0=. -flto=auto -ffat-lto-objects -flto=auto -ffat-lto-objects -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Wdate-time -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -flto=auto -ffat-lto-objects -flto=auto -Wl,-z,relro -Wl,-z,now -fPIC' --prefix=/usr/share/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --lock-path=/var/lock/nginx.lock --pid-path=/run/nginx.pid --modules-path=/usr/lib/nginx/modules --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --with-compat --with-debug --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_v2_module --with-http_dav_module --with-http_slice_module --with-threads --add-dynamic-module=/build/nginx-dSlJVq/nginx-1.18.0/debian/modules/http-geoip2 --with-http_addition_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_sub_module
+
+    可以看到有关你正在使用的 Nginx 版本及其构建选项的详细信息
+
+Nginx 版本信息
+    版本: nginx/1.18.0 (Ubuntu)
+    构建日期: 使用了 OpenSSL 3.0.2（日期：2022年3月15日）
+    TLS SNI 支持: 已启用
+
+配置参数
+以下是 Nginx 在编译时使用的配置选项：
+
+基本路径和文件:
+    前缀:              /usr/share/nginx
+    配置文件路径:       /etc/nginx/nginx.conf           -- !!!
+    HTTP 日志路径:      /var/log/nginx/access.log
+    错误日志路径:       /var/log/nginx/error.log
+    PID 文件路径:       /run/nginx.pid
+    模块路径:           /usr/lib/nginx/modules
+
+临时文件路径:
+    HTTP 客户端主体临时路径:     /var/lib/nginx/body
+    HTTP FastCGI 临时路径:      /var/lib/nginx/fastcgi
+    HTTP 代理临时路径:          /var/lib/nginx/proxy
+    HTTP SCGI 临时路径:         /var/lib/nginx/scgi
+    HTTP uWSGI 临时路径:        /var/lib/nginx/uwsgi
+
+编译选项:
+    启用了调试信息：            --with-debug
+    启用了 PCRE JIT 支持：      --with-pcre-jit
+    启用了多种模块支持，包括 SSL 模块、HTTP 状态模块、真实 IP 模块、HTTP/2 支持、HTTP Davioc 错误报告、HTTP 切片模块等。
+
+常用功能
+    SSL 支持:   --with-http_ssl_module 使 Nginx 能够处理 HTTPS 请求。
+    状态和统计: --with-http_stub_status_module 用于监控 Nginx 状态。
+    线程支持:   --with-threads 使 Nginx 能够在多线程环境中运行。
+
+
+
+
+
+
+
+
+
 # ----------------------------- #
 #      全局 块
 # ----------------------------- #

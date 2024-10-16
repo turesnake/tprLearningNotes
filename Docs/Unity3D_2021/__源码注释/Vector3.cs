@@ -120,7 +120,7 @@ namespace UnityEngine
         public float sqrMagnitude { get; }
 
         /*
-            Calculates the angle between vectors from and.
+            Calculates the angle between vectors from and to.
 
             The angle returned is the angle of rotation from the first vector to the second, 
             when treating these two vector inputs as directions.

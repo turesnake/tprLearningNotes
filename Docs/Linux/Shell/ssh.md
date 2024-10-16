@@ -2,6 +2,9 @@
 
 
 
+# sudo systemctl enable ssh
+    将 ssh 设为 开机启动项
+
 
 
 # ---------------------------- #

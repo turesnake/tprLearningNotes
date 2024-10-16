@@ -26,6 +26,9 @@ sudo -i -u xxxx
 
 
 
+# 重启服务器:
+    sudo reboot     -- 最简单的
+
 
 
 
