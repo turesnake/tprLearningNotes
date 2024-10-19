@@ -4,10 +4,16 @@
 
 
 
+# 官网文档
+https://nginx.org/en/docs/
 
-# ----------------------------- #
-#        常用指令
-# ----------------------------- #
+
+
+
+`++++++++++++++++++++++++++++++++++++++++++++`
+# =========================================== #
+#                常用指令
+# =========================================== #
 
 
 
@@ -25,8 +31,8 @@
     上面两句话是 等效的;
     nginx 是服务的简写名称，systemctl 会自动将其解析为 nginx.service
 
-    
-
+# sudo nginx -t
+    检测配置文件内容是否正确
 
 # sudo journalctl -u nginx
     check the nginx error logs
@@ -85,12 +91,13 @@ Nginx 版本信息
 以下是 Nginx 在编译时使用的配置选项：
 
 基本路径和文件:
-    前缀:              /usr/share/nginx
-    配置文件路径:       /etc/nginx/nginx.conf           -- !!!
+    `nginx 安装目录`:   /usr/share/nginx   -- !!!!
+    `配置文件路径`:     /etc/nginx/nginx.conf           -- !!!
     HTTP 日志路径:      /var/log/nginx/access.log
     错误日志路径:       /var/log/nginx/error.log
     PID 文件路径:       /run/nginx.pid
     模块路径:           /usr/lib/nginx/modules
+
 
 临时文件路径:
     HTTP 客户端主体临时路径:     /var/lib/nginx/body
@@ -116,10 +123,10 @@ Nginx 版本信息
 
 
 
-
-# ----------------------------- #
-#      全局 块
-# ----------------------------- #
+`++++++++++++++++++++++++++++++++++++++++++++`
+# =========================================== #
+#                全局 块
+# =========================================== #
 
   
 # user www-data www-data;  
@@ -193,10 +200,10 @@ Nginx 版本信息
 
 
 
-
-# ----------------------------- #
-#      events 块
-# ----------------------------- #
+`++++++++++++++++++++++++++++++++++++++++++++`
+# =========================================== #
+#              events 块
+# =========================================== #
 events 块中的指令主要用于控制 Nginx 的连接处理和事件管理。通过合理配置这些指令，可以优化 Nginx 的性能，特别是在高并发场景下。
 
 # 一个 配置文件中, 只能配置一个 events 块;
@@ -252,21 +259,338 @@ events {
 
 
 
-# ----------------------------- #
-#      http 块 中的 全局块
-# ----------------------------- #
+`++++++++++++++++++++++++++++++++++++++++++++`
+# =========================================== #
+#            http 块 中的 全局块
+# =========================================== #
+
+
+
+# include:          包含其他配置文件。
+    include /etc/nginx/mime.types;
+    可以使⽤include指令引⼊其他配置⽂件
+
+
+
+# default_type:         设置默认的 MIME 类型。
+    default_type application/octet-stream;
+    默认类型，如果请求的URL没有包含⽂件类型，会使⽤默认类型
+
+
+
+# log_format:           定义日志格式。
+    log_format main '$remote_addr - $remote_user [$time_local] 
+        "$request" '
+        '$status $body_bytes_sent "$http_referer" '
+        '"$http_user_agent" "$http_x_forwarded_for"';
+
+
+# access_log:       设置访问日志文件。
+    access_log /var/log/nginx/access.log main;
+    access_log ⽇志存放路径和类型
+    格式为：access_log <path> [format [buffer=size] [gzip[=level]] [flush=time] [if=condition]];
+
+
+# error_log:        设置错误日志文件。
+
+
+
+# sendfile          开启⾼效⽂件传输模式
+    sendfile on;
+
+
+# sendfile_max_chunk     设置sendfile最⼤传输⽚段⼤⼩，默认为0，表示不限制
+    sendfile_max_chunk 1m;
+
+
+
+
+# -------------------------------- #
+#         服务器块:
+# --------------------------------
+
+# server:       定义一个虚拟服务器块，可以包含多个 server 指令。
+    server {}
+    具体见下方 段落
+
+
+# -------------------------------- #
+#         负载均衡:
+# --------------------------------
+
+# upstream:         定义上游服务器组，用于负载均衡。
+    具体见下方 段落
+
+
+# -------------------------------- #
+#         请求处理:
+# --------------------------------
+
+# client_max_body_size:         设置客户端请求体的最大大小。
+
+
+# keepalive_timeout:        设置保持连接的超时时间。
+    keepalive_timeout 65;
+
+# keepalive_requests        每个连接的请求次数
+    keepalive_requests 100;
+
+
+# send_timeout:         设置发送响应的超时时间。
 
 
 
 
 
+# -------------------------------- #
+#         缓存配置:
+# --------------------------------
+
+# proxy_cache_path:         定义缓存路径和参数。
+    proxy_cache_path /var/cache/nginx/proxy_cache levels=1:2 keys_zone=my_cache:10m max_size=1g inactive=60m use_temp_path=off;  
+
+
+
+# -------------------------------- #
+#         Gzip 压缩:
+# --------------------------------
+
+
+# gzip:         启用 Gzip 压缩。
+    gzip on;
+
+
+# gzip_types:       置需要压缩的 MIME 类型。
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+    gzip压缩⽂件类型
+
+
+# gzip_min_length
+    gzip_min_length 1k;
+    开启 gzip 压缩的最⼩⽂件⼤⼩
+
+
+# gzip_comp_level       压缩级别
+    gzip_comp_level 2;
+    gzip压缩级别，1-9，级别越⾼压缩率越⾼，但是消耗CPU资源也越多
 
 
 
 
+# -------------------------------- #
+#         CORS 配置:
+# --------------------------------
+
+# add_header:       添加 HTTP 响应头，例如 CORS 相关的头部。
+
+
+# -------------------------------- #
+#         SSL/TLS 配置:
+# --------------------------------
+
+# ssl_certificate:      设置 SSL 证书文件。
+
+# ssl_certificate_key:      设置 SSL 证书密钥文件。
+
+
+# -------------------------------- #
+#         错误页面:
+# --------------------------------
+
+# error_page:       自定义错误页面。
 
 
 
+# -------------------------------- #
+#         重定向和重写:
+# --------------------------------
+
+# rewrite:      URL 重写规则。
+
+# return:       返回特定的 HTTP 状态码或重定向。
+
+
+# -------------------------------- #
+#         限制和安全:
+# --------------------------------
+
+# limit_conn:       限制连接数。
+
+# limit_req:        限制请求速率。
+
+
+# try_files:        尝试访问文件或目录。
+
+
+
+
+`++++++++++++++++++++++++++++++++++++++++++++`
+# =========================================== #
+#        http: upstream 块
+# =========================================== #
+upstream指令⽤于定义⼀组服务器，⼀般⽤来配置反向代理和负载均衡
+
+
+upstream www.example.com 
+{
+    ip_hash;
+    server 192.168.50.11:80 weight=3;
+    server 192.168.50.12:80;
+    server 192.168.50.13:80;
+}
+
+ 
+# ip_hash
+    ip_hash指令⽤于设置负载均衡的⽅式，ip_hash表示使⽤客户端的IP进⾏hash，
+    这样可以保证同⼀个客户端的请求每次都会分配到同⼀个服务器，解决了session共享的问题
+
+
+# server
+    server 192.168.50.12:80;
+    weight ⽤于设置权重，权重越⾼被分配到的⼏率越⼤
+
+
+`++++++++++++++++++++++++++++++++++++++++++++`
+# =========================================== #
+#        http: server 块
+# =========================================== #
+server块是配置虚拟主机的，⼀个http块可以包含多个server块，每个server块就是⼀个虚拟主机。
+
+
+# 例子:
+server 
+{
+    listen 80;
+    server_name localhost;
+    
+    location / {
+        root /usr/share/nginx/html; # 根⽬录
+        index index.html index.htm; # 默认⽂件
+    }
+    
+    error_page 500 502 503 504 /50x.html; # 错误⻚⾯
+
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+}
+
+
+# listen 80;
+    监听 IP 和 端⼝;
+    格式为：
+        listen [ip]:port [default_server] [ssl] [http2] [spdy] [proxy_protocol] [setfib=number] [fastopen=number] [backlog=number];
+    
+    listen指令⾮常灵活，可以指定多个IP和端⼝，也可以使⽤通配符
+
+    下⾯是⼏个实际的例⼦：
+        listen 127.0.0.1:80;    # 监听来⾃ 127.0.0.1 的 80 端⼝的请求
+        listen 80;              # 监听来⾃所有 IP 的 80 端⼝的请求
+        listen *:80;            # 监听来⾃所有 IP 的 80 端⼝的请求，同上
+        listen 127.0.0.1;       # 监听来⾃来⾃ 127.0.0.1 的 80 端⼝，因为默认端⼝为 80;  (不写端口就意味着使用默认端口)
+
+
+# server_name localhost;
+    ⽤来指定 虚拟主机 的 域名，可以使⽤ 精确匹配、通配符匹配 和 正则匹配等⽅式
+
+        server_name example.org www.example.org;    # 精确匹配
+        server_name *.example.org;                  # 通配符匹配
+        server_name ~^www\d+\.example\.net$;        # 正则匹配
+
+# location {...}
+    见下方段落;
+
+# error_page
+    ⽤于指定错误⻚⾯，可以指定多个，按照优先级从⾼到低依次查找
+
+    error_page 500 502 503 504 /50x.html;   # 错误⻚⾯
+
+
+
+
+`++++++++++++++++++++++++++++++++++++++++++++`
+# =========================================== #
+#        http: server 块: location块
+# =========================================== #
+定义请求的处理规则。
+
+# 例子:
+location = / 
+{  
+    root /var/www/html;  
+    index index.html;  
+} 
+
+location ~ \.php$ 
+{  
+    include fastcgi_params;  
+    fastcgi_pass 127.0.0.1:9000;  
+    fastcgi_index index.php;  
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;  
+}   
+
+location /api/ 
+{  
+    proxy_pass http://backend;              # 将请求转发到上游服务器  
+    proxy_set_header Host $host;            # 设置 Host 头  
+    proxy_set_header X-Real-IP $remote_addr;                        # 设置真实客户端 IP  
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;    # 设置 X-Forwarded-For 头  
+    proxy_set_header X-Forwarded-Proto $scheme;                     # 设置协议（http 或 https）  
+}  
+
+
+
+
+# root: 设置请求的根目录。 可以是绝对路径，也可以是相对路径
+
+# index: 设置默认的索引文件。       ⽤于指定默认⽂件，如果请求的是⽬录，则会在⽬录下查找默认⽂件
+
+# proxy_pass: 将请求转发到其他服务器。
+
+# rewrite: 重写请求的 URI。
+
+# deny/allow: 控制访问权限
+
+
+# 修饰符:
+# -1-   精确匹配的请求  
+location = /index.html 
+{  
+    ...
+} 
+精确匹配。如果请求的 URI 完全与指定的 URI 匹配，则使用该块。
+
+
+# -2-   处理以 /images/ 开头的请求  
+location ^~ /images/ 
+{  
+    ...
+} 
+前缀匹配。如果请求的 URI 以指定的 URI 开头，则使用该块，并且不再检查其他以 location 开头的块。
+
+
+# -3-   处理以 .php 结尾的请求  
+location ~ \.php$ 
+{  
+    ...
+}  
+正则表达式匹配。使用正则表达式匹配请求的 URI，区分大小写。
+
+
+# -4-   处理以 .jpg、.jpeg 或 .png 结尾的请求，忽略大小写 
+location ~* \.(jpg|jpeg|png)$ 
+{  
+    ...
+}  
+正则表达式匹配，忽略大小写。
+
+
+# -5-   处理所有其他请求  
+location / 
+{  
+    ...
+}  
+默认匹配。如果没有其他 location 块匹配请求，则使用该块。
 
 
 

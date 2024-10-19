@@ -25,9 +25,9 @@
 
 # 重启 SSH 服务：
     保存文件并退出编辑器后，重启 SSH 服务以应用更改：
-    systemctl restart ssh  
 
-
+    sudo systemctl restart ssh  
+    sudo systemctl restart sshd
 
 
 
