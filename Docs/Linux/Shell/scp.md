@@ -4,6 +4,9 @@
 
 scp（Secure Copy Protocol
 
+远程复制 文件/目录;
+
+
 
 # 基本语法
     scp [options] [source] [destination]  
