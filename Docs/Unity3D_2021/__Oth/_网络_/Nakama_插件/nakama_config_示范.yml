@@ -1,0 +1,149 @@
+
+name: tapir # Nakama node name, also used in the log files
+data_dir: "./data/"
+
+# Maximum number of seconds to wait for the server to complete work 
+# before shutting down, Default value is 0
+# shutdown_grace_sec: 0 
+
+
+logger:
+  stdout: false # 若为true, log将输出到console, 而不记录到文件中
+  level: "warn"
+  file: "./logfile_01.log"
+  rotation: false # Rotate log files 循环更新
+  max_size: 100 # MB
+  max_age: 0
+  max_backups: 0
+  local_time: false # true 使用本地时间，false 使用 UTC 时间 
+  compress: false # 是否 gzip 压缩
+
+# 度量信息 ? This information can be exported to Prometheus.
+# metrics:
+#   reporting_freq_sec: 60
+#   namespace: ""
+#   prometheus_port: 7354
+
+
+# Nakama creates and manages its own database called nakama within the CockroachDB database.
+database:
+  # !! List of database nodes to connect to;
+  # 注意, ip 地址后一定要跟 数据库的 name
+  address: 
+    - "root:@192.1.1.213:26258/defaultdb"
+  conn_max_lifetime_ms: 0
+  max_open_conns: 0
+  max_idle_conns: 100
+
+
+# runtime engine
+runtime:
+  # 自定义环境变量: 
+  # env:
+  #   - "example_apikey=example_apivalue"
+  #   - "encryptionkey=afefa==e332*u13=971mldq"
+
+  # Path of modules to scan and load.
+  path: "/usr/local/bin/nakama/data/modules"  
+
+  # A key used to authenticate HTTP Runtime invocations
+  # --to protect the server’s runtime HTTP invocations
+  http_key: "defaulthttpkey"    
+
+
+# Options related to connection socket 
+# and transport protocol between the server and clients.
+# 官方推荐新手使用 默认参数;
+socket:
+  server_key: "defaultkey"  # !! client 代码里使用的 serverKey
+  port: 7350 # !! client 代码里使用的 端口号
+  # max_message_size_bytes: 4096 # bytes
+  # read_timeout_ms: 10000
+  # write_timeout_ms: 10000
+  # idle_timeout_ms: 60000
+  # write_wait_ms: 5000
+  # pong_wait_ms: 10000
+  # ping_period_ms: 8000 # Must be less than pong_wait_ms
+  # outgoing_queue_size: 16
+
+
+
+# configuration options related to each user 
+# game session: 游戏会话: 玩家的一次完整的游戏互动过程, 从登录到退出;
+session:
+  encryption_key: "defaultencryptionkey" # to produce the client token
+  token_expiry_sec: 60 # Session token 会话令牌 expiry 到期 in seconds
+
+  # used to produce the session refresh token
+  refresh_encryption_key: "defaultrefreshencryptionkey"
+  refresh_token_expiry_sec: 3600 # Refresh token expiry in seconds
+
+  # Only allow one socket per user, older sessions are disconnected
+  single_socket: false
+
+  # 以下两个想要起效, 必须同时开启 single_socket;
+  single_match: false # Only allow one match per user, older matches receive a leave
+  single_party: false # Only allow one party per user. Older parties receive a leave
+
+  # Only allow one session token per user. Older session tokens are invalidated in the session cache
+  single_session: false
+
+
+
+# connect to various social networks to fetch user information;
+# It can also act as a notification center for delivering and persisting notifications.
+# social:
+  # Steam network settings
+  # steam:
+  #   publisher_key: ""
+  #   app_id: 0
+
+
+# the configuration related for the embedded developer console
+# 似乎是可用浏览器访问的那个可视化 console
+console:
+  port: 7351            # !!
+  username: "tapir"     # !!
+  password: "xxxxxxx"   # !!
+
+
+# configures how the nodes should connect to each other to form a cluster.
+# !!! only in the Nakama Enterprise version 
+# cluster:
+#   join:
+#     - "10.0.0.2:7352"
+#   gossip_bindaddr: "0.0.0.0"
+#   gossip_bindport: 7352
+#   rpc_port: 7353
+#   local_priority: true
+#   work_factor_interval_ms: 1000
+
+
+# session tracking
+# 很多参数只在 Enterprise version 中有;
+# tracker:
+#   max_delta_sizes:
+#     - 100
+#     - 1000
+#     - 10000
+
+
+# 配对:
+# matchmaker:
+#   max_tickets: 2
+#   interval_sec: 15
+#   max_intervals: 3
+
+
+# 特殊平台账号登录:
+# iap:
+#   apple:
+#     shared_password: "password"
+#   google:
+#     client_email: "email@google.com"
+#     private_key: "pk"
+#   huawei:
+#     public_key: "pk"
+#     client_id: "id"
+#     client_secret: "secret"
+

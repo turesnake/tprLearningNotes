@@ -42,6 +42,9 @@
 {
 "registry-mirrors": [
     "https://qvm2weup.mirror.aliyuncs.com",
+    "https://registry.cn-hangzhou.aliyuncs.com",
+    "https://hub-mirror.c.163.com",
+    "https://mirror.ccs.tencentyun.com",
     "https://docker.m.daocloud.io",
     "https://dockerproxy.com",
     "https://registry.docker-cn.com",
@@ -57,10 +60,6 @@
   ]
 }
 
-"https://registry.cn-hangzhou.aliyuncs.com",
-"https://hub-mirror.c.163.com",
-"https://mirror.ccs.tencentyun.com",
-"https://www.daocloud.io/mirror",
 
 
 # sudo systemctl daemon-reload
