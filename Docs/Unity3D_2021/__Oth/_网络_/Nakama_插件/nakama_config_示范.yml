@@ -9,7 +9,7 @@ data_dir: "./data/"
 
 logger:
   stdout: false # 若为true, log将输出到console, 而不记录到文件中
-  level: "warn"
+  level: "warn" # !! Minimum log level to produce. Values are `debug`, `info`, `warn` and `error`. Default is `info`.
   file: "./logfile_01.log"
   rotation: false # Rotate log files 循环更新
   max_size: 100 # MB
@@ -42,8 +42,8 @@ runtime:
   # env:
   #   - "example_apikey=example_apivalue"
   #   - "encryptionkey=afefa==e332*u13=971mldq"
-
-  # Path of modules to scan and load.
+  
+  # Path of modules to scan and load. # !! lua 脚本目录
   path: "/usr/local/bin/nakama/data/modules"  
 
   # A key used to authenticate HTTP Runtime invocations

@@ -166,6 +166,10 @@ namespace System.Collections.Generic
         public int LastIndexOf(T item, int index, int count);
 
 
+        /*
+            true if item is successfully removed; otherwise, false. 
+            This method also returns false if item was not found in the List<T>. 
+        */
         public bool Remove(T item);
 
 

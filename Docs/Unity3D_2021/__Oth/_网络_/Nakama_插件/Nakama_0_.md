@@ -117,7 +117,7 @@ https://heroiclabs.com/docs/nakama/getting-started/
 
 
 # -------------------------------------- #
-# -8-  启动(start) Nakama server 
+# -8-  启动(start) Nakama server     -- (不推荐)
 #      临时指令版, 非配置版
 
 测试版:
@@ -155,7 +155,7 @@ https://heroiclabs.com/docs/nakama/getting-started/
 # -8-  启动(start) Nakama server 
 #      正式 config.yml 配置版
 
-具体教程:
+# 配置文件 具体教程:
 https://heroiclabs.com/docs/nakama/getting-started/configuration/
 
 
@@ -166,12 +166,38 @@ https://heroiclabs.com/docs/nakama/getting-started/configuration/
         新建这个配置文件, 然后把本目录下 nakama_config_示范.yml 文件的内容适当修改后, 复制进去
 
 
+# -- 写法 -1-:    (-不推荐-)
     sudo nohup ./nakama --config nakama_config_1.yml > /home/tapir/nakama_logs/nakama.log 2>&1 &
         通过配置文件启动 nakama;
         nohup 意味着退出console 后程序依然运行
         & 表示后台运行
         > nakama.log: 将标准输出重定向到 nakama.log 文件。
-        2>&1: 将标准错误输出也重定向到同一个文件。
+        2>&1: 将标准错误输出也重定向到同一个文件。 (不是整个 nakama 的log, 仅仅是这句指令引发的log)
+
+# -- 写法 -2-:    (-推荐-)
+    nohup sudo ./nakama --config nakama_config_1.yml &  
+        
+        
+
+# 如何删除这些 进程:
+    找到它们的 pid:
+        ps aux | grep nakama
+
+    使用 kill 杀死它们:
+        sudo kill -9 xxx1 xxx2
+
+    
+# 快捷删除:  (推荐)
+    ps aux | grep nakama | grep -v grep | awk '{print $2}' | xargs -r sudo kill -9  
+
+    一行指令 完成整个删除工作:
+        ps aux：列出所有运行中的进程。
+        grep nakama：过滤出包含 "nakama" 的进程。
+        grep -v grep：排除包含 "grep" 的行，以避免将 grep 自身包含在内。
+        awk '{print $2}'：提取第二列，即 PID。
+        xargs -r sudo kill -9：将找到的 PID 传递给 kill -9 命令，强制终止这些进程。
+
+
 
 
 # -------------------------------------- #
