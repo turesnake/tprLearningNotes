@@ -5,6 +5,19 @@
 目的是 开发 nakama server lua scripts, 在本机上快速迭代功能;
 
 
+# =================== #
+#   常用指令
+# =================== #
+
+
+
+nakama_pid
+nakama_stop
+nakama_restart
+nakama_log
+nakama_delete_log
+
+
 
 
 # -------------------------------------------------------------------- #
@@ -40,7 +53,6 @@
 # -3- 开启 Nakama:
     cd /usr/local/bin/nakama
     nohup sudo ./nakama --config nakama_config_1.yml &
-
     
 
 
@@ -51,13 +63,78 @@
 # -------------------------- 关闭 Nakama 流程 -------------------------
 
 # -5- 删除所有 nakama 进程:
-    ps aux | grep nakama | grep -v grep | awk '{print $2}' | xargs -r sudo kill -9 
+  `nakama_stop`
+
+  内容为:
+    ps aux | grep nakama | grep -v grep | awk '{print $2}' | xargs -r sudo kill -9
+
+
+
+# -------------------------------------------------------------------- #
+# -------------- 开发 Lua 脚本后 (--`新, vscode版, 推荐`--) ---------------
+
+
+# -- 准备工作 (一次性)
+    -- 确保 windows11 上已安装 vscode wsl 插件
+
+    -- 开启目录写入权限
+        sudo chmod -R 777 /usr/local/bin/nakama/data/modules/
+
+
+# -- 直接用 vscode 打开 ubuntu 目录
+
+    cd /usr/local/bin/nakama/data/modules/ForOut/
+    code .
+
+
+# -------------------------------------------------------------------- #
+
+
+# -- 检测 目的地 目录 是否正确:
+    cd /usr/local/bin/nakama/data/modules/ 
+    
+
+
+# -- 重启 nakama: (`脚本版`:)
+  ` nakama_restart`
+
+    ---
+    脚本写法见本文下方
+
+
+# -- 重启 nakama:  (`手动版`, 不推荐)
+        cd /usr/local/bin/nakama
+    删除:
+        ps aux | grep nakama | grep -v grep | awk '{print $2}' | xargs -r sudo kill -9 
+    重启:
+        nohup sudo ./nakama --config nakama_config_1.yml & 
+
 
 
 
 
 # -------------------------------------------------------------------- #
-# -------------------------- 开发 Lua 脚本后 -------------------------
+# -------------------------- 查看 Nakama Log -------------------------
+
+# 查看:
+  `nakama_log`
+  
+  内容:
+    nano /usr/local/bin/nakama/logfile_01.log
+
+
+# 删除:
+  `nakama_delete_log`
+
+  内容:
+    sudo rm -rf /usr/local/bin/nakama/logfile_01.log
+
+
+
+
+
+# -------------------------------------------------------------------- #
+# -------------- 开发 Lua 脚本后 (--`旧, 手动版, 不推荐-`-) ---------------
 
 
 # -- 开发
@@ -71,54 +148,6 @@
   这里其实有两句话:
     ssh root@172.21.249.213 'rm -rf /usr/local/bin/nakama/data/modules/ForOut'  
     scp -r E:\__TPR_CODE__\FishTank\Server_Luas\ForOut root@172.21.249.213:/usr/local/bin/nakama/data/modules/ 
-
-
-
-# -- 检测 目的地 目录 是否正确:
-    cd /usr/local/bin/nakama/data/modules/ 
-    
-
-
-# -- 重启 nakama:     (脚本版:)
-    restart_nakama.sh
-
-    ---
-    脚本写法见本文下方
-
-
-# -- 重启 nakama:     (手动版, 不推荐)
-        cd /usr/local/bin/nakama
-    删除:
-        ps aux | grep nakama | grep -v grep | awk '{print $2}' | xargs -r sudo kill -9 
-    重启:
-        nohup sudo ./nakama --config nakama_config_1.yml & 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# -------------------------------------------------------------------- #
-# -------------------------- 查看 Nakama Log -------------------------
-
-# 查看:
-  nano /usr/local/bin/nakama/logfile_01.log
-
-
-# 删除:
-  sudo rm -rf /usr/local/bin/nakama/logfile_01.log
-
-
-
-
 
 
 
@@ -156,6 +185,24 @@
 
 # 容易出错点:
   删除进程 那一行, 容易杀不干净, 最好查看下 nakama log 确认下 有没有报错;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
