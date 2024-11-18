@@ -29,6 +29,10 @@ sudo -i -u xxxx
     sudo reboot     -- 最简单的
 
 
+# 关闭服务器
+    sudo shutdown -h now
+
+
 # 杀死进程
 sudo kill 12345
 

@@ -10,6 +10,7 @@ data_dir: "./data/"
 logger:
   stdout: false # 若为true, log将输出到console, 而不记录到文件中
   level: "warn" # !! Minimum log level to produce. Values are `debug`, `info`, `warn` and `error`. Default is `info`.
+  format: "text" # text: 适合人类阅读;  json: 适合机器处理;
   file: "./logfile_01.log"
   rotation: false # Rotate log files 循环更新
   max_size: 100 # MB

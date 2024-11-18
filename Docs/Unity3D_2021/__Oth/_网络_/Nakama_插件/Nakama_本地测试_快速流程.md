@@ -17,6 +17,10 @@ nakama_restart
 nakama_log
 nakama_delete_log
 
+---
+nakama_delete_log
+nakama_stop
+nakama_restart
 
 
 
@@ -83,7 +87,7 @@ nakama_delete_log
 
 # -- 直接用 vscode 打开 ubuntu 目录
 
-    cd /usr/local/bin/nakama/data/modules/ForOut/
+    cd /usr/local/bin/nakama/data/modules/
     code .
 
 
@@ -156,6 +160,8 @@ nakama_delete_log
 # ==================================== #
 
 参考 bash_脚本__0.md  文件教程, 写入如下内容:
+
+写在 `/usr/local/bin/restart_nakama.sh`
 
 # --- restart_nakama.sh 文件内容:
 

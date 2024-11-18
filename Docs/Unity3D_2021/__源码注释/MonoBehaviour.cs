@@ -56,18 +56,30 @@ namespace UnityEngine
         //
         //   time:
         public void Invoke(string methodName, float time);
-        //
-        // 摘要:
-        //     Invokes the method methodName in time seconds, then repeatedly every repeatRate
-        //     seconds.
-        //
-        // 参数:
-        //   methodName:
-        //
-        //   time:
-        //
-        //   repeatRate:
+
+
+        /*
+            !!!!!!!!!!!!!! 重要 !!!!!!!!!!!!!!
+            !!!   每隔一段时间调用一次 某函数;
+            !!!   注意, 如果这个函数调用耗时过长, 可能会导致 本函数还没执行完, 下一次调用已经开始了; (导致重复调用)   
+
+            !!!   测试表明, 本质上, InvokeRepeating() 是在 FixedUpdate() 中轮询;
+            !!!   所以最好将参数 repeatRate 设置为 FixedUpdate 间距的整数倍 ... 
+
+            摘要:
+                Invokes the method methodName in time seconds, then repeatedly every repeatRate
+                seconds.
+            
+            参数:
+            methodName:
+            
+            time:
+            
+            repeatRate:
+        */
         public void InvokeRepeating(string methodName, float time, float repeatRate);
+
+
         //
         // 摘要:
         //     Is any invoke on methodName pending?

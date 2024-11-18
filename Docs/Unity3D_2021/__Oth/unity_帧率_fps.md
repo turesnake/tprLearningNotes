@@ -8,19 +8,36 @@
     Application.targetFrameRate = 30;
 
 
-
-
-
-
-
-
 #  可以试试这个插件:
+# 让物体的运动 不受到 帧率的影响
 https://assetstore.unity.com/packages/tools/utilities/fps-free-framerate-independent-movements-226119
 
 
-
-
 https://developer.android.com/games/develop/gameloops?hl=zh-cn
+
+
+
+# ------------------------------------------- #
+#   各种关系: Update(), 协程, UniTask, FixedUpdate(), InvokeRepeating() !!!!!!!!!!
+# ------------------------------------------- #
+
+# --- Update() 系列:
+Update() 受到 Application.targetFrameRate (和 Time.timeScale) 的影响 
+
+协程 则是在 Update() 中轮询;
+
+所以当 Update() 设置帧率过低时, 协程的行为也会受到影响;
+
+
+# --- FixedUpdate() 系列:
+    
+FixedUpdate 受到 Time.fixedDeltaTime (和 Time.timeScale) 的影响;
+
+InvokeRepeating 则是在 FixedUpdate 中轮询;  (测试发现)
+
+所以当 FixedUpdate() 设置帧率过低时, InvokeRepeating 的行为也会受到影响;
+
+
 
 
 # ------------------------------------------- #

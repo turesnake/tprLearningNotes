@@ -49,6 +49,13 @@ https://heroiclabs.com/docs/nakama/server-framework/lua-runtime/code-samples/
 
 local nk = require("nakama")
 
+
+# debug: 最详细的日志信息，适合调试。
+# info: 一般信息，适合生产环境。
+# warn: 警告信息，表示潜在问题。
+# error: 错误信息，表示发生了问题。
+# fatal: 严重错误，通常会导致程序退出。
+
 nk.logger_debug("---aa---")
 nk.logger_info("---aa---")
 nk.logger_warn("---bb---")
