@@ -86,9 +86,8 @@ nakama_restart
 
 
 # -- 直接用 vscode 打开 ubuntu 目录
-
-    cd /usr/local/bin/nakama/data/modules/
-    code .
+  cd /usr/local/bin/nakama/data/modules/
+  code .
 
 
 # -------------------------------------------------------------------- #
