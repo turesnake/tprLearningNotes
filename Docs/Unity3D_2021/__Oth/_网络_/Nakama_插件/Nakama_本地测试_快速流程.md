@@ -18,9 +18,15 @@ nakama_log
 nakama_delete_log
 
 ---
-nakama_delete_log
+nakama_log
 nakama_stop
 nakama_restart
+
+
+
+
+cd /usr/local/bin/nakama/data/modules/
+code .
 
 
 

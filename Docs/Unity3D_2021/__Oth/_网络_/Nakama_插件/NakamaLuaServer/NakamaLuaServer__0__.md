@@ -1,5 +1,7 @@
 
 
+# nakama 使用 lua 5.1  这在安装一些插件时会出现问题...
+
 
 # lua runtime
 https://heroiclabs.com/docs/nakama/server-framework/lua-runtime/
