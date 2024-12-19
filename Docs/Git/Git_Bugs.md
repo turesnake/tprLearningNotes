@@ -39,6 +39,14 @@ https://chaosplay.com/2022/01/11/git-error-github-comabc-xyz-git-did-not-send-al
 
 
 
+# -------------------------------------------- #
+#       lfs 拉不下来
+# -------------------------------------------- #
+直接把 git 工程目录下 .git/lfs/cache/ 删除
+
+
+
+
 
 
 

@@ -196,7 +196,7 @@ public struct Plane : IFormattable
     //
     // Summary:
     //     Returns a signed distance from plane to point.
-    //
+    //     !!! 有正负, 在法线方向那一侧的为正
     // Parameters:
     //   point:
     public float GetDistanceToPoint(Vector3 point)
