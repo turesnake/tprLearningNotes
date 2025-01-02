@@ -11,6 +11,26 @@ https://www.zhihu.com/tardis/zm/art/416156699?source_id=1005
 
 
 # ----------------------------- #
+#    如何将 右键弹窗 改为 win10 风格
+# ----------------------------- #
+https://www.bilibili.com/video/BV1Uw411t7N5/?spm_id_from=333.337.search-card.all.click&vd_source=df0fa6bb68b75a198c4c3f59ce640962
+
+打开 cmd 小黑窗, 输入:
+reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve
+回车;
+
+然后在 任务管理器里, 找到 "windows 资源管理器", 重启之 (或重启电脑)
+
+就好了;
+
+
+# 若想改回去:
+    reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /va /f
+
+
+
+
+# ----------------------------- #
 #    如何查看 ip 地址
 # ----------------------------- #
 

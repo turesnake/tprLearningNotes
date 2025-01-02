@@ -831,6 +831,15 @@ Texture2D class 中有 GetPixelBilinear() 系列函数;
 
 
 
+# ---------------------------------------------- #
+#    如何修改 Library/PackageCache 目录下的 包代码
+# ---------------------------------------------- #
+https://support.unity.com/hc/en-us/articles/9113460764052-How-can-I-modify-built-in-packages
+
+可将这个包移动到 Packages/ 目录下, 然后就能改动了
+
+
+
 
 
 

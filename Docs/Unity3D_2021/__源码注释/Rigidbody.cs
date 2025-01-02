@@ -27,30 +27,44 @@ namespace UnityEngine
         // public int solverIterationCount { get; set; }
 
 
-        //
-        // 摘要:
-        //     The solverVelocityIterations affects how how accurately Rigidbody joints and
-        //     collision contacts are resolved. Overrides Physics.defaultSolverVelocityIterations.
-        //     Must be positive.
+        /*
+        摘要:
+            The solverVelocityIterations affects how how accurately Rigidbody joints and
+            collision contacts are resolved. Overrides Physics.defaultSolverVelocityIterations.
+            Must be positive.
+
+            速度迭代次数
+        */
         public int solverVelocityIterations { get; set; }
+
         //
         // 摘要:
         //     The maximimum angular velocity of the rigidbody measured in radians per second.
         //     (Default 7) range { 0, infinity }.
         public float maxAngularVelocity { get; set; }
-        //
-        // 摘要:
-        //     The mass-normalized energy threshold, below which objects start going to sleep.
+
+        /*
+        摘要:
+            The mass-normalized energy threshold, below which objects start going to sleep.
+
+            质量归一化的 能量阈值, 当能量低于此值时, obj 开始休眠
+        
+        */
         public float sleepThreshold { get; set; }
+
         //
         // 摘要:
         //     The solverIterations determines how accurately Rigidbody joints and collision
         //     contacts are resolved. Overrides Physics.defaultSolverIterations. Must be positive.
         public int solverIterations { get; set; }
-        //
-        // 摘要:
-        //     Interpolation allows you to smooth out the effect of running physics at a fixed
-        //     frame rate.
+
+        /*
+            摘要:
+                Interpolation allows you to smooth out the effect of running physics at a fixed
+                frame rate.
+
+                速度迭代次数
+        */
         public RigidbodyInterpolation interpolation { get; set; }
 
 
@@ -65,8 +79,16 @@ namespace UnityEngine
         
             ==================================
             在每帧 FixedUpdate() 中, 通过直接设置此值, 可直接驱动 rigid 做我们想要的运动; 通常很适合 第一人称第三人称 角色运动;
-            
-            它和 物理引擎 自己计算出来的 velocity 之间到底谁先谁后, 怎么正确管理 暂时还有待学习...
+
+            FixedUpdate() 先被调用, 然后才执行 物理引擎自己的计算, 此时会发生碰撞, 然后调用 OnCollisionXXX(), 在此cb 内可发现 velocity 等参数以及和 FixedUpdate() 中的不一样了;
+            最后才调用 yield return new WaitForFixedUpdate(); 
+
+            所以我们可以先在 FixedUpdate() 中修改速度, 然后等待物理引擎去处理碰撞;
+
+            !! 不要直接改写 rigid 的 position, 这么做 物理引擎是不知道的, 这导致当两帧之间出现 物体过穿时, 物理引擎无法处理这个过穿;
+            !! 比较好的就是只修改 velocity, 不修改 position
+            !! 若想实现类似 直改 position 的效果, 可以新建一个 tgtTF 节点, 然后 input 会移动这个 tgtTF, 然后 rigid 每帧都快速向 tgtTF 运动; 只要设置的速度足够快, 看起来就是一样的效果;
+
 
             注意:
                 此值的含义是: XXX m/s; 
@@ -82,29 +104,48 @@ namespace UnityEngine
 
 
 
-        //
-        // 摘要:
-        //     The angular velocity vector of the rigidbody measured in radians per second.
+        /*
+            摘要:
+            The angular velocity vector of the rigidbody measured in radians per second.
+            measured in degrees per second.
+
+            方向表示旋转轴, 模长表示旋转速度;    猜测单位: 角度/秒
+
+        */
         public Vector3 angularVelocity { get; set; }
-        //
-        // 摘要:
-        //     The drag of the object.
+
+        /*
+            摘要:
+                The drag of the object.
+
+            速度阻力
+        */
         public float drag { get; set; }
-        //
-        // 摘要:
-        //     The angular drag of the object.
+        
+        /*
+            摘要:
+                The angular drag of the object.
+
+            角速度阻力
+        */
         public float angularDrag { get; set; }
+        
         //
         // 摘要:
         //     The mass of the rigidbody.
         public float mass { get; set; }
+        
         //
         // 摘要:
         //     Controls whether gravity affects this rigidbody.
         public bool useGravity { get; set; }
-        //
-        // 摘要:
-        //     Maximum velocity of a rigidbody when moving out of penetrating state.
+        
+        /*
+            摘要:
+                Maximum velocity of a rigidbody when moving out of penetrating state.
+
+            刚体脱离穿透状态时的 最大速度。
+        */
         public float maxDepenetrationVelocity { get; set; }
 
 
@@ -117,6 +158,8 @@ namespace UnityEngine
             Eg. can connect a kinematic rigidbody to a normal rigidbody with a joint and the rigidbody will be constrained with the motion of the kinematic body. 
             Kinematic rigidbodies are also particularly useful for making characters which are normally driven by an animation, 
             but on certain events can be quickly turned into a ragdoll by setting isKinematic to false.
+
+
         */
         public bool isKinematic { get; set; }
 
@@ -125,14 +168,20 @@ namespace UnityEngine
         // 摘要:
         //     Controls whether physics will change the rotation of the object.
         public bool freezeRotation { get; set; }
-        //
-        // 摘要:
-        //     Controls which degrees of freedom are allowed for the simulation of this Rigidbody.
+
+        /*
+            摘要:
+                Controls which degrees of freedom are allowed for the simulation of this Rigidbody.
+
+            pos, rot 6个轴的锁;
+        */
         public RigidbodyConstraints constraints { get; set; }
+        
         //
         // 摘要:
         //     The Rigidbody's collision detection mode.
         public CollisionDetectionMode collisionDetectionMode { get; set; }
+        
         //
         // 摘要:
         //     The center of mass relative to the transform's origin.
@@ -141,18 +190,27 @@ namespace UnityEngine
         // 摘要:
         //     The center of mass of the rigidbody in world space (Read Only).
         public Vector3 worldCenterOfMass { get; }
+
         //
         // 摘要:
-        //     The rotation of the inertia tensor.
+        //     The rotation of the inertia tensor.   惯性矩的 旋转
         public Quaternion inertiaTensorRotation { get; set; }
-        //
-        // 摘要:
-        //     The inertia tensor of this body, defined as a diagonal matrix in a reference
-        //     frame positioned at this body's center of mass and rotated by Rigidbody.inertiaTensorRotation.
+        
+        /*
+            摘要:
+                The inertia tensor of this body, defined as a diagonal matrix in a reference
+                frame positioned at this body's center of mass and rotated by Rigidbody.inertiaTensorRotation.
+
+                
+        */
         public Vector3 inertiaTensor { get; set; }
-        //
-        // 摘要:
-        //     Should collision detection be enabled? (By default always enabled).
+
+        /*
+            摘要:
+                Should collision detection be enabled? (By default always enabled).
+
+                借助它来关闭 碰撞检测
+        */
         public bool detectCollisions { get; set; }
 
         
