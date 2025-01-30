@@ -840,6 +840,26 @@ https://support.unity.com/hc/en-us/articles/9113460764052-How-can-I-modify-built
 
 
 
+# ---------------------------------------------- #
+#    sprite 图集元素 和 prefab 中绑定 之间的关系
+# ---------------------------------------------- #
+
+假设图集 common1 里有三个图 (Sand01,Sand02,Sand03), 其中 Sand02 被 A.prefab 使用了
+
+# common1.png.meta 文件中, 记录了:
+-- guid: 533f6ad18cfb35e4891085950aa94168  -- 这是整个图集的 guid
+-- nameFileIdTable:
+      Sand01: 494224888
+      Sand02: -1905115804
+      Sand03: 550567968
+	这是三个图的 id
+
+# A.prefab 中:
+	m_Sprite: {fileID: -1905115804, guid: 533f6ad18cfb35e4891085950aa94168, type: 3}
+
+	分别记录了 使用的 图集 和 图的 id;
+
+
 
 
 

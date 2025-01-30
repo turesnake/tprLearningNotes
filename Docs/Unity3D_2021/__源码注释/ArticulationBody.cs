@@ -19,7 +19,7 @@ namespace UnityEngine;
 
         public ArticulationBody ab;
         ArticulationDrive drive = ab.yDrive;
-        drive.target = 0.3ff;
+        drive.target = 0.3f;
         ab.yDrive = drive;
 
     然后把这个 drive 的 stifness 调到 100000, 就行了

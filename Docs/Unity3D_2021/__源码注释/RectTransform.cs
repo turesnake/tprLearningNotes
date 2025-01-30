@@ -57,7 +57,7 @@ namespace UnityEngine
         /*
             The size of this RectTransform relative to the distances between the anchors.
 
-            就是界面上的 width, height
+            !!! 就是界面上的 width, height
         */
         public Vector2 sizeDelta { get; set; }
         //
