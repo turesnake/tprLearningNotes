@@ -239,6 +239,8 @@ file - build settings, 开始 build:
 
         红米 note 12t pro:
             adb connect 192.168.2.120
+
+            adb connect 172.16.30.104
             
 
 

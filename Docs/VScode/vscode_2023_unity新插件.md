@@ -6,7 +6,7 @@ https://devblogs.microsoft.com/visualstudio/announcing-the-unity-extension-for-v
 
 
 
-# unity package: vs editor 升级到嘴型
+# unity package: vs editor 升级到最新
 
 
 # ------------------------------------ #

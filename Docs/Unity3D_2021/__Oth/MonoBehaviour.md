@@ -377,6 +377,8 @@ followed by an OnEnable after the script has been loaded.
     ---
     反之, 若在运行时之前, go 就是 disable 态的, 那么在运行时, 不管算出 go 还是 脚本组件, 都不会触发这个 OnDestroy()
 
+    这东西要和 Start() 配对
+
 
 # ================================================================== #
 # 以下是 未出现在 固定流程图中的 callbacks

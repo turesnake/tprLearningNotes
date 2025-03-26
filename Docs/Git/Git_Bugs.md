@@ -47,6 +47,14 @@ https://chaosplay.com/2022/01/11/git-error-github-comabc-xyz-git-did-not-send-al
 
 
 
+# -------------------------------------------- #
+#  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#      WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED
+#  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# -------------------------------------------- #
+
+可以去到 C:\Users\<你的用户名>\.ssh\known_hosts,  把这个 known_hosts 文件删了
+
 
 
 

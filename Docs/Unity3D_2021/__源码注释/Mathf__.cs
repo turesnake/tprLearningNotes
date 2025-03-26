@@ -506,10 +506,20 @@ namespace UnityEngine
             摘要:
             PingPong returns a value that will increment and decrement between the value 0 and length.
 
+
+            !!! 易于理解版的 Pingpong():
+            ---@param t_ number         @ 传入 Time.time
+            ---@param duration_ number  @ 单次 pingpong 周期时长 
+            function MainPlay_Utils.Pingpong( t_, duration_ )
+                local cycleLength  = duration_ * 0.5 
+                local pingPongValue = Mathf.PingPong(t_, cycleLength)
+                return pingPongValue / cycleLength
+            end 
+
+
             参数:
             t:
-                一个不断增大的值, 然后隔一段时间调用一次本函数;
-        
+                一个不断增大的值, 比如 time, 调用者需隔一段时间调用一次本函数, 才能实现效果;
             length:
         */
         public static float PingPong(float t, float length);

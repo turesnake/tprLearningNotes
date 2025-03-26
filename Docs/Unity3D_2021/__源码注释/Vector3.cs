@@ -281,15 +281,18 @@ namespace UnityEngine
         public static void OrthoNormalize(ref Vector3 normal, ref Vector3 tangent);
 
 
-        //
-        // 摘要:
-        //     Projects a vector onto another vector.
-        //     将参数 vector 投影到 onNormal 身上,  最终得到一个沿着 onNormal 方向的 新向量
-        //
-        // 参数:
-        //   vector:
-        //
-        //   onNormal:
+        /*
+            摘要:
+                Projects a vector onto another vector.
+                得到 vector 在 onNormal 所在直线上的投影, 最终得到一个沿着 onNormal 方向的 新向量;
+
+                !! 就算 onNormal 提供的向量是反方向的, 最后结果也是不变的, onNormal 其实只是提供了这个直线信息;
+
+            参数:
+            vector:
+            
+            onNormal:
+        */
         public static Vector3 Project(Vector3 vector, Vector3 onNormal);
 
 
