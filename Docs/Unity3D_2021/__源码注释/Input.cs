@@ -284,7 +284,7 @@ namespace UnityEngine
             Returns true during the frame the user pressed the given mouse button.
             ---
             注意:
-                在按下的第一帧, 先触发 GetMouseButtonDown(), 后触发 GetMouseButton()
+                在按下的第一帧, 先触发 mouseDown(), 后触发 GetMouseButton()
                 在持续按下后的每一帧, 只触发 GetMouseButton()
                 在离开按下的第一帧, 只触发 GetMouseButtonUp() -- 可以理解为是 尾后帧
             

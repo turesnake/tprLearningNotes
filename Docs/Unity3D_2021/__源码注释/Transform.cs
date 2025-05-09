@@ -487,13 +487,18 @@ namespace UnityEngine
         //
         //   rotation:
         public void SetPositionAndRotation(Vector3 position, Quaternion rotation);
-        //
-        // 摘要:
-        //     Sets the sibling index.
-        //
-        // 参数:
-        //   index:
-        //     Index to set.
+
+        /*
+            tf.SetSiblingIndex(0); 
+            让自己在 父节点子层中的 最顶部;            
+            
+            摘要:
+                Sets the sibling index.
+            
+            参数:
+            index:
+                Index to set.
+        */
         public void SetSiblingIndex(int index);
 
 
