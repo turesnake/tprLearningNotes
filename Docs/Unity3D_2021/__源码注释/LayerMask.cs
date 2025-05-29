@@ -33,7 +33,7 @@ namespace UnityEngine
 
                 !!! GetMask() 和 NameToLayer() 的区别:
                     假设 layer "CameraCollision" 位于第 21 个, 则:
-                    GetMask()     得到 2097152
+                    GetMask()     得到 2097152, 位掩码  // !!! 这个就是 Physics.Raycast() 需要的
                     NameToLayer() 得到 21
             
                     使用 GetMask() 那个值可用到 碰撞检测函数中

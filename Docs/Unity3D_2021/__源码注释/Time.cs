@@ -5,9 +5,14 @@
 
 namespace UnityEngine
 {
-    //
-    // 摘要:
-    //     Provides an interface to get time information from Unity.
+    /*
+        摘要:
+            Provides an interface to get time information from Unity.
+
+        !! 测试代码段耗时: Time.realtimeSinceStartup
+
+
+    */
     [NativeHeaderAttribute("Runtime/Input/TimeManager.h")]
     [StaticAccessorAttribute("GetTimeManager()", Bindings.StaticAccessorType.Dot)]
     public class Time//Time__RR
@@ -25,11 +30,17 @@ namespace UnityEngine
         //     version of Time.realtimeSinceStartup.
         [NativePropertyAttribute("Realtime")]
         public static double realtimeSinceStartupAsDouble { get; }
-        //
-        // 摘要:
-        //     The real time in seconds since the game started (Read Only).
+
+
+        /*
+            !!!!!! 用于测试 代码段耗时
+                The real time in seconds since the game started (Read Only).
+        */
         [NativePropertyAttribute("Realtime")]
         public static float realtimeSinceStartup { get; }
+
+
+
         [NativePropertyAttribute("RenderFrameCount")]
         public static int renderedFrameCount { get; }
         //

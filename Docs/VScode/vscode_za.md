@@ -41,5 +41,14 @@ VSCode - setting - text editor - files - exclude - add pattern
 
 
 
+# ============================== #
+#    c# 自动缩进 太智能, 如何关闭
+# ============================== #
+
+和 auto indent 这个相关;
+
+但是改了没啥用
+
+
 
 

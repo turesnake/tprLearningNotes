@@ -490,7 +490,15 @@ namespace UnityEngine
 
         /*
             tf.SetSiblingIndex(0); 
-            让自己在 父节点子层中的 最顶部;            
+            让自己在 父节点子层中的 最顶部;      
+
+
+            -- 假设有个 parent, 子层已经有一个 a, 如何把 k 放到 parent 子层, 且在 a 的下面:
+            -1- 先获取 a 的索引
+            int aIndex = a.transform.GetSiblingIndex();
+            -2- 把 k 放到 a下面
+            k.transform.SetSiblingIndex(aIndex + 1);
+
             
             摘要:
                 Sets the sibling index.
