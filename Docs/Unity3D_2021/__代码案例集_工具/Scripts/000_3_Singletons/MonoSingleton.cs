@@ -4,36 +4,38 @@ using UnityEngine;
 
 
 /*
-    让 new bing 写的, 没细看, 有空看;
+    让 new bing 写的, 没细看,
+    简易项目实践中;
 */
-public class MonoSingleton : MonoBehaviour
+public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
-    private static MonoSingleton _instance;
+    static T _instance;
 
-    public static MonoSingleton Instance
+    public static T Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<MonoSingleton>();
+                _instance = FindObjectOfType<T>();
                 if (_instance == null)
                 {
-                    Debug.LogError("需手动在场景中配置 MonoSingleton 实例"); // !!! 若有需要的话
+                    var TClassName = typeof(T).ToString(); // "NameSpace.ClassName"
+                    Debug.LogWarning("手动在场景中新建 MonoSingleton 实例: "+TClassName);
                     GameObject newgo = new GameObject();
-                    _instance = newgo.AddComponent<MonoSingleton>();
-                    newgo.name = "(MonoSingleton) " + typeof(MonoSingleton).ToString();
+                    _instance = newgo.AddComponent<T>();
+                    newgo.name = "[MonoSingleton]." + TClassName; // "[MonoSingleton].NameSpace.ClassName"
                 }
             }
             return _instance;
         }
     }
 
-    private void Awake()
+    void Awake()
     {
         if (_instance == null)
         {
-            _instance = this;
+            _instance = (T)this;
             DontDestroyOnLoad(gameObject);
         }
         else
