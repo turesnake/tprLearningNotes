@@ -17,3 +17,19 @@ https://github.com/AlianBlank/download.unity.com?tab=readme-ov-file
 
 
 
+# ====================================== #
+#           网址
+# ====================================== #
+
+# 2022.1.9f1c1
+https://www.rjctx.com/36588.html
+
+我本地已经有 .1.9f1 了
+
+
+
+
+
+
+
+
