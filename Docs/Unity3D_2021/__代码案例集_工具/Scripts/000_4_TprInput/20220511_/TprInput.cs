@@ -45,6 +45,8 @@ public class TprInput : MonoBehaviour
     [SerializeField, Range(0.1f, 4f)] 
         float rotateRaio = 1.0f; // 旋转速率 倍率修正
 
+    public Vector2 RotateUpAngleRange = new Vector2(-85f,80f); // 相机俯仰转动活动范围(角度)
+
     bool isError = false;
 
 
@@ -145,9 +147,9 @@ public class TprInput : MonoBehaviour
                 // ---
                 // 此处限制并不完备, 如果单帧旋转角度过大, 完全可以"越"过整个 极坐标禁区, 转到对面的有效区去
                 // 目前的限制方式就是 约束 rotateRaio 的取值区间; 实际使用中尚可接受
-            if( r_up && upAngle>-80.0f ){         
+            if( r_up && upAngle>RotateUpAngleRange.x ){         
                 anchorTransform.Rotate( Vector3.right, -yawDegree * rotateRaio * deltaTime, Space.Self );
-            }else if( r_down && upAngle<80.0f ){ 
+            }else if( r_down && upAngle<RotateUpAngleRange.y ){ 
                 anchorTransform.Rotate( Vector3.right,  yawDegree * rotateRaio * deltaTime, Space.Self );
             }
         }

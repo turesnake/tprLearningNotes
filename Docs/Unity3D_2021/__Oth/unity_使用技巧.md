@@ -861,6 +861,21 @@ https://support.unity.com/hc/en-us/articles/9113460764052-How-can-I-modify-built
 
 
 
+# ---------------------------------------------- #
+#     一键将 build-in 材质球 转换为 urp 格式的
+# ---------------------------------------------- #
+
+Go to Window > Rendering > Render Pipeline Converter.
+
+选择 Built-in to URP
+
+下去选中 Material Upgrade
+
+然后点击左下角 Initialize Converters 
+然后会发现它能找出一堆需要转换的 材质球
+
+然后点击右下角按钮, 完成转换
+
 
 
 
