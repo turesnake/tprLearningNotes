@@ -31,7 +31,7 @@ https://www.youtube.com/watch?v=6ogqHJJR_5M&list=PLeUKbKrkDo85p1VDOFu-2oVLkv3j-P
 -2-
     maya:
     "文件" - "发送到 unity" - "设置 unity 项目"
-    选中 unity项目 目录
+    选中 unity项目 的根目录
 
 -3-
     maya:
@@ -41,7 +41,7 @@ https://www.youtube.com/watch?v=6ogqHJJR_5M&list=PLeUKbKrkDo85p1VDOFu-2oVLkv3j-P
             选择 "米"
     --
         设置 远平面:
-            在 "大纲视图" 中找到 "persp" 相机, 打开右侧的 "属性编辑器"
+            在 "大纲视图"(窗口-outline) 中找到 "persp" 相机, 打开右侧的 "属性编辑器"
             将 近平面 设置为 0.01
             将 远平面 设置为 100000
 
