@@ -8,7 +8,7 @@
 
 # ---------------------------- #
 # Render Texture coordinates
-texture 的 垂直坐标约定, 在 Direct3D类 和 OpenGL类 中是不同的:
+texture 的 垂直坐标约定, 在 Direct3D类 和 OpenGL类 中是不同的:  (也就是 2d 空间的 y轴)
 --
     Direct3D类: 最上行为 0.  (Direct3D, Metal and consoles)
 -- 
@@ -38,8 +38,8 @@ Image Effects 和 "rendering in UV space" 是两个需要注意的使用场景, 
 // texel size will have negative Y).
 
 #if UNITY_UV_STARTS_AT_TOP
-if (_MainTex_TexelSize.y < 0)
-        uv.y = 1-uv.y;
+    if (_MainTex_TexelSize.y < 0)
+            uv.y = 1-uv.y;
 #endif
 # ==
 
@@ -92,6 +92,7 @@ float4 vert(float2 uv : TEXCOORD0) : SV_POSITION
 
 # 此段中的 "深度值" 到底是指啥 ???
 tpr 猜测为 .z/.w 这个值,  
+
 
 
 
