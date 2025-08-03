@@ -14,7 +14,9 @@ BackgroundColor - 背景颜色
 SelectionColor  - 选择区颜色
 
 
-
+	TextColor = #daddc4
+	BackgroundColor = #303942
+	SelectionColor = #3ffc0c
 
 
 
