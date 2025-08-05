@@ -49,10 +49,13 @@ Shader "tpr/tprURP_001b_texture_color"
             };
 
 
-            Varyings vert( Attributes i ){
+            Varyings vert( Attributes i )
+            {
                 Varyings o;
                 o.posHCS = TransformObjectToHClip( i.posOS.xyz );
 
+
+                // !!! VS 中可以采样, 但需要使用 LOD 版本的采样函数;
 
                 // #define TRANSFORM_TEX(tex, name) ((tex.xy) * name##_ST.xy + name##_ST.zw)
 
@@ -66,7 +69,8 @@ Shader "tpr/tprURP_001b_texture_color"
             }
 
 
-            half4 frag( Varyings i ) : SV_Target{
+            half4 frag( Varyings i ) : SV_Target
+            {
 
                 // SAMPLE_TEXTURE2D 宏 在每个平台的 include .hlsl 文件中都被单独定义了一次
                 // 比如在: 

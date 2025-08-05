@@ -53,9 +53,13 @@ Shader "tpr/showNoise3D"
             };
 
 
-            Varyings vert( Attributes i ){
+            Varyings vert( Attributes i )
+            {
                 Varyings o;
                 o.posHCS = TransformObjectToHClip( i.posOS.xyz );
+
+
+                // !!! VS 中可以采样, 但需要使用 LOD 版本的采样函数;
 
                 // #define TRANSFORM_TEX(tex, name) ((tex.xy) * name##_ST.xy + name##_ST.zw)
 
