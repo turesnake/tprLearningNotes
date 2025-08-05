@@ -19,6 +19,11 @@ struct TessellationControlPoint
     曲面细分因子, 本质是个 vector4; 
     triangle 的 三条边上各细分几个顶点
     内部新增几个顶点;
+    ---
+    factor: 
+        1:表示不增加顶点; 
+        N:增加 N-1 个顶点; 
+        0: 4个factor 中任意一个值为0, 整个三角形就会被丢弃,(不被渲染)
 */
 struct TessellationFactors 
 {
@@ -50,6 +55,35 @@ TessellationControlPoint MyTessellationVertexProgram (VertexData v)
 // ============================= Hull ================================ // 
 
 
+
+// 判断三角形的三个顶点 (posws) 是否在 camera 平截头体 的一个面之内:
+bool TriangleIsBelowClipPlane (float3 p0, float3 p1, float3 p2, int planeIndex, float bias) 
+{
+    // camera 平截头体 6个面在 world-space 中的 面描述: xyz:法线, w:此面距离0点offset;
+    float4 plane = unity_CameraWorldClipPlanes[planeIndex];
+	return
+		dot(float4(p0, 1), plane) < bias &&
+		dot(float4(p1, 1), plane) < bias &&
+		dot(float4(p2, 1), plane) < bias;
+}
+
+
+/*
+    检查三角形的三个顶点 是否在 camera 平截头体 之内;
+    此处只比较了 上下左右 4 个屏幕, 省略了 near / far 两个面;
+    params: bias: 如果曲面细分后还要做顶点动画, 那么最终顶点位置就会发生偏移, 一些平截头体之外的本该被移动进入视野的顶点, 会被裁剪掉
+        用此 bias 来保住这些边缘三角形;
+*/
+bool TriangleIsCulled (float3 p0, float3 p1, float3 p2, float bias) 
+{
+    return
+		TriangleIsBelowClipPlane(p0, p1, p2, 0, bias) ||
+		TriangleIsBelowClipPlane(p0, p1, p2, 1, bias) ||
+		TriangleIsBelowClipPlane(p0, p1, p2, 2, bias) ||
+		TriangleIsBelowClipPlane(p0, p1, p2, 3, bias);
+}
+
+
 /* 
     LOD 运算,
     基于 三角形某个边长 + 这条边与camera的距离, 来决定在这条边上做多少细分;
@@ -61,7 +95,6 @@ float TessellationEdgeFactor (float3 posWS0, float3 posWS1)
     float viewDistance = distance(edgeCenter, _WorldSpaceCameraPos);
     return (edgeLength * _ScreenParams.y) / (_TessellationEdgeLength * viewDistance);
 }
-
 
 
 /* 
@@ -79,15 +112,28 @@ TessellationFactors MyPatchConstantFunction (InputPatch<TessellationControlPoint
 
     //---
 	TessellationFactors f;
-    f.edge[0] = TessellationEdgeFactor(p1, p2);
-    f.edge[1] = TessellationEdgeFactor(p2, p0);
-    f.edge[2] = TessellationEdgeFactor(p0, p1);
 
-    // !! catlike: 为克服 opengl bug 而做的写法;
-    f.inside =
-	    (TessellationEdgeFactor(p1, p2) +
-		 TessellationEdgeFactor(p2, p0) +
-		 TessellationEdgeFactor(p0, p1)) * (1 / 3.0);
+    float bias = 0;
+    bias = -0.5 * _Amplitude * 2;
+
+    if (TriangleIsCulled(p0, p1, p2, bias)) 
+    {
+        // 裁剪掉 camera 平截头体 之外的 三角形;
+		f.edge[0] = f.edge[1] = f.edge[2] = f.inside = 0;
+	}
+    else
+    {
+        f.edge[0] = TessellationEdgeFactor(p1, p2);
+        f.edge[1] = TessellationEdgeFactor(p2, p0);
+        f.edge[2] = TessellationEdgeFactor(p0, p1);
+
+        // !! catlike: 为克服 opengl bug 而做的写法;
+        f.inside =
+            (TessellationEdgeFactor(p1, p2) +
+            TessellationEdgeFactor(p2, p0) +
+            TessellationEdgeFactor(p0, p1)) * (1 / 3.0);
+
+    }
 
 	return f;
 }
