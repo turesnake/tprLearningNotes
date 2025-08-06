@@ -281,6 +281,7 @@ float4 tex2Dbias( sampler2D s, float4 t);
 # ------------------ #
 #   sign
 int sign(x)
+float3 sign(float3)
 
     若参数 x<0,     ret -1;
     若参数 x==0,    ret 0;
