@@ -19,6 +19,7 @@
 
     Blender 坐标：Z 向上，Y 向后
     Unity 坐标：Y 向上，Z 向前
+
     FBX 导出时（Blender）―
     Forward = “-Z Forward”
     Up = “Y Up”
@@ -39,6 +40,7 @@
     导出面板里：
     Normals = “Export Normals” 或 “Auto Smooth”
     Tangents = “Export Tangents”（如果你的材质用法线贴图）
+    
     在 Unity Import Settings：
     Normals = “Import” 或 “Calculate”—看你是否希望 Unity 重新计算法线
     Tangents = “Import”
