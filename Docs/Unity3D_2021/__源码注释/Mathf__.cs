@@ -658,6 +658,8 @@ namespace UnityEngine
 
             当参数 t 小于 0 时, 会被当成 0 来使用, 此时函数返回 from;
             当参数 t 大于 1 时, 会被当成 1 来使用, 此时函数返回 to;
+
+            !!!!  注意, 这个函数 和 hlsl 中的那个工作原理完全不一样
         
         */
         public static float SmoothStep(float from, float to, float t);

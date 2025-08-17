@@ -21,6 +21,12 @@
 https://www.zhihu.com/tardis/zm/art/416156699?source_id=1005
 
 
+# ----------------------------- #
+#    关闭 系统动画
+# ----------------------------- #
+设置 - 辅助功能 - 视觉效果 - 动画效果
+
+
 
 # ----------------------------- #
 #    如何将 右键弹窗 改为 win10 风格
@@ -38,6 +44,10 @@ reg add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\Inpr
 
 # 若想改回去:
     reg delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /va /f
+
+
+# 这个方法会导致 右键后很卡, (不确定是不是直接由这个方法导致的)
+
 
 
 
