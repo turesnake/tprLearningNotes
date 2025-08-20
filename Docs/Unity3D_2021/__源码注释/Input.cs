@@ -276,6 +276,8 @@ namespace UnityEngine
 
             参数:
             button:
+                !!! 
+                0 = 左键, 1 = 右键, 2 = 中键;
         */
         [NativeThrowsAttribute]
         public static bool GetMouseButton(int button);

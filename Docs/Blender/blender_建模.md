@@ -54,6 +54,14 @@ obj模式 - object - apply - all transforms
 
 
 # ------------------------------ #
+#    选择两个点, 连出一条边
+vertex - connect vertex pairs
+
+
+
+
+
+# ------------------------------ #
 #       软边 / 硬边
 -1- 进入 object mode, 选择物体, 
     
