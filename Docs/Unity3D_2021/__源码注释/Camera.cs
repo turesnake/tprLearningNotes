@@ -1399,11 +1399,11 @@ namespace UnityEngine
              and going through position's (x,y) pixel coordinates on the screen (position.z is ignored).
         
         
-        // 参数:
-        //   eye:
-        //     Optional argument that can be used to specify which eye transform to use. Default is Mono.
-        //
-        //   pos:
+        参数:
+          eye:
+            Optional argument that can be used to specify which eye transform to use. Default is Mono.
+        
+          pos:
                 猜测是 posSS, 使用了 xy值, z值被忽略;
                 Screenspace is defined in pixels. 
                     The bottom-left of the screen is (0,0); 

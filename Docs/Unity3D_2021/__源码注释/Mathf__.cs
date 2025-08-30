@@ -240,6 +240,8 @@ namespace UnityEngine
             摘要:
             Returns e raised to the specified power.
             返回: e^power
+
+            
         */
         public static float Exp(float power);
 
