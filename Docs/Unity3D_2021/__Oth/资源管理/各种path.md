@@ -51,7 +51,7 @@ unity 内部使用的 path 一律用 '/' 分隔符, 哪怕是在 win 平台;
     urp_1        是 项目名
 
 
-# Application.persistentDataPath     C:/Users/Administrator/AppData/LocalLow/tpr_tpr_test/urp_1
+# Application.persistentDataPath     C:/Users/Administrator/AppData/LocalLow/tpr_tpr_test/urp_1     !!!!!!  通常推荐的存放数据的目录
 
     tpr_tpr_test 是 设置的 公司名
     urp_1        是 项目名

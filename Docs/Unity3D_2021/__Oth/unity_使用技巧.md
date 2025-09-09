@@ -381,16 +381,6 @@ shader 会被 不同的 material 使用, 我们想找出这些 materials;
 
 
 
-# ----------------------------------------------#
-#  快速进入 play 模式:
-#    	Enter Play Mode Options (Experimental)
-# ----------------------------------------------#
-
-Project Settings -> Editor -> Enter Play Mode Settings
-
-https://www.jianshu.com/p/226d557ab226
-
-
 
 # ----------------------------------------------#
 #    安卓打包, 在 OpenGLES3 和 Vulkan 之间如何切换
@@ -900,6 +890,27 @@ ai:
 
 
 
+
+
+# ----------------------------------------------#
+#  快速进入 play 模式:
+#    	Enter Play Mode Options (Experimental)
+# ----------------------------------------------#
+
+Project Settings -> Editor -> Enter Play Mode Settings
+
+https://www.jianshu.com/p/226d557ab226
+
+
+# Reload Domain（域重载）
+	关闭域重载：不重新创建托管 AppDomain，不重置静态字段/单例，不重新运行静态构造器。
+
+# Reload Scene（场景重载）
+	关闭场景重载：不重新加载当前场景，保留场景对象和组件状态
+
+
+开启太久会导致一些资源未被重置, 进而导致各种奇怪问题;
+谨慎使用
 
 
 
