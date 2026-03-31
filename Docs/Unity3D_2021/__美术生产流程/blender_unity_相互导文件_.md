@@ -1,6 +1,6 @@
 
 # ----------------------- #
-# O4-mini:
+# gpt-O4-mini:
 
 在 Blender 和 Unity 之间来回交换 FBX 文件时，要特别注意以下几方面的配置，才能尽量避免模型“跑偏”、动画丢失、法线翻转等常见问题。
 
@@ -16,9 +16,8 @@
 
 
 # 坐标轴（Axis）
-
-    Blender 坐标：Z 向上，Y 向后
-    Unity 坐标：Y 向上，Z 向前
+    (Blender 坐标：Z 向上，Y 向后)
+    (Unity 坐标：Y 向上，Z 向前)
 
     FBX 导出时（Blender）―
     Forward = “-Z Forward”
@@ -27,7 +26,6 @@
     这样在 Unity 打开时，模型朝向和轴向就可以一一对应。
 
 # 版本与目标（FBX Version）
-
     推荐使用 FBX 7.4 binary（也标为 FBX 2014/2015）。
     老版本可能有兼容性问题（部分属性丢失或语义不同）。
 

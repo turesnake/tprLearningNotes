@@ -7,10 +7,8 @@
 # ===================================== #
 #        使用 maya 风格的 操作
 # ------------------------------------- #
-
 Editor - Preferences - Keymap
 中部最上面有个选框, 默认是 "Blender", 下拉改成 "Industry Compatible"
-
 
 
 
@@ -25,6 +23,7 @@ View Transform
 	默认值为 Flimic
 ----
 若不修改此项，最终颜色会始终不准
+
 
 
 # ----------------------------------------------#
@@ -48,15 +47,15 @@ https://www.bilibili.com/video/BV1fm4y1b7ao/?spm_id_from=333.788.recommend_more_
 #            确保所有 面 法线正确
 # ++++++++++++++++++++++++++++++++++++++++++++++#
 - edit mode
-- 按a，全选所有面
+- sellect -> all，全选所有面
 - Mesh - Normals - Recalculate Outside
 	此时会修正所有面的 法线
 
 
 # -------------------------- #
-#  观察 mesh 面的法线朝向
+#  观察 mesh 面的正反面
 画布右上角 viewport overlays - face orientation 勾选;
-蓝色为正面, 红色为反面
+蓝色为正面, 红色为反面;
 
 
 # -------------------------- #
@@ -194,8 +193,6 @@ mesh - normal - flip
 #  让 cursor 还原为初始值:
 object mode: 空白右键 - snap - cursor to world origin
 
-
-
 #  让 cursor 吸附到 一个物体的原点上去:
 选择物体, 右键 - snap - cursor to selected
 
@@ -269,6 +266,9 @@ editor mode 中, 选择某个 点, 右键 - snap vertexis -  cursor to selected
 
 
 
+
+
+
 # ============================================== #
 #          吸附功能
 # ----------------------------------------------#
@@ -338,6 +338,14 @@ https://www.bilibili.com/video/BV1zh411Y7LX?spm_id_from=333.788.videopod.episode
 # 这玩意很适合建造地形;
 
 
+# -- 如何锁住某些 点线面 不让它们被 衰减工具影响到:
+选择不希望被影响的点, mesh - show/hide - hide selected,
+然后再去编辑, 
+最后恢复显示: mesh - show/hide - reveal hide, 会发现那些被隐藏的点 没有被修改到
+
+
+
+
 
 
 
@@ -373,6 +381,16 @@ snap target 选 face
 在 3d界面最右侧能看到一组纵向排列的栏, 打开 View, 开启 Lock camera to view
 
 # 这样, 你就能旋转3d场景的同时, 让相机也跟着从这个视角看过去了
+
+
+
+# ============================================== #
+#            如何删除工程中 图片
+# ----------------------------------------------#
+outline 窗口, view layer 切成 blender file, 选择 images
+里面有所有图片, 逐个选中删除
+
+
 
 
 

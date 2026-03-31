@@ -23,7 +23,7 @@ namespace Unity.Collections
         所以, 可以将一个NativeArray 变量 赋值给另一个 NativeArray 变量. 我猜它们应该是执行了 值复制 操作. 
         但因为实际复制的数据不大, 所以不存在性能问题. 
 
-        分配的 NativeArray 资源, 是需要用户 手动释放的: Dispose(). 因这些资源无非被 c# CG 回收.  
+        分配的 NativeArray 资源, 是需要用户 手动释放的: Dispose(). 因这些资源无法被 c# CG 回收.  
 
     */ 
 

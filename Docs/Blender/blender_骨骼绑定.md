@@ -19,8 +19,11 @@
 	不应在整副骨架制作完毕前，绑定到模型
 	===
 
------ 如何让 bone 在物体前面
-	obj模式, 选中 bone, 到右侧一个 "人形"面板. ViewPort Display,  启用 In Front
+# --- 生成一节次级骨节点:
+	edit 模式，选中小端，armature - extrude; (可开启对齐工具后使用)
+
+# ----- 如何让 bone 在物体前面
+	obj模式, 选中 bone, 到右侧一个 "人形"面板(Armature) -> ViewPort Display ->  启用 In Front
 
 
 ----- 制作镜向bone：
@@ -148,9 +151,45 @@
 	每个 控制类关节，取消其 context. Deform 选项
 
 
+
+
+
+# ================================================ #
+#           如何绑定骨骼 , 刷权重, 导出
+# ================================================ #
+
+# -- 绑定
+obj模式, 先选armature, 再shift选mesh:
+	然后: object - parent - armature deform - with auto weights  自动刷权重
+	---
+
+# -- 刷权重:
+obj模式, 选mesh, weight paint mode,
+右侧 properties菜单, 选 三角形 data页签, 可以在里面选择要刷的bone, 然后再刷
+
+
+# == 导出:
+绑定好后, 父节点是 armature, mesh在子节点, 此时选择 最顶层 armature, 右键 select hierachy,
+然后 export fbx:
+	-- limit to: selected objects
+	-- object types: 
+		armature
+		mesh
+	-- 勾选 apply transform
+	-- armature 内保持默认, 保持默认勾选 add leaf bones
+导出;
+
+
+
+# ========= 约束器：copy location/rotation/scale ========
+	一种比 parent关系更加强大的 约束
+	不仅可以绑定位置，还可以关联 缩放旋转
+	推荐
+
+
 # ************************************************
------ 将整副骨架，绑定到模型 
-	（这一段讲得很乱，建议直接看后方描述...）
+----- 将整副骨架，绑定到模型  (old)
+	（这一段讲得很乱，旧文档...）
 # ************************************************
 
 	在 obj 模式，先点选 模型，然后点选 骨架
@@ -188,28 +227,6 @@
 	然后 ctrl + I, 反选。点 remove， 清楚此骨骼对其他 模型顶点的绘制
 	===
 	这种方法，特别适合 类似 minecraft 式的 动画
-
-
-
-======== 如何将一个 独立的模型，绑定到一个 bone关节 =======
-	edit 模式，选择目标 关节
-	---
-	进入 obj 模式，先选目标模型，再选 bone
-	然后 ctrl + p: Bone
-	就能成功绑定
-	---
-	诀窍在于，要先在 edit 模式，选中目标关节
-	---
-	很容易
-	===
-
-
-========= 约束器：copy location/rotation/scale ========
-	一种比 parent关系更加强大的 约束
-	不仅可以绑定位置，还可以关联 缩放旋转
-	推荐
-
-
 
 
 # ----------------------------------------------#

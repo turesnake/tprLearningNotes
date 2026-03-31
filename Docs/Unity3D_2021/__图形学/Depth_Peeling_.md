@@ -32,7 +32,7 @@ urp 默认的 depth buffer
 
 
 # 不能在一个 render pass 中既读取一个 rt, 又写入这个 rt
-ai 推进用双 rt 来实现一些功能;
+ai 推荐用双 rt 来实现一些功能;
 
 
 

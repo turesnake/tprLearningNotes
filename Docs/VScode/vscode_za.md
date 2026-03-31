@@ -57,5 +57,14 @@ VSCode - setting - text editor - files - exclude - add pattern
 但是改了没啥用
 
 
+# ============================== #
+#    每写一个字母, 界面自动往上一行
+# ============================== #
+
+打开快捷键界面: ctl+k  Ctrl+S
+查找: Move Line Up / Move Line Down
+右键把这两个配置删除
+
+
 
 

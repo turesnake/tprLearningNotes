@@ -51,6 +51,11 @@
             或者说，就是 WS 中 平截头体 中的 near-far 区间
         具体可google: 
             DecodeDepthNormal/Linear01Depth/LinearEyeDepth explanations
+
+        # 注意 ~!!!!!!!!!!!!!!!!!!!!!!!!!!
+            这个值是 pixPosWS 沿着 camera forward 方向到 camera 的距离, 
+            不是 pixPosWS 和 camera pos 之间的距离;
+
         ---
         takes the depth buffer value and converts it into world scaled view space depth.
         The original depth texture 0.0 will become the far plane distance value, 
@@ -58,6 +63,8 @@
         So now with the value you get from the linear eye depth function
         1 is a surface that is 1 unit from the camera’s pivot along the camera’s z axis.
         A value of 100 is 100 units, 200 is 200 units
+
+        
 
     - Linear01Depth()
         转换成 [0,1] 线性区间：
