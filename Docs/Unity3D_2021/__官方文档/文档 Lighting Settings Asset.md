@@ -39,7 +39,6 @@
 
     == Shadowmask:
         对所有 Mixed 光源, 启用: Shadowmask Lighting Mode 
-        (此模式在 URP 中不被支持)
         ( URP 10.1 以及之后的版本 支持 )
 
 

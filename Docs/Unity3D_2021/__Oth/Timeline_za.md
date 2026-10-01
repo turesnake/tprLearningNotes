@@ -135,7 +135,18 @@ https://forum.unity.com/threads/how-to-set-the-virtual-camera-in-a-cinemachinesh
 
 
 
+# -------------------------------------- #
+#    timeline + anim track 起始pos 自动为 0 的问题
+# -------------------------------------- #
 
+-1-:
+    在 timeline - anim track 上选择那个 "竖着3个点" 的按钮, 打开 - Track Offsets:
+    选择默认的 apply transform offsets
+
+
+-2-:
+    在 timeline - anim track 上选中那个 anim clip, inspector 中, 
+    撤选 remove start offset
 
 
 

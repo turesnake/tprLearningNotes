@@ -65,6 +65,10 @@ mesh - normal - flip
 实现翻转
 
 
+# ===== !!!!! 如何重置所有法线信息 !!!!! ====
+- edit mode
+- sellect -> all，全选所有面
+- Mesh - Normals - Reset Vectors
 
 
 
